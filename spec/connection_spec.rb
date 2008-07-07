@@ -7,9 +7,76 @@ describe AMEE::Connection do
     @amee_config = YAML.load_file("#{File.dirname(__FILE__)}/../config/amee.yml")
   end
   
-  it "should be created with url, username and password" do
-    c = AMEE::Connection.new(@amee_config['url'], @amee_config['username'], @amee_config['password'])
+  it "can be created with url only" do
+    c = AMEE::Connection.new(@amee_config['server'])
     c.should be_valid
   end
   
+  it "cannot be created with username but no password" do
+    lambda{AMEE::Connection.new(@amee_config['server'], @amee_config['username'])}.should raise_error
+  end
+
+  it "cannot be created with password but no username" do
+    lambda{AMEE::Connection.new(@amee_config['server'], nil, @amee_config['password'])}.should raise_error
+  end
+
+  it "can be created with url, username and password" do
+    c = AMEE::Connection.new(@amee_config['server'], @amee_config['username'], @amee_config['password'])
+    c.should be_valid
+  end
+
+end
+
+describe AMEE::Connection, "with authentication" do
+  
+  before(:each) do
+    require 'yaml'
+    amee_config = YAML.load_file("#{File.dirname(__FILE__)}/../config/amee.yml")
+    @amee = AMEE::Connection.new(amee_config['server'], amee_config['username'], amee_config['password'])
+  end
+  
+  it "should start out unauthenticated" do
+    @amee.authenticated?.should be_false
+  end
+
+  it "should be capable of authentication" do
+    @amee.can_authenticate?.should be_true
+  end
+
+  it "should be able to get private URLs" do
+    @amee.get('/data') do |response|
+      response.code.should == '200'
+      response.body.should_not be_empty
+    end
+    @amee.authenticated?.should be_true
+  end
+
+end
+
+describe AMEE::Connection, "without authentication" do
+  
+  before(:each) do
+    require 'yaml'
+    amee_config = YAML.load_file("#{File.dirname(__FILE__)}/../config/amee.yml")
+    @amee = AMEE::Connection.new(amee_config['server'])
+  end
+  
+  it "should not be capable of authentication" do
+    @amee.can_authenticate?.should be_false
+  end
+
+  it "should be capable of making requests for public URLs" do
+    @amee.get('/') do |response|
+      response.code.should == '200'
+      response.body.should_not be_empty
+    end
+    @amee.authenticated?.should be_false
+  end
+
+  it "should not be able to get private URLs" do
+    @amee.get('/data') do |response|
+      response.code.should == '302' # AMEE returns a 302 if you access something but aren't authenticated
+    end
+  end
+
 end
