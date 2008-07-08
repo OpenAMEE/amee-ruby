@@ -1,5 +1,8 @@
 require 'amee/connection'
 require 'amee/object'
+require 'amee/data_category'
+require 'amee/data_item'
+require 'amee/data_item_value'
 
 module AMEE
   
