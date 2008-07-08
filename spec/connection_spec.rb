@@ -53,6 +53,24 @@ describe AMEE::Connection, "with authentication" do
 
 end
 
+describe AMEE::Connection, "with bad authentication information" do
+  
+  before(:each) do
+    require 'yaml'
+    amee_config = YAML.load_file("#{File.dirname(__FILE__)}/../config/amee.yml")
+    @amee = AMEE::Connection.new(amee_config['server'], 'wrong', 'details')
+  end
+  
+  it "should be capable of making requests for public URLs" do
+    lambda{@amee.get('/')}.should_not raise_error
+  end
+
+  it "should get an authentication failure when accessing private URLs" do
+    lambda{@amee.get('/data')}.should raise_error
+  end
+
+end
+
 describe AMEE::Connection, "without authentication" do
   
   before(:each) do
@@ -74,9 +92,7 @@ describe AMEE::Connection, "without authentication" do
   end
 
   it "should not be able to get private URLs" do
-    @amee.get('/data') do |response|
-      response.code.should == '302' # AMEE returns a 302 if you access something but aren't authenticated
-    end
+    lambda{@amee.get('/data')}.should raise_error
   end
 
 end
