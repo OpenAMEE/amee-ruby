@@ -1,4 +1,5 @@
 require 'amee/connection'
+require 'amee/object'
 
 module AMEE
   
