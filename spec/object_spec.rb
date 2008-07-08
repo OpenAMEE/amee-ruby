@@ -19,12 +19,4 @@ describe AMEE::Object do
     o.created.should == o.modified
   end
 
-  it "can set uid" do
-    o = AMEE::Object.new
-    o.uid.should be_nil
-    @string = "TEST"
-    o.uid = @string
-    o.uid.should == @string
-  end
-
 end

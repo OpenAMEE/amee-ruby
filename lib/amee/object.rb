@@ -7,7 +7,7 @@ module AMEE
       @modified = data ? data[:modified] : @created
     end
     
-    attr_accessor :uid
+    attr_reader :uid
     attr_reader :created
     attr_reader :modified
     
