@@ -10,18 +10,6 @@ describe AMEE::Data::Item do
     @item.is_a?(AMEE::Object).should be_true
   end
   
-  it "should have a path" do
-    @item.should respond_to(:path)
-  end
-
-  it "should have a full path" do
-    @item.should respond_to(:full_path)
-  end
-
-  it "should have a name" do
-    @item.should respond_to(:name)
-  end
-
   it "should have values" do
     @item.should respond_to(:values)
   end
@@ -33,12 +21,8 @@ describe AMEE::Data::Item do
   end
 
   it "can be created with hash of data" do
-    path = "/transport/plane/generic"
-    name = "Generic"
     values = ["one", "two"]
-    @item = AMEE::Data::Item.new(:path => path, :name => name, :values => values)
-    @item.path.should == path
-    @item.name.should == name
+    @item = AMEE::Data::Item.new(:values => values)
     @item.values.should == values
   end
   

@@ -10,18 +10,6 @@ describe AMEE::Data::Category do
     @cat.is_a?(AMEE::Object).should be_true
   end
   
-  it "should have a path" do
-    @cat.should respond_to(:path)
-  end
-
-  it "should have a full path" do
-    @cat.should respond_to(:full_path)
-  end
-
-  it "should have a name" do
-    @cat.should respond_to(:name)
-  end
-
   it "should have children" do
     @cat.should respond_to(:children)
   end
@@ -37,13 +25,9 @@ describe AMEE::Data::Category do
   end
 
   it "can be created with hash of data" do
-    path = ""
-    name = "Root"
     children = ["one", "two"]
     items = ["three", "four"]
-    @cat = AMEE::Data::Category.new(:path => path, :name => name, :children => children, :items => items)
-    @cat.path.should == path
-    @cat.name.should == name
+    @cat = AMEE::Data::Category.new(:children => children, :items => items)
     @cat.children.should == children
     @cat.items.should == items
   end

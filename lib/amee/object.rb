@@ -5,11 +5,19 @@ module AMEE
       @uid = data ? data[:uid] : nil
       @created = data ? data[:created] : Time.now
       @modified = data ? data[:modified] : @created
+      @path = data ? data[:path] : nil
+      @name = data ? data[:name] : nil
     end
     
     attr_reader :uid
     attr_reader :created
     attr_reader :modified
+    attr_reader :path
+    attr_reader :name
     
+    def full_path
+      "/data#{@path}"
+    end
+      
   end
 end

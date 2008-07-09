@@ -10,14 +10,6 @@ describe AMEE::Data::ItemValue do
     @value.is_a?(AMEE::Object).should be_true
   end
   
-  it "should have a path" do
-    @value.should respond_to(:path)
-  end
-
-  it "should have a name" do
-    @value.should respond_to(:name)
-  end
-
   it "should a value" do
     @value.should respond_to(:value)
   end
@@ -29,12 +21,8 @@ describe AMEE::Data::ItemValue do
   end
 
   it "can be created with hash of data" do
-    path = "/transport/plane/generic/ABCD1234"
-    name = "kgPerPassengerJourney"
     value = "0"
-    @value = AMEE::Data::ItemValue.new(:path => path, :name => name, :value => value)
-    @value.path.should == path
-    @value.name.should == name
+    @value = AMEE::Data::ItemValue.new(:value => value)
     @value.value.should == value
   end
 
