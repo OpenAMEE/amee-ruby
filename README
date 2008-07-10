@@ -11,10 +11,10 @@ Homepage: http://github.com/Floppy/amee-ruby
 == INSTALLATION
 
 1) Enable gems from github, if you haven't already done so: 
-    > gem sources -a http://gems.github.com
+    > sudo gem sources -a http://gems.github.com
 
 2) Install gem
-    > gem install floppy-amee
+    > sudo gem install Floppy-amee
 
 == USAGE
 
