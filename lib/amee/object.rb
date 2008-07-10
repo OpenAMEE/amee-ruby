@@ -7,8 +7,10 @@ module AMEE
       @modified = data ? data[:modified] : @created
       @path = data ? data[:path] : nil
       @name = data ? data[:name] : nil
+      @connection = nil
     end
     
+    attr_accessor :connection
     attr_reader :uid
     attr_reader :created
     attr_reader :modified
