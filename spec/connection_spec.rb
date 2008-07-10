@@ -45,8 +45,7 @@ describe AMEE::Connection, "with authentication" do
 
   it "should be able to get private URLs" do
     @amee.get('/data') do |response|
-      response.code.should == '200'
-      response.body.should_not be_empty
+      response.should_not be_empty
     end
     @amee.authenticated?.should be_true
   end
@@ -85,8 +84,7 @@ describe AMEE::Connection, "without authentication" do
 
   it "should be capable of making requests for public URLs" do
     @amee.get('/') do |response|
-      response.code.should == '200'
-      response.body.should_not be_empty
+      response.should be_empty
     end
     @amee.authenticated?.should be_false
   end

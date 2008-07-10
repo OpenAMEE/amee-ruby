@@ -26,9 +26,11 @@ module AMEE
     def get(path)
       response = nil
       http = Net::HTTP.new(@server)
+      #http.set_debug_output($stdout)
       http.start do
         get = Net::HTTP::Get.new(path)
         get['authToken'] = @auth_token
+        get['Accept'] = 'application/xml'
         response = http.request(get)
         # If request fails, authenticate and try again
         if authentication_failed?(response)
@@ -37,29 +39,26 @@ module AMEE
           response = http.request(get)
         end
       end
-      yield response if block_given?
-      response
+      yield response.body if block_given?
+      response.body
     end
 
   protected
 
     def authentication_failed?(response)
-      response.code == '302' && response['authToken'].nil?
+      response.code == '401'
     end
     
     def authenticate
-      unless can_authenticate?
+      unless can_authenticate?        
         raise "AMEE authentication required. Please provide your username and password."
       end
       response = nil
       http = Net::HTTP.new(@server)
       http.start do
         response = http.post("/auth", "username=#{@username}&password=#{@password}")
-        if authentication_failed?(response)
-          raise "AMEE authentication failed. Please check your username and password."
-        else
-          @auth_token = response['authToken']
-        end
+        @auth_token = response['authToken']
+        raise "AMEE authentication failed. Please check your username and password." unless authenticated?
       end
     end
     
