@@ -7,3 +7,16 @@ Licensed under the MIT license (See COPYING file for details)
 Author: James Smith (james@floppy.org.uk / http://www.floppy.org.uk)
 
 Homepage: http://github.com/Floppy/amee-ruby
+
+== INSTALLATION
+
+1) Enable gems from github, if you haven't already done so: 
+    > gem sources -a http://gems.github.com
+
+2) Install gem
+    > gem install floppy-amee
+
+== USAGE
+
+Currently, in this first version, only reading data categories is supported. See 
+examples/view_data_category.rb for a simple usage example.
