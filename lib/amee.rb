@@ -1,3 +1,4 @@
+require 'rexml/document'
 require 'amee/connection'
 require 'amee/object'
 require 'amee/data_category'
