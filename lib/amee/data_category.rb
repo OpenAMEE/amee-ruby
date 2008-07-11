@@ -46,6 +46,8 @@ module AMEE
         cat.connection = connection
         # Done
         return cat
+      rescue 
+        raise AMEE::BadData.new("Couldn't load DataCategory. Check that your URL is correct.")
       end
       
       def self.root(connection)

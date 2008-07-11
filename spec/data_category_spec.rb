@@ -72,4 +72,11 @@ describe AMEE::Data::Category, "with an authenticated connection" do
     @data.items[0][:label].should == "domestic"
     @data.items[0][:path].should == "AD63A83B4D41"    
   end
+
+  it "should fail gracefully with incorrect data" do
+    connection = flexmock "connection"
+    connection.should_receive(:get).with("/data").and_return('<?xml version="1.0" encoding="UTF-8"?><Resources></Resources>')
+    lambda{AMEE::Data::Category.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataCategory. Check that your URL is correct.")
+  end
+
 end

@@ -42,4 +42,10 @@ describe AMEE::Data::ItemValue, "with an authenticated connection" do
     @value.value.should == "0"
   end
 
+  it "should fail gracefully with incorrect data" do
+    connection = flexmock "connection"
+    connection.should_receive(:get).with("/data").and_return('<?xml version="1.0" encoding="UTF-8"?><Resources></Resources>')
+    lambda{AMEE::Data::ItemValue.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItemValue. Check that your URL is correct.")
+  end
+
 end

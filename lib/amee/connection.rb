@@ -56,7 +56,9 @@ module AMEE
       response = nil
       http = Net::HTTP.new(@server)
       http.start do
-        response = http.post("/auth", "username=#{@username}&password=#{@password}")
+        post = Net::HTTP::Post.new("/auth", "username=#{@username}&password=#{@password}")
+        post['Accept'] = 'application/xml'
+        response = http.request(post)
         @auth_token = response['authToken']
         raise "AMEE authentication failed. Please check your username and password." unless authenticated?
       end
