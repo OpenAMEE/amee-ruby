@@ -44,7 +44,6 @@ describe AMEE::Data::Item, "with an authenticated connection" do
     @data.path.should == "/transport/plane/generic/AD63A83B4D41"
     @data.created.should == DateTime.new(2007,8,1,9,00,41)
     @data.modified.should == DateTime.new(2007,8,1,9,00,41)
-    @data.modified.should == DateTime.new(2007,8,1,9,00,41)
     @data.label.should == "domestic"
     @data.values.size.should == 5
     @data.values[0][:name].should == "kgCO2 Per Passenger Journey"
