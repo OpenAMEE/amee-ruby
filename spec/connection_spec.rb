@@ -50,15 +50,16 @@ describe AMEE::Connection, "with authentication" do
     @amee.authenticated?.should be_true
   end
 
+  it "should handle 404s gracefully" do
+    lambda{@amee.get('/missing_url')}.should raise_error(AMEE::NotFound, "URL doesn't exist on server.")
+  end
+
 end
 
 describe AMEE::Connection, "with incorrect server name" do
   
-  before(:each) do
-    @amee = AMEE::Connection.new('badservername.example.com')
-  end
-  
   it "should raise a useful error" do
+    @amee = AMEE::Connection.new('badservername.example.com')
     lambda{@amee.get('/')}.should raise_error(AMEE::ConnectionFailed, "Connection failed. Check server name or network connection.")
   end
 

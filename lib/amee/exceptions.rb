@@ -12,4 +12,7 @@ module AMEE
   class ConnectionFailed < Exception
   end
   
+  class NotFound < Exception
+  end
+  
 end
