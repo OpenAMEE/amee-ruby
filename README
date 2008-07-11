@@ -18,5 +18,5 @@ Homepage: http://github.com/Floppy/amee-ruby
 
 == USAGE
 
-Currently, you can only read data categories and items. See 
+Currently, you can only read data categories, items and itemvalues. See 
 examples/view_data_*.rb for simple usage examples.
