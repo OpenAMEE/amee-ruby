@@ -78,7 +78,7 @@ describe AMEE::Connection, "with bad authentication information" do
   end
 
   it "should get an authentication failure when accessing private URLs" do
-    lambda{@amee.get('/data')}.should raise_error(AMEE::AuthFailed, "Authentication failed. Please check username and password.")
+    lambda{@amee.get('/data')}.should raise_error(AMEE::AuthFailed, "Authentication failed. Please check your username and password.")
   end
 
 end
@@ -103,7 +103,7 @@ describe AMEE::Connection, "without authentication" do
   end
 
   it "should not be able to get private URLs" do
-    lambda{@amee.get('/data')}.should raise_error(AMEE::AuthFailed, "Authentication required. Please provide username and password.")
+    lambda{@amee.get('/data')}.should raise_error(AMEE::AuthRequired, "Authentication required. Please provide your username and password.")
   end
 
 end

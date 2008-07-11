@@ -32,6 +32,8 @@ module AMEE
         get['authToken'] = @auth_token
         get['Accept'] = 'application/xml'
         response = http.request(get)
+        # Handle 404s
+        raise AMEE::NotFound.new("URL doesn't exist on server.") if response.code == '404'
         # If request fails, authenticate and try again
         if authentication_failed?(response)
           authenticate
@@ -53,16 +55,17 @@ module AMEE
     
     def authenticate
       unless can_authenticate?        
-        raise "AMEE authentication required. Please provide your username and password."
+        raise AMEE::AuthRequired.new("Authentication required. Please provide your username and password.")
       end
       response = nil
       http = Net::HTTP.new(@server)
       http.start do
-        post = Net::HTTP::Post.new("/auth", "username=#{@username}&password=#{@password}")
+        post = Net::HTTP::Post.new("/auth")
+        post.body = "username=#{@username}&password=#{@password}"
         post['Accept'] = 'application/xml'
         response = http.request(post)
         @auth_token = response['authToken']
-        raise "AMEE authentication failed. Please check your username and password." unless authenticated?
+        raise AMEE::AuthFailed.new("Authentication failed. Please check your username and password.") unless authenticated?
       end
     rescue SocketError
       raise AMEE::ConnectionFailed.new("Connection failed. Check server name or network connection.")
