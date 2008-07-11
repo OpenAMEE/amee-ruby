@@ -41,6 +41,8 @@ module AMEE
       end
       yield response.body if block_given?
       response.body
+    rescue SocketError
+      raise AMEE::ConnectionFailed.new("Connection failed. Check server name or network connection.")
     end
 
   protected
@@ -62,6 +64,8 @@ module AMEE
         @auth_token = response['authToken']
         raise "AMEE authentication failed. Please check your username and password." unless authenticated?
       end
+    rescue SocketError
+      raise AMEE::ConnectionFailed.new("Connection failed. Check server name or network connection.")
     end
     
   end

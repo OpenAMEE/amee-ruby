@@ -52,6 +52,18 @@ describe AMEE::Connection, "with authentication" do
 
 end
 
+describe AMEE::Connection, "with incorrect server name" do
+  
+  before(:each) do
+    @amee = AMEE::Connection.new('badservername.example.com')
+  end
+  
+  it "should raise a useful error" do
+    lambda{@amee.get('/')}.should raise_error(AMEE::ConnectionFailed, "Connection failed. Check server name or network connection.")
+  end
+
+end
+
 describe AMEE::Connection, "with bad authentication information" do
   
   before(:each) do
@@ -65,7 +77,7 @@ describe AMEE::Connection, "with bad authentication information" do
   end
 
   it "should get an authentication failure when accessing private URLs" do
-    lambda{@amee.get('/data')}.should raise_error
+    lambda{@amee.get('/data')}.should raise_error(AMEE::AuthFailed, "Authentication failed. Please check username and password.")
   end
 
 end
@@ -90,7 +102,7 @@ describe AMEE::Connection, "without authentication" do
   end
 
   it "should not be able to get private URLs" do
-    lambda{@amee.get('/data')}.should raise_error
+    lambda{@amee.get('/data')}.should raise_error(AMEE::AuthFailed, "Authentication required. Please provide username and password.")
   end
 
 end
