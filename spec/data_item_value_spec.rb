@@ -10,10 +10,22 @@ describe AMEE::Data::ItemValue do
     @value.is_a?(AMEE::Object).should be_true
   end
   
-  it "should a value" do
+  it "should have a value" do
     @value.should respond_to(:value)
   end
 
+  it "should have a type" do
+    @value.should respond_to(:type)
+  end
+
+  it "can be from profile" do
+    @value.should respond_to(:from_profile?)
+  end
+
+  it "can be from data" do
+    @value.should respond_to(:from_data?)
+  end
+  
   it "should initialize AMEE::Object data on creation" do
     uid = 'ABCD1234'
     @value = AMEE::Data::Item.new(:uid => uid)
@@ -21,25 +33,44 @@ describe AMEE::Data::ItemValue do
   end
 
   it "can be created with hash of data" do
-    value = "0"
-    @value = AMEE::Data::ItemValue.new(:value => value)
+    value = "test"
+    type = "TEXT"
+    from_profile = false
+    from_data = true
+    @value = AMEE::Data::ItemValue.new(:value => value, :type => type, :from_profile => from_profile, :from_data => from_data)
     @value.value.should == value
+    @value.type.should == type
+    @value.from_profile?.should be_false
+    @value.from_data?.should be_true
+  end
+
+  it "should support DECIMAL data type" do
+    @value = AMEE::Data::ItemValue.new(:value => "1.5", :type => "DECIMAL")
+    @value.value.should == 1.5
+  end
+
+  it "should support TEXT data type" do
+    @value = AMEE::Data::ItemValue.new(:value => "1.5", :type => "TEXT")
+    @value.value.should == "1.5"
   end
 
 end
 
 describe AMEE::Data::ItemValue, "with an authenticated connection" do
 
-  it "should parse correctly" do
+  it "should parse XML correctly" do
     connection = flexmock "connection"
-    connection.should_receive(:get).with("/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney").and_return('<Resources><DataItemValueResource><ItemValue Created="2007-08-01 09:00:41.0" Modified="2007-08-01 09:00:41.0" uid="127612FA4921"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><Value>0</Value><ItemValueDefinition uid="653828811D42"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="8CB8A1789CD6"><Name>kgCO2PerJourney</Name><ValueType>DECIMAL</ValueType></ValueDefinition></ItemValueDefinition><DataItem uid="AD63A83B4D41"/></ItemValue><DataItem uid="AD63A83B4D41"/></DataItemValueResource></Resources>')
+    connection.should_receive(:get).with("/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney").and_return('<Resources><DataItemValueResource><ItemValue Created="2007-08-01 09:00:41.0" Modified="2007-08-01 09:00:41.0" uid="127612FA4921"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><Value>0.1</Value><ItemValueDefinition uid="653828811D42"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="8CB8A1789CD6"><Name>kgCO2PerJourney</Name><ValueType>DECIMAL</ValueType></ValueDefinition></ItemValueDefinition><DataItem uid="AD63A83B4D41"/></ItemValue><DataItem uid="AD63A83B4D41"/></DataItemValueResource></Resources>')
     @value = AMEE::Data::ItemValue.get(connection, "/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney")
     @value.uid.should == "127612FA4921"
     @value.name.should == "kgCO2 Per Passenger Journey"
     @value.path.should == "/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney"
     @value.created.should == DateTime.new(2007,8,1,9,00,41)
     @value.modified.should == DateTime.new(2007,8,1,9,00,41)
-    @value.value.should == "0"
+    @value.value.should == 0.1
+    @value.type.should == "DECIMAL"
+    @value.from_profile?.should be_false
+    @value.from_data?.should be_true
   end
 
   it "should fail gracefully with incorrect data" do
