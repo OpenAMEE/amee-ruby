@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+irb_name = RUBY_PLATFORM =~ /mswin32/ ? 'irb.bat' : 'irb'
+
+exec "#{irb_name} -r rubygems -r amee/shell --simple-prompt"
