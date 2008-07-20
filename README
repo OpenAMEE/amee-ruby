@@ -18,5 +18,11 @@ Homepage: http://github.com/Floppy/amee-ruby
 
 == USAGE
 
-Currently, you can only read data categories, items and itemvalues. See 
+Currently, you can only read DataCategories, DataItems and DataItemValues. See 
 examples/view_data_*.rb for simple usage examples.
+
+== INTERACTIVE SHELL
+
+You can use the 'ameesh' app to interactively explore the AMEE data area. Run
+'ameesh -u USERNAME -p PASSWORD -s SERVER' to try it out. Source code for this 
+tool is in bin/ameesh and lib/amee/shell.rb.
