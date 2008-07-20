@@ -2,4 +2,24 @@
 
 irb_name = RUBY_PLATFORM =~ /mswin32/ ? 'irb.bat' : 'irb'
 
+require 'optparse'
+# Command-line options - get username, password, and server
+options = {}
+OptionParser.new do |opts|
+  opts.on("-u", "--username USERNAME", "AMEE username") do |u|
+    options[:username] = u
+  end
+  opts.on("-p", "--password PASSWORD", "AMEE password") do |p|
+    options[:password] = p
+  end
+  opts.on("-s", "--server SERVER", "AMEE server") do |s|
+    options[:server] = s
+  end
+end.parse!
+
+# Set environment variables for irb
+ENV['AMEE_SERVER'] = options[:server]
+ENV['AMEE_USERNAME'] = options[:username]
+ENV['AMEE_PASSWORD'] = options[:password]
+
 exec "#{irb_name} -r rubygems -r amee/shell --simple-prompt"

@@ -13,56 +13,59 @@ module AMEE
     end
     
     def ls
-      "listing contents of #{@@category}"
+      puts "Categories:"
+      @@category.children.each do |c|
+        puts " - #{c[:path]}"
+      end
+      puts "Items:"
+      @@category.items.each do |i|
+        puts " - #{i[:path]} (#{i[:label]})"
+      end
+      nil
     end
     
     def pwd
-      @@category
+      @@category.full_path
     end
     
     def cd(path)
       if path == '..'
-        path_components = @@category.split('/')
+        path_components = @@category.full_path.split('/')
         path = path_components.first(path_components.size - 1).join('/')
-      elsif !path.match /^\/.*/
-        path = @@category + '/' + path
+      elsif !path.match(/^\/.*/)
+        path = @@category.full_path + '/' + path
       end
-      @@category = path
+      @@category = AMEE::Data::Category.get($connection, path)
+      @@category.full_path
     end
     
-    def cat(object)
-      "displaying contents of #{@@category}/#{object}"
+    def cat(name)
+      item = @@category.items.detect { |i| i[:path].match("^#{name}") }
+      fullpath = "#{@@category.full_path}/#{item[:path]}"
+      item = AMEE::Data::Item.get($connection, fullpath)
+      puts fullpath
+      puts "Label: #{item.label}"
+      puts "Values:"
+      item.values.each do |v|
+        puts " - #{v[:name]}: #{v[:value]}"
+      end
+      nil
     end
     
   end
 end
 
 require 'amee'
-require 'optparse'
 include AMEE::Shell
 
-# Command-line options - get username, password, and server
-options = {}
-OptionParser.new do |opts|
-  opts.on("-u", "--username USERNAME", "AMEE username") do |u|
-    options[:username] = u
-  end  
-  opts.on("-p", "--password PASSWORD", "AMEE password") do |p|
-    options[:password] = p
-  end
-  opts.on("-s", "--server SERVER", "AMEE server") do |s|
-    options[:server] = s
-  end
-end.parse!
+# Set up connection
+$connection = AMEE::Connection.new(ENV['AMEE_SERVER'], ENV['AMEE_USERNAME'], ENV['AMEE_PASSWORD'])
 
-# Connect
-connection = AMEE::Connection.new(options[:server], options[:username], options[:password])
-
-if connection.valid?
+if $connection.valid?
   # Change to root of data api to get going
   cd '/data'
   # Display AMEE details
-  amee_help  
+  amee_help
 else
   puts "Can't connect to AMEE - please check details"
 end
