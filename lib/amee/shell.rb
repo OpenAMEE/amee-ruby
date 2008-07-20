@@ -55,6 +55,7 @@ module AMEE
   end
 end
 
+require 'rubygems'
 require 'amee'
 include AMEE::Shell
 

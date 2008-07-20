@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+shell_lib   = File.dirname(__FILE__) + '/../lib/amee/shell'
 irb_name = RUBY_PLATFORM =~ /mswin32/ ? 'irb.bat' : 'irb'
 
 require 'optparse'
@@ -25,5 +26,5 @@ ENV['AMEE_PASSWORD'] = options[:password]
 if options[:server].nil? || options[:username].nil? || options[:password].nil?
   puts "Please provide connection details. Run 'ameesh --help' for details."
 else
-  exec "#{irb_name} -r rubygems -r amee/shell --simple-prompt"
+  exec "#{irb_name} -r #{shell_lib} --simple-prompt"
 end
