@@ -3,19 +3,23 @@ require File.dirname(__FILE__) + '/spec_helper.rb'
 describe AMEE::Connection do
   
   it "can be created with url only" do
+    flexmock(Net::HTTP).new_instances.should_receive(:start => nil)
     c = AMEE::Connection.new('server.example.com')
     c.should be_valid
   end
   
   it "cannot be created with username but no password" do
+    flexmock(Net::HTTP).new_instances.should_receive(:start => nil)
     lambda{AMEE::Connection.new('server.example.com', 'username')}.should raise_error
   end
 
   it "cannot be created with password but no username" do
+    flexmock(Net::HTTP).new_instances.should_receive(:start => nil)
     lambda{AMEE::Connection.new('server.example.com', nil, 'password')}.should raise_error
   end
 
   it "can be created with url, username and password" do
+    flexmock(Net::HTTP).new_instances.should_receive(:start => nil)
     c = AMEE::Connection.new('server.example.com', 'username', 'password')
     c.should be_valid
   end
@@ -25,11 +29,13 @@ end
 describe AMEE::Connection, "with authentication" do
   
   it "should start out unauthenticated" do
+    flexmock(Net::HTTP).new_instances.should_receive(:start => nil)
     amee = AMEE::Connection.new('server.example.com', 'username', 'password')
     amee.authenticated?.should be_false
   end
 
   it "should be capable of authentication" do
+    flexmock(Net::HTTP).new_instances.should_receive(:start => nil)
     amee = AMEE::Connection.new('server.example.com', 'username', 'password')
     amee.can_authenticate?.should be_true
   end
@@ -60,8 +66,8 @@ end
 describe AMEE::Connection, "with incorrect server name" do
   
   it "should raise a useful error" do
-    @amee = AMEE::Connection.new('badservername.example.com')
-    lambda{@amee.get('/')}.should raise_error(AMEE::ConnectionFailed, "Connection failed. Check server name or network connection.")
+    flexmock(Net::HTTP).new_instances.should_receive(:start).and_raise(SocketError.new)
+    lambda{AMEE::Connection.new('badservername.example.com')}.should raise_error(AMEE::ConnectionFailed, "Connection failed. Check server name or network connection.")
   end
 
 end
@@ -85,6 +91,7 @@ end
 describe AMEE::Connection, "without authentication" do
   
   it "should not be capable of authentication" do
+    flexmock(Net::HTTP).new_instances.should_receive(:start => nil)
     amee = AMEE::Connection.new('server.example.com')
     amee.can_authenticate?.should be_false
   end

@@ -12,6 +12,13 @@ module AMEE
       # Make connection to server
       @http = Net::HTTP.new(@server)
       #@http.set_debug_output($stdout)
+      @http.start
+    rescue SocketError
+      raise AMEE::ConnectionFailed.new("Connection failed. Check server name or network connection.")
+    end
+
+    def finalize
+      @http.finish
     end
     
     def valid?
@@ -28,7 +35,6 @@ module AMEE
 
     def get(path)
       response = nil
-      @http.start
       get = Net::HTTP::Get.new(path)
       get['authToken'] = @auth_token
       get['Accept'] = 'application/xml'
@@ -41,11 +47,8 @@ module AMEE
         get['authToken'] = @auth_token
         response = @http.request(get)
       end
-      @http.finish
       yield response.body if block_given?
       response.body
-    rescue SocketError
-      raise AMEE::ConnectionFailed.new("Connection failed. Check server name or network connection.")
     end
 
   protected
@@ -59,16 +62,12 @@ module AMEE
         raise AMEE::AuthRequired.new("Authentication required. Please provide your username and password.")
       end
       response = nil
-      @http.start
       post = Net::HTTP::Post.new("/auth")
       post.body = "username=#{@username}&password=#{@password}"
       post['Accept'] = 'application/xml'
       response = @http.request(post)
       @auth_token = response['authToken']
       raise AMEE::AuthFailed.new("Authentication failed. Please check your username and password.") unless authenticated?
-      @http.finish
-    rescue SocketError
-      raise AMEE::ConnectionFailed.new("Connection failed. Check server name or network connection.")
     end
     
   end
