@@ -18,11 +18,13 @@ Homepage: http://github.com/Floppy/amee-ruby
 
 == USAGE
 
-Currently, you can only read DataCategories, DataItems and DataItemValues. See 
-examples/view_data_*.rb for simple usage examples.
+Currently, you can read DataCategories, DataItems and DataItemValues. See 
+examples/view_data_*.rb for simple usage examples. You can also get the list
+of available Profiles. See examples/list_profiles.rb for details.
 
 == INTERACTIVE SHELL
 
 You can use the 'ameesh' app to interactively explore the AMEE data area. Run
 'ameesh -u USERNAME -p PASSWORD -s SERVER' to try it out. Source code for this 
-tool is in bin/ameesh and lib/amee/shell.rb.
+tool is in bin/ameesh and lib/amee/shell.rb. Profiles are not accessible through
+this interface yet.
