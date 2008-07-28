@@ -4,11 +4,13 @@ module AMEE
 
       def initialize(data = {})
         @values = data ? data[:values] : []
+        @choices = data ? data[:choices] : []
         @label = data ? data[:label] : []
         super
       end
 
       attr_reader :values
+      attr_reader :choices
       attr_reader :label
 
       def self.get(connection, path)
@@ -32,6 +34,14 @@ module AMEE
           value_data[:value] = value.elements['Value'].text
           value_data[:uid] = value.attributes['uid'].to_s
           data[:values] << value_data
+        end
+        # Get choices
+        data[:choices] = []
+        REXML::XPath.each(doc, '/Resources/DataItemResource/Choices/Choices/Choice') do |choice|
+          choice_data = {}
+          choice_data[:name] = choice.elements['Name'].text
+          choice_data[:value] = choice.elements['Value'].text
+          data[:choices] << choice_data
         end
         # Create item object
         item = Item.new(data)

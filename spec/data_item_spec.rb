@@ -14,6 +14,10 @@ describe AMEE::Data::Item do
     @item.should respond_to(:values)
   end
 
+  it "should have values" do
+    @item.should respond_to(:choices)
+  end
+
   it "should a label" do
     @item.should respond_to(:label)
   end
@@ -26,9 +30,11 @@ describe AMEE::Data::Item do
 
   it "can be created with hash of data" do
     values = ["one", "two"]
+    choices = [{:name => "one", :value => "two"}]
     label = "test"
-    @item = AMEE::Data::Item.new(:label => label, :values => values)
+    @item = AMEE::Data::Item.new(:label => label, :values => values, :choices => choices)
     @item.values.should == values
+    @item.choices.should == choices
     @item.label.should == label
   end
   
@@ -50,6 +56,25 @@ describe AMEE::Data::Item, "with an authenticated connection" do
     @data.values[0][:path].should == "kgCO2PerPassengerJourney"
     @data.values[0][:value].should == "0"
     @data.values[0][:uid].should == "127612FA4921"
+  end
+
+  it "should parse choices correctly" do
+    connection = flexmock "connection"
+    connection.should_receive(:get).with("/data/transport/plane/generic/AD63A83B4D41").and_return('<?xml version="1.0" encoding="UTF-8"?><Resources><DataItemResource><DataItem created="2007-08-01 09:00:41.0" modified="2007-08-01 09:00:41.0" uid="AD63A83B4D41"><Name>AD63A83B4D41</Name><ItemValues><ItemValue uid="127612FA4921"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><Value>0</Value><ItemValueDefinition uid="653828811D42"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="8CB8A1789CD6"><Name>kgCO2PerJourney</Name><ValueType>DECIMAL</ValueType></ValueDefinition></ItemValueDefinition></ItemValue><ItemValue uid="7F27A5707101"><Path>kgCO2PerPassengerKm</Path><Name>kgCO2 Per Passenger Km</Name><Value>0.158</Value><ItemValueDefinition uid="D7B4340D9404"><Path>kgCO2PerPassengerKm</Path><Name>kgCO2 Per Passenger Km</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="996AE5477B3F"><Name>kgCO2PerKm</Name><ValueType>DECIMAL</ValueType></ValueDefinition></ItemValueDefinition></ItemValue><ItemValue uid="FF50EC918A8E"><Path>size</Path><Name>Size</Name><Value>-</Value><ItemValueDefinition uid="5D7FB5F552A5"><Path>size</Path><Name>Size</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="CCEB59CACE1B"><Name>text</Name><ValueType>TEXT</ValueType></ValueDefinition></ItemValueDefinition></ItemValue><ItemValue uid="FDD62D27AA15"><Path>type</Path><Name>Type</Name><Value>domestic</Value><ItemValueDefinition uid="C376560CB19F"><Path>type</Path><Name>Type</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="CCEB59CACE1B"><Name>text</Name><ValueType>TEXT</ValueType></ValueDefinition></ItemValueDefinition></ItemValue><ItemValue uid="9BE08FBEC54E"><Path>source</Path><Name>Source</Name><Value>DfT INAS Division, 29 March 2007</Value><ItemValueDefinition uid="0F0592F05AAC"><Path>source</Path><Name>Source</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="CCEB59CACE1B"><Name>text</Name><ValueType>TEXT</ValueType></ValueDefinition></ItemValueDefinition></ItemValue></ItemValues><Environment uid="5F5887BCF726"/><ItemDefinition uid="441BF4BEA15B"/><DataCategory uid="FBA97B70DBDF"><Name>Generic</Name><Path>generic</Path></DataCategory><Path>AD63A83B4D41</Path><Label>domestic</Label></DataItem><Path>/transport/plane/generic/AD63A83B4D41</Path><Choices><Name>userValueChoices</Name><Choices><Choice><Name>distanceKmPerYear</Name><Value/></Choice><Choice><Name>journeysPerYear</Name><Value/></Choice><Choice><Name>lat1</Name><Value>-999</Value></Choice><Choice><Name>lat2</Name><Value>-999</Value></Choice><Choice><Name>long1</Name><Value>-999</Value></Choice><Choice><Name>long2</Name><Value>-999</Value></Choice></Choices></Choices><AmountPerMonth>0.000</AmountPerMonth></DataItemResource></Resources>')
+    @data = AMEE::Data::Item.get(connection, "/data/transport/plane/generic/AD63A83B4D41")
+    @data.choices.size.should == 6
+    @data.choices[0][:name].should == "distanceKmPerYear"
+    @data.choices[0][:value].should be_nil
+    @data.choices[1][:name].should == "journeysPerYear"
+    @data.choices[1][:value].should be_nil
+    @data.choices[2][:name].should == "lat1"
+    @data.choices[2][:value].should == "-999"
+    @data.choices[3][:name].should == "lat2"
+    @data.choices[3][:value].should == "-999"
+    @data.choices[4][:name].should == "long1"
+    @data.choices[4][:value].should == "-999"
+    @data.choices[5][:name].should == "long2"
+    @data.choices[5][:value].should == "-999"
   end
 
   it "should fail gracefully with incorrect data" do
