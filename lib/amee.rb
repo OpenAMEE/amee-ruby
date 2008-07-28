@@ -1,4 +1,6 @@
 require 'rexml/document'
+require 'json'
+
 require 'amee/version'
 require 'amee/exceptions'
 require 'amee/connection'
