@@ -1,5 +1,11 @@
 require 'rexml/document'
-require 'json'
+
+# We don't NEED the JSON gem, but if it's available, use it.
+begin
+  require 'json'
+rescue LoadError
+  nil
+end
 
 require 'amee/version'
 require 'amee/exceptions'

@@ -2,12 +2,13 @@ require 'net/http'
 
 module AMEE
   class Connection
-    
-    def initialize(server, username = nil, password = nil)
+
+    def initialize(server, username = nil, password = nil, use_json_if_available = true)
       @server = server
       @username = username
       @password = password
       @auth_token = nil
+      @use_json_if_available = use_json_if_available
       raise "Must specify both username and password for authenticated access" if (@username || @password) && !valid?
       # Make connection to server
       @http = Net::HTTP.new(@server)
@@ -37,7 +38,7 @@ module AMEE
       response = nil
       get = Net::HTTP::Get.new(path)
       get['authToken'] = @auth_token
-      get['Accept'] = 'application/xml'
+      get['Accept'] = content_type
       response = @http.request(get)
       # Handle 404s
       raise AMEE::NotFound.new("URL doesn't exist on server.") if response.code == '404'
@@ -53,6 +54,10 @@ module AMEE
 
   protected
 
+    def content_type
+      (@use_json_if_available && defined?(JSON)) ? 'application/json' : 'application/xml'
+    end
+    
     def authentication_failed?(response)
       response.code == '401'
     end
@@ -64,7 +69,7 @@ module AMEE
       response = nil
       post = Net::HTTP::Post.new("/auth")
       post.body = "username=#{@username}&password=#{@password}"
-      post['Accept'] = 'application/xml'
+      post['Accept'] = content_type
       response = @http.request(post)
       @auth_token = response['authToken']
       raise AMEE::AuthFailed.new("Authentication failed. Please check your username and password.") unless authenticated?

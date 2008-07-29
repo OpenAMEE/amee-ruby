@@ -22,6 +22,13 @@ Currently, you can read DataCategories, DataItems and DataItemValues. See
 examples/view_data_*.rb for simple usage examples. You can also get the list
 of available Profiles. See examples/list_profiles.rb for details.
 
+The gem will use the AMEE JSON API if the JSON gem is installed on the local
+system. Otherwise the XML API will be used. Currently, only DataCategories and
+Profile lists are supported with JSON, so you can disable JSON support by setting
+the fourth argument to AMEE::Connection.new() to false:
+
+ > AMEE::Connection.new($srv, $user, $pass, false) # last arg disables JSON support
+
 == INTERACTIVE SHELL
 
 You can use the 'ameesh' app to interactively explore the AMEE data area. Run

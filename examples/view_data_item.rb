@@ -17,7 +17,7 @@ OptionParser.new do |opts|
 end.parse!
 
 # Connect
-connection = AMEE::Connection.new(options[:server], options[:username], options[:password])
+connection = AMEE::Connection.new(options[:server], options[:username], options[:password], false) # Disable JSON support for now
 
 # For each path in arg list, show details
 ARGV.each do |path|

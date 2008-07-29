@@ -60,7 +60,7 @@ require 'amee'
 include AMEE::Shell
 
 # Set up connection
-$connection = AMEE::Connection.new(ENV['AMEE_SERVER'], ENV['AMEE_USERNAME'], ENV['AMEE_PASSWORD'])
+$connection = AMEE::Connection.new(ENV['AMEE_SERVER'], ENV['AMEE_USERNAME'], ENV['AMEE_PASSWORD'], false)  # Disable JSON support for now
 
 if $connection.valid?
   # Change to root of data api to get going
