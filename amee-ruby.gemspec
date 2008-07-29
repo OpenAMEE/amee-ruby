@@ -11,4 +11,5 @@ Gem::Specification.new do |s|
   s.authors = ["James Smith"]
   s.files = ["README", "COPYING"] + Dir['lib/**/*'] + Dir['bin/**/*'] + Dir['examples/**/*']
   s.executables = ['ameesh']
+  s.add_dependency('json', '>= 1.1.3')
 end
