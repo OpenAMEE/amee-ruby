@@ -34,7 +34,7 @@ describe AMEE::Data::Category do
  
 end
   
-describe AMEE::Data::Category, "with an authenticated connection" do
+describe AMEE::Data::Category, "with an authenticated XML connection" do
 
   it "should provide access to root of Data API" do
     connection = flexmock "connection"
@@ -76,6 +76,53 @@ describe AMEE::Data::Category, "with an authenticated connection" do
   it "should fail gracefully with incorrect data" do
     connection = flexmock "connection"
     connection.should_receive(:get).with("/data").and_return('<?xml version="1.0" encoding="UTF-8"?><Resources></Resources>')
+    lambda{AMEE::Data::Category.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataCategory. Check that your URL is correct.")
+  end
+
+end
+
+describe AMEE::Data::Category, "with an authenticated JSON connection" do
+
+  it "should provide access to root of Data API" do
+    connection = flexmock "connection"
+    connection.should_receive(:get).with("/data").and_return('{"dataCategory":{"modified":"2007-07-27 09:30:44.0","created":"2007-07-27 09:30:44.0","uid":"CD310BEBAC52","environment":{"uid":"5F5887BCF726"},"path":"","name":"Root"},"path":"","children":{"pager":{},"dataCategories":[{"uid":"BBA3AC3E795E","path":"home","name":"Home"},{"uid":"9E5362EAB0E7","path":"metadata","name":"Metadata"},{"uid":"6153F468BE05","path":"test","name":"Test"},{"uid":"263FC0186834","path":"transport","name":"Transport"},{"uid":"2957AE9B6E6B","path":"user","name":"User"}],"dataItems":{}}}')
+    @root = AMEE::Data::Category.root(connection)
+    @root.name.should == "Root"
+    @root.path.should == ""
+    @root.uid.should == "CD310BEBAC52"
+    @root.created.should == DateTime.new(2007,7,27,9,30,44)
+    @root.modified.should == DateTime.new(2007,7,27,9,30,44)
+    @root.children.size.should be(5)
+    @root.children[0][:uid].should == "BBA3AC3E795E"
+    @root.children[0][:name].should == "Home"
+    @root.children[0][:path].should == "home"
+  end
+
+  it "should provide access to child objects" do
+    connection = flexmock "connection"
+    connection.should_receive(:get).with("/data").and_return('{"dataCategory":{"modified":"2007-07-27 09:30:44.0","created":"2007-07-27 09:30:44.0","uid":"CD310BEBAC52","environment":{"uid":"5F5887BCF726"},"path":"","name":"Root"},"path":"","children":{"pager":{},"dataCategories":[{"uid":"BBA3AC3E795E","path":"home","name":"Home"},{"uid":"9E5362EAB0E7","path":"metadata","name":"Metadata"},{"uid":"6153F468BE05","path":"test","name":"Test"},{"uid":"263FC0186834","path":"transport","name":"Transport"},{"uid":"2957AE9B6E6B","path":"user","name":"User"}],"dataItems":{}}}')
+    connection.should_receive(:get).with("/data/transport").and_return('{"dataCategory":{"modified":"2007-07-27 09:30:44.0","created":"2007-07-27 09:30:44.0","dataCategory":{"uid":"CD310BEBAC52","path":"","name":"Root"},"uid":"263FC0186834","environment":{"uid":"5F5887BCF726"},"path":"transport","name":"Transport"},"path":"/transport","children":{"pager":{},"dataCategories":[{"uid":"3C4705614170","path":"bus","name":"Bus"},{"uid":"1D95119FB149","path":"car","name":"Car"},{"uid":"83C4FAF4826A","path":"motorcycle","name":"Motorcycle"},{"uid":"AFB73A5D2E45","path":"Other","name":"Other"},{"uid":"6F3692D81CD9","path":"plane","name":"Plane"},{"uid":"06DE08988C53","path":"taxi","name":"Taxi"},{"uid":"B1A64213FA9D","path":"train","name":"Train"}],"dataItems":{}}}')
+    @root = AMEE::Data::Category.root(connection)
+    @transport = @root.child('transport')
+    @transport.path.should == "/transport"
+    @transport.uid.should == "263FC0186834"
+    @transport.children.size.should be(7)
+  end
+
+  it "should parse data items" do
+    connection = flexmock "connection"
+    connection.should_receive(:get).with("/data/transport/plane/generic").and_return('{"dataCategory":{"modified":"2007-08-01 09:00:23.0","created":"2007-08-01 09:00:23.0","itemDefinition":{"uid":"441BF4BEA15B"},"dataCategory":{"uid":"6F3692D81CD9","path":"plane","name":"Plane"},"uid":"FBA97B70DBDF","environment":{"uid":"5F5887BCF726"},"path":"generic","name":"Generic"},"path":"/transport/plane/generic","children":{"pager":{"to":9,"lastPage":1,"start":0,"nextPage":-1,"items":9,"itemsPerPage":10,"from":1,"previousPage":-1,"requestedPage":1,"currentPage":1,"itemsFound":9},"dataCategories":[],"dataItems":{"rows":[{"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","type":"domestic","label":"domestic","uid":"AD63A83B4D41","path":"AD63A83B4D41","size":"-","kgCO2PerPassengerJourney":"0","source":"DfT INAS Division, 29 March 2007","kgCO2PerPassengerKm":"0.158"},{"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","type":"domestic","label":"domestic, one way","uid":"FFC7A05D54AD","path":"FFC7A05D54AD","size":"one way","kgCO2PerPassengerJourney":"73","source":"DfT INAS Division, 29 March 2007","kgCO2PerPassengerKm":"0"},{"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","type":"domestic","label":"domestic, return","uid":"F5498AD6FC75","path":"F5498AD6FC75","size":"return","kgCO2PerPassengerJourney":"146","source":"DfT INAS Division, 29 March 2007","kgCO2PerPassengerKm":"0"},{"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","type":"long haul","label":"long haul","uid":"7D4220DF72F9","path":"7D4220DF72F9","size":"-","kgCO2PerPassengerJourney":"0","source":"DfT INAS Division, 29 March 2007","kgCO2PerPassengerKm":"0.105"},{"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","type":"long haul","label":"long haul, one way","uid":"46117F6C0B7E","path":"46117F6C0B7E","size":"one way","kgCO2PerPassengerJourney":"801","source":"DfT INAS Division, 29 March 2007","kgCO2PerPassengerKm":"0"},{"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","type":"long haul","label":"long haul, return","uid":"96D538B1B246","path":"96D538B1B246","size":"return","kgCO2PerPassengerJourney":"1602","source":"DfT INAS Division, 29 March 2007","kgCO2PerPassengerKm":"0"},{"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","type":"short haul","label":"short haul","uid":"9DA419052FDF","path":"9DA419052FDF","size":"-","kgCO2PerPassengerJourney":"0","source":"DfT INAS Division, 29 March 2007","kgCO2PerPassengerKm":"0.13"},{"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","type":"short haul","label":"short haul, one way","uid":"84B4A14C7424","path":"84B4A14C7424","size":"one way","kgCO2PerPassengerJourney":"170","source":"DfT INAS Division, 29 March 2007","kgCO2PerPassengerKm":"0"},{"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","type":"short haul","label":"short haul, return","uid":"8DA1BEAA1013","path":"8DA1BEAA1013","size":"return","kgCO2PerPassengerJourney":"340","source":"DfT INAS Division, 29 March 2007","kgCO2PerPassengerKm":"0"}],"label":"DataItems"}}}')
+    @data = AMEE::Data::Category.get(connection, "/data/transport/plane/generic")
+    @data.uid.should == "FBA97B70DBDF"
+    @data.items.size.should be(9)
+    @data.items[0][:uid].should == "AD63A83B4D41"
+    @data.items[0][:label].should == "domestic"
+    @data.items[0][:path].should == "AD63A83B4D41"    
+  end
+
+  it "should fail gracefully with incorrect data" do
+    connection = flexmock "connection"
+    connection.should_receive(:get).with("/data").and_return('{}')
     lambda{AMEE::Data::Category.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataCategory. Check that your URL is correct.")
   end
 
