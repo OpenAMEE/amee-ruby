@@ -6,7 +6,7 @@ module AMEE
       response = connection.get('/profiles')      
       # Parse data from response
       profiles = []
-      if response.slice(0,1) == '{'
+      if response.is_json?
         # Read JSON
         doc = JSON.parse(response)
         doc['profiles'].each do |p|
