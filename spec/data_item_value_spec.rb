@@ -73,6 +73,21 @@ describe AMEE::Data::ItemValue, "with an authenticated connection" do
     @value.from_data?.should be_true
   end
 
+  it "should parse JSON correctly" do
+    connection = flexmock "connection"
+    connection.should_receive(:get).with("/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney").and_return('{"dataItem":{"uid":"AD63A83B4D41"},"itemValue":{"item":{"uid":"AD63A83B4D41"},"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","value":"0.1","uid":"127612FA4921","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey","itemValueDefinition":{"valueDefinition":{"valueType":"DECIMAL","uid":"8CB8A1789CD6","name":"kgCO2PerJourney"},"uid":"653828811D42","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey"}}}')
+    @value = AMEE::Data::ItemValue.get(connection, "/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney")
+    @value.uid.should == "127612FA4921"
+    @value.name.should == "kgCO2 Per Passenger Journey"
+    @value.path.should == "/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney"
+    @value.created.should == DateTime.new(2007,8,1,9,00,41)
+    @value.modified.should == DateTime.new(2007,8,1,9,00,41)
+    @value.value.should == 0.1
+    @value.type.should == "DECIMAL"
+    #@value.from_profile?.should be_false # NOT SET IN JSON
+    #@value.from_data?.should be_true # NOT SET IN JSON
+  end
+
   it "should fail gracefully with incorrect data" do
     connection = flexmock "connection"
     connection.should_receive(:get).with("/data").and_return('<?xml version="1.0" encoding="UTF-8"?><Resources></Resources>')
