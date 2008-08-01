@@ -7,6 +7,12 @@ rescue LoadError
   nil
 end
 
+class String
+  def is_json?
+    slice(0,1) == '{'
+  end
+end
+
 require 'amee/version'
 require 'amee/exceptions'
 require 'amee/connection'

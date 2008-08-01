@@ -81,7 +81,7 @@ module AMEE
         # Load data from path
         response = connection.get(path)
         # Parse data from response
-        if response.slice(0,1) == '{'
+        if response.is_json?
           cat = Category.from_json(response)
         else
           cat = Category.from_xml(response)
