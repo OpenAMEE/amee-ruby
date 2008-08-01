@@ -115,7 +115,7 @@ describe AMEE::Data::Item, "with an authenticated connection" do
   it "should fail gracefully with incorrect data" do
     connection = flexmock "connection"
     connection.should_receive(:get).with("/data").and_return('<?xml version="1.0" encoding="UTF-8"?><Resources></Resources>')
-    lambda{AMEE::Data::Item.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItem. Check that your URL is correct.")
+    lambda{AMEE::Data::Item.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItem from XML. Check that your URL is correct.")
   end
 
 end
