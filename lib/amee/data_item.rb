@@ -16,32 +16,62 @@ module AMEE
       def self.get(connection, path)
         # Load data from path
         response = connection.get(path)
-        # Parse data from response into hash
-        doc = REXML::Document.new(response)
+        # Parse data from response
         data = {}
-        data[:uid] = REXML::XPath.first(doc, "/Resources/DataItemResource/DataItem/@uid").to_s
-        data[:created] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataItemResource/DataItem/@created").to_s)
-        data[:modified] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataItemResource/DataItem/@modified").to_s)
-        data[:name] = REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/Name').text
-        data[:path] = REXML::XPath.first(doc, '/Resources/DataItemResource/Path').text
-        data[:label] = REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/Label').text
-        # Get values
-        data[:values] = []
-        REXML::XPath.each(doc, '/Resources/DataItemResource/DataItem/ItemValues/ItemValue') do |value|
-          value_data = {}
-          value_data[:name] = value.elements['Name'].text
-          value_data[:path] = value.elements['Path'].text
-          value_data[:value] = value.elements['Value'].text
-          value_data[:uid] = value.attributes['uid'].to_s
-          data[:values] << value_data
-        end
-        # Get choices
-        data[:choices] = []
-        REXML::XPath.each(doc, '/Resources/DataItemResource/Choices/Choices/Choice') do |choice|
-          choice_data = {}
-          choice_data[:name] = choice.elements['Name'].text
-          choice_data[:value] = choice.elements['Value'].text
-          data[:choices] << choice_data
+        if response.slice(0,1) == '{'
+          # Read JSON
+          doc = JSON.parse(response)
+          data[:uid] = doc['dataItem']['uid']
+          data[:created] = DateTime.parse(doc['dataItem']['created'])
+          data[:modified] = DateTime.parse(doc['dataItem']['modified'])
+          data[:name] = doc['dataItem']['name']
+          data[:path] = doc['path']
+          data[:label] = doc['dataItem']['label']
+          # Get values
+          data[:values] = []
+          doc['dataItem']['itemValues'].each do |value|
+            value_data = {}
+            value_data[:name] = value['name']
+            value_data[:path] = value['path']
+            value_data[:value] = value['value']
+            value_data[:uid] = value['uid']
+            data[:values] << value_data
+          end
+          # Get choices
+          data[:choices] = []
+          doc['userValueChoices']['choices'].each do |choice|
+            choice_data = {}
+            choice_data[:name] = choice['name']
+            choice_data[:value] = choice['value']
+            data[:choices] << choice_data
+          end
+        else
+          # Parse data from response into hash
+          doc = REXML::Document.new(response)
+          data[:uid] = REXML::XPath.first(doc, "/Resources/DataItemResource/DataItem/@uid").to_s
+          data[:created] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataItemResource/DataItem/@created").to_s)
+          data[:modified] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataItemResource/DataItem/@modified").to_s)
+          data[:name] = REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/Name').text
+          data[:path] = REXML::XPath.first(doc, '/Resources/DataItemResource/Path').text
+          data[:label] = REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/Label').text
+          # Get values
+          data[:values] = []
+          REXML::XPath.each(doc, '/Resources/DataItemResource/DataItem/ItemValues/ItemValue') do |value|
+            value_data = {}
+            value_data[:name] = value.elements['Name'].text
+            value_data[:path] = value.elements['Path'].text
+            value_data[:value] = value.elements['Value'].text
+            value_data[:uid] = value.attributes['uid'].to_s
+            data[:values] << value_data
+          end
+          # Get choices
+          data[:choices] = []
+          REXML::XPath.each(doc, '/Resources/DataItemResource/Choices/Choices/Choice') do |choice|
+            choice_data = {}
+            choice_data[:name] = choice.elements['Name'].text
+            choice_data[:value] = choice.elements['Value'].text || ""
+            data[:choices] << choice_data
+          end
         end
         # Create item object
         item = Item.new(data)
