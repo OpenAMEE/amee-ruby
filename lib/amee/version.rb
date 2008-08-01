@@ -5,7 +5,6 @@ module AMEE
     MINOR = 1
     TINY  = 5
     STRING = [MAJOR, MINOR, TINY].join('.')
-    DATE = "2008-07-29"
   end
   
 end
