@@ -111,4 +111,12 @@ describe AMEE::Connection, "without authentication" do
     lambda{amee.get('/data')}.should raise_error(AMEE::AuthRequired, "Authentication required. Please provide your username and password.")
   end
 
+  it "should be able to send post requests" do
+    flexmock(Net::HTTP).new_instances.should_receive(:start => nil, :request => flexmock(:code => '200', :body => ""), :finish => nil)
+    amee = AMEE::Connection.new('server.example.com')
+    amee.post('/profiles') do |response|
+      response.should be_empty
+    end
+  end
+  
 end

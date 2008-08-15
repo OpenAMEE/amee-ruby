@@ -52,7 +52,32 @@ module AMEE
       response.body
     end
 
-  protected
+    def post(path, data = {})
+      response = nil
+      post = Net::HTTP::Post.new(path)
+      post['authToken'] = @auth_token
+      post['Accept'] = content_type
+      # Add data params to body
+      body = []
+        data.each_pair do |key, value|
+        body << "#{key}=#{value}"
+      end
+      post.body = body.join '&'
+      # Send request
+      response = @http.request(post)
+      # Handle 404s
+      raise AMEE::NotFound.new("URL doesn't exist on server.") if response.code == '404'
+      # If request fails, authenticate and try again
+      if authentication_failed?(response)
+        authenticate
+        post['authToken'] = @auth_token
+        response = @http.request(post)
+      end
+      yield response.body if block_given?
+      response.body
+    end
+
+    protected
 
     def content_type
       (@use_json_if_available && defined?(JSON)) ? 'application/json' : 'application/xml'
