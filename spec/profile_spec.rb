@@ -45,4 +45,26 @@ describe AMEE::Profile, "with an authenticated connection" do
     profile.modified.should == DateTime.new(2008,7,24,10,55,8)
   end
 
+  it "should be able to create new profiles (XML)" do
+    connection = flexmock "connection"
+    connection.should_receive(:post).with("/profiles", :profile => true).and_return('<?xml version="1.0" encoding="UTF-8"?><Resources><ProfilesResource><Profile created="Wed May 23 13:34:45 BST 2007" modified="Wed May 23 13:34:45 BST 2007" uid="04C3F8A10B30"><Path/><Name/><Site uid="C420F0C34227"/><Permission created="Wed May 23 13:34:45 BST 2007" modified="Wed May 23 13:34:45 BST 2007" uid="F06E9C383BFD"><Site uid="C420F0C34227"/><Name>Administrators</Name><Username>root</Username></Permission></Profile></ProfilesResource></Resources>')
+    profile = AMEE::Profile.create(connection)
+    profile.uid.should_not be_nil
+    profile.name.should_not be_nil
+    profile.path.should_not be_nil
+    profile.created.should_not be_nil
+    profile.modified.should_not be_nil
+  end
+  
+  it "should be able to create new profiles (JSON)" do
+    connection = flexmock "connection"
+    connection.should_receive(:post).with("/profiles", :profile => true).and_return('{"profile":{"modified":"Wed May 23 13:36:19 BST 2007","created":"Wed May 23 13:36:19 BST 2007","site":{"uid":"C420F0C34227"},"uid":"F3A7EAE5C99B","permission":{"modified":"Wed May 23 13:36:19 BST 2007","created":"Wed May 23 13:36:19 BST 2007","user":{"uid":"7C41EA37BA4F","username":"root"},"group":{"uid":"3B71F24E93BC","name":"Administrators"},"siteUid":"C420F0C34227","uid":"CC153E13FB7E"},"path":"F3A7EAE5C99B","name":"F3A7EAE5C99B"}}')
+    profile = AMEE::Profile.create(connection)
+    profile.uid.should_not be_nil
+    profile.name.should_not be_nil
+    profile.path.should_not be_nil
+    profile.created.should_not be_nil
+    profile.modified.should_not be_nil
+  end
+
 end
