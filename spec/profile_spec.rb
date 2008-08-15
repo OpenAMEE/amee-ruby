@@ -29,7 +29,8 @@ describe AMEE::Profile, "with an authenticated connection" do
     profile = AMEE::Profile.list(connection)[0]
     profile.uid.should == "A508956A847F"
     profile.name.should == "A508956A847F"
-    profile.path.should == "A508956A847F"    
+    profile.path.should == "/A508956A847F"
+    profile.full_path.should == "/profiles/A508956A847F"
     profile.created.should == DateTime.new(2008,7,24,10,49,23)
     profile.modified.should == DateTime.new(2008,7,24,10,50,23)
   end
@@ -40,7 +41,8 @@ describe AMEE::Profile, "with an authenticated connection" do
     profile = AMEE::Profile.list(connection)[0]
     profile.uid.should == "B59C2AA75C7F"
     profile.name.should == "B59C2AA75C7F"
-    profile.path.should == "B59C2AA75C7F"    
+    profile.path.should == "/B59C2AA75C7F"
+    profile.full_path.should == "/profiles/B59C2AA75C7F"
     profile.created.should == DateTime.new(2008,7,24,10,45,8)
     profile.modified.should == DateTime.new(2008,7,24,10,55,8)
   end

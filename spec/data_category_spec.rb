@@ -42,6 +42,7 @@ describe AMEE::Data::Category, "with an authenticated XML connection" do
     @root = AMEE::Data::Category.root(connection)
     @root.name.should == "Root"
     @root.path.should == ""
+    @root.full_path.should == "/data"
     @root.uid.should == "CD310BEBAC52"
     @root.created.should == DateTime.new(2007,7,27,9,30,44)
     @root.modified.should == DateTime.new(2007,7,27,9,30,44)
@@ -58,6 +59,7 @@ describe AMEE::Data::Category, "with an authenticated XML connection" do
     @root = AMEE::Data::Category.root(connection)
     @transport = @root.child('transport')
     @transport.path.should == "/transport"
+    @transport.full_path.should == "/data/transport"
     @transport.uid.should == "263FC0186834"
     @transport.children.size.should be(7)
   end
@@ -89,6 +91,7 @@ describe AMEE::Data::Category, "with an authenticated JSON connection" do
     @root = AMEE::Data::Category.root(connection)
     @root.name.should == "Root"
     @root.path.should == ""
+    @root.full_path.should == "/data"
     @root.uid.should == "CD310BEBAC52"
     @root.created.should == DateTime.new(2007,7,27,9,30,44)
     @root.modified.should == DateTime.new(2007,7,27,9,30,44)
@@ -105,6 +108,7 @@ describe AMEE::Data::Category, "with an authenticated JSON connection" do
     @root = AMEE::Data::Category.root(connection)
     @transport = @root.child('transport')
     @transport.path.should == "/transport"
+    @transport.full_path.should == "/data/transport"
     @transport.uid.should == "263FC0186834"
     @transport.children.size.should be(7)
   end

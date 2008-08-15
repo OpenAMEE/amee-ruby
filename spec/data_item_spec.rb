@@ -48,6 +48,7 @@ describe AMEE::Data::Item, "with an authenticated connection" do
     @data = AMEE::Data::Item.get(connection, "/data/transport/plane/generic/AD63A83B4D41")
     @data.uid.should == "AD63A83B4D41"
     @data.path.should == "/transport/plane/generic/AD63A83B4D41"
+    @data.full_path.should == "/data/transport/plane/generic/AD63A83B4D41"
     @data.created.should == DateTime.new(2007,8,1,9,00,41)
     @data.modified.should == DateTime.new(2007,8,1,9,00,41)
     @data.label.should == "domestic"
@@ -83,6 +84,7 @@ describe AMEE::Data::Item, "with an authenticated connection" do
     @data = AMEE::Data::Item.get(connection, "/data/transport/plane/generic/AD63A83B4D41")
     @data.uid.should == "AD63A83B4D41"
     @data.path.should == "/transport/plane/generic/AD63A83B4D41"
+    @data.full_path.should == "/data/transport/plane/generic/AD63A83B4D41"
     @data.created.should == DateTime.new(2007,8,1,9,00,41)
     @data.modified.should == DateTime.new(2007,8,1,9,00,41)
     @data.label.should == "domestic"

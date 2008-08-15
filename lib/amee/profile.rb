@@ -1,5 +1,5 @@
 module AMEE
-  class Profile < AMEE::Object
+  class Profile < AMEE::ProfileObject
     
     def self.list(connection)
       # Load data from path
@@ -15,7 +15,7 @@ module AMEE
           data[:created] = DateTime.parse(p['created'])
           data[:modified] = DateTime.parse(p['modified'])
           data[:name] = p['name']
-          data[:path] = p['path']
+          data[:path] = "/#{p['path']}"
           # Create profile
           profile = AMEE::Profile.new(data)
           # Store in array
@@ -30,7 +30,7 @@ module AMEE
           data[:created] = DateTime.parse(p.attributes['created'].to_s)
           data[:modified] = DateTime.parse(p.attributes['modified'].to_s)
           data[:name] = p.elements['Name'].text || data[:uid]
-          data[:path] = p.elements['Path'].text || data[:uid]
+          data[:path] = "/#{p.elements['Path'].text || data[:uid]}"
           # Create profile
           profile = AMEE::Profile.new(data)
           # Store connection in profile object
@@ -80,5 +80,10 @@ module AMEE
       end
     end
    
+    def delete
+      # Create new profile
+      response = connection.delete(full_path)
+    end
+    
   end
 end

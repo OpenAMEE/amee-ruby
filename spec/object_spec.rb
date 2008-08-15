@@ -29,10 +29,6 @@ describe AMEE::Object do
     AMEE::Object.new.should respond_to(:modified)
   end
 
-  it "should have a full path" do
-    AMEE::Object.new.should respond_to(:full_path)
-  end
-
   it "should have a name" do
     AMEE::Object.new.should respond_to(:name)
   end

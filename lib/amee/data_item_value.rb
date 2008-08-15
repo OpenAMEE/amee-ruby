@@ -1,6 +1,6 @@
 module AMEE
   module Data
-    class ItemValue < AMEE::Object
+    class ItemValue < AMEE::DataObject
 
       def initialize(data = {})
         @value = data ? data[:value] : nil
@@ -37,7 +37,7 @@ module AMEE
         data[:created] = DateTime.parse(doc['created'])
         data[:modified] = DateTime.parse(doc['modified'])
         data[:name] = doc['name']
-        data[:path] = path
+        data[:path] = path.gsub(/^\/data/, '')
         data[:value] = doc['value']
         data[:type] = doc['itemValueDefinition']['valueDefinition']['valueType']
         # Create object
@@ -54,7 +54,7 @@ module AMEE
         data[:created] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataItemValueResource/ItemValue/@Created").to_s)
         data[:modified] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataItemValueResource/ItemValue/@Modified").to_s)
         data[:name] = REXML::XPath.first(doc, '/Resources/DataItemValueResource/ItemValue/Name').text
-        data[:path] = path
+        data[:path] = path.gsub(/^\/data/, '')
         data[:value] = REXML::XPath.first(doc, '/Resources/DataItemValueResource/ItemValue/Value').text
         data[:type] = REXML::XPath.first(doc, '/Resources/DataItemValueResource/ItemValue/ItemValueDefinition/ValueDefinition/ValueType').text
         data[:from_profile] = REXML::XPath.first(doc, '/Resources/DataItemValueResource/ItemValue/ItemValueDefinition/FromProfile').text == "true" ? true : false

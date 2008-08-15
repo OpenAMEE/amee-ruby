@@ -64,7 +64,8 @@ describe AMEE::Data::ItemValue, "with an authenticated connection" do
     @value = AMEE::Data::ItemValue.get(connection, "/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney")
     @value.uid.should == "127612FA4921"
     @value.name.should == "kgCO2 Per Passenger Journey"
-    @value.path.should == "/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney"
+    @value.path.should == "/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney"
+    @value.full_path.should == "/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney"
     @value.created.should == DateTime.new(2007,8,1,9,00,41)
     @value.modified.should == DateTime.new(2007,8,1,9,00,41)
     @value.value.should == 0.1
@@ -79,7 +80,8 @@ describe AMEE::Data::ItemValue, "with an authenticated connection" do
     @value = AMEE::Data::ItemValue.get(connection, "/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney")
     @value.uid.should == "127612FA4921"
     @value.name.should == "kgCO2 Per Passenger Journey"
-    @value.path.should == "/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney"
+    @value.path.should == "/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney"
+    @value.full_path.should == "/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney"
     @value.created.should == DateTime.new(2007,8,1,9,00,41)
     @value.modified.should == DateTime.new(2007,8,1,9,00,41)
     @value.value.should == 0.1

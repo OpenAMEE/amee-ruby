@@ -2,7 +2,7 @@ require 'date'
 
 module AMEE
   module Data
-    class Category < AMEE::Object
+    class Category < AMEE::DataObject
 
       def initialize(data = {})
         @children = data ? data[:children] : []

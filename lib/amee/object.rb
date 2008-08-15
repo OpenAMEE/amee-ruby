@@ -17,9 +17,5 @@ module AMEE
     attr_reader :path
     attr_reader :name
     
-    def full_path
-      "/data#{@path}"
-    end
-      
   end
 end
