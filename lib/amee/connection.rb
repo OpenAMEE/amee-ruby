@@ -77,16 +77,6 @@ module AMEE
       response.body
     end
 
-    protected
-
-    def content_type
-      (@use_json_if_available && defined?(JSON)) ? 'application/json' : 'application/xml'
-    end
-    
-    def authentication_failed?(response)
-      response.code == '401'
-    end
-    
     def authenticate
       unless can_authenticate?        
         raise AMEE::AuthRequired.new("Authentication required. Please provide your username and password.")
@@ -99,6 +89,16 @@ module AMEE
       @auth_token = response['authToken']
       raise AMEE::AuthFailed.new("Authentication failed. Please check your username and password.") unless authenticated?
     end
+
+    protected
+
+    def content_type
+      (@use_json_if_available && defined?(JSON)) ? 'application/json' : 'application/xml'
+    end
     
+    def authentication_failed?(response)
+      response.code == '401'
+    end
+        
   end
 end
