@@ -32,3 +32,21 @@ You can use the 'ameesh' app to interactively explore the AMEE data area. Run
 'ameesh -u USERNAME -p PASSWORD -s SERVER' to try it out. Source code for this 
 tool is in bin/ameesh and lib/amee/shell.rb. Profiles are not accessible through
 this interface yet.
+
+== RAILS
+
+This gem can be used as a Rails plugin. You can either extract it into
+vendor/plugins, or use the new-style config.gem command in environment.rb. For
+example:
+
+    config.gem "Floppy-amee", :lib => "amee", :source => "http://gems.github.com"
+
+The first time you run your app after installing the gem, a config/amee.yml file
+will be created. You should edit this file and add your AMEE username and
+password to it, as well as the server you want to connect to.
+
+Once that is all set up, you can use AMEE objects within Rails anywhere you like.
+There is a persistent AMEE connection available called $amee, which you can pass
+into the other objects to fetch data. For instance:
+
+    data = AMEE::Data::Category.root($amee)
