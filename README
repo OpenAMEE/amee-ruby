@@ -35,11 +35,11 @@ this interface yet.
 
 == RAILS
 
-This gem can be used as a Rails plugin. You can either extract it into
+This gem can also be used as a Rails plugin. You can either extract it into
 vendor/plugins, or use the new-style config.gem command in environment.rb. For
 example:
 
-    config.gem "Floppy-amee", :lib => "amee", :source => "http://gems.github.com"
+    config.gem "Floppy-amee", :lib => "amee", :source => "http://gems.github.com", :version => '>= 0.3.0'
 
 The first time you run your app after installing the gem, a config/amee.yml file
 will be created. You should edit this file and add your AMEE username and
