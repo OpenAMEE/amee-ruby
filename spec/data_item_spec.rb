@@ -120,4 +120,16 @@ describe AMEE::Data::Item, "with an authenticated connection" do
     lambda{AMEE::Data::Item.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItem from XML. Check that your URL is correct.")
   end
 
+  it "should fail gracefully with incorrect JSON data" do
+    connection = flexmock "connection"
+    connection.should_receive(:get).with("/data").and_return('{}')
+    lambda{AMEE::Data::Item.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItem from JSON. Check that your URL is correct.")
+  end
+
+  it "should fail gracefully on other errors" do
+    connection = flexmock "connection"
+    connection.should_receive(:get).with("/data").and_raise("unidentified error")
+    lambda{AMEE::Data::Item.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItem. Check that your URL is correct.")
+  end
+
 end

@@ -90,10 +90,22 @@ describe AMEE::Data::ItemValue, "with an authenticated connection" do
     #@value.from_data?.should be_true # NOT SET IN JSON
   end
 
-  it "should fail gracefully with incorrect data" do
+  it "should fail gracefully with incorrect XML data" do
     connection = flexmock "connection"
     connection.should_receive(:get).with("/data").and_return('<?xml version="1.0" encoding="UTF-8"?><Resources></Resources>')
     lambda{AMEE::Data::ItemValue.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItemValue from XML. Check that your URL is correct.")
+  end
+
+  it "should fail gracefully with incorrect JSON data" do
+    connection = flexmock "connection"
+    connection.should_receive(:get).with("/data").and_return('{}')
+    lambda{AMEE::Data::ItemValue.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItemValue from JSON. Check that your URL is correct.")
+  end
+
+  it "should fail gracefully on other errors" do
+    connection = flexmock "connection"
+    connection.should_receive(:get).with("/data").and_raise("unidentified error")
+    lambda{AMEE::Data::ItemValue.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItemValue. Check that your URL is correct.")
   end
 
 end

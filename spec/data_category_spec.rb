@@ -131,3 +131,13 @@ describe AMEE::Data::Category, "with an authenticated JSON connection" do
   end
 
 end
+
+describe AMEE::Data::Category, "with an authenticated connection" do
+
+  it "should fail gracefully on other GET errors" do
+    connection = flexmock "connection"
+    connection.should_receive(:get).with("/data").and_raise("unidentified error")
+    lambda{AMEE::Data::Category.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataCategory. Check that your URL is correct.")
+  end
+
+end
