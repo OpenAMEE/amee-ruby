@@ -14,7 +14,7 @@ module AMEE
       end
       # Make connection to server
       @http = Net::HTTP.new(@server)
-      @http.set_debug_output($stdout)
+      #@http.set_debug_output($stdout)
       @http.start
     rescue SocketError
       raise AMEE::ConnectionFailed.new("Connection failed. Check server name or network connection.")
@@ -37,50 +37,20 @@ module AMEE
     end
 
     def get(path)
-      response = nil
-      get = Net::HTTP::Get.new(path)
-      get['authToken'] = @auth_token
-      get['Accept'] = content_type
-      response = @http.request(get)
-      # Handle 404s
-      if response.code == '404'
-        raise AMEE::NotFound.new("URL doesn't exist on server.") 
-      end
-      # If request fails, authenticate and try again
-      if authentication_failed?(response)
-        authenticate
-        get['authToken'] = @auth_token
-        response = @http.request(get)
-      end
-      yield response.body if block_given?
-      response.body
+      # Send request
+      do_request(Net::HTTP::Get.new(path))
     end
 
     def post(path, data = {})
-      response = nil
+      # Create POST request
       post = Net::HTTP::Post.new(path)
-      post['authToken'] = @auth_token
-      post['Accept'] = content_type
-      # Add data params to body
       body = []
         data.each_pair do |key, value|
         body << "#{key}=#{value}"
       end
       post.body = body.join '&'
       # Send request
-      response = @http.request(post)
-      # Handle 404s
-      if response.code == '404'
-        raise AMEE::NotFound.new("URL doesn't exist on server.") 
-      end
-      # If request fails, authenticate and try again
-      if authentication_failed?(response)
-        authenticate
-        post['authToken'] = @auth_token
-        response = @http.request(post)
-      end
-      yield response.body if block_given?
-      response.body
+      do_request(post)
     end
 
     def authenticate
@@ -107,6 +77,30 @@ module AMEE
     def authentication_failed?(response)
       response.code == '401'
     end
+   
+    def do_request(request)
+      # Do request
+      response = send_request(request)
+      # If request fails, authenticate and try again
+      if authentication_failed?(response)
+        authenticate
+        response = send_request(request)
+      end
+      # Return body of response
+      response.body
+    end
         
+    def send_request(request)
+      request['authToken'] = @auth_token
+      request['Accept'] = content_type
+      response = @http.request(request)
+      # Handle 404s
+      if response.code == '404'
+        raise AMEE::NotFound.new("URL doesn't exist on server.") 
+      end
+      # Done
+      response
+    end
+
   end
 end
