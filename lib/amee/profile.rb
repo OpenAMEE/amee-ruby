@@ -41,6 +41,8 @@ module AMEE
       end
       # Done
       return profiles
+    rescue
+      raise AMEE::BadData.new("Couldn't load Profile list.")
     end
 
     def self.create(connection)
@@ -78,12 +80,14 @@ module AMEE
         # Done
         return profile
       end
+    rescue
+      raise AMEE::BadData.new("Couldn't create Profile.")
     end
    
-    def delete
-      # Create new profile
-      response = connection.delete(full_path)
-    end
+#    def delete
+#      # Create new profile
+#      response = connection.delete(full_path)
+#    end
     
   end
 end

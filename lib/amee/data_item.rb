@@ -95,7 +95,7 @@ module AMEE
         item.connection = connection
         # Done
         return item
-      rescue 
+      rescue
         raise AMEE::BadData.new("Couldn't load DataItem. Check that your URL is correct.")
       end
 

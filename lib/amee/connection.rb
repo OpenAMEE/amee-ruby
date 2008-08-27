@@ -9,10 +9,12 @@ module AMEE
       @password = password
       @auth_token = nil
       @use_json_if_available = use_json_if_available
-      raise "Must specify both username and password for authenticated access" if (@username || @password) && !valid?
+      if (@username || @password) && !valid?
+       raise "Must specify both username and password for authenticated access"
+      end
       # Make connection to server
       @http = Net::HTTP.new(@server)
-      #@http.set_debug_output($stdout)
+      @http.set_debug_output($stdout)
       @http.start
     rescue SocketError
       raise AMEE::ConnectionFailed.new("Connection failed. Check server name or network connection.")
@@ -41,7 +43,9 @@ module AMEE
       get['Accept'] = content_type
       response = @http.request(get)
       # Handle 404s
-      raise AMEE::NotFound.new("URL doesn't exist on server.") if response.code == '404'
+      if response.code == '404'
+        raise AMEE::NotFound.new("URL doesn't exist on server.") 
+      end
       # If request fails, authenticate and try again
       if authentication_failed?(response)
         authenticate
@@ -66,7 +70,9 @@ module AMEE
       # Send request
       response = @http.request(post)
       # Handle 404s
-      raise AMEE::NotFound.new("URL doesn't exist on server.") if response.code == '404'
+      if response.code == '404'
+        raise AMEE::NotFound.new("URL doesn't exist on server.") 
+      end
       # If request fails, authenticate and try again
       if authentication_failed?(response)
         authenticate
@@ -87,7 +93,9 @@ module AMEE
       post['Accept'] = content_type
       response = @http.request(post)
       @auth_token = response['authToken']
-      raise AMEE::AuthFailed.new("Authentication failed. Please check your username and password.") unless authenticated?
+      unless authenticated?
+        raise AMEE::AuthFailed.new("Authentication failed. Please check your username and password.") 
+      end
     end
 
     protected

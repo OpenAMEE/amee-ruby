@@ -79,7 +79,7 @@ module AMEE
         value.connection = connection
         # Done
         return value
-      rescue 
+      rescue
         raise AMEE::BadData.new("Couldn't load DataItemValue. Check that your URL is correct.")
       end
 
