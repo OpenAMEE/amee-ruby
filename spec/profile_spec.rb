@@ -23,6 +23,12 @@ describe AMEE::Profile, "with an authenticated connection" do
     profiles.size.should be(2)
   end
   
+  it "should fail gracefully with incorrect profile list data" do
+    connection = flexmock "connection"
+    connection.should_receive(:get).with("/profiles").and_return('{}')
+    lambda{AMEE::Profile.list(connection)}.should raise_error(AMEE::BadData, "Couldn't load Profile list.")
+  end
+
   it "should parse JSON data correctly" do
     connection = flexmock "connection"
     connection.should_receive(:get).with("/profiles").and_return('{"pager":{"to":1,"lastPage":1,"start":0,"nextPage":-1,"items":1,"itemsPerPage":10,"from":1,"previousPage":-1,"requestedPage":1,"currentPage":1,"itemsFound":1},"profiles":[{"modified":"2008-07-24 10:50:23.0","created":"2008-07-24 10:49:23.0","uid":"A508956A847F","permission":{"modified":"2008-07-24 10:49:23.0","created":"2008-07-24 10:49:23.0","user":{"uid":"1A6307E2B531","username":"floppy"},"group":{"uid":"AC65FFA5F9D9","name":"amee"},"environmentUid":"5F5887BCF726","uid":"787915F05BBD"},"environment":{"uid":"5F5887BCF726"},"path":"A508956A847F","name":"A508956A847F"}]}')
@@ -67,6 +73,12 @@ describe AMEE::Profile, "with an authenticated connection" do
     profile.path.should_not be_nil
     profile.created.should_not be_nil
     profile.modified.should_not be_nil
+  end
+
+  it "should fail gracefully if new profile creation fails" do
+    connection = flexmock "connection"
+    connection.should_receive(:post).with("/profiles", :profile => true).and_return('{}')
+    lambda{AMEE::Profile.create(connection)}.should raise_error(AMEE::BadData, "Couldn't create Profile.")
   end
 
 end
