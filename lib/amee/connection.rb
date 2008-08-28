@@ -20,10 +20,6 @@ module AMEE
       raise AMEE::ConnectionFailed.new("Connection failed. Check server name or network connection.")
     end
 
-    def finalize
-      @http.finish
-    end
-    
     def valid?
       !((@username || @password) ? (@username.nil? || @password.nil? || @server.nil?) : @server.nil?)
     end
