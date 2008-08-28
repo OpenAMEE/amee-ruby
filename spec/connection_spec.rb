@@ -112,9 +112,13 @@ describe AMEE::Connection, "without authentication" do
   end
 
   it "should be able to send post requests" do
-    flexmock(Net::HTTP).new_instances.should_receive(:start => nil, :request => flexmock(:code => '200', :body => ""), :finish => nil)
+    flexmock(Net::HTTP).new_instances do |mock|
+      mock.should_receive(:start => nil)
+      mock.should_receive(:request).and_return(flexmock(:code => '200', :body => ''))
+      mock.should_receive(:finish => nil)
+    end
     amee = AMEE::Connection.new('server.example.com')
-    amee.post('/profiles') do |response|
+    amee.post('/profiles', :test => 1, :test2 => 2) do |response|
       response.should be_empty
     end
   end
