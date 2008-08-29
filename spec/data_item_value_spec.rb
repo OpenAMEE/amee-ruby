@@ -132,7 +132,7 @@ describe AMEE::Data::ItemValue, "after loading" do
   end
 
   it "can have value changed and saved back to server" do
-    @connection.should_receive(:post).with("/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney", :value => 42).and_return('')
+    @connection.should_receive(:put).with("/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney", :value => 42).and_return('')
     lambda {
       @val.value = 42
       @val.save!

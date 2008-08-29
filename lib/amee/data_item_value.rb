@@ -88,7 +88,7 @@ module AMEE
       end
 
       def save!
-        @connection.post(full_path, :value => value)
+        response = @connection.put(full_path, :value => value)        
       end
 
     end
