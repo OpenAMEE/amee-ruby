@@ -9,6 +9,9 @@ module AMEE
   class AuthRequired < Exception
   end
 
+  class PermissionDenied < Exception
+  end
+
   class ConnectionFailed < Exception
   end
   

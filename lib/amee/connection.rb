@@ -74,6 +74,10 @@ module AMEE
       response.code == '401'
     end
    
+    def permission_denied?(response)
+      response.code == '401'
+    end
+
     def do_request(request)
       # Do request
       response = send_request(request)
@@ -81,6 +85,9 @@ module AMEE
       if authentication_failed?(response)
         authenticate
         response = send_request(request)
+        if permission_denied?(response)
+          raise AMEE::PermissionDenied.new("You do not have permission to perform the requested operation")
+        end
       end
       # Return body of response
       response.body
