@@ -15,9 +15,6 @@ module AMEE
       # Make connection to server
       @http = Net::HTTP.new(@server)
       #@http.set_debug_output($stdout)
-      @http.start
-    rescue SocketError
-      raise AMEE::ConnectionFailed.new("Connection failed. Check server name or network connection.")
     end
 
     def valid?
@@ -97,12 +94,19 @@ module AMEE
     end
 
     def do_request(request)
+      # Open HTTP connection
+      @http.start
       # Do request
       begin
         response = send_request(request)
       end while !response_ok?(response)
       # Return body of response
-      response.body
+      return response.body
+    rescue SocketError
+      raise AMEE::ConnectionFailed.new("Connection failed. Check server name or network connection.")
+    ensure
+      # Close HTTP connection
+      @http.finish if @http.started?
     end
         
     def send_request(request)

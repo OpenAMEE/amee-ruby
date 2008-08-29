@@ -106,7 +106,10 @@ describe AMEE::Connection, "with incorrect server name" do
   
   it "should raise a useful error" do
     flexmock(Net::HTTP).new_instances.should_receive(:start).and_raise(SocketError.new)
-    lambda{AMEE::Connection.new('badservername.example.com')}.should raise_error(AMEE::ConnectionFailed, "Connection failed. Check server name or network connection.")
+    amee = AMEE::Connection.new('badservername.example.com')
+    lambda{
+      amee.get('/')
+    }.should raise_error(AMEE::ConnectionFailed, "Connection failed. Check server name or network connection.")
   end
 
 end
