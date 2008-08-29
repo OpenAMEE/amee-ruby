@@ -5,11 +5,18 @@ module AMEE
       puts "AMEE shell - version #{AMEE::VERSION::STRING}"
       puts "--------------------------"
       puts "Commands:"
-      puts " ls         - display contents of current category."
-      puts " cd 'path'  - change category. Path must be a quoted string. You can use things like '/data', '..', or 'subcategory'."
-      puts " pwd        - display current category path."
-      puts " cat 'name' - display contents of data item called 'name' within the current category."
-      puts " amee_help  - display this help text."
+      puts " ls"
+      puts "            - display contents of current category."
+      puts " cd 'path'"
+      puts "            - change category. Path must be a quoted string. You can use things like '/data', '..', or 'subcategory'."
+      puts " pwd"
+      puts "            - display current category path."
+      puts " cat 'name'"
+      puts "            - display contents of data item called 'name' within the current category."
+      puts " set_value 'item_name', 'value_name', value"
+      puts "            - set the value 'value_name' inside 'item_name' to value."
+      puts " amee_help"
+      puts "            - display this help text."
     end
     
     def ls
@@ -51,9 +58,20 @@ module AMEE
       end
       nil
     end
-    
+
+    def set_value(item, name, value)
+      item = @@category.items.detect { |i| i[:path].match("^#{item}") }
+      fullpath = "#{@@category.full_path}/#{item[:path]}/#{name}"
+      itemval = AMEE::Data::ItemValue.get($connection, fullpath)
+      itemval.value = value
+      itemval.save!
+    end
+
   end
 end
+
+dir = File.dirname(__FILE__) + "/.."
+$LOAD_PATH << dir unless $LOAD_PATH.include?(dir)
 
 require 'rubygems'
 require 'amee'
