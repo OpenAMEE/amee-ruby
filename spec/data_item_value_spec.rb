@@ -54,6 +54,18 @@ describe AMEE::Data::ItemValue do
     @value.value.should == "1.5"
   end
 
+  it "allows value to be changed after creation" do
+    value = "test"
+    type = "TEXT"
+    from_profile = false
+    from_data = true
+    @value = AMEE::Data::ItemValue.new(:value => value, :type => type, :from_profile => from_profile, :from_data => from_data)
+    @value.value.should == value
+    value = 42
+    @value.value = value
+    @value.value.should == value
+  end
+
 end
 
 describe AMEE::Data::ItemValue, "with an authenticated connection" do
@@ -106,6 +118,25 @@ describe AMEE::Data::ItemValue, "with an authenticated connection" do
     connection = flexmock "connection"
     connection.should_receive(:get).with("/data").and_raise("unidentified error")
     lambda{AMEE::Data::ItemValue.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItemValue. Check that your URL is correct.")
+  end
+
+end
+
+describe AMEE::Data::ItemValue, "after loading" do
+
+  before(:each) do
+    @path = "/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney"
+    @connection = flexmock "connection"
+    @connection.should_receive(:get).with(@path).and_return('{"dataItem":{"uid":"AD63A83B4D41"},"itemValue":{"item":{"uid":"AD63A83B4D41"},"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","value":"0.1","uid":"127612FA4921","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey","itemValueDefinition":{"valueDefinition":{"valueType":"DECIMAL","uid":"8CB8A1789CD6","name":"kgCO2PerJourney"},"uid":"653828811D42","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey"}}}')
+    @val = AMEE::Data::ItemValue.get(@connection, "/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney")
+  end
+
+  it "can have value changed and saved back to server" do
+    @connection.should_receive(:post).with("/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney", :value => 42).and_return('')
+    lambda {
+      @val.value = 42
+      @val.save!
+    }.should_not raise_error
   end
 
 end

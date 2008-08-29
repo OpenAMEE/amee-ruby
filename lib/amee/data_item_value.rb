@@ -21,6 +21,10 @@ module AMEE
         end
       end
 
+      def value=(val)
+        @value = val
+      end
+
       def from_profile?
         @from_profile
       end
@@ -81,6 +85,10 @@ module AMEE
         return value
       rescue
         raise AMEE::BadData.new("Couldn't load DataItemValue. Check that your URL is correct.")
+      end
+
+      def save!
+        @connection.post(full_path, :value => value)
       end
 
     end
