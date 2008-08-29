@@ -18,4 +18,7 @@ module AMEE
   class NotFound < Exception
   end
   
+  class UnknownError < Exception
+  end
+  
 end

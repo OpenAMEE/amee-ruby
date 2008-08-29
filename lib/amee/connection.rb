@@ -49,6 +49,18 @@ module AMEE
       do_request(post)
     end
 
+    def put(path, data = {})
+      # Create PUT request
+      put = Net::HTTP::Put.new(path)
+      body = []
+        data.each_pair do |key, value|
+        body << "#{key}=#{value}"
+      end
+      put.body = body.join '&'
+      # Send request
+      do_request(put)
+    end
+
     def authenticate
       unless can_authenticate?        
         raise AMEE::AuthRequired.new("Authentication required. Please provide your username and password.")
@@ -70,25 +82,25 @@ module AMEE
       (@use_json_if_available && defined?(JSON)) ? 'application/json' : 'application/xml'
     end
     
-    def authentication_failed?(response)
-      response.code == '401'
-    end
-   
-    def permission_denied?(response)
-      response.code == '401'
+    def response_ok?(response)
+      case response.code
+        when '200'
+          return true
+        when '403'
+          raise AMEE::PermissionDenied.new("You do not have permission to perform the requested operation")
+        when '401'
+          authenticate
+          return false
+        else
+          raise AMEE::UnknownError.new("An error occurred while talking to AMEE: HTTP response code #{response.code}")
+      end
     end
 
     def do_request(request)
       # Do request
-      response = send_request(request)
-      # If request fails, authenticate and try again
-      if authentication_failed?(response)
-        authenticate
+      begin
         response = send_request(request)
-        if permission_denied?(response)
-          raise AMEE::PermissionDenied.new("You do not have permission to perform the requested operation")
-        end
-      end
+      end while !response_ok?(response)
       # Return body of response
       response.body
     end

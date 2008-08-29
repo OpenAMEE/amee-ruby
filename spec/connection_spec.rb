@@ -61,12 +61,24 @@ describe AMEE::Connection, "with authentication" do
     lambda{amee.get('/missing_url')}.should raise_error(AMEE::NotFound, "URL doesn't exist on server.")
   end
 
+  it "should raise error if permission for operation is denied" do
+    flexmock(Net::HTTP).new_instances do |mock|
+      mock.should_receive(:start => nil)
+      mock.should_receive(:request).and_return(flexmock(:code => '403', :body => ''))
+      mock.should_receive(:finish => nil)
+    end
+    amee = AMEE::Connection.new('server.example.com', 'username', 'password')
+    lambda {
+      amee.get('/data')
+    }.should raise_error(AMEE::PermissionDenied,"You do not have permission to perform the requested operation")
+  end
+
   it "should raise error if authentication succeeds, but permission for operation is denied" do
     flexmock(Net::HTTP).new_instances do |mock|
       mock.should_receive(:start => nil)
       mock.should_receive(:request).and_return(flexmock(:code => '401', :body => ''),
                                                flexmock(:code => '200', :body => '', :'[]' => 'dummy_auth_token_data'),
-                                               flexmock(:code => '401', :body => ''))
+                                               flexmock(:code => '403', :body => ''))
       mock.should_receive(:finish => nil)
     end
     amee = AMEE::Connection.new('server.example.com', 'username', 'password')
@@ -74,6 +86,18 @@ describe AMEE::Connection, "with authentication" do
       amee.get('/data')
     }.should raise_error(AMEE::PermissionDenied,"You do not have permission to perform the requested operation")
     amee.authenticated?.should be_true
+  end
+
+  it "should raise error if unhandled errors occur in connection" do
+    flexmock(Net::HTTP).new_instances do |mock|
+      mock.should_receive(:start => nil)
+      mock.should_receive(:request).and_return(flexmock(:code => '500', :body => ''))
+      mock.should_receive(:finish => nil)
+    end
+    amee = AMEE::Connection.new('server.example.com', 'username', 'password')
+    lambda {
+      amee.get('/data')
+    }.should raise_error(AMEE::UnknownError,"An error occurred while talking to AMEE: HTTP response code 500")
   end
 
 end
@@ -138,4 +162,16 @@ describe AMEE::Connection, "without authentication" do
     end
   end
   
+  it "should be able to send put requests" do
+    flexmock(Net::HTTP).new_instances do |mock|
+      mock.should_receive(:start => nil)
+      mock.should_receive(:request).and_return(flexmock(:code => '200', :body => ''))
+      mock.should_receive(:finish => nil)
+    end
+    amee = AMEE::Connection.new('server.example.com')
+    amee.put('/profiles/ABC123', :test => 1, :test2 => 2) do |response|
+      response.should be_empty
+    end
+  end
+
 end
