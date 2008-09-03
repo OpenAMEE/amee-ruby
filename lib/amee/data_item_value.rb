@@ -1,6 +1,6 @@
 module AMEE
   module Data
-    class ItemValue < AMEE::DataObject
+    class ItemValue < AMEE::Data::Object
 
       def initialize(data = {})
         @value = data ? data[:value] : nil

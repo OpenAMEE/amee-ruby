@@ -1,9 +1,11 @@
 module AMEE
-  class ProfileObject < AMEE::Object
+  module Profile
+    class Object < AMEE::Object
     
-    def full_path
-      "/profiles#{@path}"
-    end
+      def full_path
+        "/profiles#{@path}"
+      end
       
+    end
   end
 end

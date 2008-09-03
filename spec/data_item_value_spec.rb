@@ -7,7 +7,7 @@ describe AMEE::Data::ItemValue do
   end
   
   it "should have common AMEE object properties" do
-    @value.is_a?(AMEE::Object).should be_true
+    @value.is_a?(AMEE::Data::Object).should be_true
   end
   
   it "should have a value" do

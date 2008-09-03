@@ -20,7 +20,7 @@ end.parse!
 connection = AMEE::Connection.new(options[:server], options[:username], options[:password])
 
 # List all available profiles
-profiles = AMEE::Profile.list(connection)
+profiles = AMEE::Profile::Profile.list(connection)
 puts "#{profiles.size} #{profiles.size == 1 ? "profile" : "profiles"} available in AMEE:"
 profiles.each do |p|
   puts p.uid

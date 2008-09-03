@@ -23,5 +23,5 @@ end.parse!
 connection = AMEE::Connection.new(options[:server], options[:username], options[:password])
 
 # Create a new profile
-profile = AMEE::Profile.create(connection)
+profile = AMEE::Profile::Profile.create(connection)
 puts "#{profile.uid} created"

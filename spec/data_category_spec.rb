@@ -7,7 +7,7 @@ describe AMEE::Data::Category do
   end
   
   it "should have common AMEE object properties" do
-    @cat.is_a?(AMEE::Object).should be_true
+    @cat.is_a?(AMEE::Data::Object).should be_true
   end
   
   it "should have children" do

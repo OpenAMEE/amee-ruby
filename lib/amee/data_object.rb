@@ -1,9 +1,11 @@
 module AMEE
-  class DataObject < AMEE::Object
+  module Data
+    class Object < AMEE::Object
     
-    def full_path
-      "/data#{@path}"
+      def full_path
+        "/data#{@path}"
+      end
+
     end
-      
   end
 end
