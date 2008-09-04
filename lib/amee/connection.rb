@@ -38,7 +38,6 @@ module AMEE
       if params.size > 0
         path += "?#{params.join('&')}"
       end
-      puts path
       # Send request
       do_request Net::HTTP::Get.new(path)
     end
