@@ -107,7 +107,23 @@ module AMEE
       rescue
         raise AMEE::BadData.new("Couldn't load ProfileCategory from XML data. Check that your URL is correct.")
       end
-      
+
+      def self.get_history(connection, path, num_months, end_date = Date.today)
+        month = end_date.month
+        year = end_date.year
+        history = []
+        num_months.times do
+          date = Date.new(year, month)
+          history << self.get(connection, path, date)
+          month -= 1
+          if (month == 0)
+            year -= 1
+            month = 12
+          end
+        end
+        return history.reverse
+      end
+
       def self.get(connection, path, for_date = Date.today)
         # Load data from path
         response = connection.get(path, :profileDate => for_date.strftime("%Y%m"))
