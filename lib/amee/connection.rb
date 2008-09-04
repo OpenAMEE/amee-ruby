@@ -29,11 +29,20 @@ module AMEE
       !@auth_token.nil?
     end
 
-    def get(path)
+    def get(path, data = {})
+      # Create URL parameters
+      params = []
+      data.each_pair do |key, value|
+        params << "#{key}=#{value}"
+      end
+      if params.size > 0
+        path += "?#{params.join('&')}"
+      end
+      puts path
       # Send request
-      do_request(Net::HTTP::Get.new(path))
+      do_request Net::HTTP::Get.new(path)
     end
-
+    
     def post(path, data = {})
       # Create POST request
       post = Net::HTTP::Post.new(path)

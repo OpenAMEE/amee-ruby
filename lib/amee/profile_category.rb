@@ -8,14 +8,12 @@ module AMEE
         @children = data ? data[:children] : []
         @items = data ? data[:items] : []
         @total_amount_per_month = data[:total_amount_per_month]
-        @values = data[:values]
         super
       end
 
       attr_reader :children
       attr_reader :items
       attr_reader :total_amount_per_month
-      attr_reader :values
 
       def self.from_json(json)
         # Parse json
@@ -110,9 +108,9 @@ module AMEE
         raise AMEE::BadData.new("Couldn't load ProfileCategory from XML data. Check that your URL is correct.")
       end
       
-      def self.get(connection, path)
+      def self.get(connection, path, for_date = Date.today)
         # Load data from path
-        response = connection.get(path)
+        response = connection.get(path, :profileDate => for_date.strftime("%Y%m"))
         # Parse data from response
         if response.is_json?
           cat = Category.from_json(response)
