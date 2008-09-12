@@ -29,7 +29,6 @@ module AMEE
         data[:values] = []
         doc['profileItem']['itemValues'].each do |item|
           value_data = {}
-          value_data[:values] = {}
           item.each_pair do |key,value|
             case key
               when 'name', 'path', 'uid', 'value'
@@ -58,15 +57,12 @@ module AMEE
         data[:values] = []
         REXML::XPath.each(doc, '/Resources/ProfileItemResource/ProfileItem/ItemValues/ItemValue') do |item|
           value_data = {}
-          value_data[:values] = {}
           item.elements.each do |element|
             key = element.name
             value = element.text
             case key
-              when 'Name', 'Path'
+              when 'Name', 'Path', 'Value'
                 value_data[key.downcase.to_sym] = value              
-              when 'Value'
-                value_data[:value] = value
             end
           end
           value_data[:uid] = item.attributes['uid'].to_s
