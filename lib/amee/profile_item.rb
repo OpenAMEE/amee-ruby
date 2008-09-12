@@ -107,8 +107,8 @@ module AMEE
         cat.connection = connection
         # Done
         return cat
-      #rescue
-      #  raise AMEE::BadData.new("Couldn't load ProfileItem. Check that your URL is correct.")
+      rescue
+        raise AMEE::BadData.new("Couldn't load ProfileItem. Check that your URL is correct.")
       end
 
       def self.create(profile, data_item_uid, options = {})
