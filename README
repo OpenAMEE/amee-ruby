@@ -21,7 +21,8 @@ Homepage: http://github.com/Floppy/amee-ruby
 Currently, you can read DataCategories, DataItems and DataItemValues. See 
 examples/view_data_*.rb for simple usage examples. You can also get the list
 of available Profiles and create new ones. See examples/list_profiles.rb and
-examples/create_profile.rb for details. You can also load ProfileCategories.
+examples/create_profile.rb for details. You can also load ProfileCategories,
+and load and create ProfileItems.
 
 The gem will use the AMEE JSON API if the JSON gem is installed on the local
 system. Otherwise the XML API will be used.
