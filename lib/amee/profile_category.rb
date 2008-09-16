@@ -144,7 +144,12 @@ module AMEE
       def child(child_path)
         AMEE::Profile::Category.get(connection, "#{full_path}/#{child_path}")
       end
-      
+
+      def item(dataItemLabel)
+        item = items.find{ |x| x[:dataItemLabel] == dataItemLabel}
+        item ? AMEE::Profile::Item.get(connection, "#{full_path}/#{item[:path]}") : nil
+      end
+
     end
   end
 end

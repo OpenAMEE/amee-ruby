@@ -148,6 +148,10 @@ end
 
 describe AMEE::Profile::Category, "with an authenticated connection" do
 
+  it "allows direct access to ProfileItems" do
+    
+  end
+
   it "should fail gracefully on other GET errors" do
     connection = flexmock "connection"
     connection.should_receive(:get).with("/profiles/E54C5525AA3E", {:profileDate=>Date.today.strftime("%Y%m")}).and_raise("unidentified error")
