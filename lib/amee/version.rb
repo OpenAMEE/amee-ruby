@@ -2,8 +2,8 @@ module AMEE
   
   module VERSION #:nodoc:
     MAJOR = 0
-    MINOR = 3
-    TINY  = 1
+    MINOR = 4
+    TINY  = 6
     STRING = [MAJOR, MINOR, TINY].join('.')
   end
   

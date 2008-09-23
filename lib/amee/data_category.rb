@@ -101,7 +101,11 @@ module AMEE
       def child(child_path)
         AMEE::Data::Category.get(connection, "#{full_path}/#{child_path}")
       end
-      
+
+      def drill
+        AMEE::Data::DrillDown.get(connection, "#{full_path}/drill")
+      end
+
     end
   end
 end
