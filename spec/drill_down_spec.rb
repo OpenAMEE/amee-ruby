@@ -56,6 +56,46 @@ describe AMEE::Data::DrillDown, "with an authenticated XML connection" do
     drill.data_item_uid.should be_nil
   end
 
+  it "should fail gracefully with incorrect data" do
+    connection = flexmock "connection"
+    connection.should_receive(:get).with("/data/transport/car/generic/drill?fuel=diesel").and_return('<?xml version="1.0" encoding="UTF-8"?><Resources></Resources>')
+    lambda{AMEE::Data::DrillDown.get(connection, "/data/transport/car/generic/drill?fuel=diesel")}.should raise_error(AMEE::BadData, "Couldn't load DrillDown resource from XML data. Check that your URL is correct.")
+  end
+
+end
+
+describe AMEE::Data::DrillDown, "with an authenticated JSON connection" do
+
+  it "loads drilldown resource" do
+    connection = flexmock "connection"
+    connection.should_receive(:get).with("/data/transport/car/generic/drill?fuel=diesel").and_return('{"itemDefinition":{"uid":"123C4A18B5D6"},"dataCategory":{"modified":"2007-07-27 09:30:44.0","created":"2007-07-27 09:30:44.0","itemDefinition":{"uid":"123C4A18B5D6"},"dataCategory":{"uid":"1D95119FB149","path":"car","name":"Car"},"uid":"87E55DA88017","environment":{"uid":"5F5887BCF726"},"path":"generic","name":"Generic"},"selections":[{"value":"diesel","name":"fuel"}],"choices":{"choices":[{"value":"large","name":"large"},{"value":"medium","name":"medium"},{"value":"small","name":"small"}],"name":"size"}}')
+    drill = AMEE::Data::DrillDown.get(connection, "/data/transport/car/generic/drill?fuel=diesel")
+    drill.choice_name.should == "size"
+    drill.choices.size.should be(3)
+    drill.choices[0].should == "large"
+    drill.choices[1].should == "medium"
+    drill.choices[2].should == "small"
+    drill.selections.size.should be(1)
+    drill.selections['fuel'].should == 'diesel'
+    drill.data_item_uid.should be_nil
+  end
+
+  it "should fail gracefully with incorrect data" do
+    connection = flexmock "connection"
+    connection.should_receive(:get).with("/data/transport/car/generic/drill?fuel=diesel").and_return('{}')
+    lambda{AMEE::Data::DrillDown.get(connection, "/data/transport/car/generic/drill?fuel=diesel")}.should raise_error(AMEE::BadData, "Couldn't load DrillDown resource from JSON data. Check that your URL is correct.")
+  end
+
+end
+
+describe AMEE::Data::DrillDown, "with data" do
+
+  it "should fail gracefully on other GET errors" do
+    connection = flexmock "connection"
+    connection.should_receive(:get).with("/data/transport/car/generic/drill?fuel=diesel").and_raise("unidentified error")
+    lambda{AMEE::Data::DrillDown.get(connection, "/data/transport/car/generic/drill?fuel=diesel")}.should raise_error(AMEE::BadData, "Couldn't load DrillDown resource. Check that your URL is correct.")
+  end
+
   it "provides simple access to uid" do
     connection = flexmock "connection"
     connection.should_receive(:get).with("/data/transport/car/generic/drill?fuel=diesel&size=large").and_return('<?xml version="1.0" encoding="UTF-8"?><Resources><DrillDownResource><DataCategory uid="87E55DA88017"><Name>Generic</Name><Path>generic</Path></DataCategory><ItemDefinition uid="123C4A18B5D6"/><Selections><Choice><Name>fuel</Name><Value>diesel</Value></Choice><Choice><Name>size</Name><Value>large</Value></Choice></Selections><Choices><Name>uid</Name><Choices><Choice><Name>4F6CBCEE95F7</Name><Value>4F6CBCEE95F7</Value></Choice></Choices></Choices></DrillDownResource></Resources>')
@@ -65,10 +105,6 @@ describe AMEE::Data::DrillDown, "with an authenticated XML connection" do
     drill.selections.size.should be(2)
     drill.data_item_uid.should == "4F6CBCEE95F7"
   end
-
-end
-
-describe AMEE::Data::DrillDown, "with data" do
 
   it "enables drilling down through the levels" do
     connection = flexmock "connection"

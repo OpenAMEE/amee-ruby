@@ -36,6 +36,17 @@ module AMEE
         # Parse json
         doc = JSON.parse(json)
         data = {}
+        data[:choice_name] = doc['choices']['name']
+        choices = []
+        doc['choices']['choices'].each do |c|
+          choices << c['value']
+        end
+        data[:choices] = choices
+        selections = {}
+        doc['selections'].each do |c|
+          selections[c['name']] = c['value']
+        end
+        data[:selections] = selections
         # Create object
         DrillDown.new(data)
       rescue
