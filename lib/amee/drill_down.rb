@@ -1,3 +1,5 @@
+require 'cgi'
+
 module AMEE
   module Data
     class DrillDown < AMEE::Data::Object
