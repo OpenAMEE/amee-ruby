@@ -25,9 +25,9 @@ module AMEE
       def choose(choice)
         options = []
         @selections.each_pair do |key, value|
-          options << "#{key}=#{value}"
+          options << "#{CGI::escape(key)}=#{CGI::escape(value)}"
         end
-        options << "#{@choice_name}=#{choice}"
+        options << "#{CGI::escape(@choice_name)}=#{CGI::escape(choice)}"
         query_string = options.join "&"        
         DrillDown.get(connection, "#{full_path}?#{query_string}")
       end
