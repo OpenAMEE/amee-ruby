@@ -66,6 +66,13 @@ module AMEE
       do_request(put)
     end
 
+    def delete(path)
+      # Create DELETE request
+      delete = Net::HTTP::Delete.new(path)
+      # Send request
+      do_request(delete)
+    end
+
     def authenticate
       unless can_authenticate?        
         raise AMEE::AuthRequired.new("Authentication required. Please provide your username and password.")
