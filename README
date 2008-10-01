@@ -62,3 +62,13 @@ There is a persistent AMEE connection available called $amee, which you can pass
 into the other objects to fetch data. For instance:
 
     data = AMEE::Data::Category.root($amee)
+
+There is a helper for ActiveRecord models which should be linked to an AMEE profile.
+By adding:
+
+    has_amee_profile
+
+to your model, and by adding an amee_profile:string field to the model in the
+database, an AMEE profile will be automatically created and destroyed with your
+model. By overriding the function amee_save in your model, you can store data in
+AMEE when your model is saved.
