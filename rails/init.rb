@@ -1,4 +1,5 @@
 require 'amee'
+require 'amee/rails'
 
 # Load config/amee.yml
 amee_config = "#{RAILS_ROOT}/config/amee.yml"
@@ -21,3 +22,6 @@ else
   # Inform the user that we've written a file for them
   raise AMEE::ConnectionFailed.new("config/amee.yml doesn't exist. I've created one for you - please add your API keys to it.")
 end
+
+# Add AMEE extensions into ActiveRecord::Base
+ActiveRecord::Base.class_eval { include AMEE::Rails }
