@@ -85,10 +85,10 @@ module AMEE
         raise AMEE::BadData.new("Couldn't create Profile.")
       end
 
-  #    def delete
-  #      # Create new profile
-  #      response = connection.delete(full_path)
-  #    end
+      def self.delete(connection, uid)
+        # Delete profile
+        connection.delete("/profiles/#{uid}")
+      end
 
     end
   end
