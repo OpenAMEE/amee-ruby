@@ -99,6 +99,17 @@ module AMEE
         raise AMEE::BadData.new("Couldn't create ProfileItem. Check that your information is correct.")
       end
 
+      def update(options = {})
+        connection.put(full_path, options)
+      rescue
+        raise AMEE::BadData.new("Couldn't update ProfileItem. Check that your information is correct.")
+      end
+
+      def value(name_or_path)
+        val = values.find{ |x| x[:name] == name_or_path || x[:path] == name_or_path}
+        val ? val[:value] : nil
+      end
+
     end
   end
 end
