@@ -114,7 +114,16 @@ module AMEE
         history = []
         num_months.times do
           date = Date.new(year, month)
-          history << self.get(connection, path, date)
+          data = self.get(connection, path, date)
+          # If we get no data items back, there is no data at all before this date, so don't bother fetching it
+          if data.items.empty?
+            (num_months - history.size).times do
+              history << Category.new(:children => [], :items => [])
+            end
+            break
+          else
+            history << data
+          end
           month -= 1
           if (month == 0)
             year -= 1
