@@ -3,7 +3,7 @@ require 'net/http'
 module AMEE
   class Connection
 
-    def initialize(server, username = nil, password = nil, use_json_if_available = true)
+    def initialize(server, username = nil, password = nil, use_json_if_available = true, enable_caching = false)
       @server = server
       @username = username
       @password = password
@@ -11,6 +11,10 @@ module AMEE
       @use_json_if_available = use_json_if_available
       if (@username || @password) && !valid?
        raise "Must specify both username and password for authenticated access"
+      end
+      @enable_caching = enable_caching
+      if @enable_caching
+        $cache ||= {}
       end
       # Make connection to server
       @http = Net::HTTP.new(@server)
@@ -39,10 +43,13 @@ module AMEE
         path += "?#{params.join('&')}"
       end
       # Send request
-      do_request Net::HTTP::Get.new(path)
+      return $cache[path] if @enable_caching and $cache[path]
+      response = do_request Net::HTTP::Get.new(path)
+      $cache[path] = response if @enable_caching
     end
     
     def post(path, data = {})
+      clear_cache
       # Create POST request
       post = Net::HTTP::Post.new(path)
       body = []
@@ -55,6 +62,7 @@ module AMEE
     end
 
     def put(path, data = {})
+      clear_cache
       # Create PUT request
       put = Net::HTTP::Put.new(path)
       body = []
@@ -67,6 +75,7 @@ module AMEE
     end
 
     def delete(path)
+      clear_cache
       # Create DELETE request
       delete = Net::HTTP::Delete.new(path)
       # Send request
@@ -134,6 +143,12 @@ module AMEE
       end
       # Done
       response
+    end
+
+    def clear_cache
+      if @enable_caching
+        $cache = {}
+      end
     end
 
   end
