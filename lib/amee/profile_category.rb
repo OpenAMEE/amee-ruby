@@ -155,7 +155,7 @@ module AMEE
       end
 
       def item(label_or_uid)
-        item = items.find{ |x| x[:dataItemLabel] == label_or_uid || x[:dataItemUid] == label_or_uid}
+        item = items.find{ |x| x[:dataItemLabel] == label_or_uid || x[:dataItemUid] == label_or_uid || x[:uid] == label_or_uid}
         item ? AMEE::Profile::Item.get(connection, "#{full_path}/#{item[:path]}") : nil
       end
 
