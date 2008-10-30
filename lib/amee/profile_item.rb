@@ -6,6 +6,7 @@ module AMEE
         @values = data ? data[:values] : []
         @total_amount_per_month = data[:total_amount_per_month]
         @valid_from = data[:valid_from]
+        @data_item_uid = data[:data_item_uid]
         @end = data[:end]
         super
       end
@@ -14,12 +15,14 @@ module AMEE
       attr_reader :total_amount_per_month
       attr_reader :valid_from
       attr_reader :end
+      attr_reader :data_item_uid
 
       def self.from_json(json)
         # Parse json
         doc = JSON.parse(json)
         data = {}
         data[:profile_uid] = doc['profile']['uid']
+        data[:data_item_uid] = doc['profileItem']['dataItem']['uid']
         data[:uid] = doc['profileItem']['uid']
         data[:name] = doc['profileItem']['name']
         data[:path] = doc['path']
@@ -48,6 +51,7 @@ module AMEE
         doc = REXML::Document.new(xml)
         data = {}
         data[:profile_uid] = REXML::XPath.first(doc, "/Resources/ProfileItemResource/Profile/@uid").to_s
+        data[:data_item_uid] = REXML::XPath.first(doc, "/Resources/ProfileItemResource/DataItem/@uid").to_s
         data[:uid] = REXML::XPath.first(doc, "/Resources/ProfileItemResource/ProfileItem/@uid").to_s
         data[:name] = REXML::XPath.first(doc, '/Resources/ProfileItemResource/ProfileItem/Name').text
         data[:path] = REXML::XPath.first(doc, '/Resources/ProfileItemResource/Path').text || ""
