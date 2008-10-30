@@ -77,9 +77,9 @@ module AMEE
         raise AMEE::BadData.new("Couldn't load DataCategory from XML data. Check that your URL is correct.")
       end
       
-      def self.get(connection, path)
+      def self.get(connection, path, items_per_page = 10)
         # Load data from path
-        response = connection.get(path)
+        response = connection.get(path, :itemsPerPage => items_per_page)
         # Parse data from response
         if response.is_json?
           cat = Category.from_json(response)

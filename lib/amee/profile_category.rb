@@ -133,9 +133,9 @@ module AMEE
         return history.reverse
       end
 
-      def self.get(connection, path, for_date = Date.today)
+      def self.get(connection, path, for_date = Date.today, items_per_page = 10)
         # Load data from path
-        response = connection.get(path, :profileDate => for_date.strftime("%Y%m"))
+        response = connection.get(path, :profileDate => for_date.strftime("%Y%m"), :itemsPerPage => items_per_page)
         # Parse data from response
         if response.is_json?
           cat = Category.from_json(response)
