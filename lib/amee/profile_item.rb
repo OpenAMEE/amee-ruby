@@ -109,6 +109,12 @@ module AMEE
         raise AMEE::BadData.new("Couldn't update ProfileItem. Check that your information is correct.")
       end
 
+      def self.delete(connection, path)
+        connection.delete(path)
+      rescue
+        raise AMEE::BadData.new("Couldn't delete ProfileItem. Check that your information is correct.")
+      end
+
       def value(name_or_path)
         val = values.find{ |x| x[:name] == name_or_path || x[:path] == name_or_path}
         val ? val[:value] : nil
