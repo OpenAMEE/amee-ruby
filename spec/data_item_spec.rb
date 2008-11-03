@@ -52,6 +52,7 @@ describe AMEE::Data::Item, "with an authenticated connection" do
     @data.created.should == DateTime.new(2007,8,1,9,00,41)
     @data.modified.should == DateTime.new(2007,8,1,9,00,41)
     @data.label.should == "domestic"
+    @data.item_definition.should == "441BF4BEA15B"
     @data.values.size.should == 5
     @data.values[0][:name].should == "kgCO2 Per Passenger Journey"
     @data.values[0][:path].should == "kgCO2PerPassengerJourney"

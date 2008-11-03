@@ -3,15 +3,17 @@ module AMEE
     class Item < AMEE::Data::Object
 
       def initialize(data = {})
-        @values = data ? data[:values] : []
-        @choices = data ? data[:choices] : []
-        @label = data ? data[:label] : []
+        @values = data[:values]
+        @choices = data[:choices]
+        @label = data[:label]
+        @item_definition = data[:item_definition]
         super
       end
 
       attr_reader :values
       attr_reader :choices
       attr_reader :label
+      attr_reader :item_definition
 
       def self.from_json(json)
         # Read JSON
@@ -23,6 +25,7 @@ module AMEE
         data[:name] = doc['dataItem']['name']
         data[:path] = doc['path']
         data[:label] = doc['dataItem']['label']
+        data[:item_definition] = doc['dataItem']['itemDefinition']['uid']
         # Get values
         data[:values] = []
         doc['dataItem']['itemValues'].each do |value|
@@ -57,6 +60,7 @@ module AMEE
         data[:name] = REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/Name').text
         data[:path] = REXML::XPath.first(doc, '/Resources/DataItemResource/Path').text
         data[:label] = REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/Label').text
+        data[:item_definition] = REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/ItemDefinition/@uid').to_s
         # Get values
         data[:values] = []
         REXML::XPath.each(doc, '/Resources/DataItemResource/DataItem/ItemValues/ItemValue') do |value|
