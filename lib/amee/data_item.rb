@@ -109,6 +109,10 @@ module AMEE
         raise AMEE::BadData.new("Couldn't update DataItem. Check that your information is correct.")
       end
 
+      def value(name_or_path_or_uid)
+        val = values.find{ |x| x[:name] == name_or_path_or_uid || x[:path] == name_or_path_or_uid || x[:uid] == name_or_path_or_uid}
+        val ? val[:value] : nil
+      end
 
     end
   end
