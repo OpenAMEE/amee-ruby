@@ -103,6 +103,13 @@ module AMEE
         raise AMEE::BadData.new("Couldn't load DataItem. Check that your URL is correct.")
       end
 
+      def update(options = {})
+        connection.put(full_path, options)
+      rescue
+        raise AMEE::BadData.new("Couldn't update DataItem. Check that your information is correct.")
+      end
+
+
     end
   end
 end
