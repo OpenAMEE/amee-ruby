@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name = "amee"
   s.version = "0.4.18"
-  s.date = "2008-11-3"
+  s.date = "2008-11-03"
   s.summary = "Ruby interface to the AMEE carbon calculator"
   s.email = "james@floppy.org.uk"
   s.homepage = "http://github.com/Floppy/amee-ruby"
