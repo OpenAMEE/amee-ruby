@@ -46,6 +46,7 @@ module AMEE
       return $cache[path] if @enable_caching and $cache[path]
       response = do_request Net::HTTP::Get.new(path)
       $cache[path] = response if @enable_caching
+      return response
     end
     
     def post(path, data = {})
