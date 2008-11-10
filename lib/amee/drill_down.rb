@@ -92,7 +92,7 @@ module AMEE
         # Done
         return drill
       rescue
-        raise AMEE::BadData.new("Couldn't load DrillDown resource. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load DrillDown resource. Check that your URL is correct (#{path}).")
       end
       
     end

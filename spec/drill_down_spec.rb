@@ -113,7 +113,7 @@ describe AMEE::Data::DrillDown, "with data" do
   it "should fail gracefully on other GET errors" do
     connection = flexmock "connection"
     connection.should_receive(:get).with("/data/transport/car/generic/drill?fuel=diesel").and_raise("unidentified error")
-    lambda{AMEE::Data::DrillDown.get(connection, "/data/transport/car/generic/drill?fuel=diesel")}.should raise_error(AMEE::BadData, "Couldn't load DrillDown resource. Check that your URL is correct.")
+    lambda{AMEE::Data::DrillDown.get(connection, "/data/transport/car/generic/drill?fuel=diesel")}.should raise_error(AMEE::BadData, "Couldn't load DrillDown resource. Check that your URL is correct (/data/transport/car/generic/drill?fuel=diesel).")
   end
 
   it "enables drilling down through the levels" do
