@@ -177,4 +177,16 @@ describe AMEE::Connection, "without authentication" do
     end
   end
 
+  it "should be able to send delete requests" do
+    flexmock(Net::HTTP).new_instances do |mock|
+      mock.should_receive(:start => nil)
+      mock.should_receive(:request).and_return(flexmock(:code => '200', :body => ''))
+      mock.should_receive(:finish => nil)
+    end
+    amee = AMEE::Connection.new('server.example.com')
+    amee.delete('/profiles/ABC123') do |response|
+      response.should be_empty
+    end
+  end
+
 end
