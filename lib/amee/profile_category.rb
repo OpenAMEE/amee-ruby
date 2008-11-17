@@ -108,13 +108,13 @@ module AMEE
         raise AMEE::BadData.new("Couldn't load ProfileCategory from XML data. Check that your URL is correct.")
       end
 
-      def self.get_history(connection, path, num_months, end_date = Date.today)
+      def self.get_history(connection, path, num_months, end_date = Date.today, items_per_page = 10)
         month = end_date.month
         year = end_date.year
         history = []
         num_months.times do
           date = Date.new(year, month)
-          data = self.get(connection, path, date)
+          data = self.get(connection, path, date, items_per_page)
           # If we get no data items back, there is no data at all before this date, so don't bother fetching it
           if data.items.empty?
             (num_months - history.size).times do
@@ -154,8 +154,9 @@ module AMEE
         AMEE::Profile::Category.get(connection, "#{full_path}/#{child_path}")
       end
 
-      def item(label_or_uid)
-        item = items.find{ |x| x[:dataItemLabel] == label_or_uid || x[:dataItemUid] == label_or_uid || x[:uid] == label_or_uid}
+      def item(options)
+        # Search fields - from most specific to least specific
+        item = items.find{ |x| x[:uid] == options[:uid] || x[:name] == options[:name] || x[:dataItemUid] == options[:dataItemUid] || x[:dataItemLabel] == options[:dataItemLabel] }
         item ? AMEE::Profile::Item.get(connection, "#{full_path}/#{item[:path]}") : nil
       end
 
