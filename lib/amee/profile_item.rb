@@ -78,9 +78,7 @@ module AMEE
         raise AMEE::BadData.new("Couldn't load ProfileItem from XML data. Check that your URL is correct.")
       end
 
-      def self.get(connection, path, for_date = Date.today)
-        # Load data from path
-        response = connection.get(path, :profileDate => for_date.strftime("%Y%m"))
+      def self.parse(connection, response)
         # Parse data from response
         if response.is_json?
           cat = Item.from_json(response)
@@ -91,6 +89,12 @@ module AMEE
         cat.connection = connection
         # Done
         return cat
+      end
+
+      def self.get(connection, path, for_date = Date.today)
+        # Load data from path
+        response = connection.get(path, :profileDate => for_date.strftime("%Y%m"))
+        return Item.parse(connection, response)
       rescue
         raise AMEE::BadData.new("Couldn't load ProfileItem. Check that your URL is correct.")
       end
@@ -98,13 +102,15 @@ module AMEE
       def self.create(profile, data_item_uid, options = {})
         # Send data to path
         options.merge! :dataItemUid => data_item_uid
-        profile.connection.post(profile.full_path, options)
+        response = profile.connection.post(profile.full_path, options)
+        return Item.parse(profile.connection, response)
       rescue
         raise AMEE::BadData.new("Couldn't create ProfileItem. Check that your information is correct.")
       end
 
       def update(options = {})
         connection.put(full_path, options)
+        return Item.parse(connection, response)
       rescue
         raise AMEE::BadData.new("Couldn't update ProfileItem. Check that your information is correct.")
       end
