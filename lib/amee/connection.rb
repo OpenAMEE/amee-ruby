@@ -3,7 +3,7 @@ require 'net/http'
 module AMEE
   class Connection
 
-    def initialize(server, username = nil, password = nil, use_json_if_available = true, enable_caching = false)
+    def initialize(server, username = nil, password = nil, use_json_if_available = true, enable_caching = false, enable_debug = false)
       @server = server
       @username = username
       @password = password
@@ -18,7 +18,7 @@ module AMEE
       end
       # Make connection to server
       @http = Net::HTTP.new(@server)
-      #@http.set_debug_output($stdout)
+      @http.set_debug_output($stdout) if enable_debug
     end
 
     def valid?
@@ -104,6 +104,10 @@ module AMEE
       (@use_json_if_available && defined?(JSON)) ? 'application/json' : 'application/xml'
     end
     
+    def redirect?(response)
+      response.code == '301' || response.code == '302'
+    end
+
     def response_ok?(response)
       case response.code
         when '200'
