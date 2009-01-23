@@ -11,7 +11,7 @@ module AMEE
         include InstanceMethods
         # Install callbacks
         before_validation_on_create :amee_create
-        before_save :amee_save
+        alias_method_chain :save, :amee
         before_destroy :amee_destroy
         # Check that this object has an AMEE profile UID when saving
         validates_presence_of :amee_profile        
@@ -19,6 +19,11 @@ module AMEE
     end
 
     module InstanceMethods
+
+      def save_with_amee
+        amee_save
+        save_without_amee
+      end
 
       def amee_create
         # Create profile
