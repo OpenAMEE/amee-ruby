@@ -21,8 +21,8 @@ module AMEE
     module InstanceMethods
 
       def save_with_amee
-        amee_save
         save_without_amee
+        amee_save
       end
 
       def amee_create
