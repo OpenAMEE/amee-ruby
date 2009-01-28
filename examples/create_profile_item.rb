@@ -25,5 +25,9 @@ connection = AMEE::Connection.new(options[:server], options[:username], options[
 # Create a new profile item
 category = AMEE::Profile::Category.get(connection, ARGV[0])
 puts "loaded category #{category.name}"
-AMEE::Profile::Item.create(category, ARGV[1])
-puts "created item in #{category.name} OK"
+item = AMEE::Profile::Item.create(category, ARGV[1])
+if item
+  puts "created item in #{category.name} OK"
+else
+  puts "error creating item in #{category.name}"
+end
