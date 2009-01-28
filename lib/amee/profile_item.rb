@@ -103,9 +103,10 @@ module AMEE
         # Send data to path
         options.merge! :dataItemUid => data_item_uid
         response = profile.connection.post(profile.full_path, options)
-        return Item.parse(profile.connection, response)
-      rescue
-        raise AMEE::BadData.new("Couldn't create ProfileItem. Check that your information is correct.")
+        category = Category.parse(profile.connection, response)
+        return category.item(options)
+      #rescue
+      #  raise AMEE::BadData.new("Couldn't create ProfileItem. Check that your information is correct.")
       end
 
       def update(options = {})
