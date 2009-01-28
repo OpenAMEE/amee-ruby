@@ -18,7 +18,16 @@ module AMEE
       end
       # Make connection to server
       @http = Net::HTTP.new(@server)
+      @http.read_timeout = 5
       @http.set_debug_output($stdout) if enable_debug
+    end
+    
+    def timeout
+      @http.read_timeout
+    end
+    
+    def timeout=(t)
+      @http.read_timeout = t
     end
 
     def valid?
