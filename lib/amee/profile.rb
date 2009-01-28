@@ -86,8 +86,11 @@ module AMEE
       end
 
       def self.delete(connection, uid)
-        # Delete profile
+        # Deleting profiles takes a while... up the timeout to 60 seconds temporarily
+        t = connection.timeout
+        connection.timeout = 60
         connection.delete("/profiles/#{uid}")
+        connection.timeout = t
       end
 
     end
