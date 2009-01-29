@@ -105,12 +105,12 @@ module AMEE
         response = profile.connection.post(profile.full_path, options)
         category = Category.parse(profile.connection, response)
         return category.item(options)
-      #rescue
-      #  raise AMEE::BadData.new("Couldn't create ProfileItem. Check that your information is correct.")
+      rescue
+        raise AMEE::BadData.new("Couldn't create ProfileItem. Check that your information is correct.")
       end
 
       def update(options = {})
-        connection.put(full_path, options)
+        response = connection.put(full_path, options)
         return Item.parse(connection, response)
       rescue
         raise AMEE::BadData.new("Couldn't update ProfileItem. Check that your information is correct.")
