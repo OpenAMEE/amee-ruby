@@ -21,8 +21,7 @@ module AMEE
     module InstanceMethods
 
       def save_with_amee
-        save_without_amee
-        amee_save
+        save_without_amee && amee_save
       end
 
       def amee_create
@@ -33,6 +32,7 @@ module AMEE
 
       def amee_save
         # This is only here to be overridden
+        return true
       end
 
       def amee_destroy
