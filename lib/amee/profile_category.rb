@@ -15,6 +15,54 @@ module AMEE
       attr_reader :items
       attr_reader :total_amount_per_month
 
+      def self.parse_json_profile_item(item)
+        item_data = {}
+        item_data[:values] = {}
+        item.each_pair do |key, value|
+          case key
+            when 'dataItemLabel', 'dataItemUid', 'name', 'path', 'uid'
+              item_data[key.to_sym] = value
+            when 'created', 'modified', 'label' # ignore these
+              nil
+            when 'validFrom'
+              item_data[:validFrom] = DateTime.strptime(value, "%Y%m%d")
+            when 'end'
+              item_data[:end] = (value == "true")
+            when 'amountPerMonth'
+              item_data[:amountPerMonth] = value.to_f
+            else
+              item_data[:values][key.to_sym] = value
+          end
+        end
+        item_data[:path] ||= item_data[:uid] # Fill in path if not retrieved from response
+        return item_data
+      end
+
+      def self.parse_json_profile_category(category)
+        datacat = category['dataCategory'] ? category['dataCategory'] : category
+        category_data = {}
+        category_data[:name] = datacat['name']
+        category_data[:path] = datacat['path']
+        category_data[:uid] = datacat['uid']
+        category_data[:children] = []
+        category_data[:items] = []
+        if category['children']
+          category['children'].each do |child|
+            if child[0] == 'dataCategories'
+              child[1].each do |child_cat|
+                category_data[:children] << parse_json_profile_category(child_cat)
+              end
+            end
+            if child[0] == 'profileItems'
+              child[1]['rows'].each do |child_item|
+                category_data[:items] << parse_json_profile_item(child_item)
+              end
+            end
+          end
+        end
+        return category_data
+      end
+
       def self.from_json(json)
         # Parse json
         doc = JSON.parse(json)
@@ -27,11 +75,7 @@ module AMEE
         data[:children] = []
         if doc['children'] && doc['children']['dataCategories']
           doc['children']['dataCategories'].each do |child|
-            category_data = {}
-            category_data[:name] = child['name']
-            category_data[:path] = child['path']
-            category_data[:uid] = child['uid']
-            data[:children] << category_data
+            data[:children] << parse_json_profile_category(child)
           end
         end
         data[:items] = []
@@ -39,26 +83,7 @@ module AMEE
         profile_items.concat doc['children']['profileItems']['rows'] rescue nil
         profile_items << doc['profileItem'] unless doc['profileItem'].nil?
         profile_items.each do |item|
-          item_data = {}
-          item_data[:values] = {}
-          item.each_pair do |key, value|
-            case key
-              when 'dataItemLabel', 'dataItemUid', 'name', 'path', 'uid'
-                item_data[key.to_sym] = value
-              when 'created', 'modified', 'label' # ignore these
-                nil
-              when 'validFrom'
-                item_data[:validFrom] = DateTime.strptime(value, "%Y%m%d")
-              when 'end'
-                item_data[:end] = (value == "true")
-              when 'amountPerMonth'
-                item_data[:amountPerMonth] = value.to_f
-              else
-                item_data[:values][key.to_sym] = value
-            end
-          end
-          item_data[:path] ||= item_data[:uid] # Fill in path if not retrieved from response
-          data[:items] << item_data
+          data[:items] << parse_json_profile_item(item)
         end
         # Create object
         Category.new(data)

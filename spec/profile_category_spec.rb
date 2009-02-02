@@ -165,6 +165,27 @@ describe AMEE::Profile::Category, "with an authenticated JSON connection" do
     lambda{AMEE::Profile::Category.get(connection, "/profiles/E54C5525AA3E")}.should raise_error(AMEE::BadData, "Couldn't load ProfileCategory from JSON data. Check that your URL is correct.")
   end
 
+  it "parses recursive GET requests" do
+    connection = flexmock "connection"
+    connection.should_receive(:get).with("/profiles/BE22C1732952/transport/car", {:recurse=>true, :itemsPerPage => 10, :profileDate=>Date.today.strftime("%Y%m")}).and_return('{"totalAmountPerMonth":"0","dataCategory":{"uid":"1D95119FB149","path":"car","name":"Car"},"profileDate":"200901","path":"/transport/car","profile":{"uid":"BE22C1732952"},"children":{"pager":{},"dataCategories":[{"dataCategory":{"modified":"2008-04-21 16:42:10.0","created":"2008-04-21 16:42:10.0","itemDefinition":{"uid":"C6BC60C55678"},"dataCategory":{"uid":"1D95119FB149","path":"car","name":"Car"},"uid":"883ADD27228F","environment":{"uid":"5F5887BCF726"},"path":"bands","name":"Bands"},"path":"/transport/car/bands"},{"totalAmountPerMonth":0.265,"dataCategory":{"modified":"2007-07-27 09:30:44.0","created":"2007-07-27 09:30:44.0","itemDefinition":{"uid":"123C4A18B5D6"},"dataCategory":{"uid":"1D95119FB149","path":"car","name":"Car"},"uid":"87E55DA88017","environment":{"uid":"5F5887BCF726"},"path":"generic","name":"Generic"},"path":"/transport/car/generic","children":{"dataCategories":[{"dataCategory":{"modified":"2008-09-23 12:18:03.0","created":"2008-09-23 12:18:03.0","itemDefinition":{"uid":"E6D0BB09578A"},"dataCategory":{"uid":"87E55DA88017","path":"generic","name":"Generic"},"uid":"417DD367E9AA","environment":{"uid":"5F5887BCF726"},"path":"electric","name":"Electric"},"path":"/transport/car/generic/electric"}],"profileItems":{"rows":[{"created":"2009-01-05 13:58:52.0","ecoDriving":"false","tyresUnderinflated":"false","dataItemLabel":"diesel, large","kmPerLitre":"0","distanceKmPerMonth":"1","end":"false","uid":"8450D6D97D2D","modified":"2009-01-05 13:59:05.0","airconFull":"false","dataItemUid":"4F6CBCEE95F7","validFrom":"20090101","amountPerMonth":"0.265","kmPerLitreOwn":"0","country":"","label":"ProfileItem","occupants":"-1","airconTypical":"true","path":"8450D6D97D2D","name":"","regularlyServiced":"true"}],"label":"ProfileItems"}}},{"dataCategory":{"modified":"2007-07-27 09:30:44.0","created":"2007-07-27 09:30:44.0","itemDefinition":{"uid":"07EBA32512DF"},"dataCategory":{"uid":"1D95119FB149","path":"car","name":"Car"},"uid":"95E76249584D","environment":{"uid":"5F5887BCF726"},"path":"specific","name":"Specific"},"path":"/transport/car/specific"}],"profileItems":{}}}')
+    cat = AMEE::Profile::Category.get(connection, "/profiles/BE22C1732952/transport/car", Date.today, 10, true)
+    cat.items.size.should == 0
+    cat.children.size.should == 3
+    cat.children[1][:name].should == "Generic"
+    cat.children[1][:path].should == "generic"
+    cat.children[1][:uid].should == "87E55DA88017"
+    cat.children[1][:children].size.should == 1
+    cat.children[1][:children][0][:name].should == "Electric"
+    cat.children[1][:children][0][:path].should == "electric"
+    cat.children[1][:children][0][:uid].should == "417DD367E9AA"
+    cat.children[1][:items].size.should == 1
+    cat.children[1][:items][0][:amountPerMonth].should == 0.265
+    cat.children[1][:items][0][:dataItemLabel].should == "diesel, large"
+    cat.children[1][:items][0][:dataItemUid].should == "4F6CBCEE95F7"
+    cat.children[1][:items][0][:values][:airconTypical].should == "true"
+    cat.children[1][:items][0][:uid].should == "8450D6D97D2D"
+  end
+
 end
 
 describe AMEE::Profile::Category, "with an authenticated connection" do
