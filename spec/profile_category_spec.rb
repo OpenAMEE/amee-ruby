@@ -97,6 +97,7 @@ describe AMEE::Profile::Category, "with an authenticated XML connection" do
     cat.children[1][:name].should == "Generic"
     cat.children[1][:path].should == "generic"
     cat.children[1][:uid].should == "87E55DA88017"
+    cat.children[1][:totalAmountPerMonth].should == 0.265
     cat.children[1][:children].size.should == 1
     cat.children[1][:children][0][:name].should == "Electric"
     cat.children[1][:children][0][:path].should == "electric"
@@ -174,6 +175,7 @@ describe AMEE::Profile::Category, "with an authenticated JSON connection" do
     cat.children[1][:name].should == "Generic"
     cat.children[1][:path].should == "generic"
     cat.children[1][:uid].should == "87E55DA88017"
+    cat.children[1][:totalAmountPerMonth].should == 0.265
     cat.children[1][:children].size.should == 1
     cat.children[1][:children][0][:name].should == "Electric"
     cat.children[1][:children][0][:path].should == "electric"

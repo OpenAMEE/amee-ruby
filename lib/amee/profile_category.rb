@@ -44,6 +44,7 @@ module AMEE
         category_data[:name] = datacat['name']
         category_data[:path] = datacat['path']
         category_data[:uid] = datacat['uid']
+        category_data[:totalAmountPerMonth] = category['totalAmountPerMonth'].to_f
         category_data[:children] = []
         category_data[:items] = []
         if category['children']
@@ -120,6 +121,7 @@ module AMEE
         category_data[:name] = category.elements['DataCategory'].elements['Name'].text
         category_data[:path] = category.elements['DataCategory'].elements['Path'].text
         category_data[:uid] = category.elements['DataCategory'].attributes['uid'].to_s
+        category_data[:totalAmountPerMonth] = category.elements['TotalAmountPerMonth'].text.to_f rescue nil
         category_data[:children] = []
         category_data[:items] = []
         if category.elements['Children']
