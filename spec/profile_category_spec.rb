@@ -88,6 +88,27 @@ describe AMEE::Profile::Category, "with an authenticated XML connection" do
     lambda{AMEE::Profile::Category.get(connection, "/profiles/E54C5525AA3E")}.should raise_error(AMEE::BadData, "Couldn't load ProfileCategory from XML data. Check that your URL is correct.")
   end
 
+  it "parses recursive GET requests" do
+    connection = flexmock "connection"
+    connection.should_receive(:get).with("/profiles/BE22C1732952/transport/car", {:recurse=>true, :itemsPerPage => 10, :profileDate=>Date.today.strftime("%Y%m")}).and_return('<?xml version="1.0" encoding="UTF-8"?><Resources><ProfileCategoryResource><Path>/transport/car</Path><ProfileDate>200901</ProfileDate><Profile uid="BE22C1732952"/><DataCategory uid="1D95119FB149"><Name>Car</Name><Path>car</Path></DataCategory><Children><ProfileCategories><ProfileCategory><Path>/transport/car/bands</Path><DataCategory uid="883ADD27228F"><Name>Bands</Name><Path>bands</Path></DataCategory></ProfileCategory><ProfileCategory><Path>/transport/car/generic</Path><DataCategory uid="87E55DA88017"><Name>Generic</Name><Path>generic</Path></DataCategory><Children><ProfileCategories><ProfileCategory><Path>/transport/car/generic/electric</Path><DataCategory uid="417DD367E9AA"><Name>Electric</Name><Path>electric</Path></DataCategory></ProfileCategory></ProfileCategories><ProfileItems><ProfileItem created="2009-01-05 13:58:52.0" modified="2009-01-05 13:59:05.0" uid="8450D6D97D2D"><distanceKmPerMonth>1</distanceKmPerMonth><validFrom>20090101</validFrom><end>false</end><airconTypical>true</airconTypical><ecoDriving>false</ecoDriving><airconFull>false</airconFull><kmPerLitreOwn>0</kmPerLitreOwn><country/><tyresUnderinflated>false</tyresUnderinflated><amountPerMonth>0.265</amountPerMonth><occupants>-1</occupants><kmPerLitre>0</kmPerLitre><dataItemUid>4F6CBCEE95F7</dataItemUid><regularlyServiced>true</regularlyServiced><path>8450D6D97D2D</path><name/><dataItemLabel>diesel, large</dataItemLabel></ProfileItem></ProfileItems></Children><TotalAmountPerMonth>0.265</TotalAmountPerMonth></ProfileCategory><ProfileCategory><Path>/transport/car/specific</Path><DataCategory uid="95E76249584D"><Name>Specific</Name><Path>specific</Path></DataCategory></ProfileCategory></ProfileCategories></Children></ProfileCategoryResource></Resources>')
+    cat = AMEE::Profile::Category.get(connection, "/profiles/BE22C1732952/transport/car", Date.today, 10, true)
+    cat.items.size.should == 0
+    cat.children.size.should == 3
+    cat.children[1][:name].should == "Generic"
+    cat.children[1][:path].should == "generic"
+    cat.children[1][:uid].should == "87E55DA88017"
+    cat.children[1][:children].size.should == 1
+    cat.children[1][:children][0][:name].should == "Electric"
+    cat.children[1][:children][0][:path].should == "electric"
+    cat.children[1][:children][0][:uid].should == "417DD367E9AA"
+    cat.children[1][:items].size.should == 1
+    cat.children[1][:items][0][:amountPerMonth].should == 0.265
+    cat.children[1][:items][0][:dataItemLabel].should == "diesel, large"
+    cat.children[1][:items][0][:dataItemUid].should == "4F6CBCEE95F7"
+    cat.children[1][:items][0][:values][:airconTypical].should == "true"
+    cat.children[1][:items][0][:uid].should == "8450D6D97D2D"
+  end
+
 end
 
 describe AMEE::Profile::Category, "with an authenticated JSON connection" do
