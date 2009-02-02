@@ -88,8 +88,8 @@ module AMEE
         end
         # Create object
         Category.new(data)
-      #rescue
-      #  raise AMEE::BadData.new("Couldn't load ProfileCategory from JSON data. Check that your URL is correct.")
+      rescue
+        raise AMEE::BadData.new("Couldn't load ProfileCategory from JSON data. Check that your URL is correct.")
       end
 
       def self.parse_xml_profile_item(item)
@@ -219,8 +219,8 @@ module AMEE
         options[:recurse] = true if recurse == true
         response = connection.get(path, options)
         return Category.parse(connection, response)
-      #rescue
-      #  raise AMEE::BadData.new("Couldn't load ProfileCategory. Check that your URL is correct.")
+      rescue
+        raise AMEE::BadData.new("Couldn't load ProfileCategory. Check that your URL is correct.")
       end
       
       def child(child_path)
