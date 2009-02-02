@@ -65,7 +65,7 @@ module AMEE
         data[:from_data] = REXML::XPath.first(doc, '/Resources/DataItemValueResource/ItemValue/ItemValueDefinition/FromData').text == "true" ? true : false
         # Create object
         ItemValue.new(data)
-      rescue 
+      rescue
         raise AMEE::BadData.new("Couldn't load DataItemValue from XML. Check that your URL is correct.")
       end
 
