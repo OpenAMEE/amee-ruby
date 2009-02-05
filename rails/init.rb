@@ -5,9 +5,9 @@ require 'amee/rails'
 amee_config = "#{RAILS_ROOT}/config/amee.yml"
 if File.exist?(amee_config)
   # Load config
-  AMEE_CONFIG = YAML.load_file(amee_config)[RAILS_ENV]
+  $AMEE_CONFIG = YAML.load_file(amee_config)[RAILS_ENV]
   # Create a global AMEE connection that we can use from anywhere in this app
-  $amee = AMEE::Connection.new(AMEE_CONFIG['server'], AMEE_CONFIG['username'], AMEE_CONFIG['password'])
+  $amee = AMEE::Connection.new($AMEE_CONFIG['server'], $AMEE_CONFIG['username'], $AMEE_CONFIG['password'])
   # Authenticate now to get it out of the way and to check settings
   $amee.authenticate
 else
