@@ -109,11 +109,15 @@ module AMEE
         raise AMEE::BadData.new("Couldn't create ProfileItem. Check that your information is correct.")
       end
 
-      def update(options = {})
-        response = connection.put(full_path, options)
+      def self.update(connection, path, options = {})
+        response = connection.put(path, options)
         return Item.parse(connection, response)
-      rescue
-        raise AMEE::BadData.new("Couldn't update ProfileItem. Check that your information is correct.")
+      #rescue
+      #  raise AMEE::BadData.new("Couldn't update ProfileItem. Check that your information is correct.")
+      end
+
+      def update(options = {})
+        AMEE::Profile::Item.update(connection, full_path, options)
       end
 
       def self.delete(connection, path)
