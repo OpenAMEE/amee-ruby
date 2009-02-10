@@ -46,7 +46,7 @@ module AMEE
       # Create URL parameters
       params = []
       data.each_pair do |key, value|
-        params << "#{key}=#{value}"
+        params << "#{CGI::escape(key.to_s)}=#{CGI::escape(value.to_s)}"
       end
       if params.size > 0
         path += "?#{params.join('&')}"
@@ -64,7 +64,7 @@ module AMEE
       post = Net::HTTP::Post.new(path)
       body = []
         data.each_pair do |key, value|
-        body << "#{key}=#{value}"
+        body << "#{CGI::escape(key.to_s)}=#{CGI::escape(value.to_s)}"
       end
       post.body = body.join '&'
       # Send request
@@ -77,7 +77,7 @@ module AMEE
       put = Net::HTTP::Put.new(path)
       body = []
         data.each_pair do |key, value|
-        body << "#{key}=#{value}"
+        body << "#{CGI::escape(key.to_s)}=#{CGI::escape(value.to_s)}"
       end
       put.body = body.join '&'
       # Send request
