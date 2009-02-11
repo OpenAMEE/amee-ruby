@@ -8,12 +8,7 @@ module AMEE
       @username = username
       @password = password
       @auth_token = nil
-      @version = options[:version] || 2.0
       @use_json_if_available = options[:use_json_if_available].nil? ? true : options[:use_json_if_available]
-      # JSON is not currently implemented reliably for v2, so disable it
-      if @version >= 2
-        @use_json_if_available = false
-      end
       if !valid?
        raise "You must supply connection details - server, username and password are all required!"
       end
@@ -107,11 +102,21 @@ module AMEE
       unless authenticated?
         raise AMEE::AuthFailed.new("Authentication failed. Please check your username and password.") 
       end
+      # Detect API version
+      if response.body.is_json?
+        @version = JSON.parse(response.body)["user"]["apiVersion"].to_f
+      elsif response.body.is_xml?
+        @version = REXML::Document.new(response.body).elements['Resources'].elements['SignInResource'].elements['User'].elements['ApiVersion'].text.to_f
+      else
+        @version = 1.0
+      end
     end
 
     protected
 
     def content_type
+      # JSON is not currently implemented reliably for v2, so just use XML
+      return 'application/xml' if @version && @version >= 2
       (@use_json_if_available == true && defined?(JSON)) ? 'application/json' : 'application/xml'
     end
     
