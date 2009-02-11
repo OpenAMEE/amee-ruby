@@ -4,6 +4,9 @@ module AMEE
   class Connection
 
     def initialize(server, username, password, options = {})
+      unless options.is_a?(Hash)
+        raise AMEE::ArgumentError.new("Fourth argument must be a hash of options!")
+      end
       @server = server
       @username = username
       @password = password
