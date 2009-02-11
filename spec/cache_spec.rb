@@ -10,7 +10,7 @@ describe AMEE::Connection do
       mock.should_receive(:request).and_return(flexmock(:code => '200', :body => 'get response 2'))
       mock.should_receive(:finish => nil)
     end
-    amee = AMEE::Connection.new("server.example.com", "username", "password", false, false)
+    amee = AMEE::Connection.new("server.example.com", "username", "password")
     amee.get('/url1').should == "get response 1"
     $cache.should be_nil
   end
@@ -23,7 +23,7 @@ describe AMEE::Connection do
       mock.should_receive(:request).and_return(flexmock(:code => '200', :body => 'get response 2'))
       mock.should_receive(:finish => nil)
     end
-    amee = AMEE::Connection.new("server.example.com", "username", "password", false, true)
+    amee = AMEE::Connection.new("server.example.com", "username", "password", :enable_caching => true)
     amee.get('/url1')
     $cache.size.should be(1)
     $cache["/url1"].should == "get response 1"
@@ -40,7 +40,7 @@ describe AMEE::Connection do
       mock.should_receive(:request).once.and_return(flexmock(:code => '200', :body => 'put response'))
       mock.should_receive(:finish => nil)
     end
-    amee = AMEE::Connection.new("server.example.com", "username", "password", false, true)
+    amee = AMEE::Connection.new("server.example.com", "username", "password", :enable_caching => true)
     amee.get('/url1').should == "get response"
     $cache.size.should be(1)
     amee.put('/url2').should == "put response"
@@ -55,7 +55,7 @@ describe AMEE::Connection do
       mock.should_receive(:request).once.and_return(flexmock(:code => '200', :body => 'post response'))
       mock.should_receive(:finish => nil)
     end
-    amee = AMEE::Connection.new("server.example.com", "username", "password", false, true)
+    amee = AMEE::Connection.new("server.example.com", "username", "password", :enable_caching => true)
     amee.get('/url1').should == "get response"
     $cache.size.should be(1)
     amee.post('/url2').should == "post response"
@@ -70,7 +70,7 @@ describe AMEE::Connection do
       mock.should_receive(:request).once.and_return(flexmock(:code => '200', :body => 'delete response'))
       mock.should_receive(:finish => nil)
     end
-    amee = AMEE::Connection.new("server.example.com", "username", "password", false, true)
+    amee = AMEE::Connection.new("server.example.com", "username", "password", :enable_caching => true)
     amee.get('/url1').should == "get response"
     $cache.size.should be(1)
     amee.delete('/url2').should == "delete response"
