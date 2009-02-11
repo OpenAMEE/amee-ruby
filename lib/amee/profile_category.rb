@@ -307,6 +307,9 @@ module AMEE
         if options[:end_date] && connection.version >= 2
           amee_options[:endDate] = options[:end_date].amee2schema
         end
+        if options[:duration] && connection.version >= 2
+          amee_options[:duration] = "PT#{options[:duration] * 86400}S"
+        end
         amee_options[:itemsPerPage] = options[:items_per_page] if options[:items_per_page]
         amee_options[:recurse] = options[:recurse] if options[:recurse]
         # Load data from path

@@ -27,6 +27,10 @@ module AMEE
         end_date.nil? ? false : start_date == end_date
       end
 
+      def duration
+        end_date.nil? ? nil : (end_date - start_date).to_f
+      end
+
       def self.from_json(json)
         # Parse json
         doc = JSON.parse(json)
@@ -139,10 +143,22 @@ module AMEE
       end
 
      def self.get(connection, path, options = {})
+        unless options.is_a?(Hash)
+          raise AMEE::ArgumentError.new("Third argument must be a hash of options!")
+        end
         # Convert to AMEE options
         amee_options = {}
-        amee_options[:profileDate] = options[:start_date].amee1_month if options[:start_date] && connection.version < 2
-        amee_options[:startDate] = options[:start_date].xmlschema if options[:start_date] && connection.version >= 2
+        if options[:start_date] && connection.version < 2
+          amee_options[:profileDate] = options[:start_date].amee1_month 
+        elsif options[:start_date] && connection.version >= 2
+          amee_options[:startDate] = options[:start_date].amee2schema
+        end
+        if options[:end_date] && connection.version >= 2
+          amee_options[:endDate] = options[:end_date].amee2schema
+        end
+        if options[:duration] && connection.version >= 2
+          amee_options[:duration] = "PT#{options[:duration] * 86400}S"
+        end
         # Load data from path
         response = connection.get(path, amee_options)
         return Item.parse(connection, response)
@@ -151,10 +167,23 @@ module AMEE
       end
 
       def self.create(profile, data_item_uid, options = {})
-        # Set date
-        options[:profileDate] = options[:start_date].amee1_month if options[:start_date] && profile.connection.version < 2
-        options[:startDate] = options[:start_date].xmlschema if options[:start_date] && profile.connection.version >= 2
+        unless options.is_a?(Hash)
+          raise AMEE::ArgumentError.new("Third argument must be a hash of options!")
+        end
+        # Set dates
+        if options[:start_date] && profile.connection.version < 2
+          options[:profileDate] = options[:start_date].amee1_month
+        elsif options[:start_date] && profile.connection.version >= 2
+          options[:startDate] = options[:start_date].amee2schema
+        end
         options.delete(:start_date)
+        if options[:end_date] && profile.connection.version >= 2
+          options[:endDate] = options[:end_date].amee2schema
+        end        
+        options.delete(:end_date)
+        if options[:duration] && profile.connection.version >= 2
+          options[:duration] = "PT#{options[:duration] * 86400}S"
+        end
         # Send data to path
         options.merge! :dataItemUid => data_item_uid
         response = profile.connection.post(profile.full_path, options)
