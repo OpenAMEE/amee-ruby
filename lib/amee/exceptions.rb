@@ -1,5 +1,8 @@
 module AMEE
   
+  class ArgumentError < Exception
+  end
+
   class BadData < Exception
   end
   
