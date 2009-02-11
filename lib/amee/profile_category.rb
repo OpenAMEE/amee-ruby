@@ -294,13 +294,21 @@ module AMEE
 
 
       def self.get(connection, path, options = {})
+        unless options.is_a?(Hash)
+          raise AMEE::ArgumentError.new("Third argument must be a hash of options!")
+        end
         # Convert to AMEE options
         amee_options = {}
-        amee_options[:profileDate] = options[:start_date].amee1_month if options[:start_date] && connection.version < 2
-        amee_options[:startDate] = options[:start_date].xmlschema if options[:start_date] && connection.version >= 2
+        if options[:start_date] && connection.version < 2
+          amee_options[:profileDate] = options[:start_date].amee1_month 
+        elsif options[:start_date] && connection.version >= 2
+          amee_options[:startDate] = options[:start_date].amee2schema
+        end
+        if options[:end_date] && connection.version >= 2
+          amee_options[:endDate] = options[:end_date].amee2schema
+        end
         amee_options[:itemsPerPage] = options[:items_per_page] if options[:items_per_page]
         amee_options[:recurse] = options[:recurse] if options[:recurse]
-        options[:startDate] =
         # Load data from path
         response = connection.get(path, amee_options)
         return Category.parse(connection, response)
