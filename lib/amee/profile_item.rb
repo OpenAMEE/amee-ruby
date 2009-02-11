@@ -166,28 +166,28 @@ module AMEE
         raise AMEE::BadData.new("Couldn't load ProfileItem. Check that your URL is correct.")
       end
 
-      def self.create(profile, data_item_uid, options = {})
+      def self.create(category, data_item_uid, options = {})
         unless options.is_a?(Hash)
           raise AMEE::ArgumentError.new("Third argument must be a hash of options!")
         end
         # Set dates
-        if options[:start_date] && profile.connection.version < 2
+        if options[:start_date] && category.connection.version < 2
           options[:profileDate] = options[:start_date].amee1_month
-        elsif options[:start_date] && profile.connection.version >= 2
+        elsif options[:start_date] && category.connection.version >= 2
           options[:startDate] = options[:start_date].amee2schema
         end
         options.delete(:start_date)
-        if options[:end_date] && profile.connection.version >= 2
+        if options[:end_date] && category.connection.version >= 2
           options[:endDate] = options[:end_date].amee2schema
         end        
         options.delete(:end_date)
-        if options[:duration] && profile.connection.version >= 2
+        if options[:duration] && category.connection.version >= 2
           options[:duration] = "PT#{options[:duration] * 86400}S"
         end
         # Send data to path
         options.merge! :dataItemUid => data_item_uid
-        response = profile.connection.post(profile.full_path, options)
-        category = Category.parse(profile.connection, response)
+        response = category.connection.post(category.full_path, options)
+        category = Category.parse(category.connection, response)
         return category.item(options)
       rescue
         raise AMEE::BadData.new("Couldn't create ProfileItem. Check that your information is correct.")
