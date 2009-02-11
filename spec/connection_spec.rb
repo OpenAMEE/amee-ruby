@@ -38,6 +38,42 @@ describe AMEE::Connection, "with authentication" do
     amee.authenticated?.should be_false
   end
 
+  it "detects the API version (1)" do
+    flexmock(Net::HTTP).new_instances do |mock|
+      mock.should_receive(:start => nil)
+      mock.should_receive(:request).and_return(flexmock(:code => '200', :body => '0', :'[]' => 'dummy_auth_token_data'))
+      mock.should_receive(:finish => nil)
+    end
+    amee = AMEE::Connection.new('server.example.com', 'username', 'password')
+    amee.authenticate
+    amee.authenticated?.should be_true
+    amee.version.should == 1.0
+  end
+
+  it "detects the API version (2 - XML)" do
+    flexmock(Net::HTTP).new_instances do |mock|
+      mock.should_receive(:start => nil)
+      mock.should_receive(:request).and_return(flexmock(:code => '200', :body => '<?xml version="1.0" encoding="UTF-8"?><Resources><SignInResource><Next>/auth</Next><User uid="DB2C6DA7EAA7"><Status>ACTIVE</Status><Type>STANDARD</Type><GroupNames><GroupName>amee</GroupName><GroupName>Standard</GroupName><GroupName>All</GroupName></GroupNames><ApiVersion>2.0</ApiVersion></User></SignInResource></Resources>', :'[]' => 'dummy_auth_token_data'))
+      mock.should_receive(:finish => nil)
+    end
+    amee = AMEE::Connection.new('server.example.com', 'username', 'password')
+    amee.authenticate
+    amee.authenticated?.should be_true
+    amee.version.should == 2.0
+  end
+
+  it "detects the API version (2 - JSON)" do
+    flexmock(Net::HTTP).new_instances do |mock|
+      mock.should_receive(:start => nil)
+      mock.should_receive(:request).and_return(flexmock(:code => '200', :body => '{ "next" : "/auth","user" : { "apiVersion" : "2.0","groupNames" : [ "amee","Standard","All"],"status" : "ACTIVE","type" : "STANDARD","uid" : "DB2C6DA7EAA7"}}', :'[]' => 'dummy_auth_token_data'))
+      mock.should_receive(:finish => nil)
+    end
+    amee = AMEE::Connection.new('server.example.com', 'username', 'password')
+    amee.authenticate
+    amee.authenticated?.should be_true
+    amee.version.should == 2.0
+  end
+
   it "should be able to get private URLs" do
     flexmock(Net::HTTP).new_instances do |mock|
       mock.should_receive(:start => nil)
