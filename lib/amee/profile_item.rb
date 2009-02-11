@@ -4,18 +4,28 @@ module AMEE
 
       def initialize(data = {})
         @values = data ? data[:values] : []
-        @total_amount_per_month = data[:total_amount_per_month]
-        @valid_from = data[:valid_from]
+        @total_amount = data[:total_amount]
+        @total_amount_unit = data[:total_amount_unit]
+        @start_date = data[:start_date] || data[:valid_from]
+        @end_date = data[:end_date] || (data[:end] == true ? @start_date : nil )
         @data_item_uid = data[:data_item_uid]
-        @end = data[:end]
         super
       end
 
       attr_reader :values
-      attr_reader :total_amount_per_month
-      attr_reader :valid_from
-      attr_reader :end
+      attr_reader :total_amount
+      attr_reader :total_amount_unit
+      attr_reader :start_date
+      attr_reader :end_date
       attr_reader :data_item_uid
+
+      # V1 compatibility
+      def valid_from
+        start_date
+      end
+      def end
+        end_date.nil? ? false : start_date == end_date
+      end
 
       def self.from_json(json)
         # Parse json
@@ -26,7 +36,8 @@ module AMEE
         data[:uid] = doc['profileItem']['uid']
         data[:name] = doc['profileItem']['name']
         data[:path] = doc['path']
-        data[:total_amount_per_month] = doc['profileItem']['amountPerMonth']
+        data[:total_amount] = doc['profileItem']['amountPerMonth']
+        data[:total_amount_unit] = "kg/month"
         data[:valid_from] = DateTime.strptime(doc['profileItem']['validFrom'], "%Y%m%d")
         data[:end] = doc['profileItem']['end'] == "false" ? false : true
         data[:values] = []
@@ -55,7 +66,8 @@ module AMEE
         data[:uid] = REXML::XPath.first(doc, "/Resources/ProfileItemResource/ProfileItem/@uid").to_s
         data[:name] = REXML::XPath.first(doc, '/Resources/ProfileItemResource/ProfileItem/Name').text
         data[:path] = REXML::XPath.first(doc, '/Resources/ProfileItemResource/Path').text || ""
-        data[:total_amount_per_month] = REXML::XPath.first(doc, '/Resources/ProfileItemResource/ProfileItem/AmountPerMonth').text.to_f rescue nil
+        data[:total_amount] = REXML::XPath.first(doc, '/Resources/ProfileItemResource/ProfileItem/AmountPerMonth').text.to_f rescue nil
+        data[:total_amount_unit] = "kg/month"
         data[:valid_from] = DateTime.strptime(REXML::XPath.first(doc, "/Resources/ProfileItemResource/ProfileItem/ValidFrom").text, "%Y%m%d")
         data[:end] = REXML::XPath.first(doc, '/Resources/ProfileItemResource/ProfileItem/End').text == "false" ? false : true
         data[:values] = []
@@ -78,10 +90,45 @@ module AMEE
         raise AMEE::BadData.new("Couldn't load ProfileItem from XML data. Check that your URL is correct.")
       end
 
+      def self.from_v2_xml(xml)
+        # Parse XML
+        doc = REXML::Document.new(xml)
+        data = {}
+        data[:profile_uid] = REXML::XPath.first(doc, "/Resources/ProfileItemResource/Profile/@uid").to_s
+        data[:data_item_uid] = REXML::XPath.first(doc, "/Resources/ProfileItemResource/DataItem/@uid").to_s
+        data[:uid] = REXML::XPath.first(doc, "/Resources/ProfileItemResource/ProfileItem/@uid").to_s
+        data[:name] = REXML::XPath.first(doc, '/Resources/ProfileItemResource/ProfileItem/Name').text
+        data[:path] = REXML::XPath.first(doc, '/Resources/ProfileItemResource/Path').text || ""
+        data[:total_amount] = REXML::XPath.first(doc, '/Resources/ProfileItemResource/ProfileItem/Amount').text.to_f rescue nil
+        data[:total_amount_unit] = REXML::XPath.first(doc, '/Resources/ProfileItemResource/ProfileItem/Amount/@unit').to_s rescue nil
+        data[:start_date] = DateTime.parse(REXML::XPath.first(doc, "/Resources/ProfileItemResource/ProfileItem/StartDate").text)
+        data[:end_date] = DateTime.parse(REXML::XPath.first(doc, "/Resources/ProfileItemResource/ProfileItem/EndDate").text) rescue nil
+        data[:values] = []
+        REXML::XPath.each(doc, '/Resources/ProfileItemResource/ProfileItem/ItemValues/ItemValue') do |item|
+          value_data = {}
+          item.elements.each do |element|
+            key = element.name
+            value = element.text
+            case key
+              when 'Name', 'Path', 'Value'
+                value_data[key.downcase.to_sym] = value
+            end
+          end
+          value_data[:uid] = item.attributes['uid'].to_s
+          data[:values] << value_data
+        end
+        # Create object
+        Item.new(data)
+      rescue
+        raise AMEE::BadData.new("Couldn't load ProfileItem from V2 XML data. Check that your URL is correct.")
+      end
+
       def self.parse(connection, response)
         # Parse data from response
         if response.is_json?
           cat = Item.from_json(response)
+        elsif response.is_v2_xml?
+          cat = Item.from_v2_xml(response)
         else
           cat = Item.from_xml(response)
         end
@@ -91,15 +138,23 @@ module AMEE
         return cat
       end
 
-      def self.get(connection, path, for_date = Date.today)
+     def self.get(connection, path, options = {})
+        # Convert to AMEE options
+        amee_options = {}
+        amee_options[:profileDate] = options[:start_date].amee1_month if options[:start_date] && connection.version < 2
+        amee_options[:startDate] = options[:start_date].xmlschema if options[:start_date] && connection.version >= 2
         # Load data from path
-        response = connection.get(path, :profileDate => for_date.strftime("%Y%m"))
+        response = connection.get(path, amee_options)
         return Item.parse(connection, response)
       rescue
         raise AMEE::BadData.new("Couldn't load ProfileItem. Check that your URL is correct.")
       end
 
       def self.create(profile, data_item_uid, options = {})
+        # Set date
+        options[:profileDate] = options[:start_date].amee1_month if options[:start_date] && profile.connection.version < 2
+        options[:startDate] = options[:start_date].xmlschema if options[:start_date] && profile.connection.version >= 2
+        options.delete(:start_date)
         # Send data to path
         options.merge! :dataItemUid => data_item_uid
         response = profile.connection.post(profile.full_path, options)
@@ -112,8 +167,8 @@ module AMEE
       def self.update(connection, path, options = {})
         response = connection.put(path, options)
         return Item.parse(connection, response)
-      #rescue
-      #  raise AMEE::BadData.new("Couldn't update ProfileItem. Check that your information is correct.")
+      rescue
+        raise AMEE::BadData.new("Couldn't update ProfileItem. Check that your information is correct.")
       end
 
       def update(options = {})

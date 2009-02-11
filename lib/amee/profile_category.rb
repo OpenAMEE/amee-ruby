@@ -7,13 +7,15 @@ module AMEE
       def initialize(data = {})
         @children = data ? data[:children] : []
         @items = data ? data[:items] : []
-        @total_amount_per_month = data[:total_amount_per_month]
+        @total_amount = data[:total_amount]
+        @total_amount_unit = data[:total_amount_unit]
         super
       end
 
       attr_reader :children
       attr_reader :items
-      attr_reader :total_amount_per_month
+      attr_reader :total_amount
+      attr_reader :total_amount_unit
 
       def self.parse_json_profile_item(item)
         item_data = {}
@@ -72,7 +74,8 @@ module AMEE
         data[:profile_date] = DateTime.strptime(doc['profileDate'], "%Y%m")
         data[:name] = doc['dataCategory']['name']
         data[:path] = doc['path']
-        data[:total_amount_per_month] = doc['totalAmountPerMonth']
+        data[:total_amount] = doc['totalAmountPerMonth']
+        data[:total_amount_unit] = "kg/month"
         data[:children] = []
         if doc['children'] && doc['children']['dataCategories']
           doc['children']['dataCategories'].each do |child|
@@ -149,7 +152,8 @@ module AMEE
         data[:profile_date] = DateTime.strptime(REXML::XPath.first(doc, "/Resources/ProfileCategoryResource/ProfileDate").text, "%Y%m")
         data[:name] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/DataCategory/Name').text
         data[:path] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/Path').text || ""
-        data[:total_amount_per_month] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/TotalAmountPerMonth').text.to_f rescue nil
+        data[:total_amount] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/TotalAmountPerMonth').text.to_f rescue nil
+        data[:total_amount_unit] = "kg/month"
         data[:children] = []
         REXML::XPath.each(doc, '/Resources/ProfileCategoryResource/Children/ProfileCategories/DataCategory') do |child|
           category_data = {}
@@ -172,6 +176,80 @@ module AMEE
         Category.new(data)
       rescue
         raise AMEE::BadData.new("Couldn't load ProfileCategory from XML data. Check that your URL is correct.")
+      end
+
+      def self.parse_v2_xml_profile_item(item)
+        item_data = {}
+        item_data[:values] = {}
+        item.elements.each do |element|
+          key = element.name
+          case key.downcase
+            when 'name', 'path'
+              item_data[key.downcase.to_sym] = element.text
+            when 'dataitem'
+              item_data[:dataItemLabel] = element.elements['Label'].text
+              item_data[:dataItemUid] = element.attributes['uid'].to_s
+            when 'validfrom'
+              item_data[:validFrom] = DateTime.strptime(element.text, "%Y%m%d")
+            when 'startdate'
+              item_data[:startDate] = DateTime.parse(element.text)
+            when 'enddate'
+              item_data[:endDate] = DateTime.parse(element.text) if element.text
+            when 'end'
+              item_data[:end] = (element.text == "true")
+            when 'amount'
+              item_data[:amount] = element.text.to_f
+              item_data[:amount_unit] = element.attributes['unit'].to_s
+            when 'itemvalues'
+              element.elements.each do |itemvalue|
+                path = itemvalue.elements['Path'].text
+                item_data[:values][path.to_sym] = {}
+                item_data[:values][path.to_sym][:name] = itemvalue.elements['Name'].text
+                item_data[:values][path.to_sym][:value] = itemvalue.elements['Value'].text
+                item_data[:values][path.to_sym][:unit] = itemvalue.elements['Unit'].text
+                item_data[:values][path.to_sym][:per_unit] = itemvalue.elements['PerUnit'].text
+              end
+            else
+              item_data[:values][key.to_sym] = element.text
+          end
+        end
+        item_data[:uid] = item.attributes['uid'].to_s
+        item_data[:path] ||= item_data[:uid] # Fill in path if not retrieved from response
+        return item_data
+      end
+
+      def self.from_v2_xml(xml)
+        # Parse XML
+        doc = REXML::Document.new(xml)
+        data = {}
+        data[:profile_uid] = REXML::XPath.first(doc, "/Resources/ProfileCategoryResource/Profile/@uid").to_s
+        #data[:profile_date] = DateTime.strptime(REXML::XPath.first(doc, "/Resources/ProfileCategoryResource/ProfileDate").text, "%Y%m")
+        data[:name] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/DataCategory/Name').text
+        data[:path] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/Path').text || ""
+        data[:total_amount] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/TotalAmount').text.to_f rescue nil
+        data[:total_amount_unit] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/TotalAmount/@unit').to_s rescue nil
+        data[:children] = []
+        REXML::XPath.each(doc, '/Resources/ProfileCategoryResource/ProfileCategories/DataCategory') do |child|
+          category_data = {}
+          category_data[:name] = child.elements['Name'].text
+          category_data[:path] = child.elements['Path'].text
+          category_data[:uid] = child.attributes['uid'].to_s
+          data[:children] << category_data
+        end
+        REXML::XPath.each(doc, '/Resources/ProfileCategoryResource/Children/ProfileCategories/ProfileCategory') do |child|
+          data[:children] << parse_xml_profile_category(child)
+        end
+        data[:items] = []
+        REXML::XPath.each(doc, '/Resources/ProfileCategoryResource/ProfileItems/ProfileItem') do |item|
+          data[:items] << parse_v2_xml_profile_item(item)
+        end
+        REXML::XPath.each(doc, '/Resources/ProfileCategoryResource/ProfileItem') do |item|
+          data[:items] << parse_v2_xml_profile_item(item)
+        end
+        # Create object
+        Category.new(data)
+      rescue
+        raise AMEE::BadData.new("Couldn't load ProfileCategory from V2 XML data. Check that your URL is correct.")
       end
 
       def self.get_history(connection, path, num_months, end_date = Date.today, items_per_page = 10)
@@ -203,7 +281,9 @@ module AMEE
         # Parse data from response
         if response.is_json?
           cat = Category.from_json(response)
-        else
+        elsif response.is_v2_xml?
+          cat = Category.from_v2_xml(response)
+        elsif response.is_xml?
           cat = Category.from_xml(response)
         end
         # Store connection in object for future use
@@ -213,11 +293,16 @@ module AMEE
       end
 
 
-      def self.get(connection, path, for_date = Date.today, items_per_page = 10, recurse = false)
+      def self.get(connection, path, options = {})
+        # Convert to AMEE options
+        amee_options = {}
+        amee_options[:profileDate] = options[:start_date].amee1_month if options[:start_date] && connection.version < 2
+        amee_options[:startDate] = options[:start_date].xmlschema if options[:start_date] && connection.version >= 2
+        amee_options[:itemsPerPage] = options[:items_per_page] if options[:items_per_page]
+        amee_options[:recurse] = options[:recurse] if options[:recurse]
+        options[:startDate] =
         # Load data from path
-        options = {:profileDate => for_date.strftime("%Y%m"), :itemsPerPage => items_per_page}
-        options[:recurse] = true if recurse == true
-        response = connection.get(path, options)
+        response = connection.get(path, amee_options)
         return Category.parse(connection, response)
       rescue
         raise AMEE::BadData.new("Couldn't load ProfileCategory. Check that your URL is correct.")
