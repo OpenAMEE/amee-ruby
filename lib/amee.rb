@@ -34,7 +34,7 @@ require 'amee/profile_item'
 require 'amee/drill_down'
 
 class Date
-  def xmlschema
+  def amee2schema
     strftime("%Y-%m-%dT%H:%M+0000")
   end
   def amee1_date
@@ -46,7 +46,7 @@ class Date
 end
 
 class Time
-  def xmlschema
+  def amee2schema
     strftime("%Y-%m-%dT%H:%M+0000")
   end
   def amee1_date
