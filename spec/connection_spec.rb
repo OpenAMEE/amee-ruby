@@ -2,37 +2,28 @@ require File.dirname(__FILE__) + '/spec_helper.rb'
 
 describe AMEE::Connection do
   
-  it "can be created with url only" do
+  it "requires server name, username, and password" do
     flexmock(Net::HTTP).new_instances.should_receive(:start => nil)
-    c = AMEE::Connection.new('server.example.com')
-    c.should be_valid
-  end
-  
-  it "cannot be created with username but no password" do
-    flexmock(Net::HTTP).new_instances.should_receive(:start => nil)
-    lambda{AMEE::Connection.new('server.example.com', 'username')}.should raise_error
-  end
-
-  it "cannot be created with password but no username" do
-    flexmock(Net::HTTP).new_instances.should_receive(:start => nil)
+    lambda{AMEE::Connection.new(nil, nil, nil)}.should raise_error
+    lambda{AMEE::Connection.new(nil, 'username', nil)}.should raise_error
+    lambda{AMEE::Connection.new(nil, nil, 'password')}.should raise_error
+    lambda{AMEE::Connection.new(nil, 'username', 'password')}.should raise_error
+    lambda{AMEE::Connection.new('server.example.com', nil, nil)}.should raise_error
+    lambda{AMEE::Connection.new('server.example.com', 'username', nil)}.should raise_error
     lambda{AMEE::Connection.new('server.example.com', nil, 'password')}.should raise_error
-  end
-
-  it "can be created with url, username and password" do
-    flexmock(Net::HTTP).new_instances.should_receive(:start => nil)
     c = AMEE::Connection.new('server.example.com', 'username', 'password')
     c.should be_valid
   end
-
+  
   it "has default timeout of 5 seconds" do
     flexmock(Net::HTTP).new_instances.should_receive(:start => nil)
-    c = AMEE::Connection.new('server.example.com')
+    c = AMEE::Connection.new('server.example.com', 'username', 'password')
     c.timeout.should be(5)
   end
 
   it "can set timeout" do
     flexmock(Net::HTTP).new_instances.should_receive(:start => nil)
-    c = AMEE::Connection.new('server.example.com')
+    c = AMEE::Connection.new('server.example.com', 'username', 'password')
     c.timeout = 30
     c.timeout.should be(30)
   end
@@ -45,12 +36,6 @@ describe AMEE::Connection, "with authentication" do
     flexmock(Net::HTTP).new_instances.should_receive(:start => nil)
     amee = AMEE::Connection.new('server.example.com', 'username', 'password')
     amee.authenticated?.should be_false
-  end
-
-  it "should be capable of authentication" do
-    flexmock(Net::HTTP).new_instances.should_receive(:start => nil)
-    amee = AMEE::Connection.new('server.example.com', 'username', 'password')
-    amee.can_authenticate?.should be_true
   end
 
   it "should be able to get private URLs" do
@@ -119,7 +104,7 @@ describe AMEE::Connection, "with incorrect server name" do
   
   it "should raise a useful error" do
     flexmock(Net::HTTP).new_instances.should_receive(:start).and_raise(SocketError.new)
-    amee = AMEE::Connection.new('badservername.example.com')
+    amee = AMEE::Connection.new('badservername.example.com', 'username', 'password')
     lambda{
       amee.get('/')
     }.should raise_error(AMEE::ConnectionFailed, "Connection failed. Check server name or network connection.")
@@ -143,36 +128,15 @@ describe AMEE::Connection, "with bad authentication information" do
 
 end
 
-describe AMEE::Connection, "without authentication" do
+describe AMEE::Connection, "with authentication" do
   
-  it "should not be capable of authentication" do
-    flexmock(Net::HTTP).new_instances.should_receive(:start => nil)
-    amee = AMEE::Connection.new('server.example.com')
-    amee.can_authenticate?.should be_false
-  end
-
-  it "should be capable of making requests for public URLs" do
-    flexmock(Net::HTTP).new_instances.should_receive(:start => nil, :request => flexmock(:code => '200', :body => ""), :finish => nil)
-    amee = AMEE::Connection.new('server.example.com')
-    amee.get('/') do |response|
-      response.should be_empty
-    end
-    amee.authenticated?.should be_false
-  end
-
-  it "should not be able to get private URLs" do
-    flexmock(Net::HTTP).new_instances.should_receive(:start => nil, :request => flexmock(:code => '401', :body => ""), :finish => nil)
-    amee = AMEE::Connection.new('server.example.com')
-    lambda{amee.get('/data')}.should raise_error(AMEE::AuthRequired, "Authentication required. Please provide your username and password.")
-  end
-
   it "should be able to send post requests" do
     flexmock(Net::HTTP).new_instances do |mock|
       mock.should_receive(:start => nil)
       mock.should_receive(:request).and_return(flexmock(:code => '200', :body => ''))
       mock.should_receive(:finish => nil)
     end
-    amee = AMEE::Connection.new('server.example.com')
+    amee = AMEE::Connection.new('server.example.com', 'username', 'password')
     amee.post('/profiles', :test => 1, :test2 => 2) do |response|
       response.should be_empty
     end
@@ -184,7 +148,7 @@ describe AMEE::Connection, "without authentication" do
       mock.should_receive(:request).and_return(flexmock(:code => '200', :body => ''))
       mock.should_receive(:finish => nil)
     end
-    amee = AMEE::Connection.new('server.example.com')
+    amee = AMEE::Connection.new('server.example.com', 'username', 'password')
     amee.put('/profiles/ABC123', :test => 1, :test2 => 2) do |response|
       response.should be_empty
     end
@@ -196,7 +160,7 @@ describe AMEE::Connection, "without authentication" do
       mock.should_receive(:request).and_return(flexmock(:code => '200', :body => ''))
       mock.should_receive(:finish => nil)
     end
-    amee = AMEE::Connection.new('server.example.com')
+    amee = AMEE::Connection.new('server.example.com', 'username', 'password')
     amee.delete('/profiles/ABC123') do |response|
       response.should be_empty
     end

@@ -3,23 +3,24 @@ require 'net/http'
 module AMEE
   class Connection
 
-    def initialize(server, username = nil, password = nil, use_json_if_available = true, enable_caching = false, enable_debug = false)
+    def initialize(server, username, password, options = {})
       @server = server
       @username = username
       @password = password
       @auth_token = nil
-      @use_json_if_available = use_json_if_available
-      if (@username || @password) && !valid?
-       raise "Must specify both username and password for authenticated access"
+      @use_json_if_available = options[:use_json_if_available] || true
+      if !valid?
+       raise "You must supply connection details - server, username and password are all required!"
       end
-      @enable_caching = enable_caching
+      @enable_caching = options[:enable_caching]
       if @enable_caching
         $cache ||= {}
       end
       # Make connection to server
       @http = Net::HTTP.new(@server)
       @http.read_timeout = 5
-      @http.set_debug_output($stdout) if enable_debug
+      @http.set_debug_output($stdout) if options[:enable_debug]
+      @version = options[:version] || 2.0
     end
     
     def timeout
@@ -30,14 +31,14 @@ module AMEE
       @http.read_timeout = t
     end
 
-    def valid?
-      !((@username || @password) ? (@username.nil? || @password.nil? || @server.nil?) : @server.nil?)
-    end
-    
-    def can_authenticate?
-      !(@username.nil? || @password.nil?)
+    def version
+      @version
     end
 
+    def valid?
+      @username && @password && @server
+    end
+    
     def authenticated?
       !@auth_token.nil?
     end
@@ -93,9 +94,6 @@ module AMEE
     end
 
     def authenticate
-      unless can_authenticate?        
-        raise AMEE::AuthRequired.new("Authentication required. Please provide your username and password.")
-      end
       response = nil
       post = Net::HTTP::Post.new("/auth")
       post.body = "username=#{@username}&password=#{@password}"
