@@ -9,7 +9,7 @@ module AMEE
       @password = password
       @auth_token = nil
       @version = options[:version] || 2.0
-      @use_json_if_available = options[:use_json_if_available] || true
+      @use_json_if_available = options[:use_json_if_available].nil? ? true : options[:use_json_if_available]
       # JSON is not currently implemented reliably for v2, so disable it
       if @version >= 2
         @use_json_if_available = false
@@ -112,7 +112,7 @@ module AMEE
     protected
 
     def content_type
-      (@use_json_if_available && defined?(JSON)) ? 'application/json' : 'application/xml'
+      (@use_json_if_available == true && defined?(JSON)) ? 'application/json' : 'application/xml'
     end
     
     def redirect?(response)
