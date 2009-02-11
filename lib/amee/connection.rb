@@ -8,7 +8,12 @@ module AMEE
       @username = username
       @password = password
       @auth_token = nil
+      @version = options[:version] || 2.0
       @use_json_if_available = options[:use_json_if_available] || true
+      # JSON is not currently implemented reliably for v2, so disable it
+      if @version >= 2
+        @use_json_if_available = false
+      end
       if !valid?
        raise "You must supply connection details - server, username and password are all required!"
       end
@@ -20,7 +25,6 @@ module AMEE
       @http = Net::HTTP.new(@server)
       @http.read_timeout = 5
       @http.set_debug_output($stdout) if options[:enable_debug]
-      @version = options[:version] || 2.0
     end
     
     def timeout
