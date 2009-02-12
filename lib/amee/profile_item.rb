@@ -130,16 +130,16 @@ module AMEE
       def self.parse(connection, response)
         # Parse data from response
         if response.is_json?
-          cat = Item.from_json(response)
+          item = Item.from_json(response)
         elsif response.is_v2_xml?
-          cat = Item.from_v2_xml(response)
+          item = Item.from_v2_xml(response)
         else
-          cat = Item.from_xml(response)
+          item = Item.from_xml(response)
         end
         # Store connection in object for future use
-        cat.connection = connection
+        item.connection = connection
         # Done
-        return cat
+        return item
       end
 
      def self.get(connection, path, options = {})
@@ -168,6 +168,8 @@ module AMEE
       end
 
       def self.create(category, data_item_uid, options = {})
+        # Store format if set
+        format = options[:format]
         unless options.is_a?(Hash)
           raise AMEE::ArgumentError.new("Third argument must be a hash of options!")
         end
@@ -189,6 +191,7 @@ module AMEE
         options.merge! :dataItemUid => data_item_uid
         response = category.connection.post(category.full_path, options)
         category = Category.parse(category.connection, response)
+        options.merge!(:format => format) if format
         return category.item(options)
       rescue
         raise AMEE::BadData.new("Couldn't create ProfileItem. Check that your information is correct.")

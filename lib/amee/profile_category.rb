@@ -325,7 +325,12 @@ module AMEE
       def item(options)
         # Search fields - from most specific to least specific
         item = items.find{ |x| x[:uid] == options[:uid] || x[:name] == options[:name] || x[:dataItemUid] == options[:dataItemUid] || x[:dataItemLabel] == options[:dataItemLabel] }
-        item ? AMEE::Profile::Item.get(connection, "#{full_path}/#{item[:path]}") : nil
+        # Pass through some options
+        new_opts = {}
+        new_opts[:returnUnit] = options[:returnUnit] if options[:returnUnit]
+        new_opts[:returnPerUnit] = options[:returnPerUnit] if options[:returnPerUnit]
+        new_opts[:format] = options[:format] if options[:format]
+        item ? AMEE::Profile::Item.get(connection, "#{full_path}/#{item[:path]}", new_opts) : nil
       end
 
     end
