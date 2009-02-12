@@ -298,22 +298,21 @@ module AMEE
           raise AMEE::ArgumentError.new("Third argument must be a hash of options!")
         end
         # Convert to AMEE options
-        amee_options = {}
         if options[:start_date] && connection.version < 2
-          amee_options[:profileDate] = options[:start_date].amee1_month 
+          options[:profileDate] = options[:start_date].amee1_month 
         elsif options[:start_date] && connection.version >= 2
-          amee_options[:startDate] = options[:start_date].amee2schema
+          options[:startDate] = options[:start_date].amee2schema
         end
+        options.delete(:start_date)
         if options[:end_date] && connection.version >= 2
-          amee_options[:endDate] = options[:end_date].amee2schema
+          options[:endDate] = options[:end_date].amee2schema
         end
+        options.delete(:end_date)
         if options[:duration] && connection.version >= 2
-          amee_options[:duration] = "PT#{options[:duration] * 86400}S"
+          options[:duration] = "PT#{options[:duration] * 86400}S"
         end
-        amee_options[:itemsPerPage] = options[:items_per_page] if options[:items_per_page]
-        amee_options[:recurse] = options[:recurse] if options[:recurse]
         # Load data from path
-        response = connection.get(path, amee_options)
+        response = connection.get(path, options)
         return Category.parse(connection, response)
       rescue
         raise AMEE::BadData.new("Couldn't load ProfileCategory. Check that your URL is correct.")
