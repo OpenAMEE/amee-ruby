@@ -11,7 +11,7 @@ module AMEE
       @username = username
       @password = password
       @auth_token = nil
-      @format = options[:format] || defined?(JSON) ? :json : :xml
+      @format = options[:format] || (defined?(JSON) ? :json : :xml)
       if !valid?
        raise "You must supply connection details - server, username and password are all required!"
       end
@@ -132,9 +132,9 @@ module AMEE
       when :xml
         return 'application/xml'
       when :json
-        return @version && @version < 2.0 ? 'application/json' : 'application/xml' # JSON currently disabled in v2
+        return (@version && (@version < 2.0)) ? 'application/json' : 'application/xml' # JSON currently disabled in v2, fall back to XML
       when :atom
-        return @version && @version > 2.0 ? 'application/json' : 'application/xml' # v2 and above only
+        return 'application/atom+xml'
       end
     end
     
