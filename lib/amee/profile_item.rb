@@ -114,8 +114,10 @@ module AMEE
             key = element.name
             value = element.text
             case key
-              when 'Name', 'Path', 'Value'
+              when 'Name', 'Path', 'Value', 'Unit'
                 value_data[key.downcase.to_sym] = value
+              when 'PerUnit'
+                value_data[:per_unit] = value
             end
           end
           value_data[:uid] = item.attributes['uid'].to_s
@@ -147,7 +149,7 @@ module AMEE
           value_data[:value] = item.elements['amee:value'].text unless item.elements['amee:value'].text == "N/A"
           value_data[:path] = item.elements['link'].attributes['href'].to_s
           value_data[:unit] = item.elements['amee:unit'].text rescue nil
-          value_data[:perUnit] = item.elements['amee:perUnit'].text rescue nil
+          value_data[:per_unit] = item.elements['amee:perUnit'].text rescue nil
           data[:values] << value_data
         end
         # Create object
