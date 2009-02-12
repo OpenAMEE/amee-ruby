@@ -11,7 +11,7 @@ module AMEE
       @username = username
       @password = password
       @auth_token = nil
-      @use_json_if_available = options[:use_json_if_available].nil? ? true : options[:use_json_if_available]
+      @format = options[:format] || defined?(JSON) ? :json : :xml
       if !valid?
        raise "You must supply connection details - server, username and password are all required!"
       end
@@ -24,6 +24,8 @@ module AMEE
       @http.read_timeout = 5
       @http.set_debug_output($stdout) if options[:enable_debug]
     end
+
+    attr_reader :format
     
     def timeout
       @http.read_timeout
@@ -46,6 +48,8 @@ module AMEE
     end
 
     def get(path, data = {})
+      # Allow format override
+      format = data.delete(:format) || @format
       # Create URL parameters
       params = []
       data.each_pair do |key, value|
@@ -56,12 +60,15 @@ module AMEE
       end
       # Send request
       return $cache[path] if @enable_caching and $cache[path]
-      response = do_request Net::HTTP::Get.new(path)
+      response = do_request(Net::HTTP::Get.new(path), format)
       $cache[path] = response if @enable_caching
       return response
     end
     
     def post(path, data = {})
+      # Allow format override
+      format = data.delete(:format) || @format
+      # Clear cache
       clear_cache
       # Create POST request
       post = Net::HTTP::Post.new(path)
@@ -71,10 +78,13 @@ module AMEE
       end
       post.body = body.join '&'
       # Send request
-      do_request(post)
+      do_request(post, format)
     end
 
     def put(path, data = {})
+      # Allow format override
+      format = data.delete(:format) || @format
+      # Clear cache
       clear_cache
       # Create PUT request
       put = Net::HTTP::Put.new(path)
@@ -84,7 +94,7 @@ module AMEE
       end
       put.body = body.join '&'
       # Send request
-      do_request(put)
+      do_request(put, format)
     end
 
     def delete(path)
@@ -99,7 +109,7 @@ module AMEE
       response = nil
       post = Net::HTTP::Post.new("/auth")
       post.body = "username=#{@username}&password=#{@password}"
-      post['Accept'] = content_type
+      post['Accept'] = content_type(:xml)
       response = @http.request(post)
       @auth_token = response['authToken']
       unless authenticated?
@@ -117,10 +127,15 @@ module AMEE
 
     protected
 
-    def content_type
-      # JSON is not currently implemented reliably for v2, so just use XML
-      return 'application/xml' if @version && @version >= 2
-      (@use_json_if_available == true && defined?(JSON)) ? 'application/json' : 'application/xml'
+    def content_type(format = @format)
+      case format
+      when :xml
+        return 'application/xml'
+      when :json
+        return @version && @version < 2.0 ? 'application/json' : 'application/xml' # JSON currently disabled in v2
+      when :atom
+        return @version && @version > 2.0 ? 'application/json' : 'application/xml' # v2 and above only
+      end
     end
     
     def redirect?(response)
@@ -141,12 +156,12 @@ module AMEE
       end
     end
 
-    def do_request(request)
+    def do_request(request, format = @format)
       # Open HTTP connection
       @http.start
       # Do request
       begin
-        response = send_request(request)
+        response = send_request(request, format)
       end while !response_ok?(response)
       # Return body of response
       return response.body
@@ -157,9 +172,9 @@ module AMEE
       @http.finish if @http.started?
     end
         
-    def send_request(request)
+    def send_request(request, format = @format)
       request['authToken'] = @auth_token
-      request['Accept'] = content_type
+      request['Accept'] = content_type(format)
       response = @http.request(request)
       # Handle 404s
       if response.code == '404'
