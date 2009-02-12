@@ -17,6 +17,9 @@ class String
   def is_v2_xml?
     is_xml? && include?('<Resources xmlns="http://schemas.amee.cc/2.0">')
   end
+  def is_v2_atom?
+    is_xml? && (include?('<feed ') || include?('<entry ')) && include?('xmlns:amee="http://schemas.amee.cc/2.0"')
+  end
 end
 
 require 'amee/version'
