@@ -137,6 +137,50 @@ describe AMEE::Profile::Item, "with an authenticated V2 XML connection" do
 
 end
 
+describe AMEE::Profile::Item, "with an authenticated V2 ATOM connection" do
+
+  it "should load Profile Item" do
+    connection = flexmock "connection"
+    connection.should_receive(:version).and_return(2.0)
+    connection.should_receive(:get).with("/profiles/9BFB0C1CD78A/home/energy/quantity/30C00AD33033", {}).and_return('<?xml version="1.0" encoding="UTF-8"?><entry xmlns="http://www.w3.org/2005/Atom" xmlns:amee="http://schemas.amee.cc/2.0" xml:lang="en-US" xml:base="http://dev.amee.com/profiles/9BFB0C1CD78A/home/energy/quantity/30C00AD33033"><title type="text">gas</title><subtitle type="text">Tue, 2 Sep 2008 01:00:00 BST</subtitle><link href="" type="application/atom+xml" rel="edit" /><link href="" type="application/json" rel="alternate" /><link href="" type="application/xml" rel="alternate" /><id>urn:item:30C00AD33033</id><published>2008-09-02T00:00:00.000Z</published><updated>2008-09-02T00:00:00.000Z</updated><content type="html">&lt;div class="vevent">&lt;div class="summary">302.4 kg/year&lt;/div>&lt;abbr class="dtstart" title="2008-09-02T01:00+0100"> Tue, 2 Sep 2008 01:00:00 BST&lt;/abbr>&lt;/div></content><amee:startDate>2008-09-02T01:00+0100</amee:startDate><amee:amount unit="kg/year">302.4</amee:amount><amee:itemValue><amee:name>Payment frequency</amee:name><amee:value>N/A</amee:value><link href="paymentFrequency" rel="http://schemas.amee.cc/2.0#itemValue" /></amee:itemValue><amee:itemValue><amee:name>Green tariff</amee:name><amee:value>N/A</amee:value><link href="greenTariff" rel="http://schemas.amee.cc/2.0#itemValue" /></amee:itemValue><amee:itemValue><amee:name>Season</amee:name><amee:value>N/A</amee:value><link href="season" rel="http://schemas.amee.cc/2.0#itemValue" /></amee:itemValue><amee:itemValue><amee:name>Includes Heating</amee:name><amee:value>false</amee:value><link href="includesHeating" rel="http://schemas.amee.cc/2.0#itemValue" /></amee:itemValue><amee:itemValue><amee:name>Mass Per Time</amee:name><amee:value>N/A</amee:value><link href="massPerTime" rel="http://schemas.amee.cc/2.0#itemValue" /><amee:unit>kg</amee:unit><amee:perUnit>year</amee:perUnit></amee:itemValue><amee:itemValue><amee:name>Energy Consumption</amee:name><amee:value>13</amee:value><link href="energyConsumption" rel="http://schemas.amee.cc/2.0#itemValue" /><amee:unit>kW·h</amee:unit><amee:perUnit>month</amee:perUnit></amee:itemValue><amee:itemValue><amee:name>Current Reading</amee:name><amee:value>N/A</amee:value><link href="currentReading" rel="http://schemas.amee.cc/2.0#itemValue" /><amee:unit>kW·h</amee:unit></amee:itemValue><amee:itemValue><amee:name>Last Reading</amee:name><amee:value>N/A</amee:value><link href="lastReading" rel="http://schemas.amee.cc/2.0#itemValue" /><amee:unit>kW·h</amee:unit></amee:itemValue><amee:itemValue><amee:name>Volume Per Time</amee:name><amee:value>N/A</amee:value><link href="volumePerTime" rel="http://schemas.amee.cc/2.0#itemValue" /><amee:unit>L</amee:unit><amee:perUnit>year</amee:perUnit></amee:itemValue><amee:itemValue><amee:name>Number of deliveries</amee:name><amee:value>N/A</amee:value><link href="deliveries" rel="http://schemas.amee.cc/2.0#itemValue" /><amee:unit>year</amee:unit></amee:itemValue><category scheme="http://schemas.amee.cc/2.0#item" term="66056991EE23" label="Energy Quantity" /></entry>')
+    @item = AMEE::Profile::Item.get(connection, "/profiles/9BFB0C1CD78A/home/energy/quantity/30C00AD33033")
+    @item.profile_uid.should == "9BFB0C1CD78A"
+    @item.uid.should == "30C00AD33033"
+    @item.name.should == "gas"
+    @item.path.should == "/home/energy/quantity/30C00AD33033"
+    @item.total_amount.should be_close(302.4, 1e-9)
+    @item.total_amount_unit.should == "kg/year"
+    @item.start_date.should == DateTime.new(2008, 9, 2)
+    @item.full_path.should == "/profiles/9BFB0C1CD78A/home/energy/quantity/30C00AD33033"
+  end
+
+  it "should parse values" do
+    connection = flexmock "connection"
+    connection.should_receive(:version).and_return(2.0)
+    connection.should_receive(:get).with("/profiles/9BFB0C1CD78A/home/energy/quantity/30C00AD33033", {}).and_return('<?xml version="1.0" encoding="UTF-8"?><entry xmlns="http://www.w3.org/2005/Atom" xmlns:amee="http://schemas.amee.cc/2.0" xml:lang="en-US" xml:base="http://dev.amee.com/profiles/9BFB0C1CD78A/home/energy/quantity/30C00AD33033"><title type="text">gas</title><subtitle type="text">Tue, 2 Sep 2008 01:00:00 BST</subtitle><link href="" type="application/atom+xml" rel="edit" /><link href="" type="application/json" rel="alternate" /><link href="" type="application/xml" rel="alternate" /><id>urn:item:30C00AD33033</id><published>2008-09-02T00:00:00.000Z</published><updated>2008-09-02T00:00:00.000Z</updated><content type="html">&lt;div class="vevent">&lt;div class="summary">302.4 kg/year&lt;/div>&lt;abbr class="dtstart" title="2008-09-02T01:00+0100"> Tue, 2 Sep 2008 01:00:00 BST&lt;/abbr>&lt;/div></content><amee:startDate>2008-09-02T01:00+0100</amee:startDate><amee:amount unit="kg/year">302.4</amee:amount><amee:itemValue><amee:name>Payment frequency</amee:name><amee:value>N/A</amee:value><link href="paymentFrequency" rel="http://schemas.amee.cc/2.0#itemValue" /></amee:itemValue><amee:itemValue><amee:name>Green tariff</amee:name><amee:value>N/A</amee:value><link href="greenTariff" rel="http://schemas.amee.cc/2.0#itemValue" /></amee:itemValue><amee:itemValue><amee:name>Season</amee:name><amee:value>N/A</amee:value><link href="season" rel="http://schemas.amee.cc/2.0#itemValue" /></amee:itemValue><amee:itemValue><amee:name>Includes Heating</amee:name><amee:value>false</amee:value><link href="includesHeating" rel="http://schemas.amee.cc/2.0#itemValue" /></amee:itemValue><amee:itemValue><amee:name>Mass Per Time</amee:name><amee:value>N/A</amee:value><link href="massPerTime" rel="http://schemas.amee.cc/2.0#itemValue" /><amee:unit>kg</amee:unit><amee:perUnit>year</amee:perUnit></amee:itemValue><amee:itemValue><amee:name>Energy Consumption</amee:name><amee:value>13</amee:value><link href="energyConsumption" rel="http://schemas.amee.cc/2.0#itemValue" /><amee:unit>kW*h</amee:unit><amee:perUnit>month</amee:perUnit></amee:itemValue><amee:itemValue><amee:name>Current Reading</amee:name><amee:value>N/A</amee:value><link href="currentReading" rel="http://schemas.amee.cc/2.0#itemValue" /><amee:unit>kW·h</amee:unit></amee:itemValue><amee:itemValue><amee:name>Last Reading</amee:name><amee:value>N/A</amee:value><link href="lastReading" rel="http://schemas.amee.cc/2.0#itemValue" /><amee:unit>kW·h</amee:unit></amee:itemValue><amee:itemValue><amee:name>Volume Per Time</amee:name><amee:value>N/A</amee:value><link href="volumePerTime" rel="http://schemas.amee.cc/2.0#itemValue" /><amee:unit>L</amee:unit><amee:perUnit>year</amee:perUnit></amee:itemValue><amee:itemValue><amee:name>Number of deliveries</amee:name><amee:value>N/A</amee:value><link href="deliveries" rel="http://schemas.amee.cc/2.0#itemValue" /><amee:unit>year</amee:unit></amee:itemValue><category scheme="http://schemas.amee.cc/2.0#item" term="66056991EE23" label="Energy Quantity" /></entry>')
+    @item = AMEE::Profile::Item.get(connection, "/profiles/9BFB0C1CD78A/home/energy/quantity/30C00AD33033")
+    @item.values.size.should be(10)
+    #@item.values[4][:uid].should == "20FC928B045A"
+    @item.values[4][:name].should == "Mass Per Time"
+    @item.values[4][:path].should == "massPerTime"
+    @item.values[4][:value].should be_nil
+    #@item.values[5][:uid].should == "3835DF705F9D"
+    @item.values[5][:name].should == "Energy Consumption"
+    @item.values[5][:path].should == "energyConsumption"
+    @item.values[5][:value].should == "13"
+    @item.values[5][:unit].should == "kW*h"
+    @item.values[5][:perUnit].should == "month"
+  end
+
+  it "should fail gracefully with incorrect data" do
+    connection = flexmock "connection"
+    connection.should_receive(:version).and_return(2.0)
+    connection.should_receive(:get).with("/profiles/92C8DB30F46B/home/energy/quantity/6E9B1517D753", {}).and_return('<?xml version="1.0" encoding="UTF-8"?><entry xmlns="http://www.w3.org/2005/Atom" xmlns:amee="http://schemas.amee.cc/2.0"></entry>')
+    lambda{AMEE::Profile::Item.get(connection, "/profiles/92C8DB30F46B/home/energy/quantity/6E9B1517D753")}.should raise_error(AMEE::BadData, "Couldn't load ProfileItem from V2 ATOM data. Check that your URL is correct.")
+  end
+
+end
+
 describe AMEE::Profile::Item, "with an authenticated JSON connection" do
 
   it "should load Profile Item" do

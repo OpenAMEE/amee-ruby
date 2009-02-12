@@ -127,10 +127,41 @@ module AMEE
         raise AMEE::BadData.new("Couldn't load ProfileItem from V2 XML data. Check that your URL is correct.")
       end
 
+      def self.from_v2_atom(response)
+        # Parse XML
+        doc = REXML::Document.new(response)
+        data = {}
+        data[:profile_uid] = REXML::XPath.first(doc, "/entry/@xml:base").to_s.match("/profiles/(.*?)/")[1]
+        #data[:data_item_uid] = REXML::XPath.first(doc, "/Resources/ProfileItemResource/DataItem/@uid").to_s
+        data[:uid] = REXML::XPath.first(doc, "/entry/id").text.match("urn:item:(.*)")[1]
+        data[:name] = REXML::XPath.first(doc, '/entry/title').text
+        data[:path] = REXML::XPath.first(doc, "/entry/@xml:base").to_s.match("/profiles/.*?(/.*)")[1]
+        data[:total_amount] = REXML::XPath.first(doc, '/entry/amee:amount').text.to_f rescue nil
+        data[:total_amount_unit] = REXML::XPath.first(doc, '/entry/amee:amount/@unit').to_s rescue nil
+        data[:start_date] = DateTime.parse(REXML::XPath.first(doc, "/entry/amee:startDate").text)
+        data[:end_date] = DateTime.parse(REXML::XPath.first(doc, "/entry/amee:endDate").text) rescue nil
+        data[:values] = []
+        REXML::XPath.each(doc, '/entry/amee:itemValue') do |item|
+          value_data = {}
+          value_data[:name] = item.elements['amee:name'].text
+          value_data[:value] = item.elements['amee:value'].text unless item.elements['amee:value'].text == "N/A"
+          value_data[:path] = item.elements['link'].attributes['href'].to_s
+          value_data[:unit] = item.elements['amee:unit'].text rescue nil
+          value_data[:perUnit] = item.elements['amee:perUnit'].text rescue nil
+          data[:values] << value_data
+        end
+        # Create object
+        Item.new(data)
+      rescue
+        raise AMEE::BadData.new("Couldn't load ProfileItem from V2 ATOM data. Check that your URL is correct.")
+      end
+
       def self.parse(connection, response)
         # Parse data from response
         if response.is_json?
           item = Item.from_json(response)
+        elsif response.is_v2_atom?
+          item = Item.from_v2_atom(response)
         elsif response.is_v2_xml?
           item = Item.from_v2_xml(response)
         else
