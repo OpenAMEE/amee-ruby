@@ -107,7 +107,7 @@ module AMEE
 
     def authenticate
       response = nil
-      post = Net::HTTP::Post.new("/auth")
+      post = Net::HTTP::Post.new("/auth/signIn")
       post.body = "username=#{@username}&password=#{@password}"
       post['Accept'] = content_type(:xml)
       response = @http.request(post)
@@ -132,7 +132,7 @@ module AMEE
       when :xml
         return 'application/xml'
       when :json
-        return (@version && (@version < 2.0)) ? 'application/json' : 'application/xml' # JSON currently disabled in v2, fall back to XML
+        return 'application/json'
       when :atom
         return 'application/atom+xml'
       end
