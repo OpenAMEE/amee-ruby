@@ -235,29 +235,33 @@ module AMEE
       end
 
       def self.create(category, data_item_uid, options = {})
+        create_without_category(category.connection, category.full_path, data_item_uid, options)
+      end
+
+      def self.create_without_category(connection, path, data_item_uid, options = {})
         # Store format if set
         format = options[:format]
         unless options.is_a?(Hash)
           raise AMEE::ArgumentError.new("Third argument must be a hash of options!")
         end
         # Set dates
-        if options[:start_date] && category.connection.version < 2
+        if options[:start_date] && connection.version < 2
           options[:profileDate] = options[:start_date].amee1_month
-        elsif options[:start_date] && category.connection.version >= 2
+        elsif options[:start_date] && connection.version >= 2
           options[:startDate] = options[:start_date].amee2schema
         end
         options.delete(:start_date)
-        if options[:end_date] && category.connection.version >= 2
+        if options[:end_date] && connection.version >= 2
           options[:endDate] = options[:end_date].amee2schema
         end        
         options.delete(:end_date)
-        if options[:duration] && category.connection.version >= 2
+        if options[:duration] && connection.version >= 2
           options[:duration] = "PT#{options[:duration] * 86400}S"
         end
         # Send data to path
         options.merge! :dataItemUid => data_item_uid
-        response = category.connection.post(category.full_path, options)
-        category = Category.parse(category.connection, response)
+        response = connection.post(path, options)
+        category = Category.parse(connection, response)
         options.merge!(:format => format) if format
         return category.item(options)
       rescue
