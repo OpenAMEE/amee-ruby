@@ -147,12 +147,12 @@ module AMEE
         when '200'
           return true
         when '403'
-          raise AMEE::PermissionDenied.new("You do not have permission to perform the requested operation")
+          raise AMEE::PermissionDenied.new("You do not have permission to perform the requested operation. AMEE Response: #{response.body}")
         when '401'
           authenticate
           return false
         else
-          raise AMEE::UnknownError.new("An error occurred while talking to AMEE: HTTP response code #{response.code}")
+          raise AMEE::UnknownError.new("An error occurred while talking to AMEE: HTTP response code #{response.code}. AMEE Response: #{response.body}")
       end
     end
 

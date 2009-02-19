@@ -104,7 +104,7 @@ describe AMEE::Connection, "with authentication" do
     amee = AMEE::Connection.new('server.example.com', 'username', 'password')
     lambda {
       amee.get('/data')
-    }.should raise_error(AMEE::PermissionDenied,"You do not have permission to perform the requested operation")
+    }.should raise_error(AMEE::PermissionDenied,"You do not have permission to perform the requested operation. AMEE Response: ")
   end
 
   it "should raise error if authentication succeeds, but permission for operation is denied" do
@@ -118,7 +118,7 @@ describe AMEE::Connection, "with authentication" do
     amee = AMEE::Connection.new('server.example.com', 'username', 'password')
     lambda {
       amee.get('/data')
-    }.should raise_error(AMEE::PermissionDenied,"You do not have permission to perform the requested operation")
+    }.should raise_error(AMEE::PermissionDenied,"You do not have permission to perform the requested operation. AMEE Response: ")
     amee.authenticated?.should be_true
   end
 
@@ -131,7 +131,7 @@ describe AMEE::Connection, "with authentication" do
     amee = AMEE::Connection.new('server.example.com', 'username', 'password')
     lambda {
       amee.get('/data')
-    }.should raise_error(AMEE::UnknownError,"An error occurred while talking to AMEE: HTTP response code 500")
+    }.should raise_error(AMEE::UnknownError,"An error occurred while talking to AMEE: HTTP response code 500. AMEE Response: ")
   end
 
 end
