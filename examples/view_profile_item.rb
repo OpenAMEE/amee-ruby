@@ -28,5 +28,5 @@ puts "loaded item #{item.name}"
 item.values.each do |x|
   puts " - #{x[:name]}: #{x[:value]}"
 end
-puts " - total per month: #{item.total_amount_per_month}"
+puts " - total: #{item.total_amount}"
 
