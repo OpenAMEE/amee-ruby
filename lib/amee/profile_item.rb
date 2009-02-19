@@ -61,6 +61,38 @@ module AMEE
         raise AMEE::BadData.new("Couldn't load ProfileItem from JSON data. Check that your URL is correct.")
       end
 
+      def self.from_v2_json(json)
+        # Parse json
+        doc = JSON.parse(json)
+        data = {}
+        data[:profile_uid] = doc['profile']['uid']
+        data[:data_item_uid] = doc['profileItem']['dataItem']['uid']
+        data[:uid] = doc['profileItem']['uid']
+        data[:name] = doc['profileItem']['name']
+        data[:path] = doc['path']
+        data[:total_amount] = doc['profileItem']['amount']['value'].to_f
+        data[:total_amount_unit] = doc['profileItem']['amount']['unit']
+        data[:start_date] = DateTime.parse(doc['profileItem']['startDate'])
+        data[:end_date] = DateTime.parse(doc['profileItem']['endDate']) rescue nil
+        data[:values] = []
+        doc['profileItem']['itemValues'].each do |item|
+          value_data = {}
+          item.each_pair do |key,value|
+            case key
+              when 'name', 'path', 'uid', 'value', 'unit'
+                value_data[key.downcase.to_sym] = value
+              when 'perUnit'
+                value_data[:per_unit] = value
+            end
+          end
+          data[:values] << value_data
+        end
+        # Create object
+        Item.new(data)
+      rescue
+        raise AMEE::BadData.new("Couldn't load ProfileItem from V2 JSON data. Check that your URL is correct.")
+      end
+
       def self.from_xml(xml)
         # Parse XML
         doc = REXML::Document.new(xml)
@@ -160,7 +192,9 @@ module AMEE
 
       def self.parse(connection, response)
         # Parse data from response
-        if response.is_json?
+        if response.is_v2_json?
+          item = Item.from_v2_json(response)
+        elsif response.is_json?
           item = Item.from_json(response)
         elsif response.is_v2_atom?
           item = Item.from_v2_atom(response)

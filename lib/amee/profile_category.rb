@@ -24,14 +24,33 @@ module AMEE
           case key
             when 'dataItemLabel', 'dataItemUid', 'name', 'path', 'uid'
               item_data[key.to_sym] = value
+            when 'dataItem'
+              item_data[:dataItemLabel] = value['Label']
+              item_data[:dataItemUid] = value['uid']
             when 'created', 'modified', 'label' # ignore these
               nil
             when 'validFrom'
               item_data[:validFrom] = DateTime.strptime(value, "%Y%m%d")
+            when 'startDate'
+              item_data[:startDate] = DateTime.parse(value)
+            when 'endDate'
+              item_data[:endDate] = DateTime.parse(value) rescue nil
             when 'end'
               item_data[:end] = (value == "true")
             when 'amountPerMonth'
               item_data[:amountPerMonth] = value.to_f
+            when 'amount'
+              item_data[:amount] = value['value'].to_f
+              item_data[:amount_unit] = value['unit']
+            when 'itemValues'
+              value.each do |itemval|
+                path = itemval['path'].to_sym
+                item_data[:values][path.to_sym] = {}
+                item_data[:values][path.to_sym][:name] = itemval['name']
+                item_data[:values][path.to_sym][:value] = itemval['value']
+                item_data[:values][path.to_sym][:unit] = itemval['unit']
+                item_data[:values][path.to_sym][:per_unit] = itemval['perUnit']
+              end
             else
               item_data[:values][key.to_sym] = value
           end
@@ -93,6 +112,35 @@ module AMEE
         Category.new(data)
       rescue
         raise AMEE::BadData.new("Couldn't load ProfileCategory from JSON data. Check that your URL is correct.")
+      end
+
+      def self.from_v2_json(json)
+        # Parse json
+        doc = JSON.parse(json)
+        data = {}
+        data[:profile_uid] = doc['profile']['uid']
+        #data[:profile_date] = DateTime.strptime(doc['profileDate'], "%Y%m")
+        data[:name] = doc['dataCategory']['name']
+        data[:path] = doc['path']
+        data[:total_amount] = doc['totalAmount']['value'].to_f rescue nil
+        data[:total_amount_unit] = doc['totalAmount']['unit'] rescue nil
+        data[:children] = []
+        if doc['profileCategories']
+          doc['profileCategories'].each do |child|
+            data[:children] << parse_json_profile_category(child)
+          end
+        end
+        data[:items] = []
+        profile_items = []
+        profile_items.concat doc['profileItems'] rescue nil
+        profile_items << doc['profileItem'] unless doc['profileItem'].nil?
+        profile_items.each do |item|
+          data[:items] << parse_json_profile_item(item)
+        end
+        # Create object
+        Category.new(data)
+      rescue
+        raise AMEE::BadData.new("Couldn't load ProfileCategory from V2 JSON data. Check that your URL is correct.")
       end
 
       def self.parse_xml_profile_item(item)
@@ -205,7 +253,7 @@ module AMEE
                 path = itemvalue.elements['Path'].text
                 item_data[:values][path.to_sym] = {}
                 item_data[:values][path.to_sym][:name] = itemvalue.elements['Name'].text
-                item_data[:values][path.to_sym][:value] = itemvalue.elements['Value'].text
+                item_data[:values][path.to_sym][:value] = itemvalue.elements['Value'].text || "0"
                 item_data[:values][path.to_sym][:unit] = itemvalue.elements['Unit'].text
                 item_data[:values][path.to_sym][:per_unit] = itemvalue.elements['PerUnit'].text
               end
@@ -293,6 +341,7 @@ module AMEE
               x[:path] = path
               x[:name] = itemvalue.elements['amee:name'].text
               x[:value] = itemvalue.elements['amee:value'].text unless itemvalue.elements['amee:value'].text == "N/A"
+              x[:value] ||= "0"
               x[:unit] = itemvalue.elements['amee:unit'].text rescue nil
               x[:per_unit] = itemvalue.elements['amee:perUnit'].text rescue nil
               item[:values][path.to_sym] = x
@@ -333,7 +382,9 @@ module AMEE
 
       def self.parse(connection, response)
         # Parse data from response
-        if response.is_json?
+        if response.is_v2_json?
+          cat = Category.from_v2_json(response)
+        elsif response.is_json?
           cat = Category.from_json(response)
         elsif response.is_v2_atom?
           cat = Category.from_v2_atom(response)
