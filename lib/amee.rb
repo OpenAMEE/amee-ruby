@@ -11,6 +11,9 @@ class String
   def is_json?
     slice(0,1) == '{'
   end
+  def is_v2_json?
+    is_json? && match('"apiVersion".*?:.*?"2.0"')
+  end
   def is_xml?
     slice(0,5) == '<?xml'
   end
