@@ -198,15 +198,16 @@ module AMEE
         data = {}
         data[:profile_uid] = REXML::XPath.first(doc, "/Resources/ProfileCategoryResource/Profile/@uid").to_s
         data[:profile_date] = DateTime.strptime(REXML::XPath.first(doc, "/Resources/ProfileCategoryResource/ProfileDate").text, "%Y%m")
-        data[:name] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/DataCategory/Name').text
-        data[:path] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/Path').text || ""
+        data[:name] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/DataCategory/?ame').text
+        data[:path] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/Path | /Resources/ProfileCategoryResource/DataCategory/path').text || ""
+        data[:path] = "/#{data[:path]}" if data[:path].slice(0,1) != '/'
         data[:total_amount] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/TotalAmountPerMonth').text.to_f rescue nil
         data[:total_amount_unit] = "kg/month"
         data[:children] = []
-        REXML::XPath.each(doc, '/Resources/ProfileCategoryResource/Children/ProfileCategories/DataCategory') do |child|
+        REXML::XPath.each(doc, '/Resources/ProfileCategoryResource/Children/ProfileCategories/DataCategory | /Resources/ProfileCategoryResource/Children/DataCategories/DataCategory') do |child|
           category_data = {}
-          category_data[:name] = child.elements['Name'].text
-          category_data[:path] = child.elements['Path'].text
+          category_data[:name] = (child.elements['Name'] || child.elements['name']).text
+          category_data[:path] = (child.elements['Path'] || child.elements['path']).text
           category_data[:uid] = child.attributes['uid'].to_s
           data[:children] << category_data
         end

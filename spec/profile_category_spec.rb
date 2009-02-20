@@ -39,6 +39,47 @@ describe AMEE::Profile::Category do
 
 end
 
+describe AMEE::Profile::Category, "accessing AMEE V0" do
+
+  it "should load Profile Category" do
+    connection = flexmock "connection"
+    connection.should_receive(:version).and_return(1.0)
+    connection.should_receive(:get).with("/profiles/D4B9755F671D/home", {}).and_return('<?xml version="1.0" encoding="UTF-8"?><Resources><ProfileCategoryResource><DataCategory created="2007-04-16 17:50:43.0" modified="2007-04-16 17:50:43.0" uid="248D8617A389"><name>Home</name><path>home</path></DataCategory><Profile uid="D4B9755F671D"/><Children><DataCategories><DataCategory uid="3A72CC3F2AC9"><name>Television</name><path>television</path></DataCategory><DataCategory uid="51FF7A9A1D84"><name>Seasonal Billing</name><path>seasonal_billing</path></DataCategory><DataCategory uid="83B7E4488D34"><name>Heating</name><path>heating</path></DataCategory><DataCategory uid="8B5A3EF67252"><name>Fuel</name><path>fuel</path></DataCategory><DataCategory uid="97888F42B5D6"><name>Lighting</name><path>lighting</path></DataCategory><DataCategory uid="0D260A2B9E56"><name>Fuel Price</name><path>fuel_price</path></DataCategory><DataCategory uid="2A018E464460"><name>Appliances</name><path>appliances</path></DataCategory><DataCategory uid="A937C019FA6F"><name>Cooking</name><path>cooking</path></DataCategory></DataCategories></Children><ProfileDate>200902</ProfileDate></ProfileCategoryResource></Resources>')
+    @cat = AMEE::Profile::Category.get(connection, "/profiles/D4B9755F671D/home")
+    @cat.profile_uid.should == "D4B9755F671D"
+    @cat.profile_date.should == DateTime.new(2009, 2)
+    @cat.name.should == "Home"
+    @cat.path.should == "/home"
+    @cat.full_path.should == "/profiles/D4B9755F671D/home"
+    @cat.children.size.should be(8)
+    @cat.children[0][:uid].should == "3A72CC3F2AC9"
+    @cat.children[0][:name].should == "Television"
+    @cat.children[0][:path].should == "television"
+  end
+
+  it "should parse data items" do
+    connection = flexmock "connection"
+    connection.should_receive(:version).and_return(1.0)
+    connection.should_receive(:get).with("/profiles/D4B9755F671D/transport/transport", {}).and_return('<?xml version="1.0" encoding="UTF-8"?><Resources><ProfileCategoryResource><DataCategory created="2007-04-16 17:50:43.0" modified="2007-04-16 17:50:43.0" uid="CD13B9174A6A"><name>Transport</name><path>transport</path></DataCategory><Profile uid="D4B9755F671D"/><Children><DataCategories/><ProfileItems><ProfileItem created="2009-02-19 16:50:26.0" modified="2009-02-19 16:50:27.0" uid="05BB9D4AF86D"><validFrom>20090201</validFrom><end>false</end><transportAdhereToSpeedLimit>false</transportAdhereToSpeedLimit><transportTyresUnderInflated>false</transportTyresUnderInflated><transportAirConAverage>false</transportAirConAverage><transportKmPerLitre>1</transportKmPerLitre><transportEcoDriving>false</transportEcoDriving><transportDistance>0</transportDistance><amountPerMonth>21.42</amountPerMonth><transportAirConFull>false</transportAirConFull><dataItemUid>25A341E24BCE</dataItemUid><transportNumberOfJourneys>0.0833333333333333</transportNumberOfJourneys><name/><dataItemLabel>Flights, Short haul, Return</dataItemLabel></ProfileItem><ProfileItem created="2009-02-19 16:48:47.0" modified="2009-02-19 16:48:47.0" uid="D6FE02356302"><validFrom>20090201</validFrom><end>false</end><transportAdhereToSpeedLimit>false</transportAdhereToSpeedLimit><transportTyresUnderInflated>false</transportTyresUnderInflated><transportAirConAverage>false</transportAirConAverage><transportKmPerLitre>14.16</transportKmPerLitre><transportEcoDriving>false</transportEcoDriving><transportDistance>1340.83333333333</transportDistance><amountPerMonth>286.39</amountPerMonth><transportAirConFull>false</transportAirConFull><dataItemUid>3CAFBEA600F4</dataItemUid><transportNumberOfJourneys>0</transportNumberOfJourneys><name/><dataItemLabel>Car1, Fuel manufacturer consumption, Diesel</dataItemLabel></ProfileItem></ProfileItems></Children><ProfileDate>200902</ProfileDate><TotalAmountPerMonth>307.81</TotalAmountPerMonth></ProfileCategoryResource></Resources>')
+    @cat = AMEE::Profile::Category.get(connection, "/profiles/D4B9755F671D/transport/transport")
+    @cat.total_amount.should be_close(307.81, 1e-9)
+    @cat.total_amount_unit.should == "kg/month"
+    @cat.items.size.should be(2)
+    @cat.items[0][:uid].should == "05BB9D4AF86D"
+    @cat.items[0][:name].should be_nil
+    @cat.items[0][:path].should == "05BB9D4AF86D"
+    @cat.items[0][:dataItemLabel].should == "Flights, Short haul, Return"
+    @cat.items[0][:dataItemUid].should == "25A341E24BCE"
+    @cat.items[0][:validFrom].should == DateTime.new(2009, 2, 1)
+    @cat.items[0][:end].should == false
+    @cat.items[0][:amountPerMonth].should be_close(21.42, 1e-9)
+    @cat.items[0][:values].size.should be(8)
+    @cat.items[0][:values][:transportNumberOfJourneys].should == "0.0833333333333333"
+    @cat.items[0][:values][:transportEcoDriving].should == "false"
+  end
+
+end
+
 describe AMEE::Profile::Category, "with an authenticated XML connection" do
 
   it "should load Profile Category" do
