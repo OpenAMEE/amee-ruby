@@ -53,22 +53,22 @@ module AMEE
         data[:uid] = REXML::XPath.first(doc, "/Resources/DataCategoryResource/DataCategory/@uid").to_s
         data[:created] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataCategoryResource/DataCategory/@created").to_s)
         data[:modified] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataCategoryResource/DataCategory/@modified").to_s)
-        data[:name] = REXML::XPath.first(doc, '/Resources/DataCategoryResource/DataCategory/Name').text
-        data[:path] = REXML::XPath.first(doc, '/Resources/DataCategoryResource/Path').text || ""
+        data[:name] = REXML::XPath.first(doc, '/Resources/DataCategoryResource/DataCategory/?ame').text
+        data[:path] = REXML::XPath.first(doc, '/Resources/DataCategoryResource//?ath').text || ""
         data[:children] = []
-        REXML::XPath.each(doc, '/Resources/DataCategoryResource/Children/DataCategories/DataCategory') do |child|
+        REXML::XPath.each(doc, '/Resources/DataCategoryResource//Children/DataCategories/DataCategory') do |child|
           category_data = {}
-          category_data[:name] = child.elements['Name'].text
-          category_data[:path] = child.elements['Path'].text
+          category_data[:name] = (child.elements['Name'] || child.elements['name']).text
+          category_data[:path] = (child.elements['Path'] || child.elements['path']).text
           category_data[:uid] = child.attributes['uid'].to_s
           data[:children] << category_data
         end
         data[:items] = []
-        REXML::XPath.each(doc, '/Resources/DataCategoryResource/Children/DataItems/DataItem') do |item|
+        REXML::XPath.each(doc, '/Resources/DataCategoryResource//Children/DataItems/DataItem') do |item|
           item_data = {}
-          item_data[:label] = item.elements['label'].text
-          item_data[:path] = item.elements['path'].text
           item_data[:uid] = item.attributes['uid'].to_s
+          item_data[:label] = item.elements['label'].text
+          item_data[:path] = item.elements['path'] ? item.elements['path'].text : item_data[:uid]
           data[:items] << item_data
         end
         # Create object

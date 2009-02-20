@@ -33,7 +33,38 @@ describe AMEE::Data::Category do
   end
  
 end
-  
+
+describe AMEE::Data::Category, "accessing AMEE V0" do
+
+  it "should provide access to root of Data API" do
+    connection = flexmock "connection"
+    connection.should_receive(:get).with("/data", {:itemsPerPage => 10}).and_return('<?xml version="1.0" encoding="UTF-8"?><Resources><DataCategoryResource><DataCategory created="2007-04-16 17:50:43.0" modified="2007-04-16 17:50:43.0" uid="63EA08D29C63"><name>Root</name><path/></DataCategory><Children><DataCategories><DataCategory uid="5376F191D80E"><name>Metadata</name><path>metadata</path></DataCategory><DataCategory uid="33F9A55AA555"><name>Transport</name><path>transport</path></DataCategory><DataCategory uid="248D8617A389"><name>Home</name><path>home</path></DataCategory></DataCategories></Children></DataCategoryResource></Resources>')
+    @root = AMEE::Data::Category.root(connection)
+    @root.name.should == "Root"
+    @root.path.should == ""
+    @root.full_path.should == "/data"
+    @root.uid.should == "63EA08D29C63"
+    @root.created.should == DateTime.new(2007,4,16,17,50,43)
+    @root.modified.should == DateTime.new(2007,4,16,17,50,43)
+    @root.children.size.should be(3)
+    @root.children[0][:uid].should == "5376F191D80E"
+    @root.children[0][:name].should == "Metadata"
+    @root.children[0][:path].should == "metadata"
+  end
+
+  it "should parse data items" do
+    connection = flexmock "connection"
+    connection.should_receive(:get).with("/data/home/fuel", {:itemsPerPage => 10}).and_return('<?xml version="1.0" encoding="UTF-8"?><Resources><DataCategoryResource><DataCategory created="2007-04-16 17:50:43.0" modified="2007-04-16 17:50:43.0" uid="8B5A3EF67252"><name>Fuel</name><path>fuel</path></DataCategory><Children><DataCategories/><DataItems><DataItem created="2007-04-16 18:03:47.0" modified="2007-04-16 18:03:47.0" uid="9DC114F06AB2"><fuelKgCO2PerKWh>0</fuelKgCO2PerKWh><fuelKgCO2perKg>0</fuelKgCO2perKg><fuelKgCO2PerLitre>2.5</fuelKgCO2PerLitre><label>Biodiesel</label><fuelType>Biodiesel</fuelType><fuelSource>AMEE 2007</fuelSource></DataItem><DataItem created="2007-04-16 18:03:47.0" modified="2007-04-16 18:03:47.0" uid="B1F3D29987BF"><fuelKgCO2PerKWh>0</fuelKgCO2PerKWh><fuelKgCO2perKg>0.1316</fuelKgCO2perKg><fuelKgCO2PerLitre>0</fuelKgCO2PerLitre><label>Biomass</label><fuelType>Biomass</fuelType><fuelSource>defra 2008</fuelSource></DataItem><DataItem created="2007-04-16 18:03:47.0" modified="2007-04-16 18:03:47.0" uid="D29131D9FA60"><fuelKgCO2PerKWh>0</fuelKgCO2PerKWh><fuelKgCO2perKg>2.506</fuelKgCO2perKg><fuelKgCO2PerLitre>0</fuelKgCO2PerLitre><label>Coal</label><fuelType>Coal</fuelType><fuelSource>defra 2008</fuelSource></DataItem><DataItem created="2007-04-16 18:03:47.0" modified="2007-04-16 18:03:47.0" uid="3406EECDCDF8"><fuelKgCO2PerKWh>0</fuelKgCO2PerKWh><fuelKgCO2perKg>0</fuelKgCO2perKg><fuelKgCO2PerLitre>2.6287</fuelKgCO2PerLitre><label>Diesel</label><fuelType>Diesel</fuelType><fuelSource>defra 2008</fuelSource></DataItem><DataItem created="2007-04-16 18:03:47.0" modified="2007-04-16 18:03:47.0" uid="FFAD4D7A54D7"><fuelKgCO2PerKWh>0.537</fuelKgCO2PerKWh><fuelKgCO2perKg>0</fuelKgCO2perKg><fuelKgCO2PerLitre>0</fuelKgCO2PerLitre><label>Electricity</label><fuelType>Electricity</fuelType><fuelSource>defra 2008</fuelSource></DataItem><DataItem created="2007-04-16 18:03:47.0" modified="2007-04-16 18:03:47.0" uid="160B6EAA8739"><fuelKgCO2PerKWh>0.2055</fuelKgCO2PerKWh><fuelKgCO2perKg>0</fuelKgCO2perKg><fuelKgCO2PerLitre>0</fuelKgCO2PerLitre><label>Gas</label><fuelType>Gas</fuelType><fuelSource>defra 2008</fuelSource></DataItem><DataItem created="2007-04-16 18:03:47.0" modified="2007-04-16 18:03:47.0" uid="22824F2E4FF7"><fuelKgCO2PerKWh>0</fuelKgCO2PerKWh><fuelKgCO2perKg>0</fuelKgCO2perKg><fuelKgCO2PerLitre>2.516</fuelKgCO2PerLitre><label>Kerosene</label><fuelType>Kerosene</fuelType><fuelSource>defra 2008</fuelSource></DataItem><DataItem created="2007-04-16 18:03:47.0" modified="2007-04-16 18:03:47.0" uid="B55687DB4AC9"><fuelKgCO2PerKWh>0</fuelKgCO2PerKWh><fuelKgCO2perKg>0</fuelKgCO2perKg><fuelKgCO2PerLitre>1.495</fuelKgCO2PerLitre><label>LPG</label><fuelType>LPG</fuelType><fuelSource>defra 2008</fuelSource></DataItem><DataItem created="2007-04-16 18:03:47.0" modified="2007-04-16 18:03:47.0" uid="D12017B42CC3"><fuelKgCO2PerKWh>0</fuelKgCO2PerKWh><fuelKgCO2perKg>0</fuelKgCO2perKg><fuelKgCO2PerLitre>2.518</fuelKgCO2PerLitre><label>Oil</label><fuelType>Oil</fuelType><fuelSource>defra 2008</fuelSource></DataItem><DataItem created="2007-04-16 18:03:47.0" modified="2007-04-16 18:03:47.0" uid="62110A147736"><fuelKgCO2PerKWh>0</fuelKgCO2PerKWh><fuelKgCO2perKg>0</fuelKgCO2perKg><fuelKgCO2PerLitre>2.3167</fuelKgCO2PerLitre><label>Petrol</label><fuelType>Petrol</fuelType><fuelSource>defra 2008</fuelSource></DataItem></DataItems></Children></DataCategoryResource></Resources>')
+    @data = AMEE::Data::Category.get(connection, "/data/home/fuel")
+    @data.uid.should == "8B5A3EF67252"
+    @data.items.size.should be(10)
+    @data.items[0][:uid].should == "9DC114F06AB2"
+    @data.items[0][:label].should == "Biodiesel"
+    @data.items[0][:path].should == "9DC114F06AB2"
+  end
+
+end
+
 describe AMEE::Data::Category, "with an authenticated XML connection" do
 
   it "should provide access to root of Data API" do
