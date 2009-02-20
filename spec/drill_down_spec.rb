@@ -39,7 +39,33 @@ describe AMEE::Data::DrillDown do
   end
  
 end
-  
+
+describe AMEE::Data::DrillDown, "accessing AMEE V0" do
+
+  it "loads drilldown resource" do
+    connection = flexmock "connection"
+    connection.should_receive(:get).with("/data/transport/transport/drill?transportType=Car1").and_return('<?xml version="1.0" encoding="UTF-8"?><Resources><DrillDownResource><DataCategory uid="CD13B9174A6A"/><ItemDefinition uid="7CD0FC1D3B36"/><Selections><Choice><name>transportType</name><value>Car1</value></Choice></Selections><Choices><name>transportStyle</name><Choice><name>-</name><value>-</value></Choice></Choices></DrillDownResource></Resources>')
+    drill = AMEE::Data::DrillDown.get(connection, "/data/transport/transport/drill?transportType=Car1")
+    drill.choice_name.should == "transportStyle"
+    drill.choices.size.should be(1)
+    drill.choices[0].should == "-"
+    drill.selections.size.should be(1)
+    drill.selections['transportType'].should == 'Car1'
+    drill.data_item_uid.should be_nil
+  end
+
+  it "provides simple access to uid" do
+    connection = flexmock "connection"
+    connection.should_receive(:get).with("/data/transport/transport/drill?transportType=Car1&transportStyle=-&transportSize=large&transportFuel=Diesel").and_return('<?xml version="1.0" encoding="UTF-8"?><Resources><DrillDownResource><DataCategory uid="CD13B9174A6A"/><ItemDefinition uid="7CD0FC1D3B36"/><Selections><Choice><name>transportType</name><value>Car1</value></Choice><Choice><name>transportStyle</name><value>-</value></Choice><Choice><name>transportSize</name><value>large</value></Choice><Choice><name>transportFuel</name><value>Diesel</value></Choice></Selections><Choices><name>uid</name><Choice><name>AC6DA76D96EE</name><value>AC6DA76D96EE</value></Choice></Choices></DrillDownResource></Resources>')
+    drill = AMEE::Data::DrillDown.get(connection, "/data/transport/transport/drill?transportType=Car1&transportStyle=-&transportSize=large&transportFuel=Diesel")
+    drill.choice_name.should == "uid"
+    drill.choices.size.should be(1)
+    drill.selections.size.should be(4)
+    drill.data_item_uid.should == "AC6DA76D96EE"
+  end
+
+end
+
 describe AMEE::Data::DrillDown, "with an authenticated XML connection" do
 
   it "loads drilldown resource" do

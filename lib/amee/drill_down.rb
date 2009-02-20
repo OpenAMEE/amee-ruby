@@ -59,15 +59,17 @@ module AMEE
         # Parse XML
         doc = REXML::Document.new(xml)
         data = {}
-        data[:choice_name] = REXML::XPath.first(doc, "/Resources/DrillDownResource/Choices/Name").text
+        data[:choice_name] = REXML::XPath.first(doc, "/Resources/DrillDownResource/Choices/?ame").text
         choices = []
-        REXML::XPath.each(doc, "/Resources/DrillDownResource/Choices/Choices/Choice") do |c|
-          choices << c.elements['Value'].text
+        REXML::XPath.each(doc, "/Resources/DrillDownResource/Choices//Choice") do |c|
+          choices << (c.elements['Value'] || c.elements['value']).text
         end
         data[:choices] = choices
         selections = {}
         REXML::XPath.each(doc, "/Resources/DrillDownResource/Selections/Choice") do |c|
-          selections[c.elements['Name'].text] = c.elements['Value'].text
+          name = (c.elements['Name'] || c.elements['name']).text
+          value = (c.elements['Value'] || c.elements['value']).text
+          selections[name] = value
         end
         data[:selections] = selections
         # Create object
