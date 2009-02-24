@@ -307,18 +307,18 @@ module AMEE
         data = {}
         data[:profile_uid] = REXML::XPath.first(doc, "/feed/@xml:base").to_s.match("/profiles/(.*?)/")[1]
 #        data[:profile_date] = DateTime.strptime(REXML::XPath.first(doc, "/Resources/ProfileCategoryResource/ProfileDate").text, "%Y%m")
-#        data[:name] = REXML::XPath.first(doc, '/feed/title').text
+        data[:name] = REXML::XPath.first(doc, '/feed/amee:name').text
         data[:path] = REXML::XPath.first(doc, "/feed/@xml:base").to_s.match("/profiles/.*?(/.*)")[1]
         data[:total_amount] = REXML::XPath.first(doc, '/feed/amee:totalAmount').text.to_f rescue nil
         data[:total_amount_unit] = REXML::XPath.first(doc, '/feed/amee:totalAmount/@unit').to_s rescue nil
         data[:children] = []
-#        REXML::XPath.each(doc, '/Resources/ProfileCategoryResource/ProfileCategories/DataCategory') do |child|
-#          category_data = {}
-#          category_data[:name] = child.elements['Name'].text
-#          category_data[:path] = child.elements['Path'].text
+        REXML::XPath.each(doc, '/feed/amee:categories/amee:category') do |child|
+          category_data = {}
+#          category_data[:path] = child.text
+          category_data[:path] = child.text
 #          category_data[:uid] = child.attributes['uid'].to_s
-#          data[:children] << category_data
-#        end
+          data[:children] << category_data
+        end
 #        REXML::XPath.each(doc, '/Resources/ProfileCategoryResource/Children/ProfileCategories/ProfileCategory') do |child|
 #          data[:children] << parse_xml_profile_category(child)
 #        end
@@ -425,7 +425,7 @@ module AMEE
       rescue
         raise AMEE::BadData.new("Couldn't load ProfileCategory. Check that your URL is correct.")
       end
-      
+
       def child(child_path)
         AMEE::Profile::Category.get(connection, "#{full_path}/#{child_path}")
       end
