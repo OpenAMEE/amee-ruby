@@ -409,11 +409,11 @@ module AMEE
         if options[:start_date] && connection.version < 2
           options[:profileDate] = options[:start_date].amee1_month 
         elsif options[:start_date] && connection.version >= 2
-          options[:startDate] = options[:start_date].iso8601
+          options[:startDate] = options[:start_date].xmlschema
         end
         options.delete(:start_date)
         if options[:end_date] && connection.version >= 2
-          options[:endDate] = options[:end_date].iso8601
+          options[:endDate] = options[:end_date].xmlschema
         end
         options.delete(:end_date)
         if options[:duration] && connection.version >= 2

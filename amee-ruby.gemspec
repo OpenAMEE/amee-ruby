@@ -13,4 +13,5 @@ Gem::Specification.new do |s|
   s.files += ['examples/list_profiles.rb', 'examples/create_profile.rb', 'examples/create_profile_item.rb', 'examples/view_data_category.rb', 'examples/view_data_item.rb']
   s.files += ['init.rb', 'rails/init.rb']
   s.executables = ['ameesh']
+  s.add_dependency("activesupport")
 end
