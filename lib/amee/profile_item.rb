@@ -230,8 +230,8 @@ module AMEE
         # Load data from path
         response = connection.get(path, options)
         return Item.parse(connection, response)
-      rescue
-        raise AMEE::BadData.new("Couldn't load ProfileItem. Check that your URL is correct.")
+#      rescue
+#        raise AMEE::BadData.new("Couldn't load ProfileItem. Check that your URL is correct.")
       end
 
       def self.create(category, data_item_uid, options = {})
@@ -239,6 +239,9 @@ module AMEE
       end
 
       def self.create_without_category(connection, path, data_item_uid, options = {})
+        # Do we want to automatically fetch the item afterwards?
+        get_item = options.delete(:get_item)
+        get_item = true if get_item.nil?
         # Store format if set
         format = options[:format]
         unless options.is_a?(Hash)
@@ -261,9 +264,20 @@ module AMEE
         # Send data to path
         options.merge! :dataItemUid => data_item_uid
         response = connection.post(path, options)
-        category = Category.parse(connection, response)
-        options.merge!(:format => format) if format
-        return category.item(options)
+        if response['Location']
+          location = response['Location']
+        else
+          category = Category.parse(connection, response)
+          item = category.items.find{ |x| x[:name] == options[:name] || x[:dataItemUid] == data_item_uid }
+          location = category.full_path + "/" + item[:path]
+        end
+        if get_item == true
+          options = {}
+          options[:format] = format if format
+          return AMEE::Profile::Item.get(connection, location, options)
+        else
+          return location
+        end
       rescue
         raise AMEE::BadData.new("Couldn't create ProfileItem. Check that your information is correct.")
       end
