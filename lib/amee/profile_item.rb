@@ -230,8 +230,8 @@ module AMEE
         # Load data from path
         response = connection.get(path, options)
         return Item.parse(connection, response)
-#      rescue
-#        raise AMEE::BadData.new("Couldn't load ProfileItem. Check that your URL is correct.")
+      rescue
+        raise AMEE::BadData.new("Couldn't load ProfileItem. Check that your URL is correct.")
       end
 
       def self.create(category, data_item_uid, options = {})
@@ -268,8 +268,7 @@ module AMEE
           location = response['Location']
         else
           category = Category.parse(connection, response)
-          item = category.items.find{ |x| x[:name] == options[:name] || x[:dataItemUid] == data_item_uid }
-          location = category.full_path + "/" + item[:path]
+          location = category.full_path + "/" + category.items[0][:path]
         end
         if get_item == true
           options = {}
