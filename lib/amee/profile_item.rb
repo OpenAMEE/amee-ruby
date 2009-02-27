@@ -271,9 +271,11 @@ module AMEE
           location = category.full_path + "/" + category.items[0][:path]
         end
         if get_item == true
-          options = {}
-          options[:format] = format if format
-          return AMEE::Profile::Item.get(connection, location, options)
+          get_options = {}
+          get_options[:returnUnit] = options[:returnUnit] if options[:returnUnit]
+          get_options[:returnPerUnit] = options[:returnPerUnit] if options[:returnPerUnit]
+          get_options[:format] = format if format
+          return AMEE::Profile::Item.get(connection, location, get_options)
         else
           return location
         end
