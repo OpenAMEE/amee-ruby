@@ -36,6 +36,7 @@ module AMEE
     end
 
     def version
+      authenticate if @version.nil?
       @version
     end
 
