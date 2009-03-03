@@ -90,7 +90,7 @@ module AMEE
         doc = JSON.parse(json)
         data = {}
         data[:profile_uid] = doc['profile']['uid']
-        data[:profile_date] = DateTime.strptime(doc['profileDate'], "%Y%m")
+        data[:profile_date] = DateTime.strptime(doc['profileDate'], "%Y%m") rescue nil
         data[:name] = doc['dataCategory']['name']
         data[:path] = doc['path']
         data[:total_amount] = doc['totalAmountPerMonth']
