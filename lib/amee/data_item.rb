@@ -57,17 +57,17 @@ module AMEE
         data[:uid] = REXML::XPath.first(doc, "/Resources/DataItemResource/DataItem/@uid").to_s
         data[:created] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataItemResource/DataItem/@created").to_s)
         data[:modified] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataItemResource/DataItem/@modified").to_s)
-        data[:name] = REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/Name').text
-        data[:path] = REXML::XPath.first(doc, '/Resources/DataItemResource/Path').text
-        data[:label] = REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/Label').text
+        data[:name] = (REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/Name') || REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/name')).text
+        data[:path] = (REXML::XPath.first(doc, '/Resources/DataItemResource/Path') || REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/path')).text
+        data[:label] = (REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/Label') || REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/label')).text
         data[:item_definition] = REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/ItemDefinition/@uid').to_s
         # Get values
         data[:values] = []
         REXML::XPath.each(doc, '/Resources/DataItemResource/DataItem/ItemValues/ItemValue') do |value|
           value_data = {}
-          value_data[:name] = value.elements['Name'].text
-          value_data[:path] = value.elements['Path'].text
-          value_data[:value] = value.elements['Value'].text
+          value_data[:name] = (value.elements['Name'] || value.elements['name']).text
+          value_data[:path] = (value.elements['Path'] || value.elements['path']).text
+          value_data[:value] = (value.elements['Value'] || value.elements['value']).text
           value_data[:uid] = value.attributes['uid'].to_s
           data[:values] << value_data
         end
@@ -75,13 +75,13 @@ module AMEE
         data[:choices] = []
         REXML::XPath.each(doc, '/Resources/DataItemResource/Choices/Choices/Choice') do |choice|
           choice_data = {}
-          choice_data[:name] = choice.elements['Name'].text
-          choice_data[:value] = choice.elements['Value'].text || ""
+          choice_data[:name] = (choice.elements['Name']).text
+          choice_data[:value] = (choice.elements['Value']).text || ""
           data[:choices] << choice_data
         end
         # Create object
         Item.new(data)
-      rescue 
+      rescue
         raise AMEE::BadData.new("Couldn't load DataItem from XML. Check that your URL is correct.")
       end
 
