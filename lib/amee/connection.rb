@@ -82,6 +82,19 @@ module AMEE
       do_request(post, format)
     end
 
+    def raw_post(path, body, options = {})
+      # Allow format override
+      format = options.delete(:format) || @format
+      # Clear cache
+      clear_cache
+      # Create POST request
+      post = Net::HTTP::Post.new(path)
+      post['Content-type'] = options[:content_type] || content_type(format)
+      post.body = body
+      # Send request
+      do_request(post, format)
+    end
+
     def put(path, data = {})
       # Allow format override
       format = data.delete(:format) || @format
@@ -94,6 +107,19 @@ module AMEE
         body << "#{CGI::escape(key.to_s)}=#{CGI::escape(value.to_s)}"
       end
       put.body = body.join '&'
+      # Send request
+      do_request(put, format)
+    end
+
+    def raw_put(path, body, options = {})
+      # Allow format override
+      format = options.delete(:format) || @format
+      # Clear cache
+      clear_cache
+      # Create PUT request
+      put = Net::HTTP::Put.new(path)
+      put['Content-type'] = options[:content_type] || content_type(format)
+      put.body = body
       # Send request
       do_request(put, format)
     end
@@ -184,6 +210,8 @@ module AMEE
       # Done
       response
     end
+
+    public
 
     def clear_cache
       if @enable_caching
