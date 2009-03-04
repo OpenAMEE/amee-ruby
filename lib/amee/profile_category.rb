@@ -300,9 +300,6 @@ module AMEE
         REXML::XPath.each(doc, '/Resources/ProfileCategoryResource/ProfileItem') do |item|
           data[:items] << parse_v2_xml_profile_item(item)
         end
-        REXML::XPath.each(doc, '/Resources/ProfileCategoryResource/ProfileItems/ProfileItem') do |item|
-          data[:items] << parse_v2_xml_profile_item(item)
-        end
         # Create object
         Category.new(data)
       rescue

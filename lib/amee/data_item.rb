@@ -28,7 +28,7 @@ module AMEE
         data[:path] = doc['path']
         data[:label] = doc['dataItem']['label']
         data[:item_definition] = doc['dataItem']['itemDefinition']['uid']
-        data[:total_amount] = doc['amountPerMonth']
+        data[:total_amount] = doc['amountPerMonth'] rescue nil
         # Get values
         data[:values] = []
         doc['dataItem']['itemValues'].each do |value|
@@ -49,7 +49,7 @@ module AMEE
         end
         # Create object
         Item.new(data)
-      rescue 
+      rescue
         raise AMEE::BadData.new("Couldn't load DataItem from JSON. Check that your URL is correct.")
       end
       
@@ -64,7 +64,7 @@ module AMEE
         data[:path] = (REXML::XPath.first(doc, '/Resources/DataItemResource/Path') || REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/path')).text
         data[:label] = (REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/Label') || REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/label')).text
         data[:item_definition] = REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/ItemDefinition/@uid').to_s
-        data[:total_amount] = REXML::XPath.first(doc, '/Resources/DataItemResource/AmountPerMonth').text.to_f
+        data[:total_amount] = REXML::XPath.first(doc, '/Resources/DataItemResource/AmountPerMonth').text.to_f rescue nil
         # Get values
         data[:values] = []
         REXML::XPath.each(doc, '/Resources/DataItemResource/DataItem/ItemValues/ItemValue') do |value|
