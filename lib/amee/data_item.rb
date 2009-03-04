@@ -7,6 +7,7 @@ module AMEE
         @choices = data[:choices]
         @label = data[:label]
         @item_definition = data[:item_definition]
+        @total_amount = data[:total_amount]
         super
       end
 
@@ -14,6 +15,7 @@ module AMEE
       attr_reader :choices
       attr_reader :label
       attr_reader :item_definition
+      attr_reader :total_amount
 
       def self.from_json(json)
         # Read JSON
@@ -26,6 +28,7 @@ module AMEE
         data[:path] = doc['path']
         data[:label] = doc['dataItem']['label']
         data[:item_definition] = doc['dataItem']['itemDefinition']['uid']
+        data[:total_amount] = doc['amountPerMonth']
         # Get values
         data[:values] = []
         doc['dataItem']['itemValues'].each do |value|
@@ -61,6 +64,7 @@ module AMEE
         data[:path] = (REXML::XPath.first(doc, '/Resources/DataItemResource/Path') || REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/path')).text
         data[:label] = (REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/Label') || REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/label')).text
         data[:item_definition] = REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/ItemDefinition/@uid').to_s
+        data[:total_amount] = REXML::XPath.first(doc, '/Resources/DataItemResource/AmountPerMonth').text.to_f
         # Get values
         data[:values] = []
         REXML::XPath.each(doc, '/Resources/DataItemResource/DataItem/ItemValues/ItemValue') do |value|
@@ -86,9 +90,9 @@ module AMEE
       end
 
       
-      def self.get(connection, path)
+      def self.get(connection, path, options = {})
         # Load data from path
-        response = connection.get(path)
+        response = connection.get(path, options)
         # Parse data from response
         if response.is_json?
           item = Item.from_json(response)
