@@ -152,6 +152,8 @@ module AMEE
           case key.downcase
             when 'dataitemlabel', 'dataitemuid', 'name', 'path'
               item_data[key.to_sym] = value
+            when 'dataitem'
+              item_data[:dataItemUid] = element.attributes['uid']
             when 'validfrom'
               item_data[:validFrom] = DateTime.strptime(value, "%Y%m%d")
             when 'end'
@@ -219,6 +221,9 @@ module AMEE
           data[:items] << parse_xml_profile_item(item)
         end
         REXML::XPath.each(doc, '/Resources/ProfileCategoryResource/ProfileItem') do |item|
+          data[:items] << parse_xml_profile_item(item)
+        end
+        REXML::XPath.each(doc, '/Resources/ProfileCategoryResource/ProfileItems/ProfileItem') do |item|
           data[:items] << parse_xml_profile_item(item)
         end
         # Create object
@@ -293,6 +298,9 @@ module AMEE
           data[:items] << parse_v2_xml_profile_item(item)
         end
         REXML::XPath.each(doc, '/Resources/ProfileCategoryResource/ProfileItem') do |item|
+          data[:items] << parse_v2_xml_profile_item(item)
+        end
+        REXML::XPath.each(doc, '/Resources/ProfileCategoryResource/ProfileItems/ProfileItem') do |item|
           data[:items] << parse_v2_xml_profile_item(item)
         end
         # Create object
