@@ -171,7 +171,7 @@ module AMEE
 
     def response_ok?(response)
       case response.code
-        when '200'
+        when '200', '201'
           return true
         when '403'
           raise AMEE::PermissionDenied.new("You do not have permission to perform the requested operation. AMEE Response: #{response.body}")
