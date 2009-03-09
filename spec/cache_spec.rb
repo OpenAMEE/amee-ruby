@@ -11,7 +11,7 @@ describe AMEE::Connection do
       mock.should_receive(:finish => nil)
     end
     amee = AMEE::Connection.new("server.example.com", "username", "password")
-    amee.get('/url1').should == "get response 1"
+    amee.get('/url1').body.should == "get response 1"
     $cache.should be_nil
   end
 
@@ -26,10 +26,10 @@ describe AMEE::Connection do
     amee = AMEE::Connection.new("server.example.com", "username", "password", :enable_caching => true)
     amee.get('/url1')
     $cache.size.should be(1)
-    $cache["/url1"].should == "get response 1"
-    amee.get('/url1').should == "get response 1"
+    $cache["/url1"].body.should == "get response 1"
+    amee.get('/url1').body.should == "get response 1"
     $cache.size.should be(1)
-    $cache["/url1"].should == "get response 1"
+    $cache["/url1"].body.should == "get response 1"
   end
 
   it "clears cache on PUT requests" do
@@ -41,9 +41,9 @@ describe AMEE::Connection do
       mock.should_receive(:finish => nil)
     end
     amee = AMEE::Connection.new("server.example.com", "username", "password", :enable_caching => true)
-    amee.get('/url1').should == "get response"
+    amee.get('/url1').body.should == "get response"
     $cache.size.should be(1)
-    amee.put('/url2').should == "put response"
+    amee.put('/url2').body.should == "put response"
     $cache.size.should be(0)
   end
 
@@ -56,9 +56,9 @@ describe AMEE::Connection do
       mock.should_receive(:finish => nil)
     end
     amee = AMEE::Connection.new("server.example.com", "username", "password", :enable_caching => true)
-    amee.get('/url1').should == "get response"
+    amee.get('/url1').body.should == "get response"
     $cache.size.should be(1)
-    amee.post('/url2').should == "post response"
+    amee.post('/url2').body.should == "post response"
     $cache.size.should be(0)
   end
 
@@ -71,9 +71,9 @@ describe AMEE::Connection do
       mock.should_receive(:finish => nil)
     end
     amee = AMEE::Connection.new("server.example.com", "username", "password", :enable_caching => true)
-    amee.get('/url1').should == "get response"
+    amee.get('/url1').body.should == "get response"
     $cache.size.should be(1)
-    amee.delete('/url2').should == "delete response"
+    amee.delete('/url2').body.should == "delete response"
     $cache.size.should be(0)
   end
 

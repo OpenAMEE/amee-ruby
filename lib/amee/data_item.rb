@@ -92,7 +92,7 @@ module AMEE
       
       def self.get(connection, path, options = {})
         # Load data from path
-        response = connection.get(path, options)
+        response = connection.get(path, options).body
         # Parse data from response
         if response.is_json?
           item = Item.from_json(response)
@@ -108,7 +108,7 @@ module AMEE
       end
 
       def update(options = {})
-        connection.put(full_path, options)
+        response = connection.put(full_path, options).body
       rescue
         raise AMEE::BadData.new("Couldn't update DataItem. Check that your information is correct.")
       end

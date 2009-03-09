@@ -228,7 +228,7 @@ module AMEE
           options[:duration] = "PT#{options[:duration] * 86400}S"
         end
         # Load data from path
-        response = connection.get(path, options)
+        response = connection.get(path, options).body
         return Item.parse(connection, response)
       rescue
         raise AMEE::BadData.new("Couldn't load ProfileItem. Check that your URL is correct.")
@@ -263,9 +263,9 @@ module AMEE
         end
         # Send data to path
         options.merge! :dataItemUid => data_item_uid
-        response = connection.post(path, options)
+        response = connection.post(path, options).body
         if response['Location']
-          location = response['Location']
+          location = response['Location'].match("http://.*?/(.*)")[1]
         else
           category = Category.parse(connection, response)
           location = category.full_path + "/" + category.items[0][:path]
@@ -283,6 +283,10 @@ module AMEE
         raise AMEE::BadData.new("Couldn't create ProfileItem. Check that your information is correct.")
       end
 
+      def self.create_batch(category, items)
+        create_batch_without_category(category.connection, category.full_path, items)
+      end
+
       def self.create_batch_without_category(connection, category_path, items)
         if connection.format == :json
           post_data = ({:profileItems => items}).to_json
@@ -296,7 +300,7 @@ module AMEE
       end
 
       def self.update(connection, path, options = {})
-        response = connection.put(path, options)
+        response = connection.put(path, options).body
         return Item.parse(connection, response)
       rescue
         raise AMEE::BadData.new("Couldn't update ProfileItem. Check that your information is correct.")
@@ -304,6 +308,22 @@ module AMEE
 
       def update(options = {})
         AMEE::Profile::Item.update(connection, full_path, options)
+      end
+
+      def self.update_batch(category, items)
+        update_batch_without_category(category.connection, category.full_path, items)
+      end
+
+      def self.update_batch_without_category(connection, category_path, items)
+        if connection.format == :json
+          put_data = ({:profileItems => items}).to_json
+        else
+          put_data = ({:ProfileItems => items}).to_xml(:root => "ProfileCategory", :skip_types => true, :skip_nil => true)
+        end
+        # Post to category
+        response = connection.raw_put(category_path, put_data)
+        # Send back a category object containing all the created items
+        AMEE::Profile::Category.parse(connection, response)
       end
 
       def self.delete(connection, path)

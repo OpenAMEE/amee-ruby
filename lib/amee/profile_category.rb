@@ -425,7 +425,7 @@ module AMEE
           options[:duration] = "PT#{options[:duration] * 86400}S"
         end
         # Load data from path
-        response = connection.get(path, options)
+        response = connection.get(path, options).body
         return Category.parse(connection, response)
       rescue
         raise AMEE::BadData.new("Couldn't load ProfileCategory. Check that your URL is correct.")

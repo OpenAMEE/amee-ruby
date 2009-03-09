@@ -72,7 +72,7 @@ describe AMEE::Data::ItemValue, "with an authenticated connection" do
 
   it "should parse XML correctly" do
     connection = flexmock "connection"
-    connection.should_receive(:get).with("/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney").and_return('<Resources><DataItemValueResource><ItemValue Created="2007-08-01 09:00:41.0" Modified="2007-08-01 09:00:41.0" uid="127612FA4921"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><Value>0.1</Value><ItemValueDefinition uid="653828811D42"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="8CB8A1789CD6"><Name>kgCO2PerJourney</Name><ValueType>DECIMAL</ValueType></ValueDefinition></ItemValueDefinition><DataItem uid="AD63A83B4D41"/></ItemValue><DataItem uid="AD63A83B4D41"/></DataItemValueResource></Resources>')
+    connection.should_receive(:get).with("/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney").and_return(flexmock(:body => '<Resources><DataItemValueResource><ItemValue Created="2007-08-01 09:00:41.0" Modified="2007-08-01 09:00:41.0" uid="127612FA4921"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><Value>0.1</Value><ItemValueDefinition uid="653828811D42"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="8CB8A1789CD6"><Name>kgCO2PerJourney</Name><ValueType>DECIMAL</ValueType></ValueDefinition></ItemValueDefinition><DataItem uid="AD63A83B4D41"/></ItemValue><DataItem uid="AD63A83B4D41"/></DataItemValueResource></Resources>'))
     @value = AMEE::Data::ItemValue.get(connection, "/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney")
     @value.uid.should == "127612FA4921"
     @value.name.should == "kgCO2 Per Passenger Journey"
@@ -88,7 +88,7 @@ describe AMEE::Data::ItemValue, "with an authenticated connection" do
 
   it "should parse JSON correctly" do
     connection = flexmock "connection"
-    connection.should_receive(:get).with("/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney").and_return('{"dataItem":{"uid":"AD63A83B4D41"},"itemValue":{"item":{"uid":"AD63A83B4D41"},"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","value":"0.1","uid":"127612FA4921","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey","itemValueDefinition":{"valueDefinition":{"valueType":"DECIMAL","uid":"8CB8A1789CD6","name":"kgCO2PerJourney"},"uid":"653828811D42","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey"}}}')
+    connection.should_receive(:get).with("/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney").and_return(flexmock(:body => '{"dataItem":{"uid":"AD63A83B4D41"},"itemValue":{"item":{"uid":"AD63A83B4D41"},"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","value":"0.1","uid":"127612FA4921","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey","itemValueDefinition":{"valueDefinition":{"valueType":"DECIMAL","uid":"8CB8A1789CD6","name":"kgCO2PerJourney"},"uid":"653828811D42","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey"}}}'))
     @value = AMEE::Data::ItemValue.get(connection, "/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney")
     @value.uid.should == "127612FA4921"
     @value.name.should == "kgCO2 Per Passenger Journey"
@@ -104,13 +104,13 @@ describe AMEE::Data::ItemValue, "with an authenticated connection" do
 
   it "should fail gracefully with incorrect XML data" do
     connection = flexmock "connection"
-    connection.should_receive(:get).with("/data").and_return('<?xml version="1.0" encoding="UTF-8"?><Resources></Resources>')
+    connection.should_receive(:get).with("/data").and_return(flexmock(:body => '<?xml version="1.0" encoding="UTF-8"?><Resources></Resources>'))
     lambda{AMEE::Data::ItemValue.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItemValue from XML. Check that your URL is correct.")
   end
 
   it "should fail gracefully with incorrect JSON data" do
     connection = flexmock "connection"
-    connection.should_receive(:get).with("/data").and_return('{}')
+    connection.should_receive(:get).with("/data").and_return(flexmock(:body => '{}'))
     lambda{AMEE::Data::ItemValue.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItemValue from JSON. Check that your URL is correct.")
   end
 
@@ -127,12 +127,12 @@ describe AMEE::Data::ItemValue, "after loading" do
   before(:each) do
     @path = "/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney"
     @connection = flexmock "connection"
-    @connection.should_receive(:get).with(@path).and_return('{"dataItem":{"uid":"AD63A83B4D41"},"itemValue":{"item":{"uid":"AD63A83B4D41"},"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","value":"0.1","uid":"127612FA4921","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey","itemValueDefinition":{"valueDefinition":{"valueType":"DECIMAL","uid":"8CB8A1789CD6","name":"kgCO2PerJourney"},"uid":"653828811D42","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey"}}}')
+    @connection.should_receive(:get).with(@path).and_return(flexmock(:body => '{"dataItem":{"uid":"AD63A83B4D41"},"itemValue":{"item":{"uid":"AD63A83B4D41"},"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","value":"0.1","uid":"127612FA4921","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey","itemValueDefinition":{"valueDefinition":{"valueType":"DECIMAL","uid":"8CB8A1789CD6","name":"kgCO2PerJourney"},"uid":"653828811D42","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey"}}}'))
     @val = AMEE::Data::ItemValue.get(@connection, "/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney")
   end
 
   it "can have value changed and saved back to server" do
-    @connection.should_receive(:put).with("/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney", :value => 42).and_return('')
+    @connection.should_receive(:put).with("/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney", :value => 42).and_return(flexmock(:body => ''))
     lambda {
       @val.value = 42
       @val.save!

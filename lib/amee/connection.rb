@@ -190,8 +190,8 @@ module AMEE
       begin
         response = send_request(request, format)
       end while !response_ok?(response)
-      # Return body of response
-      return response.body
+      # Return response
+      return response
     rescue SocketError
       raise AMEE::ConnectionFailed.new("Connection failed. Check server name or network connection.")
     ensure

@@ -4,7 +4,7 @@ module AMEE
 
       def self.list(connection)
         # Load data from path
-        response = connection.get('/profiles')
+        response = connection.get('/profiles').body
         # Parse data from response
         profiles = []
         if response.is_json?
@@ -48,7 +48,7 @@ module AMEE
 
       def self.create(connection)
         # Create new profile
-        response = connection.post('/profiles', :profile => true)
+        response = connection.post('/profiles', :profile => true).body
         # Parse data from response
         if response.is_json?
           # Read JSON

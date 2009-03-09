@@ -71,7 +71,7 @@ module AMEE
 
       def self.get(connection, path)
         # Load data from path
-        response = connection.get(path)
+        response = connection.get(path).body
         # Parse data from response
         data = {}
         if response.is_json?
@@ -88,7 +88,7 @@ module AMEE
       end
 
       def save!
-        response = @connection.put(full_path, :value => value)        
+        response = @connection.put(full_path, :value => value).body
       end
 
     end

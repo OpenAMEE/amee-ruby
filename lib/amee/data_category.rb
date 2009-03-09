@@ -79,7 +79,7 @@ module AMEE
       
       def self.get(connection, path, items_per_page = 10)
         # Load data from path
-        response = connection.get(path, :itemsPerPage => items_per_page)
+        response = connection.get(path, :itemsPerPage => items_per_page).body
         # Parse data from response
         if response.is_json?
           cat = Category.from_json(response)

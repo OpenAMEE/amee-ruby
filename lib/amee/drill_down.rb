@@ -80,7 +80,7 @@ module AMEE
 
       def self.get(connection, path)
         # Load data from path
-        response = connection.get(path)
+        response = connection.get(path).body
         # Parse data from response
         if response.is_json?
           drill = DrillDown.from_json(response)
