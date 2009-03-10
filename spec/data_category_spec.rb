@@ -61,6 +61,7 @@ describe AMEE::Data::Category, "accessing AMEE V0" do
     @data.items[0][:uid].should == "9DC114F06AB2"
     @data.items[0][:label].should == "Biodiesel"
     @data.items[0][:path].should == "9DC114F06AB2"
+    @data.items[0][:fuelKgCO2PerLitre].should == "2.5"
   end
 
 end
@@ -103,7 +104,8 @@ describe AMEE::Data::Category, "with an authenticated XML connection" do
     @data.items.size.should be(9)
     @data.items[0][:uid].should == "AD63A83B4D41"
     @data.items[0][:label].should == "domestic"
-    @data.items[0][:path].should == "AD63A83B4D41"    
+    @data.items[0][:path].should == "AD63A83B4D41"
+    @data.items[0][:source].should == "DfT INAS Division, 29 March 2007"
   end
 
   it "should fail gracefully with incorrect data" do
@@ -163,6 +165,7 @@ describe AMEE::Data::Category, "with an authenticated JSON connection" do
     @data.items[0][:uid].should == "AD63A83B4D41"
     @data.items[0][:label].should == "domestic"
     @data.items[0][:path].should == "AD63A83B4D41"    
+    @data.items[0][:source].should == "DfT INAS Division, 29 March 2007"
   end
 
   it "should fail gracefully with incorrect data" do

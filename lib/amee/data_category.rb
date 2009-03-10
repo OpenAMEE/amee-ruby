@@ -34,9 +34,9 @@ module AMEE
         if doc['children']['dataItems']['rows']
           doc['children']['dataItems']['rows'].each do |item|
             item_data = {}
-            item_data[:label] = item['label']
-            item_data[:path] = item['path']
-            item_data[:uid] = item['uid']
+            item.each_pair do |key, value|
+              item_data[key.to_sym] = value
+            end
             data[:items] << item_data
           end
         end
@@ -67,8 +67,12 @@ module AMEE
         REXML::XPath.each(doc, '/Resources/DataCategoryResource//Children/DataItems/DataItem') do |item|
           item_data = {}
           item_data[:uid] = item.attributes['uid'].to_s
-          item_data[:label] = item.elements['label'].text
-          item_data[:path] = item.elements['path'] ? item.elements['path'].text : item_data[:uid]
+          item.elements.each do |element|
+            item_data[element.name.to_sym] = element.text
+          end
+          if item_data[:path].nil?
+            item_data[:path] = item_data[:uid]
+          end
           data[:items] << item_data
         end
         # Create object
