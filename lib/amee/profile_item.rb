@@ -294,7 +294,7 @@ module AMEE
           post_data = ({:ProfileItems => items}).to_xml(:root => "ProfileCategory", :skip_types => true, :skip_nil => true)
         end
         # Post to category
-        response = connection.raw_post(category_path, post_data)
+        response = connection.raw_post(category_path, post_data).body
         # Send back a category object containing all the created items
         AMEE::Profile::Category.parse(connection, response)
       end
@@ -331,7 +331,7 @@ module AMEE
           put_data = ({:ProfileItems => items}).to_xml(:root => "ProfileCategory", :skip_types => true, :skip_nil => true)
         end
         # Post to category
-        response = connection.raw_put(category_path, put_data)
+        response = connection.raw_put(category_path, put_data).body
         # Send back a category object containing all the created items
         AMEE::Profile::Category.parse(connection, response)
       end
