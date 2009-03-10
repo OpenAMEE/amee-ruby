@@ -263,11 +263,11 @@ module AMEE
         end
         # Send data to path
         options.merge! :dataItemUid => data_item_uid
-        response = connection.post(path, options).body
+        response = connection.post(path, options)
         if response['Location']
-          location = response['Location'].match("http://.*?/(.*)")[1]
+          location = response['Location'].match("http://.*?(/.*)")[1]
         else
-          category = Category.parse(connection, response)
+          category = Category.parse(connection, response.body)
           location = category.full_path + "/" + category.items[0][:path]
         end
         if get_item == true
@@ -300,8 +300,18 @@ module AMEE
       end
 
       def self.update(connection, path, options = {})
-        response = connection.put(path, options).body
-        return Item.parse(connection, response)
+        # Do we want to automatically fetch the item afterwards?
+        get_item = options.delete(:get_item)
+        get_item = true if get_item.nil?
+        # Go
+        response = connection.put(path, options)
+        if get_item
+          if response.body.empty?
+            return Item.get(connection, path)
+          else
+            return Item.parse(connection, response.body)
+          end
+        end
       rescue
         raise AMEE::BadData.new("Couldn't update ProfileItem. Check that your information is correct.")
       end
