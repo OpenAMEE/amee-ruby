@@ -27,8 +27,12 @@ module AMEE
             when 'dataItem'
               item_data[:dataItemLabel] = value['Label']
               item_data[:dataItemUid] = value['uid']
-            when 'created', 'modified', 'label' # ignore these
+            when 'label' # ignore these
               nil
+            when 'created'
+              item_data[:created] = DateTime.parse(value)
+            when 'modified'
+              item_data[:modified] = DateTime.parse(value)
             when 'validFrom'
               item_data[:validFrom] = DateTime.strptime(value, "%Y%m%d")
             when 'startDate'
@@ -165,6 +169,8 @@ module AMEE
           end
         end
         item_data[:uid] = item.attributes['uid'].to_s
+        item_data[:created] = DateTime.parse(item.attributes['created'].to_s) rescue nil
+        item_data[:modified] = DateTime.parse(item.attributes['modified'].to_s) rescue nil
         item_data[:path] ||= item_data[:uid] # Fill in path if not retrieved from response
         return item_data
       end
@@ -268,6 +274,8 @@ module AMEE
           end
         end
         item_data[:uid] = item.attributes['uid'].to_s
+        item_data[:created] = DateTime.parse(item.attributes['created'].to_s) rescue nil
+        item_data[:modified] = DateTime.parse(item.attributes['modified'].to_s) rescue nil
         item_data[:path] ||= item_data[:uid] # Fill in path if not retrieved from response
         return item_data
       end
