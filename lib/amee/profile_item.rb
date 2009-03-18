@@ -296,7 +296,11 @@ module AMEE
         # Post to category
         response = connection.raw_post(category_path, post_data).body
         # Send back a category object containing all the created items
-        AMEE::Profile::Category.parse(connection, response)
+        unless response.empty?
+          return AMEE::Profile::Category.parse(connection, response)
+        else
+          return true
+        end
       end
 
       def self.update(connection, path, options = {})
@@ -333,7 +337,11 @@ module AMEE
         # Post to category
         response = connection.raw_put(category_path, put_data).body
         # Send back a category object containing all the created items
-        AMEE::Profile::Category.parse(connection, response)
+        unless response.empty?
+          return AMEE::Profile::Category.parse(connection, response)
+        else
+          return true
+        end
       end
 
       def self.delete(connection, path)
