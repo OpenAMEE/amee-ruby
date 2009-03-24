@@ -5,12 +5,16 @@ module AMEE
       def initialize(data = {})
         @value = data ? data[:value] : nil
         @type = data ? data[:type] : nil
+        @unit = data ? data[:unit] : nil
+        @per_unit = data ? data[:per_unit] : nil
         @from_profile = data ? data[:from_profile] : nil
         @from_data = data ? data[:from_data] : nil
         super
       end
 
       attr_reader :type
+      attr_accessor :unit
+      attr_accessor :per_unit
 
       def value
         case type
@@ -43,6 +47,8 @@ module AMEE
         data[:name] = doc['name']
         data[:path] = path.gsub(/^\/profiles/, '')
         data[:value] = doc['value']
+        data[:unit] = doc['unit']
+        data[:per_unit] = doc['perUnit']
         data[:type] = doc['itemValueDefinition']['valueDefinition']['valueType']
         # Create object
         ItemValue.new(data)
@@ -60,6 +66,8 @@ module AMEE
         data[:name] = REXML::XPath.first(doc, '/Resources/ProfileItemValueResource/ItemValue/Name').text
         data[:path] = path.gsub(/^\/profiles/, '')
         data[:value] = REXML::XPath.first(doc, '/Resources/ProfileItemValueResource/ItemValue/Value').text
+        data[:unit] = REXML::XPath.first(doc, '/Resources/ProfileItemValueResource/ItemValue/Unit').text rescue nil
+        data[:per_unit] = REXML::XPath.first(doc, '/Resources/ProfileItemValueResource/ItemValue/PerUnit').text rescue nil
         data[:type] = REXML::XPath.first(doc, '/Resources/ProfileItemValueResource/ItemValue/ItemValueDefinition/ValueDefinition/ValueType').text
         data[:from_profile] = REXML::XPath.first(doc, '/Resources/ProfileItemValueResource/ItemValue/ItemValueDefinition/FromProfile').text == "true" ? true : false
         data[:from_data] = REXML::XPath.first(doc, '/Resources/ProfileItemValueResource/ItemValue/ItemValueDefinition/FromData').text == "true" ? true : false
@@ -87,7 +95,10 @@ module AMEE
       end
 
       def save!
-        response = @connection.put(full_path, :value => value).body
+        options = {:value => value}
+        options[:unit] = unit if unit
+        options[:perUnit] = per_unit if per_unit
+        response = @connection.put(full_path, options).body
       end
 
     end
