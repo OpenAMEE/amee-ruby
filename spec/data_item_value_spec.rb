@@ -28,7 +28,7 @@ describe AMEE::Data::ItemValue do
   
   it "should initialize AMEE::Object data on creation" do
     uid = 'ABCD1234'
-    @value = AMEE::Data::Item.new(:uid => uid)
+    @value = AMEE::Data::ItemValue.new(:uid => uid)
     @value.uid.should == uid
   end
 
