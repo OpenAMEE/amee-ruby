@@ -76,6 +76,8 @@ describe AMEE::Profile::ItemValue, "with an authenticated connection" do
     @value.created.should == DateTime.new(2009,3,24,11,15,13)
     @value.modified.should == DateTime.new(2009,3,24,11,15,20)
     @value.value.should == 10
+    @value.unit.should be_nil
+    @value.per_unit.should be_nil
     @value.type.should == "DECIMAL"
     @value.from_profile?.should be_true
     @value.from_data?.should be_false
@@ -110,6 +112,8 @@ describe AMEE::Profile::ItemValue, "with an authenticated connection" do
     @value.created.should == DateTime.new(2009,3,24,11,15,13)
     @value.modified.should == DateTime.new(2009,3,24,11,15,20)
     @value.value.should == 10
+    @value.unit.should be_nil
+    @value.per_unit.should be_nil
     @value.type.should == "DECIMAL"
     #@value.from_profile?.should be_false # NOT SET IN JSON
     #@value.from_data?.should be_true # NOT SET IN JSON
