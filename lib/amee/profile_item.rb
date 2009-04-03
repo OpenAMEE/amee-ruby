@@ -249,7 +249,7 @@ module AMEE
         end
         # Set dates
         if options[:start_date] && connection.version < 2
-          options[:profileDate] = options[:start_date].amee1_month
+          options[:validFrom] = options[:start_date].amee1_date
         elsif options[:start_date] && connection.version >= 2
           options[:startDate] = options[:start_date].xmlschema
         end
