@@ -375,7 +375,7 @@ module AMEE
         history = []
         num_months.times do
           date = Date.new(year, month)
-          data = self.get(connection, path, date, items_per_page)
+          data = self.get(connection, path, :start_date => date, :itemsPerPage => items_per_page)
           # If we get no data items back, there is no data at all before this date, so don't bother fetching it
           if data.items.empty?
             (num_months - history.size).times do

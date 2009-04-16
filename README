@@ -80,3 +80,19 @@ currently a versy simple implementation which caches the result of all GET reque
 until a POST, PUT, or DELETE is executed, at which point the cache is cleared. To
 enable caching, set the enable_caching parameter of AMEE::Connection.new to true.
 Caching is disabled by default.
+
+== UPGRADING TO VERSION > 2
+
+There are a few changes to the API exposed by this gem for version 2. The main
+ones are:
+
+1) AMEE::Connection#new takes a hash of options instead of an explicit parameter list.
+   Whereas before you would have used new(server, username, password, use_json, enable_cache, enable_debug)
+   you would now use new(server, username, password, :format => :json, :enable_caching => true, :enable_debug => true)
+
+2) Many get functions take a hash of options instead of explicit date and itemsPerPage parameters.
+   get(... , :start_date => {your_date}, :itemsPerPage => 20)
+
+3) total_amount_per_month functions have been replaced with total_amount. There are also
+   total_amount_unit and total_amount_per_unit functions which give the units that the total
+   amount is in.
