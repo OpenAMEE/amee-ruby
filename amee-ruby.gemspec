@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name = "amee"
-  s.version = "2.0.13"
-  s.date = "2009-04-15"
+  s.version = "2.0.14"
+  s.date = "2009-04-21"
   s.summary = "Ruby interface to the AMEE carbon calculator"
   s.email = "james@floppy.org.uk"
   s.homepage = "http://github.com/Floppy/amee-ruby"
@@ -14,4 +14,5 @@ Gem::Specification.new do |s|
   s.files += ['init.rb', 'rails/init.rb']
   s.executables = ['ameesh']
   s.add_dependency("activesupport")
+  s.add_dependency("json")
 end
