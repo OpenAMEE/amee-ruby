@@ -200,8 +200,12 @@ module AMEE
     end
         
     def send_request(request, format = @format)
+      # Set auth token in cookie (and header just in case someone's stripping cookies)
+      request['Cookie'] = "authToken=#{@auth_token}"
       request['authToken'] = @auth_token
+      # Set accept header
       request['Accept'] = content_type(format)
+      # Do the business
       response = @http.request(request)
       # Handle 404s
       if response.code == '404'
