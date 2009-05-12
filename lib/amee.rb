@@ -41,6 +41,7 @@ require 'amee/profile_item'
 require 'amee/profile_item_value'
 require 'amee/drill_down'
 require 'amee/pager'
+require 'amee/item_definition'
 
 class Date
   def amee1_date
