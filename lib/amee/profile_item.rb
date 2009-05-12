@@ -283,15 +283,17 @@ module AMEE
         raise AMEE::BadData.new("Couldn't create ProfileItem. Check that your information is correct.")
       end
 
-      def self.create_batch(category, items)
+      def self.create_batch(category, items, options = {})
         create_batch_without_category(category.connection, category.full_path, items)
       end
 
-      def self.create_batch_without_category(connection, category_path, items)
+      def self.create_batch_without_category(connection, category_path, items, options = {})
         if connection.format == :json
-          post_data = ({:profileItems => items}).to_json
+          options.merge! :profileItems => items
+          post_data = options.to_json
         else
-          post_data = ({:ProfileItems => items}).to_xml(:root => "ProfileCategory", :skip_types => true, :skip_nil => true)
+        options.merge!({:ProfileItems => items})
+        post_data = options.to_xml(:root => "ProfileCategory", :skip_types => true, :skip_nil => true)
         end
         # Post to category
         response = connection.raw_post(category_path, post_data).body

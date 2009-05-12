@@ -1,15 +1,15 @@
 module AMEE
   module Profile
-    class Profile < AMEE::Profile::Object
-
-      def self.list(connection)
+    class ProfileList < Array
+      
+      def initialize(connection, options = {})
         # Load data from path
-        response = connection.get('/profiles').body
+        response = connection.get('/profiles', options).body
         # Parse data from response
-        profiles = []
         if response.is_json?
           # Read JSON
           doc = JSON.parse(response)
+          @pager = AMEE::Pager.from_json(doc['pager'])
           doc['profiles'].each do |p|
             data = {}
             data[:uid] = p['uid']
@@ -20,11 +20,12 @@ module AMEE
             # Create profile
             profile = Profile.new(data)
             # Store in array
-            profiles << profile
+            self << profile
           end
         else
           # Read XML
           doc = REXML::Document.new(response)
+          @pager = AMEE::Pager.from_xml(REXML::XPath.first(doc, '/Resources/ProfilesResource/Pager'))
           REXML::XPath.each(doc, '/Resources/ProfilesResource/Profiles/Profile') do |p|
             data = {}
             data[:uid] = p.attributes['uid'].to_s
@@ -37,13 +38,22 @@ module AMEE
             # Store connection in profile object
             profile.connection = connection
             # Store in array
-            profiles << profile
+            self << profile
           end
         end
-        # Done
-        return profiles
       rescue
         raise AMEE::BadData.new("Couldn't load Profile list.")
+      end
+      
+      attr_reader :pager
+      
+    end
+
+    class Profile < AMEE::Profile::Object
+
+      # backwards compatibility
+      def self.list(connection)
+        ProfileList.new(connection)
       end
 
       def self.create(connection)
