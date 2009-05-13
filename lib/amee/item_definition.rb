@@ -130,6 +130,16 @@ module AMEE
         raise AMEE::BadData.new("Couldn't create ItemDefinition. Check that your information is correct.")
       end
 
+      def self.delete(connection, item_definition)
+        # Deleting takes a while... up the timeout to 120 seconds temporarily
+        t = connection.timeout
+        connection.timeout = 120
+        connection.delete("/admin/itemDefinitions/" + item_definition.uid)
+        connection.timeout = t
+      rescue
+        raise AMEE::BadData.new("Couldn't delete ProfileItem. Check that your information is correct.")
+      end
+
     end
 
   end
