@@ -32,8 +32,8 @@ describe AMEE::Admin::ItemDefinition, "with an authenticated connection" do
 
   it "should parse XML correctly" do
     connection = flexmock "connection"
-    connection.should_receive(:get).with("/admin/itemDefinitions/BD88D30D1214", {}).and_return(flexmock(:body => '<?xml version="1.0" encoding="UTF-8" standalone="no"?><Resources><ItemDefinitionResource><ItemDefinition created="2007-07-27 09:30:44.0" modified="2007-07-27 09:30:44.0" uid="BD88D30D1214"><Name>Bus Generic</Name><DrillDown>type</DrillDown><Environment uid="5F5887BCF726"/></ItemDefinition></ItemDefinitionResource></Resources>'))
-    @data = AMEE::Admin::ItemDefinition.get(connection, "/admin/itemDefinitions/BD88D30D1214")
+    connection.should_receive(:get).with("/definitions/itemDefinitions/BD88D30D1214", {}).and_return(flexmock(:body => '<?xml version="1.0" encoding="UTF-8" standalone="no"?><Resources><ItemDefinitionResource><ItemDefinition created="2007-07-27 09:30:44.0" modified="2007-07-27 09:30:44.0" uid="BD88D30D1214"><Name>Bus Generic</Name><DrillDown>type</DrillDown><Environment uid="5F5887BCF726"/></ItemDefinition></ItemDefinitionResource></Resources>'))
+    @data = AMEE::Admin::ItemDefinition.get(connection, "/definitions/itemDefinitions/BD88D30D1214")
     @data.uid.should == "BD88D30D1214"
     @data.created.should == DateTime.new(2007,7,27,9,30,44)
     @data.modified.should == DateTime.new(2007,7,27,9,30,44)
@@ -42,8 +42,8 @@ describe AMEE::Admin::ItemDefinition, "with an authenticated connection" do
 
   it "should parse JSON correctly" do
     connection = flexmock "connection"
-    connection.should_receive(:get).with("/admin/itemDefinitions/BD88D30D1214", {}).and_return(flexmock(:body => '{"itemDefinition":{"uid":"BD88D30D1214","environment":{"uid":"5F5887BCF726"},"created":"2007-07-27 09:30:44.0","name":"Bus Generic","drillDown":"type","modified":"2007-07-27 09:30:44.0"}}'))
-    @data = AMEE::Admin::ItemDefinition.get(connection, "/admin/itemDefinitions/BD88D30D1214")
+    connection.should_receive(:get).with("/definitions/itemDefinitions/BD88D30D1214", {}).and_return(flexmock(:body => '{"itemDefinition":{"uid":"BD88D30D1214","environment":{"uid":"5F5887BCF726"},"created":"2007-07-27 09:30:44.0","name":"Bus Generic","drillDown":"type","modified":"2007-07-27 09:30:44.0"}}'))
+    @data = AMEE::Admin::ItemDefinition.get(connection, "/definitions/itemDefinitions/BD88D30D1214")
     @data.uid.should == "BD88D30D1214"
     @data.created.should == DateTime.new(2007,7,27,9,30,44)
     @data.modified.should == DateTime.new(2007,7,27,9,30,44)

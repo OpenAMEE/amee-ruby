@@ -5,7 +5,7 @@ module AMEE
 
       def initialize(connection, options = {})
         # Load data from path
-        response = connection.get('/admin/itemDefinitions', options).body
+        response = connection.get('/definitions/itemDefinitions', options).body
         # Parse data from response
         if response.is_json?
           # Read JSON
@@ -121,11 +121,11 @@ module AMEE
           raise AMEE::ArgumentError.new("Second argument must be a hash of options!")
         end
         # Send data
-        response = connection.post("/admin/itemDefinitions", options).body
+        response = connection.post("/definitions/itemDefinitions", options).body
         # Parse response
         item_definition = ItemDefinition.parse(connection, response)
         # Get the ItemDefinition again
-        return ItemDefinition.get(connection, "/admin/itemDefinitions/" + item_definition.uid)
+        return ItemDefinition.get(connection, "/definitions/itemDefinitions/" + item_definition.uid)
       rescue
         raise AMEE::BadData.new("Couldn't create ItemDefinition. Check that your information is correct.")
       end
@@ -134,7 +134,7 @@ module AMEE
         # Deleting takes a while... up the timeout to 120 seconds temporarily
         t = connection.timeout
         connection.timeout = 120
-        connection.delete("/admin/itemDefinitions/" + item_definition.uid)
+        connection.delete("/definitions/itemDefinitions/" + item_definition.uid)
         connection.timeout = t
       rescue
         raise AMEE::BadData.new("Couldn't delete ProfileItem. Check that your information is correct.")
