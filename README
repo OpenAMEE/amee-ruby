@@ -8,6 +8,8 @@ Author: James Smith (james@floppy.org.uk / http://www.floppy.org.uk)
 
 Homepage: http://github.com/Floppy/amee-ruby
 
+Documentation: http://docs.github.com/Floppy/amee-ruby
+
 == INSTALLATION
 
 1) Enable gems from github, if you haven't already done so (rubygems >= 1.2): 
