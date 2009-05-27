@@ -8,6 +8,7 @@ module AMEE
         @label = data[:label]
         @item_definition = data[:item_definition]
         @total_amount = data[:total_amount]
+        @total_amount_unit = data[:total_amount_unit]
         super
       end
 
@@ -16,6 +17,7 @@ module AMEE
       attr_reader :label
       attr_reader :item_definition
       attr_reader :total_amount
+      attr_reader :total_amount_unit
 
       def self.from_json(json)
         # Read JSON
@@ -28,7 +30,14 @@ module AMEE
         data[:path] = doc['path']
         data[:label] = doc['dataItem']['label']
         data[:item_definition] = doc['dataItem']['itemDefinition']['uid']
-        data[:total_amount] = doc['amountPerMonth'] rescue nil
+        # Read v2 total
+        data[:total_amount] = doc['amount']['value'] rescue nil
+        data[:total_amount_unit] = doc['amount']['unit'] rescue nil
+        # Read v1 total
+        if data[:total_amount].nil?
+          data[:total_amount] = doc['amountPerMonth'] rescue nil
+          data[:total_amount_unit] = "kg/month"
+        end
         # Get values
         data[:values] = []
         doc['dataItem']['itemValues'].each do |value|
@@ -64,7 +73,14 @@ module AMEE
         data[:path] = (REXML::XPath.first(doc, '/Resources/DataItemResource/Path') || REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/path')).text
         data[:label] = (REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/Label') || REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/label')).text
         data[:item_definition] = REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/ItemDefinition/@uid').to_s
-        data[:total_amount] = REXML::XPath.first(doc, '/Resources/DataItemResource/AmountPerMonth').text.to_f rescue nil
+        # Read v2 total
+        data[:total_amount] = REXML::XPath.first(doc, '/Resources/DataItemResource/Amount').text.to_f rescue nil
+        data[:total_amount_unit] = REXML::XPath.first(doc, '/Resources/DataItemResource/Amount/@unit').to_s rescue nil
+        # Read v1 total
+        if data[:total_amount].nil?
+          data[:total_amount] = REXML::XPath.first(doc, '/Resources/DataItemResource/AmountPerMonth').text.to_f rescue nil
+          data[:total_amount_unit] = "kg/month"
+        end
         # Get values
         data[:values] = []
         REXML::XPath.each(doc, '/Resources/DataItemResource/DataItem/ItemValues/ItemValue') do |value|
