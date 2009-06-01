@@ -123,6 +123,72 @@ module AMEE
         raise AMEE::BadData.new("Couldn't load DataItem. Check that your URL is correct.")
       end
 
+      def self.create_batch_without_category(connection, category_path, items, options = {})
+        if connection.format == :json
+          options.merge! :profileItems => items
+          post_data = options.to_json
+        else
+        options.merge!({:DataItems => items})
+        post_data = options.to_xml(:root => "DataCategory", :skip_types => true, :skip_nil => true)
+        end
+        # Post to category
+        response = connection.raw_post(category_path, post_data).body
+        # Send back a category object containing all the created items
+        unless response.empty?
+          return AMEE::Data::Category.parse(connection, response)
+        else
+          return true
+        end
+      end
+
+      def self.create(category, options = {})
+        create_without_category(category.connection, category.full_path, options)
+      end
+
+      def self.create_without_category(connection, path, options = {})
+        # Do we want to automatically fetch the item afterwards?
+        get_item = options.delete(:get_item)
+        get_item = true if get_item.nil?
+        # Store format if set
+        format = options[:format]
+        unless options.is_a?(Hash)
+          raise AMEE::ArgumentError.new("Third argument must be a hash of options!")
+        end
+        # Set dates
+        if options[:start_date] && connection.version < 2
+          options[:validFrom] = options[:start_date].amee1_date
+        elsif options[:start_date] && connection.version >= 2
+          options[:startDate] = options[:start_date].xmlschema
+        end
+        options.delete(:start_date)
+        if options[:end_date] && connection.version >= 2
+          options[:endDate] = options[:end_date].xmlschema
+        end
+        options.delete(:end_date)
+        if options[:duration] && connection.version >= 2
+          options[:duration] = "PT#{options[:duration] * 86400}S"
+        end
+        # Create a data item!
+        options[:newObjectType] = "DI"
+        # Send data to path
+        response = connection.post(path, options)
+#        if response['Location']
+#          location = response['Location'].match("http://.*?(/.*)")[1]
+#        else
+#          category = Category.parse(connection, response.body)
+#          location = category.full_path + "/" + category.items[0][:path]
+#        end
+#        if get_item == true
+#          get_options = {}
+#          get_options[:format] = format if format
+#          return AMEE::Data::Item.get(connection, location, get_options)
+#        else
+#          return location
+#        end
+      rescue
+        raise AMEE::BadData.new("Couldn't create DataItem. Check that your information is correct.")
+      end
+
       def update(options = {})
         response = connection.put(full_path, options).body
       rescue
