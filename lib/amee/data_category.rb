@@ -110,6 +110,18 @@ module AMEE
         AMEE::Data::DrillDown.get(connection, "#{full_path}/drill")
       end
 
+      def item(options)
+        # Search fields - from most specific to least specific
+        item = items.find{ |x| (x[:uid] && x[:uid] == options[:uid]) ||
+                               (x[:name] && x[:name] == options[:name]) ||
+                               (x[:path] && x[:path] == options[:path]) ||
+                               (x[:label] && x[:label] == options[:label]) }
+        # Pass through some options
+        new_opts = {}
+        new_opts[:format] = options[:format] if options[:format]
+        item ? AMEE::Data::Item.get(connection, "#{full_path}/#{item[:path]}", new_opts) : nil
+      end
+
     end
   end
 end
