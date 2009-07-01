@@ -122,6 +122,46 @@ module AMEE
         item ? AMEE::Data::Item.get(connection, "#{full_path}/#{item[:path]}", new_opts) : nil
       end
 
+      def self.create(category, options = {})
+
+        connection = category.connection
+        path = category.full_path
+        
+        # Do we want to automatically fetch the item afterwards?
+        get_item = options.delete(:get_item)
+
+        get_item = true if get_item.nil?
+        # Store format if set
+        format = options[:format]
+        unless options.is_a?(Hash)
+          raise AMEE::ArgumentError.new("Third argument must be a hash of options!")
+        end
+        # Send data to path
+        options[:newObjectType] = "DC"
+        response = connection.post(path, options)
+        if response['Location']
+          location = response['Location'].match("http://.*?(/.*)")[1]
+        else
+          category = Category.parse(connection, response.body)
+          location = category.full_path
+        end
+        if get_item == true
+          get_options = {}
+          get_options[:format] = format if format
+          return AMEE::Data::Category.get(connection, location, get_options)
+        else
+          return location
+        end
+      rescue
+        raise AMEE::BadData.new("Couldn't create DataCategory. Check that your information is correct.")
+      end
+
+     def self.delete(connection, path)
+       connection.delete(path)
+     rescue
+       raise AMEE::BadData.new("Couldn't delete DataCategory. Check that your information is correct.")
+     end
+       
     end
   end
 end
