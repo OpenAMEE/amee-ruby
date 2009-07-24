@@ -89,7 +89,7 @@ module AMEE
         return category_data
       end
 
-      def self.from_json(json)
+      def self.from_json(json, options)
         # Parse json
         doc = JSON.parse(json)
         data = {}
@@ -118,12 +118,12 @@ module AMEE
         raise AMEE::BadData.new("Couldn't load ProfileCategory from JSON data. Check that your URL is correct.")
       end
 
-      def self.from_v2_json(json)
+      def self.from_v2_json(json, options)
         # Parse json
         doc = JSON.parse(json)
         data = {}
         data[:profile_uid] = doc['profile']['uid']
-        #data[:profile_date] = DateTime.strptime(doc['profileDate'], "%Y%m")
+        data[:profile_date] = options[:start_date]
         data[:name] = doc['dataCategory']['name']
         data[:path] = doc['path']
         data[:total_amount] = doc['totalAmount']['value'].to_f rescue nil
@@ -200,7 +200,7 @@ module AMEE
         return category_data
       end
 
-      def self.from_xml(xml)
+      def self.from_xml(xml, options)
         # Parse XML
         doc = REXML::Document.new(xml)
         data = {}
@@ -280,12 +280,12 @@ module AMEE
         return item_data
       end
 
-      def self.from_v2_xml(xml)
+      def self.from_v2_xml(xml, options)
         # Parse XML
         doc = REXML::Document.new(xml)
         data = {}
         data[:profile_uid] = REXML::XPath.first(doc, "/Resources/ProfileCategoryResource/Profile/@uid").to_s
-        #data[:profile_date] = DateTime.strptime(REXML::XPath.first(doc, "/Resources/ProfileCategoryResource/ProfileDate").text, "%Y%m")
+        data[:profile_date] = options[:start_date]
         data[:name] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/DataCategory/Name').text
         data[:path] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/Path').text || ""
         data[:total_amount] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/TotalAmount').text.to_f rescue nil
@@ -314,12 +314,12 @@ module AMEE
         raise AMEE::BadData.new("Couldn't load ProfileCategory from V2 XML data. Check that your URL is correct.")
       end
 
-      def self.from_v2_atom(response)
+      def self.from_v2_atom(response, options)
         # Parse XML
         doc = REXML::Document.new(response)
         data = {}
         data[:profile_uid] = REXML::XPath.first(doc, "/feed/@xml:base").to_s.match("/profiles/(.*?)/")[1]
-#        data[:profile_date] = DateTime.strptime(REXML::XPath.first(doc, "/Resources/ProfileCategoryResource/ProfileDate").text, "%Y%m")
+        data[:profile_date] = options[:start_date]
         data[:name] = REXML::XPath.first(doc, '/feed/amee:name').text
         data[:path] = REXML::XPath.first(doc, "/feed/@xml:base").to_s.match("/profiles/.*?(/.*)")[1]
         data[:total_amount] = REXML::XPath.first(doc, '/feed/amee:totalAmount').text.to_f rescue nil
@@ -394,18 +394,18 @@ module AMEE
         return history.reverse
       end
 
-      def self.parse(connection, response)
+      def self.parse(connection, response, options)
         # Parse data from response
         if response.is_v2_json?
-          cat = Category.from_v2_json(response)
+          cat = Category.from_v2_json(response, options)
         elsif response.is_json?
-          cat = Category.from_json(response)
+          cat = Category.from_json(response, options)
         elsif response.is_v2_atom?
-          cat = Category.from_v2_atom(response)
+          cat = Category.from_v2_atom(response, options)
         elsif response.is_v2_xml?
-          cat = Category.from_v2_xml(response)
+          cat = Category.from_v2_xml(response, options)
         elsif response.is_xml?
-          cat = Category.from_xml(response)
+          cat = Category.from_xml(response, options)
         end
         # Store connection in object for future use
         cat.connection = connection
@@ -424,17 +424,15 @@ module AMEE
         elsif options[:start_date] && connection.version >= 2
           options[:startDate] = options[:start_date].xmlschema
         end
-        options.delete(:start_date)
         if options[:end_date] && connection.version >= 2
           options[:endDate] = options[:end_date].xmlschema
         end
-        options.delete(:end_date)
         if options[:duration] && connection.version >= 2
           options[:duration] = "PT#{options[:duration] * 86400}S"
         end
         # Load data from path
         response = connection.get(path, options).body
-        return Category.parse(connection, response)
+        return Category.parse(connection, response, options)
       rescue
         raise AMEE::BadData.new("Couldn't load ProfileCategory. Check that your URL is correct.")
       end
