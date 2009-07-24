@@ -44,7 +44,9 @@ module AMEE
 
       def amee_destroy
         # Delete profile
-        AMEE::Profile::Profile.delete(amee_connection, amee_profile)        
+        AMEE::Profile::Profile.delete(amee_connection, amee_profile)
+      rescue
+        puts "Couldn't remove profile #{amee_profile}"
       end
 
       def amee_connection
