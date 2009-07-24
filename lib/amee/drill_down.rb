@@ -52,7 +52,7 @@ module AMEE
         # Create object
         DrillDown.new(data)
       rescue
-        raise AMEE::BadData.new("Couldn't load DrillDown resource from JSON data. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load DrillDown resource from JSON data. Check that your URL is correct.\n#{json}")
       end
       
       def self.from_xml(xml)
@@ -75,7 +75,7 @@ module AMEE
         # Create object
         DrillDown.new(data)
       rescue
-        raise AMEE::BadData.new("Couldn't load DrillDown resource from XML data. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load DrillDown resource from XML data. Check that your URL is correct.\n#{xml}")
       end
 
       def self.get(connection, path)
@@ -94,7 +94,7 @@ module AMEE
         # Done
         return drill
       rescue
-        raise AMEE::BadData.new("Couldn't load DrillDown resource. Check that your URL is correct (#{path}).")
+        raise AMEE::BadData.new("Couldn't load DrillDown resource. Check that your URL is correct (#{path}).\n#{response}")
       end
       
     end

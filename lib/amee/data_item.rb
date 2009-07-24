@@ -59,7 +59,7 @@ module AMEE
         # Create object
         Item.new(data)
       rescue
-        raise AMEE::BadData.new("Couldn't load DataItem from JSON. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load DataItem from JSON. Check that your URL is correct.\n#{json}")
       end
       
       def self.from_xml(xml)
@@ -102,7 +102,7 @@ module AMEE
         # Create object
         Item.new(data)
       rescue
-        raise AMEE::BadData.new("Couldn't load DataItem from XML. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load DataItem from XML. Check that your URL is correct.\n#{xml}")
       end
 
       
@@ -120,7 +120,7 @@ module AMEE
         # Done
         return item
       rescue
-        raise AMEE::BadData.new("Couldn't load DataItem. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load DataItem. Check that your URL is correct.\n#{response}")
       end
 
       def self.create_batch_without_category(connection, category_path, items, options = {})
