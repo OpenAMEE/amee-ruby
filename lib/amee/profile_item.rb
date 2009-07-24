@@ -299,7 +299,7 @@ module AMEE
         response = connection.raw_post(category_path, post_data).body
         # Send back a category object containing all the created items
         unless response.empty?
-          return AMEE::Profile::Category.parse(connection, response)
+          return AMEE::Profile::Category.parse_batch(connection, response)
         else
           return true
         end

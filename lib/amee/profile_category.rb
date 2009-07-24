@@ -146,7 +146,7 @@ module AMEE
       rescue
         raise AMEE::BadData.new("Couldn't load ProfileCategory from V2 JSON data. Check that your URL is correct.")
       end
-
+            
       def self.parse_xml_profile_item(item)
         item_data = {}
         item_data[:values] = {}
@@ -175,6 +175,22 @@ module AMEE
         return item_data
       end
 
+      def self.from_v2_batch_json(json)
+        # Parse JSON
+        doc = JSON.parse(json)
+        data = {}
+        data[:profileItems] = []
+        doc['profileItems'].each do |child|
+          profile_item = {}
+          profile_item[:uri] = child['uri'].to_s
+          profile_item[:uid] = child['uid'].to_s
+          data[:profileItems] << profile_item
+        end
+        return data
+      rescue
+        raise AMEE::BadData.new("Couldn't load ProfileCategory batch response from V2 JSON data. Check that your URL is correct.")
+      end
+      
       def self.parse_xml_profile_category(category)
         category_data = {}
         category_data[:name] = category.elements['DataCategory'].elements['Name'].text
@@ -314,6 +330,22 @@ module AMEE
         raise AMEE::BadData.new("Couldn't load ProfileCategory from V2 XML data. Check that your URL is correct.")
       end
 
+      def self.from_v2_batch_xml(xml)
+        # Parse XML
+        doc = REXML::Document.new(xml)
+        data = {}
+        data[:profileItems] = []
+        REXML::XPath.each(doc, '/Resources/ProfileItems/ProfileItem') do |child|
+          profile_item = {}
+          profile_item[:uri] = child.attributes['uri'].to_s
+          profile_item[:uid] = child.attributes['uid'].to_s
+          data[:profileItems] << profile_item
+        end
+        return data
+      rescue
+        raise AMEE::BadData.new("Couldn't load ProfileCategory batch response from V2 XML data. Check that your URL is correct.")
+      end
+      
       def self.from_v2_atom(response, options)
         # Parse XML
         doc = REXML::Document.new(response)
@@ -413,7 +445,16 @@ module AMEE
         return cat
       end
 
-
+      def self.parse_batch(connection, response)
+        if response.is_v2_json?
+          return Category.from_v2_batch_json(response)
+        elsif response.is_v2_xml?
+          return Category.from_v2_batch_xml(response)
+        else
+          return self.parse(connection, response)
+        end
+      end
+      
       def self.get(connection, path, options = {})
         unless options.is_a?(Hash)
           raise AMEE::ArgumentError.new("Third argument must be a hash of options!")
