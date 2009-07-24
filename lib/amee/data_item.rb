@@ -186,13 +186,13 @@ module AMEE
 #          return location
 #        end
       rescue
-        raise AMEE::BadData.new("Couldn't create DataItem. Check that your information is correct.")
+        raise AMEE::BadData.new("Couldn't create DataItem. Check that your information is correct.\n#{response}")
       end
 
       def update(options = {})
         response = connection.put(full_path, options).body
       rescue
-        raise AMEE::BadData.new("Couldn't update DataItem. Check that your information is correct.")
+        raise AMEE::BadData.new("Couldn't update DataItem. Check that your information is correct.\n#{response}")
       end
 
       def value(name_or_path_or_uid)

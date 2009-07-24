@@ -104,20 +104,22 @@ describe AMEE::Data::ItemValue, "with an authenticated connection" do
 
   it "should fail gracefully with incorrect XML data" do
     connection = flexmock "connection"
-    connection.should_receive(:get).with("/data").and_return(flexmock(:body => '<?xml version="1.0" encoding="UTF-8"?><Resources></Resources>'))
-    lambda{AMEE::Data::ItemValue.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItemValue from XML. Check that your URL is correct.")
+    xml = '<?xml version="1.0" encoding="UTF-8"?><Resources></Resources>'
+    connection.should_receive(:get).with("/data").and_return(flexmock(:body => xml))
+    lambda{AMEE::Data::ItemValue.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItemValue from XML. Check that your URL is correct.\n#{xml}")
   end
 
   it "should fail gracefully with incorrect JSON data" do
     connection = flexmock "connection"
-    connection.should_receive(:get).with("/data").and_return(flexmock(:body => '{}'))
-    lambda{AMEE::Data::ItemValue.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItemValue from JSON. Check that your URL is correct.")
+    json = '{}'
+    connection.should_receive(:get).with("/data").and_return(flexmock(:body => json))
+    lambda{AMEE::Data::ItemValue.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItemValue from JSON. Check that your URL is correct.\n#{json}")
   end
 
   it "should fail gracefully on other errors" do
     connection = flexmock "connection"
     connection.should_receive(:get).with("/data").and_raise("unidentified error")
-    lambda{AMEE::Data::ItemValue.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItemValue. Check that your URL is correct.")
+    lambda{AMEE::Data::ItemValue.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItemValue. Check that your URL is correct.\n")
   end
 
 end

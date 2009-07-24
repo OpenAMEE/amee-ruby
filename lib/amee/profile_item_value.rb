@@ -53,7 +53,7 @@ module AMEE
         # Create object
         ItemValue.new(data)
       rescue 
-        raise AMEE::BadData.new("Couldn't load ProfileItemValue from JSON. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load ProfileItemValue from JSON. Check that your URL is correct.\n#{json}")
       end
       
       def self.from_xml(xml, path)
@@ -74,7 +74,7 @@ module AMEE
         # Create object
         ItemValue.new(data)
       rescue
-        raise AMEE::BadData.new("Couldn't load ProfileItemValue from XML. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load ProfileItemValue from XML. Check that your URL is correct.\n#{xml}")
       end
 
       def self.get(connection, path)
@@ -91,7 +91,7 @@ module AMEE
         # Done
         return value
       rescue
-        raise AMEE::BadData.new("Couldn't load ProfileItemValue. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load ProfileItemValue. Check that your URL is correct.\n#{response}")
       end
 
       def save!

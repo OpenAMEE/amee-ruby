@@ -153,7 +153,7 @@ module AMEE
           return location
         end
       rescue
-        raise AMEE::BadData.new("Couldn't create DataCategory. Check that your information is correct.")
+        raise AMEE::BadData.new("Couldn't create DataCategory. Check that your information is correct.\n#{response}")
       end
 
      def self.delete(connection, path)

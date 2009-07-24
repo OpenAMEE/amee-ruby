@@ -115,7 +115,7 @@ module AMEE
         # Create object
         Category.new(data)
       rescue
-        raise AMEE::BadData.new("Couldn't load ProfileCategory from JSON data. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load ProfileCategory from JSON data. Check that your URL is correct.\n#{json}")
       end
 
       def self.from_v2_json(json, options)
@@ -144,7 +144,7 @@ module AMEE
         # Create object
         Category.new(data)
       rescue
-        raise AMEE::BadData.new("Couldn't load ProfileCategory from V2 JSON data. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load ProfileCategory from V2 JSON data. Check that your URL is correct.\n#{json}")
       end
             
       def self.parse_xml_profile_item(item)
@@ -188,7 +188,7 @@ module AMEE
         end
         return data
       rescue
-        raise AMEE::BadData.new("Couldn't load ProfileCategory batch response from V2 JSON data. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load ProfileCategory batch response from V2 JSON data. Check that your URL is correct.\n#{json}")
       end
       
       def self.parse_xml_profile_category(category)
@@ -251,7 +251,7 @@ module AMEE
         # Create object
         Category.new(data)
       rescue
-        raise AMEE::BadData.new("Couldn't load ProfileCategory from XML data. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load ProfileCategory from XML data. Check that your URL is correct.\n#{xml}")
       end
 
       def self.parse_v2_xml_profile_item(item)
@@ -327,7 +327,7 @@ module AMEE
         # Create object
         Category.new(data)
       rescue
-        raise AMEE::BadData.new("Couldn't load ProfileCategory from V2 XML data. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load ProfileCategory from V2 XML data. Check that your URL is correct.\n#{xml}")
       end
 
       def self.from_v2_batch_xml(xml)
@@ -343,7 +343,7 @@ module AMEE
         end
         return data
       rescue
-        raise AMEE::BadData.new("Couldn't load ProfileCategory batch response from V2 XML data. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load ProfileCategory batch response from V2 XML data. Check that your URL is correct.\n#{xml}")
       end
       
       def self.from_v2_atom(response, options)
@@ -398,7 +398,7 @@ module AMEE
         # Create object
         Category.new(data)
       rescue
-        raise AMEE::BadData.new("Couldn't load ProfileCategory from V2 Atom data. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load ProfileCategory from V2 Atom data. Check that your URL is correct.\n#{response}")
       end
 
       def self.get_history(connection, path, num_months, end_date = Date.today, items_per_page = 10)
@@ -451,7 +451,7 @@ module AMEE
         elsif response.is_v2_xml?
           return Category.from_v2_batch_xml(response)
         else
-          return self.parse(connection, response)
+          return self.parse(connection, response, nil)
         end
       end
       
@@ -475,7 +475,7 @@ module AMEE
         response = connection.get(path, options).body
         return Category.parse(connection, response, options)
       rescue
-        raise AMEE::BadData.new("Couldn't load ProfileCategory. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load ProfileCategory. Check that your URL is correct.\n#{response}")
       end
 
       def child(child_path)

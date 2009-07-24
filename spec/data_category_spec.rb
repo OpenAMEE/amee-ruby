@@ -110,8 +110,9 @@ describe AMEE::Data::Category, "with an authenticated XML connection" do
 
   it "should fail gracefully with incorrect data" do
     connection = flexmock "connection"
-    connection.should_receive(:get).with("/data", {:itemsPerPage => 10}).and_return(flexmock(:body => '<?xml version="1.0" encoding="UTF-8"?><Resources></Resources>'))
-    lambda{AMEE::Data::Category.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataCategory from XML data. Check that your URL is correct.")
+    xml = '<?xml version="1.0" encoding="UTF-8"?><Resources></Resources>'
+    connection.should_receive(:get).with("/data", {:itemsPerPage => 10}).and_return(flexmock(:body => xml))
+    lambda{AMEE::Data::Category.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataCategory from XML data. Check that your URL is correct.\n#{xml}")
   end
 
   it "provides access to drilldown resource" do
@@ -170,8 +171,9 @@ describe AMEE::Data::Category, "with an authenticated JSON connection" do
 
   it "should fail gracefully with incorrect data" do
     connection = flexmock "connection"
-    connection.should_receive(:get).with("/data", {:itemsPerPage => 10}).and_return(flexmock(:body => '{}'))
-    lambda{AMEE::Data::Category.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataCategory from JSON data. Check that your URL is correct.")
+    json = "{}"
+    connection.should_receive(:get).with("/data", {:itemsPerPage => 10}).and_return(flexmock(:body => json))
+    lambda{AMEE::Data::Category.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataCategory from JSON data. Check that your URL is correct.\n#{json}")
   end
 
 end
@@ -181,7 +183,7 @@ describe AMEE::Data::Category, "with an authenticated connection" do
   it "should fail gracefully on other GET errors" do
     connection = flexmock "connection"
     connection.should_receive(:get).with("/data", {:itemsPerPage => 10}).and_raise("unidentified error")
-    lambda{AMEE::Data::Category.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataCategory. Check that your URL is correct.")
+    lambda{AMEE::Data::Category.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataCategory. Check that your URL is correct.\n")
   end
 
 end

@@ -37,7 +37,7 @@ module AMEE
           end
         end
       rescue
-        raise AMEE::BadData.new("Couldn't load ItemDefinition list.")
+        raise AMEE::BadData.new("Couldn't load ItemDefinition list.\n#{response}")
       end
 
       attr_reader :pager
@@ -81,7 +81,7 @@ module AMEE
         # Create object
         ItemDefinition.new(data)
       rescue
-        raise AMEE::BadData.new("Couldn't load ItemDefinition from JSON. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load ItemDefinition from JSON. Check that your URL is correct.\n#{json}")
       end
 
       def self.from_xml(xml, is_list = true)
@@ -96,7 +96,7 @@ module AMEE
         # Create object
         ItemDefinition.new(data)
       rescue
-        raise AMEE::BadData.new("Couldn't load ItemDefinition from XML. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load ItemDefinition from XML. Check that your URL is correct.\n#{xml}")
       end
 
       def self.get(connection, path, options = {})
@@ -107,13 +107,13 @@ module AMEE
         # Done
         return item_definition
       rescue
-        raise AMEE::BadData.new("Couldn't load ItemDefinition. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load ItemDefinition. Check that your URL is correct.\n#{response}")
       end
 
       def update(options = {})
         response = connection.put(full_path, options).body
       rescue
-        raise AMEE::BadData.new("Couldn't update ItemDefinition. Check that your information is correct.")
+        raise AMEE::BadData.new("Couldn't update ItemDefinition. Check that your information is correct.\n#{response}")
       end
 
       def self.create(connection, options = {})
@@ -127,7 +127,7 @@ module AMEE
         # Get the ItemDefinition again
         return ItemDefinition.get(connection, "/definitions/itemDefinitions/" + item_definition.uid)
       rescue
-        raise AMEE::BadData.new("Couldn't create ItemDefinition. Check that your information is correct.")
+        raise AMEE::BadData.new("Couldn't create ItemDefinition. Check that your information is correct.\n#{response}")
       end
 
       def self.delete(connection, item_definition)

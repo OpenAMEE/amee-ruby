@@ -135,8 +135,9 @@ describe AMEE::Profile::Category, "with an authenticated XML connection" do
   it "should fail gracefully with incorrect data" do
     connection = flexmock "connection"
     connection.should_receive(:version).and_return(1.0)
-    connection.should_receive(:get).with("/profiles/E54C5525AA3E", {}).and_return(flexmock(:body => '<?xml version="1.0" encoding="UTF-8"?><Resources></Resources>'))
-    lambda{AMEE::Profile::Category.get(connection, "/profiles/E54C5525AA3E")}.should raise_error(AMEE::BadData, "Couldn't load ProfileCategory from XML data. Check that your URL is correct.")
+    xml = '<?xml version="1.0" encoding="UTF-8"?><Resources></Resources>'
+    connection.should_receive(:get).with("/profiles/E54C5525AA3E", {}).and_return(flexmock(:body => xml))
+    lambda{AMEE::Profile::Category.get(connection, "/profiles/E54C5525AA3E")}.should raise_error(AMEE::BadData, "Couldn't load ProfileCategory from XML data. Check that your URL is correct.\n#{xml}")
   end
 
   it "parses recursive GET requests" do
@@ -209,8 +210,9 @@ describe AMEE::Profile::Category, "with an authenticated version 2 XML connectio
   it "should fail gracefully with incorrect data" do
     connection = flexmock "connection"
     connection.should_receive(:version).and_return(2.0)
-    connection.should_receive(:get).with("/profiles/E54C5525AA3E", {}).and_return(flexmock(:body => '<?xml version="1.0" encoding="UTF-8"?><Resources xmlns="http://schemas.amee.cc/2.0"></Resources>'))
-    lambda{AMEE::Profile::Category.get(connection, "/profiles/E54C5525AA3E")}.should raise_error(AMEE::BadData, "Couldn't load ProfileCategory from V2 XML data. Check that your URL is correct.")
+    xml = '<?xml version="1.0" encoding="UTF-8"?><Resources xmlns="http://schemas.amee.cc/2.0"></Resources>'
+    connection.should_receive(:get).with("/profiles/E54C5525AA3E", {}).and_return(flexmock(:body => xml))
+    lambda{AMEE::Profile::Category.get(connection, "/profiles/E54C5525AA3E")}.should raise_error(AMEE::BadData, "Couldn't load ProfileCategory from V2 XML data. Check that your URL is correct.\n#{xml}")
   end
 
 #  it "parses recursive GET requests" do
@@ -283,8 +285,9 @@ describe AMEE::Profile::Category, "with an authenticated version 2 Atom connecti
   it "should fail gracefully with incorrect data" do
     connection = flexmock "connection"
     connection.should_receive(:version).and_return(2.0)
-    connection.should_receive(:get).with("/profiles/E54C5525AA3E", {}).and_return(flexmock(:body => '<?xml version="1.0" encoding="UTF-8"?><feed xmlns="http://www.w3.org/2005/Atom" xmlns:amee="http://schemas.amee.cc/2.0"></feed>'))
-    lambda{AMEE::Profile::Category.get(connection, "/profiles/E54C5525AA3E")}.should raise_error(AMEE::BadData, "Couldn't load ProfileCategory from V2 Atom data. Check that your URL is correct.")
+    atom = '<?xml version="1.0" encoding="UTF-8"?><feed xmlns="http://www.w3.org/2005/Atom" xmlns:amee="http://schemas.amee.cc/2.0"></feed>'
+    connection.should_receive(:get).with("/profiles/E54C5525AA3E", {}).and_return(flexmock(:body => atom))
+    lambda{AMEE::Profile::Category.get(connection, "/profiles/E54C5525AA3E")}.should raise_error(AMEE::BadData, "Couldn't load ProfileCategory from V2 Atom data. Check that your URL is correct.\n#{atom}")
   end
 
 #  it "parses recursive GET requests" do
@@ -366,8 +369,9 @@ describe AMEE::Profile::Category, "with an authenticated JSON connection" do
 
   it "should fail gracefully with incorrect data" do
     connection = flexmock "connection"
-    connection.should_receive(:get).with("/profiles/E54C5525AA3E", {}).and_return(flexmock(:body => '{"apiVersion":"2.0"}'))
-    lambda{AMEE::Profile::Category.get(connection, "/profiles/E54C5525AA3E")}.should raise_error(AMEE::BadData, "Couldn't load ProfileCategory from V2 JSON data. Check that your URL is correct.")
+    json = '{"apiVersion":"2.0"}'
+    connection.should_receive(:get).with("/profiles/E54C5525AA3E", {}).and_return(flexmock(:body => json))
+    lambda{AMEE::Profile::Category.get(connection, "/profiles/E54C5525AA3E")}.should raise_error(AMEE::BadData, "Couldn't load ProfileCategory from V2 JSON data. Check that your URL is correct.\n#{json}")
   end
 
   it "parses recursive GET requests" do
@@ -490,7 +494,7 @@ describe AMEE::Profile::Category, "with an authenticated connection" do
   it "should fail gracefully on other GET errors" do
     connection = flexmock "connection"
     connection.should_receive(:get).with("/profiles/E54C5525AA3E", {}).and_raise("unidentified error")
-    lambda{AMEE::Profile::Category.get(connection, "/profiles/E54C5525AA3E")}.should raise_error(AMEE::BadData, "Couldn't load ProfileCategory. Check that your URL is correct.")
+    lambda{AMEE::Profile::Category.get(connection, "/profiles/E54C5525AA3E")}.should raise_error(AMEE::BadData, "Couldn't load ProfileCategory. Check that your URL is correct.\n")
   end
 
 end
