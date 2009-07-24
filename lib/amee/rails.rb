@@ -1,6 +1,13 @@
 module AMEE
   module Rails
 
+    def self.establish_connection(server, username, password)
+      # Connect
+      $amee = AMEE::Connection.new(server, username, password)
+      # Authenticate now to get it out of the way and to check settings
+      $amee.authenticate
+    end
+
     def self.included(base)
       base.extend ClassMethods
     end
