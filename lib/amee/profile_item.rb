@@ -58,7 +58,7 @@ module AMEE
         # Create object
         Item.new(data)
       rescue
-        raise AMEE::BadData.new("Couldn't load ProfileItem from JSON data. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load ProfileItem from JSON data. Check that your URL is correct.\n#{json}")
       end
 
       def self.from_v2_json(json)
@@ -90,7 +90,7 @@ module AMEE
         # Create object
         Item.new(data)
       rescue
-        raise AMEE::BadData.new("Couldn't load ProfileItem from V2 JSON data. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load ProfileItem from V2 JSON data. Check that your URL is correct.\n#{json}")
       end
 
       def self.from_xml(xml)
@@ -123,7 +123,7 @@ module AMEE
         # Create object
         Item.new(data)
       rescue
-        raise AMEE::BadData.new("Couldn't load ProfileItem from XML data. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load ProfileItem from XML data. Check that your URL is correct.\n#{xml}")
       end
 
       def self.from_v2_xml(xml)
@@ -158,7 +158,7 @@ module AMEE
         # Create object
         Item.new(data)
       rescue
-        raise AMEE::BadData.new("Couldn't load ProfileItem from V2 XML data. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load ProfileItem from V2 XML data. Check that your URL is correct.\n#{xml}")
       end
 
       def self.from_v2_atom(response)
@@ -187,7 +187,7 @@ module AMEE
         # Create object
         Item.new(data)
       rescue
-        raise AMEE::BadData.new("Couldn't load ProfileItem from V2 ATOM data. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load ProfileItem from V2 ATOM data. Check that your URL is correct.\n#{response}")
       end
 
       def self.parse(connection, response)
@@ -231,7 +231,7 @@ module AMEE
         response = connection.get(path, options).body
         return Item.parse(connection, response)
       rescue
-        raise AMEE::BadData.new("Couldn't load ProfileItem. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load ProfileItem. Check that your URL is correct.\n#{response}")
       end
 
       def self.create(category, data_item_uid, options = {})
@@ -253,11 +253,9 @@ module AMEE
         elsif options[:start_date] && connection.version >= 2
           options[:startDate] = options[:start_date].xmlschema
         end
-        options.delete(:start_date)
         if options[:end_date] && connection.version >= 2
           options[:endDate] = options[:end_date].xmlschema
         end        
-        options.delete(:end_date)
         if options[:duration] && connection.version >= 2
           options[:duration] = "PT#{options[:duration] * 86400}S"
         end
@@ -267,7 +265,7 @@ module AMEE
         if response['Location']
           location = response['Location'].match("http://.*?(/.*)")[1]
         else
-          category = Category.parse(connection, response.body)
+          category = Category.parse(connection, response.body, nil)
           location = category.full_path + "/" + category.items[0][:path]
         end
         if get_item == true
@@ -280,7 +278,7 @@ module AMEE
           return location
         end
       rescue
-        raise AMEE::BadData.new("Couldn't create ProfileItem. Check that your information is correct.")
+        raise AMEE::BadData.new("Couldn't create ProfileItem. Check that your information is correct.\n#{response}")
       end
 
       def self.create_batch(category, items, options = {})
@@ -309,6 +307,20 @@ module AMEE
         # Do we want to automatically fetch the item afterwards?
         get_item = options.delete(:get_item)
         get_item = true if get_item.nil?
+        # Set dates
+        if options[:start_date] && connection.version < 2
+          options[:validFrom] = options[:start_date].amee1_date
+        elsif options[:start_date] && connection.version >= 2
+          options[:startDate] = options[:start_date].xmlschema
+        end
+        options.delete(:start_date)
+        if options[:end_date] && connection.version >= 2
+          options[:endDate] = options[:end_date].xmlschema
+        end
+        options.delete(:end_date)
+        if options[:duration] && connection.version >= 2
+          options[:duration] = "PT#{options[:duration] * 86400}S"
+        end
         # Go
         response = connection.put(path, options)
         if get_item
@@ -319,7 +331,7 @@ module AMEE
           end
         end
       rescue
-        raise AMEE::BadData.new("Couldn't update ProfileItem. Check that your information is correct.")
+        raise AMEE::BadData.new("Couldn't update ProfileItem. Check that your information is correct.\n#{response}")
       end
 
       def update(options = {})
@@ -340,7 +352,7 @@ module AMEE
         response = connection.raw_put(category_path, put_data).body
         # Send back a category object containing all the created items
         unless response.empty?
-          return AMEE::Profile::Category.parse(connection, response)
+          return AMEE::Profile::Category.parse(connection, response, nil)
         else
           return true
         end
