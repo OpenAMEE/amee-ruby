@@ -9,6 +9,8 @@ module AMEE
         @items = data ? data[:items] : []
         @total_amount = data[:total_amount]
         @total_amount_unit = data[:total_amount_unit]
+        @start_date = data[:start_date]
+        @end_date = data[:end_date]
         super
       end
 
@@ -16,6 +18,14 @@ module AMEE
       attr_reader :items
       attr_reader :total_amount
       attr_reader :total_amount_unit
+
+      def start_date
+        @start_date || profile_date
+      end
+
+      def end_date
+        @end_date
+      end
 
       def self.parse_json_profile_item(item)
         item_data = {}
@@ -123,7 +133,8 @@ module AMEE
         doc = JSON.parse(json)
         data = {}
         data[:profile_uid] = doc['profile']['uid']
-        data[:profile_date] = options[:start_date]
+        data[:start_date] = options[:start_date]
+        data[:end_date] = options[:end_date]
         data[:name] = doc['dataCategory']['name']
         data[:path] = doc['path']
         data[:total_amount] = doc['totalAmount']['value'].to_f rescue nil
@@ -301,7 +312,8 @@ module AMEE
         doc = REXML::Document.new(xml)
         data = {}
         data[:profile_uid] = REXML::XPath.first(doc, "/Resources/ProfileCategoryResource/Profile/@uid").to_s
-        data[:profile_date] = options[:start_date]
+        data[:start_date] = options[:start_date]
+        data[:end_date] = options[:end_date]
         data[:name] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/DataCategory/Name').text
         data[:path] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/Path').text || ""
         data[:total_amount] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/TotalAmount').text.to_f rescue nil
@@ -351,7 +363,8 @@ module AMEE
         doc = REXML::Document.new(response)
         data = {}
         data[:profile_uid] = REXML::XPath.first(doc, "/feed/@xml:base").to_s.match("/profiles/(.*?)/")[1]
-        data[:profile_date] = options[:start_date]
+        data[:start_date] = options[:start_date]
+        data[:end_date] = options[:end_date]
         data[:name] = REXML::XPath.first(doc, '/feed/amee:name').text
         data[:path] = REXML::XPath.first(doc, "/feed/@xml:base").to_s.match("/profiles/.*?(/.*)")[1]
         data[:total_amount] = REXML::XPath.first(doc, '/feed/amee:totalAmount').text.to_f rescue nil
@@ -455,25 +468,28 @@ module AMEE
         end
       end
       
-      def self.get(connection, path, options = {})
-        unless options.is_a?(Hash)
+      def self.get(connection, path, orig_options = {})
+        unless orig_options.is_a?(Hash)
           raise AMEE::ArgumentError.new("Third argument must be a hash of options!")
         end
         # Convert to AMEE options
+        options = orig_options.clone
         if options[:start_date] && connection.version < 2
           options[:profileDate] = options[:start_date].amee1_month 
         elsif options[:start_date] && connection.version >= 2
           options[:startDate] = options[:start_date].xmlschema
         end
+        options.delete(:start_date)
         if options[:end_date] && connection.version >= 2
           options[:endDate] = options[:end_date].xmlschema
         end
+        options.delete(:end_date)
         if options[:duration] && connection.version >= 2
           options[:duration] = "PT#{options[:duration] * 86400}S"
         end
         # Load data from path
         response = connection.get(path, options).body
-        return Category.parse(connection, response, options)
+        return Category.parse(connection, response, orig_options)
       rescue
         raise AMEE::BadData.new("Couldn't load ProfileCategory. Check that your URL is correct.\n#{response}")
       end
