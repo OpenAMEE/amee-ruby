@@ -45,6 +45,7 @@ module AMEE
           value_data[:name] = value['name']
           value_data[:path] = value['path']
           value_data[:value] = value['value']
+          value_data[:drill] = value['itemValueDefinition']['drillDown'] rescue nil
           value_data[:uid] = value['uid']
           data[:values] << value_data
         end
@@ -88,6 +89,7 @@ module AMEE
           value_data[:name] = (value.elements['Name'] || value.elements['name']).text
           value_data[:path] = (value.elements['Path'] || value.elements['path']).text
           value_data[:value] = (value.elements['Value'] || value.elements['value']).text
+          value_data[:drill] = value.elements['ItemValueDefinition'].elements['DrillDown'].text == "false" ? false : true rescue nil
           value_data[:uid] = value.attributes['uid'].to_s
           data[:values] << value_data
         end
