@@ -309,6 +309,20 @@ module AMEE
         # Do we want to automatically fetch the item afterwards?
         get_item = options.delete(:get_item)
         get_item = true if get_item.nil?
+        # Set dates
+        if options[:start_date] && connection.version < 2
+          options[:validFrom] = options[:start_date].amee1_date
+        elsif options[:start_date] && connection.version >= 2
+          options[:startDate] = options[:start_date].xmlschema
+        end
+        options.delete(:start_date)
+        if options[:end_date] && connection.version >= 2
+          options[:endDate] = options[:end_date].xmlschema
+        end        
+        options.delete(:end_date)
+        if options[:duration] && connection.version >= 2
+          options[:duration] = "PT#{options[:duration] * 86400}S"
+        end
         # Go
         response = connection.put(path, options)
         if get_item
