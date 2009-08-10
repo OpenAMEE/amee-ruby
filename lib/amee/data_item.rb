@@ -45,6 +45,7 @@ module AMEE
           value_data[:name] = value['name']
           value_data[:path] = value['path']
           value_data[:value] = value['value']
+          value_data[:drill] = value['itemValueDefinition']['drillDown'] rescue nil
           value_data[:uid] = value['uid']
           data[:values] << value_data
         end
@@ -59,7 +60,7 @@ module AMEE
         # Create object
         Item.new(data)
       rescue
-        raise AMEE::BadData.new("Couldn't load DataItem from JSON. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load DataItem from JSON. Check that your URL is correct.\n#{json}")
       end
       
       def self.from_xml(xml)
@@ -88,6 +89,7 @@ module AMEE
           value_data[:name] = (value.elements['Name'] || value.elements['name']).text
           value_data[:path] = (value.elements['Path'] || value.elements['path']).text
           value_data[:value] = (value.elements['Value'] || value.elements['value']).text
+          value_data[:drill] = value.elements['ItemValueDefinition'].elements['DrillDown'].text == "false" ? false : true rescue nil
           value_data[:uid] = value.attributes['uid'].to_s
           data[:values] << value_data
         end
@@ -102,7 +104,7 @@ module AMEE
         # Create object
         Item.new(data)
       rescue
-        raise AMEE::BadData.new("Couldn't load DataItem from XML. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load DataItem from XML. Check that your URL is correct.\n#{xml}")
       end
 
       
@@ -120,7 +122,7 @@ module AMEE
         # Done
         return item
       rescue
-        raise AMEE::BadData.new("Couldn't load DataItem. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load DataItem. Check that your URL is correct.\n#{response}")
       end
 
       def self.create_batch_without_category(connection, category_path, items, options = {})
@@ -172,7 +174,7 @@ module AMEE
           return location
         end
       rescue
-        raise AMEE::BadData.new("Couldn't create DataItem. Check that your information is correct.")
+        raise AMEE::BadData.new("Couldn't create DataItem. Check that your information is correct.\n#{response}")
       end
 
       def self.update(connection, path, options = {})
@@ -189,7 +191,7 @@ module AMEE
           end
         end
       rescue
-        raise AMEE::BadData.new("Couldn't update DataItem. Check that your information is correct.")
+        raise AMEE::BadData.new("Couldn't update DataItem. Check that your information is correct.\n#{response}")
       end
       
       def update(options = {})

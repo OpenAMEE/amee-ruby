@@ -9,6 +9,8 @@ module AMEE
         @items = data ? data[:items] : []
         @total_amount = data[:total_amount]
         @total_amount_unit = data[:total_amount_unit]
+        @start_date = data[:start_date]
+        @end_date = data[:end_date]
         super
       end
 
@@ -16,6 +18,14 @@ module AMEE
       attr_reader :items
       attr_reader :total_amount
       attr_reader :total_amount_unit
+
+      def start_date
+        @start_date || profile_date
+      end
+
+      def end_date
+        @end_date
+      end
 
       def self.parse_json_profile_item(item)
         item_data = {}
@@ -89,7 +99,7 @@ module AMEE
         return category_data
       end
 
-      def self.from_json(json)
+      def self.from_json(json, options)
         # Parse json
         doc = JSON.parse(json)
         data = {}
@@ -115,15 +125,16 @@ module AMEE
         # Create object
         Category.new(data)
       rescue
-        raise AMEE::BadData.new("Couldn't load ProfileCategory from JSON data. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load ProfileCategory from JSON data. Check that your URL is correct.\n#{json}")
       end
 
-      def self.from_v2_json(json)
+      def self.from_v2_json(json, options)
         # Parse json
         doc = JSON.parse(json)
         data = {}
         data[:profile_uid] = doc['profile']['uid']
-        #data[:profile_date] = DateTime.strptime(doc['profileDate'], "%Y%m")
+        data[:start_date] = options[:start_date]
+        data[:end_date] = options[:end_date]
         data[:name] = doc['dataCategory']['name']
         data[:path] = doc['path']
         data[:total_amount] = doc['totalAmount']['value'].to_f rescue nil
@@ -144,7 +155,7 @@ module AMEE
         # Create object
         Category.new(data)
       rescue
-        raise AMEE::BadData.new("Couldn't load ProfileCategory from V2 JSON data. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load ProfileCategory from V2 JSON data. Check that your URL is correct.\n#{json}")
       end
             
       def self.parse_xml_profile_item(item)
@@ -188,7 +199,7 @@ module AMEE
         end
         return data
       rescue
-        raise AMEE::BadData.new("Couldn't load ProfileCategory batch response from V2 JSON data. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load ProfileCategory batch response from V2 JSON data. Check that your URL is correct.\n#{json}")
       end
       
       def self.parse_xml_profile_category(category)
@@ -216,7 +227,7 @@ module AMEE
         return category_data
       end
 
-      def self.from_xml(xml)
+      def self.from_xml(xml, options)
         # Parse XML
         doc = REXML::Document.new(xml)
         data = {}
@@ -251,7 +262,7 @@ module AMEE
         # Create object
         Category.new(data)
       rescue
-        raise AMEE::BadData.new("Couldn't load ProfileCategory from XML data. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load ProfileCategory from XML data. Check that your URL is correct.\n#{xml}")
       end
 
       def self.parse_v2_xml_profile_item(item)
@@ -296,12 +307,13 @@ module AMEE
         return item_data
       end
 
-      def self.from_v2_xml(xml)
+      def self.from_v2_xml(xml, options)
         # Parse XML
         doc = REXML::Document.new(xml)
         data = {}
         data[:profile_uid] = REXML::XPath.first(doc, "/Resources/ProfileCategoryResource/Profile/@uid").to_s
-        #data[:profile_date] = DateTime.strptime(REXML::XPath.first(doc, "/Resources/ProfileCategoryResource/ProfileDate").text, "%Y%m")
+        data[:start_date] = options[:start_date]
+        data[:end_date] = options[:end_date]
         data[:name] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/DataCategory/Name').text
         data[:path] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/Path').text || ""
         data[:total_amount] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/TotalAmount').text.to_f rescue nil
@@ -327,7 +339,7 @@ module AMEE
         # Create object
         Category.new(data)
       rescue
-        raise AMEE::BadData.new("Couldn't load ProfileCategory from V2 XML data. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load ProfileCategory from V2 XML data. Check that your URL is correct.\n#{xml}")
       end
 
       def self.from_v2_batch_xml(xml)
@@ -343,15 +355,16 @@ module AMEE
         end
         return data
       rescue
-        raise AMEE::BadData.new("Couldn't load ProfileCategory batch response from V2 XML data. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load ProfileCategory batch response from V2 XML data. Check that your URL is correct.\n#{xml}")
       end
       
-      def self.from_v2_atom(response)
+      def self.from_v2_atom(response, options)
         # Parse XML
         doc = REXML::Document.new(response)
         data = {}
         data[:profile_uid] = REXML::XPath.first(doc, "/feed/@xml:base").to_s.match("/profiles/(.*?)/")[1]
-#        data[:profile_date] = DateTime.strptime(REXML::XPath.first(doc, "/Resources/ProfileCategoryResource/ProfileDate").text, "%Y%m")
+        data[:start_date] = options[:start_date]
+        data[:end_date] = options[:end_date]
         data[:name] = REXML::XPath.first(doc, '/feed/amee:name').text
         data[:path] = REXML::XPath.first(doc, "/feed/@xml:base").to_s.match("/profiles/.*?(/.*)")[1]
         data[:total_amount] = REXML::XPath.first(doc, '/feed/amee:totalAmount').text.to_f rescue nil
@@ -398,7 +411,7 @@ module AMEE
         # Create object
         Category.new(data)
       rescue
-        raise AMEE::BadData.new("Couldn't load ProfileCategory from V2 Atom data. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load ProfileCategory from V2 Atom data. Check that your URL is correct.\n#{response}")
       end
 
       def self.get_history(connection, path, num_months, end_date = Date.today, items_per_page = 10)
@@ -426,18 +439,18 @@ module AMEE
         return history.reverse
       end
 
-      def self.parse(connection, response)
+      def self.parse(connection, response, options)
         # Parse data from response
         if response.is_v2_json?
-          cat = Category.from_v2_json(response)
+          cat = Category.from_v2_json(response, options)
         elsif response.is_json?
-          cat = Category.from_json(response)
+          cat = Category.from_json(response, options)
         elsif response.is_v2_atom?
-          cat = Category.from_v2_atom(response)
+          cat = Category.from_v2_atom(response, options)
         elsif response.is_v2_xml?
-          cat = Category.from_v2_xml(response)
+          cat = Category.from_v2_xml(response, options)
         elsif response.is_xml?
-          cat = Category.from_xml(response)
+          cat = Category.from_xml(response, options)
         end
         # Store connection in object for future use
         cat.connection = connection
@@ -451,15 +464,16 @@ module AMEE
         elsif response.is_v2_xml?
           return Category.from_v2_batch_xml(response)
         else
-          return self.parse(connection, response)
+          return self.parse(connection, response, nil)
         end
       end
       
-      def self.get(connection, path, options = {})
-        unless options.is_a?(Hash)
+      def self.get(connection, path, orig_options = {})
+        unless orig_options.is_a?(Hash)
           raise AMEE::ArgumentError.new("Third argument must be a hash of options!")
         end
         # Convert to AMEE options
+        options = orig_options.clone
         if options[:start_date] && connection.version < 2
           options[:profileDate] = options[:start_date].amee1_month 
         elsif options[:start_date] && connection.version >= 2
@@ -475,9 +489,9 @@ module AMEE
         end
         # Load data from path
         response = connection.get(path, options).body
-        return Category.parse(connection, response)
+        return Category.parse(connection, response, orig_options)
       rescue
-        raise AMEE::BadData.new("Couldn't load ProfileCategory. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load ProfileCategory. Check that your URL is correct.\n#{response}")
       end
 
       def child(child_path)

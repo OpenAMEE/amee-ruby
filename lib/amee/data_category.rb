@@ -43,7 +43,7 @@ module AMEE
         # Create object
         Category.new(data)
       rescue
-        raise AMEE::BadData.new("Couldn't load DataCategory from JSON data. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load DataCategory from JSON data. Check that your URL is correct.\n#{json}")
       end
       
       def self.from_xml(xml)
@@ -78,7 +78,7 @@ module AMEE
         # Create object
         Category.new(data)
       rescue
-        raise AMEE::BadData.new("Couldn't load DataCategory from XML data. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load DataCategory from XML data. Check that your URL is correct.\n#{xml}")
       end
       
       def self.get(connection, path, items_per_page = 10)
@@ -95,7 +95,7 @@ module AMEE
         # Done
         return cat
       rescue
-        raise AMEE::BadData.new("Couldn't load DataCategory. Check that your URL is correct.")
+        raise AMEE::BadData.new("Couldn't load DataCategory. Check that your URL is correct.\n#{response}")
       end
       
       def self.root(connection)
@@ -153,7 +153,7 @@ module AMEE
           return location
         end
       rescue
-        raise AMEE::BadData.new("Couldn't create DataCategory. Check that your information is correct.")
+        raise AMEE::BadData.new("Couldn't create DataCategory. Check that your information is correct.\n#{response}")
       end
 
      def self.delete(connection, path)

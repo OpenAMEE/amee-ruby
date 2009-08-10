@@ -1,6 +1,13 @@
 module AMEE
   module Rails
 
+    def self.establish_connection(server, username, password)
+      # Connect
+      $amee = AMEE::Connection.new(server, username, password)
+      # Authenticate now to get it out of the way and to check settings
+      $amee.authenticate
+    end
+
     def self.included(base)
       base.extend ClassMethods
     end
@@ -37,7 +44,9 @@ module AMEE
 
       def amee_destroy
         # Delete profile
-        AMEE::Profile::Profile.delete(amee_connection, amee_profile)        
+        AMEE::Profile::Profile.delete(amee_connection, amee_profile)
+      rescue
+        puts "Couldn't remove profile #{amee_profile}"
       end
 
       def amee_connection

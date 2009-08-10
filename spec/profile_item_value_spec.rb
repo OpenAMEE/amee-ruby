@@ -137,20 +137,22 @@ describe AMEE::Profile::ItemValue, "with an authenticated connection" do
 
   it "should fail gracefully with incorrect XML data" do
     connection = flexmock "connection"
-    connection.should_receive(:get).with("/profiles/AEC30FB9BCB9/home/energy/quantity/B099A221106E/kWhPerMonth").and_return(flexmock(:body => '<?xml version="1.0" encoding="UTF-8"?><Resources></Resources>'))
-    lambda{AMEE::Profile::ItemValue.get(connection, "/profiles/AEC30FB9BCB9/home/energy/quantity/B099A221106E/kWhPerMonth")}.should raise_error(AMEE::BadData, "Couldn't load ProfileItemValue from XML. Check that your URL is correct.")
+    xml = '<?xml version="1.0" encoding="UTF-8"?><Resources></Resources>'
+    connection.should_receive(:get).with("/profiles/AEC30FB9BCB9/home/energy/quantity/B099A221106E/kWhPerMonth").and_return(flexmock(:body => xml))
+    lambda{AMEE::Profile::ItemValue.get(connection, "/profiles/AEC30FB9BCB9/home/energy/quantity/B099A221106E/kWhPerMonth")}.should raise_error(AMEE::BadData, "Couldn't load ProfileItemValue from XML. Check that your URL is correct.\n#{xml}")
   end
 
   it "should fail gracefully with incorrect JSON data" do
     connection = flexmock "connection"
-    connection.should_receive(:get).with("/profiles/AEC30FB9BCB9/home/energy/quantity/B099A221106E/kWhPerMonth").and_return(flexmock(:body => '{}'))
-    lambda{AMEE::Profile::ItemValue.get(connection, "/profiles/AEC30FB9BCB9/home/energy/quantity/B099A221106E/kWhPerMonth")}.should raise_error(AMEE::BadData, "Couldn't load ProfileItemValue from JSON. Check that your URL is correct.")
+    json = '{}'
+    connection.should_receive(:get).with("/profiles/AEC30FB9BCB9/home/energy/quantity/B099A221106E/kWhPerMonth").and_return(flexmock(:body => json))
+    lambda{AMEE::Profile::ItemValue.get(connection, "/profiles/AEC30FB9BCB9/home/energy/quantity/B099A221106E/kWhPerMonth")}.should raise_error(AMEE::BadData, "Couldn't load ProfileItemValue from JSON. Check that your URL is correct.\n#{json}")
   end
 
   it "should fail gracefully on other errors" do
     connection = flexmock "connection"
     connection.should_receive(:get).with("/profiles/AEC30FB9BCB9/home/energy/quantity/B099A221106E/kWhPerMonth").and_raise("unidentified error")
-    lambda{AMEE::Profile::ItemValue.get(connection, "/profiles/AEC30FB9BCB9/home/energy/quantity/B099A221106E/kWhPerMonth")}.should raise_error(AMEE::BadData, "Couldn't load ProfileItemValue. Check that your URL is correct.")
+    lambda{AMEE::Profile::ItemValue.get(connection, "/profiles/AEC30FB9BCB9/home/energy/quantity/B099A221106E/kWhPerMonth")}.should raise_error(AMEE::BadData, "Couldn't load ProfileItemValue. Check that your URL is correct.\n")
   end
 
 end

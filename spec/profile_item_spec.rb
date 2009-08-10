@@ -153,8 +153,9 @@ describe AMEE::Profile::Item, "with an authenticated XML connection" do
   it "should fail gracefully with incorrect data" do
     connection = flexmock "connection"
     connection.should_receive(:version).and_return(1.0)
-    connection.should_receive(:get).with("/profiles/92C8DB30F46B/home/energy/quantity/6E9B1517D753", {}).and_return(flexmock(:body => '<?xml version="1.0" encoding="UTF-8"?><Resources></Resources>'))
-    lambda{AMEE::Profile::Item.get(connection, "/profiles/92C8DB30F46B/home/energy/quantity/6E9B1517D753")}.should raise_error(AMEE::BadData, "Couldn't load ProfileItem from XML data. Check that your URL is correct.")
+    xml = '<?xml version="1.0" encoding="UTF-8"?><Resources></Resources>'
+    connection.should_receive(:get).with("/profiles/92C8DB30F46B/home/energy/quantity/6E9B1517D753", {}).and_return(flexmock(:body => xml))
+    lambda{AMEE::Profile::Item.get(connection, "/profiles/92C8DB30F46B/home/energy/quantity/6E9B1517D753")}.should raise_error(AMEE::BadData, "Couldn't load ProfileItem from XML data. Check that your URL is correct.\n#{xml}")
   end
 
 end
@@ -197,8 +198,9 @@ describe AMEE::Profile::Item, "with an authenticated V2 XML connection" do
   it "should fail gracefully with incorrect data" do
     connection = flexmock "connection"
     connection.should_receive(:version).and_return(2.0)
-    connection.should_receive(:get).with("/profiles/92C8DB30F46B/home/energy/quantity/6E9B1517D753", {}).and_return(flexmock(:body => '<?xml version="1.0" encoding="UTF-8"?> <Resources xmlns="http://schemas.amee.cc/2.0"></Resources>'))
-    lambda{AMEE::Profile::Item.get(connection, "/profiles/92C8DB30F46B/home/energy/quantity/6E9B1517D753")}.should raise_error(AMEE::BadData, "Couldn't load ProfileItem from V2 XML data. Check that your URL is correct.")
+    xml = '<?xml version="1.0" encoding="UTF-8"?> <Resources xmlns="http://schemas.amee.cc/2.0"></Resources>'
+    connection.should_receive(:get).with("/profiles/92C8DB30F46B/home/energy/quantity/6E9B1517D753", {}).and_return(flexmock(:body => xml))
+    lambda{AMEE::Profile::Item.get(connection, "/profiles/92C8DB30F46B/home/energy/quantity/6E9B1517D753")}.should raise_error(AMEE::BadData, "Couldn't load ProfileItem from V2 XML data. Check that your URL is correct.\n#{xml}")
   end
 
 end
@@ -241,8 +243,9 @@ describe AMEE::Profile::Item, "with an authenticated V2 ATOM connection" do
   it "should fail gracefully with incorrect data" do
     connection = flexmock "connection"
     connection.should_receive(:version).and_return(2.0)
-    connection.should_receive(:get).with("/profiles/92C8DB30F46B/home/energy/quantity/6E9B1517D753", {}).and_return(flexmock(:body => '<?xml version="1.0" encoding="UTF-8"?><entry xmlns="http://www.w3.org/2005/Atom" xmlns:amee="http://schemas.amee.cc/2.0"></entry>'))
-    lambda{AMEE::Profile::Item.get(connection, "/profiles/92C8DB30F46B/home/energy/quantity/6E9B1517D753")}.should raise_error(AMEE::BadData, "Couldn't load ProfileItem from V2 ATOM data. Check that your URL is correct.")
+    atom = '<?xml version="1.0" encoding="UTF-8"?><entry xmlns="http://www.w3.org/2005/Atom" xmlns:amee="http://schemas.amee.cc/2.0"></entry>'
+    connection.should_receive(:get).with("/profiles/92C8DB30F46B/home/energy/quantity/6E9B1517D753", {}).and_return(flexmock(:body => atom))
+    lambda{AMEE::Profile::Item.get(connection, "/profiles/92C8DB30F46B/home/energy/quantity/6E9B1517D753")}.should raise_error(AMEE::BadData, "Couldn't load ProfileItem from V2 ATOM data. Check that your URL is correct.\n#{atom}")
   end
 
 end
@@ -283,8 +286,9 @@ describe AMEE::Profile::Item, "with an authenticated JSON connection" do
   it "should fail gracefully with incorrect data" do
     connection = flexmock "connection"
     connection.should_receive(:version).and_return(1.0)
-    connection.should_receive(:get).with("/profiles/92C8DB30F46B/home/energy/quantity/6E9B1517D753", {}).and_return(flexmock(:body => '{}'))
-    lambda{AMEE::Profile::Item.get(connection, "/profiles/92C8DB30F46B/home/energy/quantity/6E9B1517D753")}.should raise_error(AMEE::BadData, "Couldn't load ProfileItem from JSON data. Check that your URL is correct.")
+    json = '{}'
+    connection.should_receive(:get).with("/profiles/92C8DB30F46B/home/energy/quantity/6E9B1517D753", {}).and_return(flexmock(:body => json))
+    lambda{AMEE::Profile::Item.get(connection, "/profiles/92C8DB30F46B/home/energy/quantity/6E9B1517D753")}.should raise_error(AMEE::BadData, "Couldn't load ProfileItem from JSON data. Check that your URL is correct.\n#{json}")
   end
 
 end
@@ -327,8 +331,9 @@ describe AMEE::Profile::Item, "with an authenticated V2 JSON connection" do
   it "should fail gracefully with incorrect data" do
     connection = flexmock "connection"
     connection.should_receive(:version).and_return(2.0)
-    connection.should_receive(:get).with("/profiles/92C8DB30F46B/home/energy/quantity/6E9B1517D753", {}).and_return(flexmock(:body => '{"apiVersion":"2.0"}'))
-    lambda{AMEE::Profile::Item.get(connection, "/profiles/92C8DB30F46B/home/energy/quantity/6E9B1517D753")}.should raise_error(AMEE::BadData, "Couldn't load ProfileItem from V2 JSON data. Check that your URL is correct.")
+    json = '{"apiVersion":"2.0"}'
+    connection.should_receive(:get).with("/profiles/92C8DB30F46B/home/energy/quantity/6E9B1517D753", {}).and_return(flexmock(:body => json))
+    lambda{AMEE::Profile::Item.get(connection, "/profiles/92C8DB30F46B/home/energy/quantity/6E9B1517D753")}.should raise_error(AMEE::BadData, "Couldn't load ProfileItem from V2 JSON data. Check that your URL is correct.\n#{json}")
   end
 
 end
