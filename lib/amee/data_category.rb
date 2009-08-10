@@ -161,6 +161,23 @@ module AMEE
      rescue
        raise AMEE::BadData.new("Couldn't delete DataCategory. Check that your information is correct.")
      end
+
+     def self.update(connection, path, options = {})
+       # Do we want to automatically fetch the item afterwards?
+       get_item = options.delete(:get_item)
+       get_item = true if get_item.nil?
+       # Go
+       response = connection.put(path, options)
+       if get_item
+         if response.body.empty?
+           return Category.get(connection, path)
+         else
+           return Category.parse(connection, response.body)
+         end
+       end
+     rescue
+       raise AMEE::BadData.new("Couldn't update Data Category. Check that your information is correct.")
+     end
        
     end
   end
