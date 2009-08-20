@@ -135,6 +135,27 @@ module AMEE
        raise AMEE::BadData.new("Couldn't create DataItemValue. Check that your information is correct.")
       end
 
+      def self.update(connection, path, options = {})
+        # Do we want to automatically fetch the item afterwards?
+        get_item = options.delete(:get_item)
+        get_item = true if get_item.nil?
+        # Go
+        response = connection.put(path, options)
+        if get_item
+          if response.body.empty?
+            return AMEE::Data::ItemValue.get(connection, path)
+          else
+            return AMEE::Data::ItemValue.parse(connection, response.body)
+          end
+        end
+      rescue
+        raise AMEE::BadData.new("Couldn't update DataItemValue. Check that your information is correct.\n#{response}")
+      end
+      
+      def update(options = {})
+        AMEE::Data::ItemValue.update(connection, full_path, options)
+      end
+      
       def self.delete(connection, path)
         connection.delete(path)
       rescue
