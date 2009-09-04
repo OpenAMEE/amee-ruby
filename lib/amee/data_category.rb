@@ -81,9 +81,21 @@ module AMEE
         raise AMEE::BadData.new("Couldn't load DataCategory from XML data. Check that your URL is correct.\n#{xml}")
       end
       
-      def self.get(connection, path, items_per_page = 10)
+      def self.get(connection, path, orig_options = {})
+        unless orig_options.is_a?(Hash)
+          raise AMEE::ArgumentError.new("Third argument must be a hash of options!")
+        end
+        # Convert to AMEE options
+        options = orig_options.clone
+        if orig_options[:items_per_page]
+          options[:itemsPerPage] = orig_options[:items_per_page]
+        else
+          options[:itemsPerPage] = 10
+        end
+
         # Load data from path
-        response = connection.get(path, :itemsPerPage => items_per_page).body
+        response = connection.get(path, options).body
+
         # Parse data from response
         if response.is_json?
           cat = Category.from_json(response)
