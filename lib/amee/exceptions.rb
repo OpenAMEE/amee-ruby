@@ -18,6 +18,9 @@ module AMEE
   class NotFound < Exception
   end
   
+  class DuplicateResource < Exception
+  end
+
   class UnknownError < Exception
   end
   
