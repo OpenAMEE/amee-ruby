@@ -3,16 +3,19 @@ module AMEE
 
     class User < AMEE::Object
 
-      attr_reader :login
+      attr_reader :username
       attr_reader :name
       attr_reader :email
       attr_reader :api_version
+      attr_reader :status
 
       def initialize(data = {})
-        @login = data[:login]
+        @username = data[:username]
         @name = data[:name]
         @email = data[:email]
+        @status = data[:status]
         @api_version  = data[:api_version].to_f rescue nil
+        @environment_uid = data[:environment_uid]
         super
       end
 
@@ -33,13 +36,15 @@ module AMEE
         # Read JSON
         doc = JSON.parse(json)
         data = {}
+        data[:environment_uid] = doc['user']['environment']['uid']
         data[:uid] = doc['user']['uid']
         data[:created] = DateTime.parse(doc['user']['created'])
         data[:modified] = DateTime.parse(doc['user']['modified'])
-        data[:login] = doc['user']['login']
+        data[:username] = doc['user']['username']
         data[:name] = doc['user']['name']
         data[:email] = doc['user']['email']
         data[:api_version] = doc['user']['apiVersion']
+        data[:status] = doc['user']['status']
         # Create object
         User.new(data)
       rescue
@@ -50,13 +55,15 @@ module AMEE
         # Parse data from response into hash
         doc = REXML::Document.new(xml)
         data = {}
-        data[:uid] = REXML::XPath.first(doc, "/User/@uid").to_s
-        data[:created] = DateTime.parse(REXML::XPath.first(doc, "/User/@created").to_s)
-        data[:modified] = DateTime.parse(REXML::XPath.first(doc, "/User/@modified").to_s)
-        data[:login] = REXML::XPath.first(doc, "/User/Login").text
-        data[:name] = REXML::XPath.first(doc, "/User/Name").text
-        data[:email] = REXML::XPath.first(doc, "/User/Email").text
-        data[:api_version] = REXML::XPath.first(doc, "/User/ApiVersion").text
+        data[:environment_uid] = REXML::XPath.first(doc, "//Environment/@uid").to_s
+        data[:uid] = REXML::XPath.first(doc, "//User/@uid").to_s
+        data[:created] = DateTime.parse(REXML::XPath.first(doc, "//User/@created").to_s)
+        data[:modified] = DateTime.parse(REXML::XPath.first(doc, "//User/@modified").to_s)
+        data[:username] = REXML::XPath.first(doc, "//User/Username").text
+        data[:name] = REXML::XPath.first(doc, "//User/Name").text
+        data[:email] = REXML::XPath.first(doc, "//User/Email").text
+        data[:api_version] = REXML::XPath.first(doc, "//User/ApiVersion").text
+        data[:status] = REXML::XPath.first(doc, "//User/Status").text
         # Create object
         User.new(data)
       rescue
@@ -73,17 +80,16 @@ module AMEE
       end
 
       def update(options = {})
-        response = connection.put(full_path, options).body
-      rescue
-        raise AMEE::BadData.new("Couldn't update User. Check that your information is correct.\n#{response}")
+        connection.put(full_path, options).body
+        AMEE::Admin::User.get(connection, full_path)
       end
 
-      def self.create(connection, options = {})
+      def self.create(connection, environment_uid, options = {})
         unless options.is_a?(Hash)
           raise AMEE::ArgumentError.new("Second argument must be a hash of options!")
         end
         # Send data
-        response = connection.post("", options).body
+        response = connection.post("/environments/#{environment_uid}/users", options).body
         # Parse response
         User.parse(connection, response)
       rescue
@@ -91,13 +97,13 @@ module AMEE
       end
 
       def delete
-        # Deleting can take a while... up the timeout to 120 seconds temporarily
-        t = connection.timeout
-        connection.timeout = 120
         connection.delete(full_path)
-        connection.timeout = t
       rescue
         raise AMEE::BadData.new("Couldn't delete User. Check that your information is correct.")
+      end
+
+      def full_path
+        "/environments/#{@environment_uid}/users/#{uid}"
       end
 
     end
