@@ -55,15 +55,15 @@ example:
 
     config.gem "Floppy-amee", :lib => "amee", :source => "http://gems.github.com", :version => '>= 0.3.0'
 
-The first time you run your app after installing the gem, a config/amee.yml file
-will be created. You should edit this file and add your AMEE username and
-password to it, as well as the server you want to connect to.
-
-Once that is all set up, you can use AMEE objects within Rails anywhere you like.
-There is a persistent AMEE connection available called $amee, which you can pass
-into the other objects to fetch data. For instance:
+If you copy amee.example.yml from the gem source directory to amee.yml in your
+app's config directory, a persistent AMEE connection available called $amee,
+will be automatically set up for you, which you can pass into the other objects
+to fetch data. For instance:
 
     data = AMEE::Data::Category.root($amee)
+
+If you do not use this facility, you will have to create your own connection
+objects and manage them yourself.
 
 There is a helper for ActiveRecord models which should be linked to an AMEE profile.
 By adding:
