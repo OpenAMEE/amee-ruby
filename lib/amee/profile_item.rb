@@ -316,7 +316,7 @@ module AMEE
         options.delete(:start_date)
         if options[:end_date] && connection.version >= 2
           options[:endDate] = options[:end_date].xmlschema
-        end
+        end        
         options.delete(:end_date)
         if options[:duration] && connection.version >= 2
           options[:duration] = "PT#{options[:duration] * 86400}S"

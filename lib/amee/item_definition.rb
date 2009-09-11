@@ -110,8 +110,19 @@ module AMEE
         raise AMEE::BadData.new("Couldn't load ItemDefinition. Check that your URL is correct.\n#{response}")
       end
 
-      def update(options = {})
-        response = connection.put(full_path, options).body
+      def self.update(connection, path, options = {})
+        # Do we want to automatically fetch the item afterwards?
+        get_item = options.delete(:get_item)
+        get_item = true if get_item.nil?
+        # Go
+        response = connection.put(path, options)
+        if get_item
+          if response.body.empty?
+            return ItemDefinition.get(connection, path)
+          else
+            return ItemDefinition.parse(connection, response.body)
+          end
+        end
       rescue
         raise AMEE::BadData.new("Couldn't update ItemDefinition. Check that your information is correct.\n#{response}")
       end
