@@ -1,0 +1,12 @@
+development:
+  server: stage.amee.com
+  username: your_amee_username
+  password: your_amee_password
+test:
+  server: stage.amee.com
+  username: your_amee_username
+  password: your_amee_password
+production:
+  server: live.amee.com
+  username: your_amee_username
+  password: your_amee_password
