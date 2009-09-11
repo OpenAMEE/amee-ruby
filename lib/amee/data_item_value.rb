@@ -49,7 +49,7 @@ module AMEE
         data[:path] = path.gsub(/^\/data/, '')
         data[:value] = doc['value']
         data[:type] = doc['itemValueDefinition']['valueDefinition']['valueType']
-        data[:start_date] = DateTime.parse(doc['startDate'])
+        data[:start_date] = DateTime.parse(doc['startDate']) rescue nil
         # Create object
         ItemValue.new(data)
       rescue 
@@ -69,7 +69,7 @@ module AMEE
         data[:type] = REXML::XPath.first(doc, '/Resources/DataItemValueResource/ItemValue/ItemValueDefinition/ValueDefinition/ValueType').text
         data[:from_profile] = REXML::XPath.first(doc, '/Resources/DataItemValueResource/ItemValue/ItemValueDefinition/FromProfile').text == "true" ? true : false
         data[:from_data] = REXML::XPath.first(doc, '/Resources/DataItemValueResource/ItemValue/ItemValueDefinition/FromData').text == "true" ? true : false
-        data[:start_date] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataItemValueResource/ItemValue/StartDate").text)
+        data[:start_date] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataItemValueResource/ItemValue/StartDate").text) rescue nil
         # Create object
         ItemValue.new(data)
       rescue
@@ -132,7 +132,7 @@ module AMEE
           return location
         end
       rescue
-       raise AMEE::BadData.new("Couldn't create DataItemValue. Check that your information is correct.")
+        raise AMEE::BadData.new("Couldn't create DataItemValue. Check that your information is correct.")
       end
 
       def self.update(connection, path, options = {})

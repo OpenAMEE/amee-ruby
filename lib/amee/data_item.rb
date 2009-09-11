@@ -111,6 +111,12 @@ module AMEE
       def self.get(connection, path, options = {})
         # Load data from path
         response = connection.get(path, options).body
+        AMEE::Data::Item.parse(connection, response)
+      rescue
+        raise AMEE::BadData.new("Couldn't load DataItem. Check that your URL is correct.\n#{response}")
+      end
+
+      def self.parse(connection, response)
         # Parse data from response
         if response.is_json?
           item = Item.from_json(response)
@@ -121,8 +127,6 @@ module AMEE
         item.connection = connection
         # Done
         return item
-      rescue
-        raise AMEE::BadData.new("Couldn't load DataItem. Check that your URL is correct.\n#{response}")
       end
 
       def self.create_batch_without_category(connection, category_path, items, options = {})

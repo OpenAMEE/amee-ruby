@@ -119,7 +119,7 @@ describe AMEE::Data::ItemValue, "with an authenticated connection" do
   it "should fail gracefully on other errors" do
     connection = flexmock "connection"
     connection.should_receive(:get).with("/data").and_raise("unidentified error")
-    lambda{AMEE::Data::ItemValue.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItemValue. Check that your URL is correct.\n")
+    lambda{AMEE::Data::ItemValue.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItemValue. Check that your URL is correct.")
   end
 
 end
