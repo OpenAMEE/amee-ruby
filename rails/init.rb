@@ -11,4 +11,4 @@ if File.exist?(amee_config)
 end
 
 # Add AMEE extensions into ActiveRecord::Base
-ActiveRecord::Base.class_eval { include AMEE::Rails }
+ActiveRecord::Base.class_eval { include AMEE::Rails } if Object.const_defined?("ActiveRecord")
