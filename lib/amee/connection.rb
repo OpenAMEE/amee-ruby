@@ -26,6 +26,9 @@ module AMEE
     end
 
     attr_reader :format
+    attr_reader :server
+    attr_reader :username
+    attr_reader :password
     
     def timeout
       @http.read_timeout
