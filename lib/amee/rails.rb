@@ -1,11 +1,25 @@
 module AMEE
   module Rails
 
-    def self.establish_connection(server, username, password)
-      # Connect
-      $amee = AMEE::Connection.new(server, username, password)
-      # Authenticate now to get it out of the way and to check settings
-      $amee.authenticate
+    def self.connection(options = {})
+      Connection.global(options)
+    end
+
+    class Connection
+      def self.global(options = {})
+        unless @connection          
+          @connection = self.connect($AMEE_CONFIG['server'], $AMEE_CONFIG['username'], $AMEE_CONFIG['password'], options)
+          # Also store as $amee for backwards compatibility, though this is now deprecated
+          $amee = @connection
+        end
+        @connection
+      end
+      protected
+      def self.connect(server, username, password, options)
+        connection = AMEE::Connection.new(server, username, password, options)
+        connection.authenticate
+        return connection
+      end
     end
 
     def self.included(base)
@@ -51,10 +65,18 @@ module AMEE
 
       def amee_connection
         # Should be overridden by code which doesn't use the global AMEE connection
-        $amee
+        AMEE::Rails.connection
       end
 
     end
 
+  end
+end
+
+if Object.const_defined?("ActionController")
+  class ActionController::Base
+    def global_amee_connection(options={})
+      AMEE::Rails.connection(options)
+    end
   end
 end
