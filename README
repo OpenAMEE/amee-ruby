@@ -18,6 +18,12 @@ Documentation: http://docs.github.com/Floppy/amee-ruby
 2) Install gem
     > sudo gem install Floppy-amee
 
+== IMPORTANT CHANGES in 2.0.25
+
+If you are using the $amee connection in your Rails apps, this is now deprecated
+ and will be removed in future releases. See the "Rails" section below for details 
+of what you should use instead.
+
 == USAGE
 
 Currently, you can read DataCategories, DataItems and DataItemValues. See 
@@ -56,14 +62,14 @@ example:
     config.gem "Floppy-amee", :lib => "amee", :source => "http://gems.github.com", :version => '>= 0.3.0'
 
 If you copy amee.example.yml from the gem source directory to amee.yml in your
-app's config directory, a persistent AMEE connection available called $amee,
-will be automatically set up for you, which you can pass into the other objects
-to fetch data. For instance:
+app's config directory, a persistent AMEE connection will be available from 
+AMEE::Rails#connection, which you can use anywhere. In your controllers, you can
+also use the global_amee_connection function to access the same global connection.
 
-    data = AMEE::Data::Category.root($amee)
+    data = AMEE::Data::Category.root(global_amee_connection)
 
 If you do not use this facility, you will have to create your own connection
-objects and manage them yourself.
+objects and manage them yourself, which you can do using AMEE::Connection#new
 
 There is a helper for ActiveRecord models which should be linked to an AMEE profile.
 By adding:
