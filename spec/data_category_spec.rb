@@ -46,6 +46,7 @@ describe AMEE::Data::Category, "accessing AMEE V0" do
     @root.uid.should == "63EA08D29C63"
     @root.created.should == DateTime.new(2007,4,16,17,50,43)
     @root.modified.should == DateTime.new(2007,4,16,17,50,43)
+    @root.pager.should be_nil
     @root.children.size.should be(3)
     @root.children[0][:uid].should == "5376F191D80E"
     @root.children[0][:name].should == "Metadata"
@@ -62,6 +63,7 @@ describe AMEE::Data::Category, "accessing AMEE V0" do
     @data.items[0][:label].should == "Biodiesel"
     @data.items[0][:path].should == "9DC114F06AB2"
     @data.items[0][:fuelKgCO2PerLitre].should == "2.5"
+    @data.pager.should be_nil
   end
 
 end
@@ -82,6 +84,7 @@ describe AMEE::Data::Category, "with an authenticated XML connection" do
     @root.children[0][:uid].should == "BBA3AC3E795E"
     @root.children[0][:name].should == "Home"
     @root.children[0][:path].should == "home"
+    @root.pager.should be_nil
   end
 
   it "should provide access to child objects" do
@@ -94,6 +97,7 @@ describe AMEE::Data::Category, "with an authenticated XML connection" do
     @transport.full_path.should == "/data/transport"
     @transport.uid.should == "263FC0186834"
     @transport.children.size.should be(7)
+    @transport.pager.should be_nil
   end
 
   it "should parse data items" do
@@ -106,6 +110,7 @@ describe AMEE::Data::Category, "with an authenticated XML connection" do
     @data.items[0][:label].should == "domestic"
     @data.items[0][:path].should == "AD63A83B4D41"
     @data.items[0][:source].should == "DfT INAS Division, 29 March 2007"
+    @data.pager.should_not be_nil
   end
 
   it "should fail gracefully with incorrect data" do
@@ -143,6 +148,7 @@ describe AMEE::Data::Category, "with an authenticated JSON connection" do
     @root.children[0][:uid].should == "BBA3AC3E795E"
     @root.children[0][:name].should == "Home"
     @root.children[0][:path].should == "home"
+    @root.pager.should be_nil
   end
 
   it "should provide access to child objects" do
@@ -155,6 +161,7 @@ describe AMEE::Data::Category, "with an authenticated JSON connection" do
     @transport.full_path.should == "/data/transport"
     @transport.uid.should == "263FC0186834"
     @transport.children.size.should be(7)
+    @transport.pager.should be_nil
   end
 
   it "should parse data items" do
@@ -167,6 +174,7 @@ describe AMEE::Data::Category, "with an authenticated JSON connection" do
     @data.items[0][:label].should == "domestic"
     @data.items[0][:path].should == "AD63A83B4D41"    
     @data.items[0][:source].should == "DfT INAS Division, 29 March 2007"
+    @data.pager.should_not be_nil
   end
 
   it "should fail gracefully with incorrect data" do
