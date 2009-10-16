@@ -19,10 +19,10 @@ Documentation: http://docs.github.com/Floppy/amee-ruby
 2) Install gem
     > sudo gem install amee
 
-== IMPORTANT CHANGES in 2.0.25
+== IMPORTANT CHANGES when upgrading beyond 2.0.25
 
 If you are using the $amee connection in your Rails apps, this is now deprecated
- and will be removed in future releases. See the "Rails" section below for details 
+and will be removed in future releases. See the "Rails" section below for details 
 of what you should use instead.
 
 == USAGE
