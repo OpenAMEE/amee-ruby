@@ -12,16 +12,17 @@ Documentation: http://docs.github.com/Floppy/amee-ruby
 
 == INSTALLATION
 
-1) Enable gems from github, if you haven't already done so (rubygems >= 1.2): 
-    > sudo gem sources -a http://gems.github.com
+1) Enable gems from gemcutter, if you haven't already done so: 
+    > sudo gem install gemcutter
+    > sudo gem tumble
 
 2) Install gem
-    > sudo gem install Floppy-amee
+    > sudo gem install amee
 
-== IMPORTANT CHANGES in 2.0.25
+== IMPORTANT CHANGES when upgrading beyond 2.0.25
 
 If you are using the $amee connection in your Rails apps, this is now deprecated
- and will be removed in future releases. See the "Rails" section below for details 
+and will be removed in future releases. See the "Rails" section below for details 
 of what you should use instead.
 
 == USAGE
@@ -59,7 +60,7 @@ This gem can also be used as a Rails plugin. You can either extract it into
 vendor/plugins, or use the new-style config.gem command in environment.rb. For
 example:
 
-    config.gem "Floppy-amee", :lib => "amee", :source => "http://gems.github.com", :version => '>= 0.3.0'
+    config.gem "amee", :version => '>= 2.0.26'
 
 If you copy amee.example.yml from the gem source directory to amee.yml in your
 app's config directory, a persistent AMEE connection will be available from 

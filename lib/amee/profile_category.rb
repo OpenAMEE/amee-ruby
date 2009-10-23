@@ -11,6 +11,7 @@ module AMEE
         @total_amount_unit = data[:total_amount_unit]
         @start_date = data[:start_date]
         @end_date = data[:end_date]
+        @pager = data[:pager]
         super
       end
 
@@ -18,6 +19,7 @@ module AMEE
       attr_reader :items
       attr_reader :total_amount
       attr_reader :total_amount_unit
+      attr_reader :pager
 
       def start_date
         @start_date || profile_date
@@ -109,6 +111,7 @@ module AMEE
         data[:path] = doc['path']
         data[:total_amount] = doc['totalAmountPerMonth']
         data[:total_amount_unit] = "kg/month"
+        data[:pager] = AMEE::Pager.from_json(doc['children']['pager']) rescue nil
         data[:children] = []
         if doc['children'] && doc['children']['dataCategories']
           doc['children']['dataCategories'].each do |child|
@@ -139,6 +142,7 @@ module AMEE
         data[:path] = doc['path']
         data[:total_amount] = doc['totalAmount']['value'].to_f rescue nil
         data[:total_amount_unit] = doc['totalAmount']['unit'] rescue nil
+        data[:pager] = AMEE::Pager.from_json(doc['pager']) rescue nil
         data[:children] = []
         if doc['profileCategories']
           doc['profileCategories'].each do |child|
@@ -238,6 +242,7 @@ module AMEE
         data[:path] = "/#{data[:path]}" if data[:path].slice(0,1) != '/'
         data[:total_amount] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/TotalAmountPerMonth').text.to_f rescue nil
         data[:total_amount_unit] = "kg/month"
+        data[:pager] = AMEE::Pager.from_xml(REXML::XPath.first(doc, '//Pager'))
         data[:children] = []
         REXML::XPath.each(doc, '/Resources/ProfileCategoryResource/Children/ProfileCategories/DataCategory | /Resources/ProfileCategoryResource/Children/DataCategories/DataCategory') do |child|
           category_data = {}
@@ -318,6 +323,7 @@ module AMEE
         data[:path] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/Path').text || ""
         data[:total_amount] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/TotalAmount').text.to_f rescue nil
         data[:total_amount_unit] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/TotalAmount/@unit').to_s rescue nil
+        data[:pager] = AMEE::Pager.from_xml(REXML::XPath.first(doc, '//Pager'))
         data[:children] = []
         REXML::XPath.each(doc, '/Resources/ProfileCategoryResource/ProfileCategories/DataCategory') do |child|
           category_data = {}

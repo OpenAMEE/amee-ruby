@@ -28,6 +28,7 @@ module AMEE
     attr_reader :items_found
 
     def self.from_xml(node)
+      return nil if node.nil? || node.elements.empty?
       return Pager.new({:start => node.elements["Start"].text.to_i,
                         :from => node.elements["From"].text.to_i,
                         :to => node.elements["To"].text.to_i,
@@ -42,6 +43,7 @@ module AMEE
     end
 
     def self.from_json(node)
+      return nil if node.nil? || node.empty?
       return Pager.new({:start => node["start"],
                         :from => node["from"],
                         :to => node["to"],

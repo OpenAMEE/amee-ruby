@@ -7,7 +7,8 @@ module AMEE
 
     class Connection
       def self.global(options = {})
-        unless @connection          
+        unless @connection
+          $AMEE_CONFIG ||= {} # Make default values nil
           @connection = self.connect($AMEE_CONFIG['server'], $AMEE_CONFIG['username'], $AMEE_CONFIG['password'], options)
           # Also store as $amee for backwards compatibility, though this is now deprecated
           $amee = @connection

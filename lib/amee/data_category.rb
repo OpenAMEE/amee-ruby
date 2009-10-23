@@ -7,11 +7,13 @@ module AMEE
       def initialize(data = {})
         @children = data ? data[:children] : []
         @items = data ? data[:items] : []
+        @pager = data ? data[:pager] : nil
         super
       end
 
       attr_reader :children
       attr_reader :items
+      attr_reader :pager
 
       def self.from_json(json)
         # Parse json
@@ -23,6 +25,7 @@ module AMEE
         data[:name] = doc['dataCategory']['name']
         data[:path] = doc['path']
         data[:children] = []
+        data[:pager] = AMEE::Pager.from_json(doc['children']['pager'])
         doc['children']['dataCategories'].each do |child|
           category_data = {}
           category_data[:name] = child['name']
@@ -55,6 +58,7 @@ module AMEE
         data[:modified] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataCategoryResource/DataCategory/@modified").to_s)
         data[:name] = REXML::XPath.first(doc, '/Resources/DataCategoryResource/DataCategory/?ame').text
         data[:path] = REXML::XPath.first(doc, '/Resources/DataCategoryResource//?ath').text || ""
+        data[:pager] = AMEE::Pager.from_xml(REXML::XPath.first(doc, '//Pager'))
         data[:children] = []
         REXML::XPath.each(doc, '/Resources/DataCategoryResource//Children/DataCategories/DataCategory') do |child|
           category_data = {}

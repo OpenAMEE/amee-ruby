@@ -55,6 +55,7 @@ describe AMEE::Profile::Category, "accessing AMEE V0" do
     @cat.children[0][:uid].should == "3A72CC3F2AC9"
     @cat.children[0][:name].should == "Television"
     @cat.children[0][:path].should == "television"
+    @cat.pager.should be_nil
   end
 
   it "should parse data items" do
@@ -76,6 +77,7 @@ describe AMEE::Profile::Category, "accessing AMEE V0" do
     @cat.items[0][:values].size.should be(8)
     @cat.items[0][:values][:transportNumberOfJourneys].should == "0.0833333333333333"
     @cat.items[0][:values][:transportEcoDriving].should == "false"
+    @cat.pager.should be_nil
   end
 
 end
@@ -96,6 +98,7 @@ describe AMEE::Profile::Category, "with an authenticated XML connection" do
     @cat.children[0][:uid].should == "427DFCC65E52"
     @cat.children[0][:name].should == "Appliances"
     @cat.children[0][:path].should == "appliances"
+    @cat.pager.should be_nil
   end
 
   it "should provide access to child objects" do
@@ -108,6 +111,7 @@ describe AMEE::Profile::Category, "with an authenticated XML connection" do
     @child.path.should == "/home/appliances"
     @child.full_path.should == "/profiles/E54C5525AA3E/home/appliances"
     @child.children.size.should be(5)
+    @child.pager.should be_nil
   end
 
   it "should parse data items" do
@@ -130,6 +134,7 @@ describe AMEE::Profile::Category, "with an authenticated XML connection" do
     @cat.items[0][:values][:kWhPerMonth].should == "12"
     @cat.items[0][:values][:kgPerMonth].should == "0"
     @cat.items[0][:values][:litresPerMonth].should == "0"
+    @cat.pager.should_not be_nil
   end
 
   it "should fail gracefully with incorrect data" do
@@ -161,6 +166,7 @@ describe AMEE::Profile::Category, "with an authenticated XML connection" do
     cat.children[1][:items][0][:dataItemUid].should == "4F6CBCEE95F7"
     cat.children[1][:items][0][:values][:airconTypical].should == "true"
     cat.children[1][:items][0][:uid].should == "8450D6D97D2D"
+    cat.pager.should be_nil
   end
 
 end
@@ -180,6 +186,7 @@ describe AMEE::Profile::Category, "with an authenticated version 2 XML connectio
     @cat.children[0][:uid].should == "427DFCC65E52"
     @cat.children[0][:name].should == "Appliances"
     @cat.children[0][:path].should == "appliances"
+    @cat.pager.should be_nil
   end
 
   it "should parse data items" do
@@ -205,6 +212,7 @@ describe AMEE::Profile::Category, "with an authenticated version 2 XML connectio
     @cat.items[0][:values][:energyConsumption][:per_unit].should == "month"
     @cat.items[0][:values][:massPerTime][:value].should == "0"
     @cat.items[0][:values][:volumePerTime][:value].should == "0"
+    @cat.pager.should_not be_nil
   end
 
   it "should fail gracefully with incorrect data" do
@@ -331,6 +339,7 @@ describe AMEE::Profile::Category, "with an authenticated JSON connection" do
     @cat.children[0][:uid].should == "427DFCC65E52"
     @cat.children[0][:name].should == "Appliances"
     @cat.children[0][:path].should == "appliances"
+    @cat.pager.should be_nil
   end
 
   it "should provide access to child objects" do
@@ -343,6 +352,7 @@ describe AMEE::Profile::Category, "with an authenticated JSON connection" do
     @child.path.should == "/home/appliances"
     @child.full_path.should == "/profiles/E54C5525AA3E/home/appliances"
     @child.children.size.should be(5)
+    @child.pager.should be_nil
   end
 
   it "should parse data items" do
@@ -365,7 +375,8 @@ describe AMEE::Profile::Category, "with an authenticated JSON connection" do
     @cat.items[0][:values][:kWhPerMonth].should == "12"
     @cat.items[0][:values][:kgPerMonth].should == "0"
     @cat.items[0][:values][:litresPerMonth].should == "0"
-  end
+    @cat.pager.should_not be_nil
+ end
 
   it "should fail gracefully with incorrect data" do
     connection = flexmock "connection"
@@ -395,6 +406,7 @@ describe AMEE::Profile::Category, "with an authenticated JSON connection" do
     cat.children[1][:items][0][:dataItemUid].should == "4F6CBCEE95F7"
     cat.children[1][:items][0][:values][:airconTypical].should == "true"
     cat.children[1][:items][0][:uid].should == "8450D6D97D2D"
+    cat.pager.should be_nil
   end
 
 end
@@ -414,6 +426,7 @@ describe AMEE::Profile::Category, "with an authenticated V2 JSON connection" do
     @cat.children[0][:uid].should == "427DFCC65E52"
     @cat.children[0][:name].should == "Appliances"
     @cat.children[0][:path].should == "appliances"
+    @cat.pager.should be_nil
   end
 
   it "should provide access to child objects" do
@@ -426,6 +439,7 @@ describe AMEE::Profile::Category, "with an authenticated V2 JSON connection" do
     @child.path.should == "/home/appliances"
     @child.full_path.should == "/profiles/447C40EB29FB/home/appliances"
     @child.children.size.should be(5)
+    @child.pager.should be_nil
   end
 
   it "should parse data items" do
@@ -451,6 +465,7 @@ describe AMEE::Profile::Category, "with an authenticated V2 JSON connection" do
     @cat.items[0][:values][:energyConsumption][:per_unit].should == "month"
     @cat.items[0][:values][:massPerTime][:value].should == "0"
     @cat.items[0][:values][:volumePerTime][:value].should == "0"
+    @cat.pager.should_not be_nil
   end
   
 #
