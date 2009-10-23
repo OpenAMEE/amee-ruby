@@ -1,3 +1,5 @@
+require 'pp'
+
 module AMEE
   module Data
     class Item < AMEE::Data::Object
@@ -9,6 +11,7 @@ module AMEE
         @item_definition = data[:item_definition]
         @total_amount = data[:total_amount]
         @total_amount_unit = data[:total_amount_unit]
+        @start_date = data[:start_date]
         super
       end
 
@@ -18,6 +21,7 @@ module AMEE
       attr_reader :item_definition
       attr_reader :total_amount
       attr_reader :total_amount_unit
+      attr_reader :start_date
       
       def self.from_json(json)
         # Read JSON
@@ -57,6 +61,7 @@ module AMEE
           choice_data[:value] = choice['value']
           data[:choices] << choice_data
         end
+        data[:start_date] = DateTime.parse(doc['dataItem']['startDate'])
         # Create object
         Item.new(data)
       rescue
@@ -101,6 +106,7 @@ module AMEE
           choice_data[:value] = (choice.elements['Value']).text || ""
           data[:choices] << choice_data
         end
+        data[:start_date] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataItemResource/DataItem/StartDate").text)
         # Create object
         Item.new(data)
       rescue
