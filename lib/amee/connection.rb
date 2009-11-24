@@ -143,7 +143,7 @@ module AMEE
       response = @http.request(post)
       @auth_token = response['authToken']
       unless authenticated?
-        raise AMEE::AuthFailed.new("Authentication failed. Please check your username and password.") 
+        raise AMEE::AuthFailed.new("Authentication failed. Please check your username and password. (tried #{@username},#{@password})")
       end
       # Detect API version
       if response.body.is_json?

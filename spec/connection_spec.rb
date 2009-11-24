@@ -159,7 +159,7 @@ describe AMEE::Connection, "with bad authentication information" do
   it "should get an authentication failure when accessing private URLs" do
     flexmock(Net::HTTP).new_instances.should_receive(:start => nil, :request => flexmock(:code => '401', :body => "", :'[]' => nil), :finish => nil)
     amee = AMEE::Connection.new('server.example.com', 'wrong', 'details')
-    lambda{amee.get('/data')}.should raise_error(AMEE::AuthFailed, "Authentication failed. Please check your username and password.")
+    lambda{amee.get('/data')}.should raise_error(AMEE::AuthFailed, "Authentication failed. Please check your username and password. (tried wrong,details)")
   end
 
 end
