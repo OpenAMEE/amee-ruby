@@ -61,7 +61,7 @@ module AMEE
           choice_data[:value] = choice['value']
           data[:choices] << choice_data
         end
-        data[:start_date] = DateTime.parse(doc['dataItem']['startDate'])
+        data[:start_date] = DateTime.parse(doc['dataItem']['startDate']) rescue nil
         # Create object
         Item.new(data)
       rescue
@@ -106,7 +106,7 @@ module AMEE
           choice_data[:value] = (choice.elements['Value']).text || ""
           data[:choices] << choice_data
         end
-        data[:start_date] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataItemResource/DataItem/StartDate").text)
+        data[:start_date] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataItemResource/DataItem/StartDate").text) rescue nil
         # Create object
         Item.new(data)
       rescue
