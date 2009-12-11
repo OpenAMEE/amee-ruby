@@ -172,23 +172,23 @@ module AMEE
       response.code == '301' || response.code == '302'
     end
 
-    def response_ok?(response)
+    def response_ok?(response, request)
       case response.code
         when '200', '201'
           return true
         when '403'
-          raise AMEE::PermissionDenied.new("You do not have permission to perform the requested operation. AMEE Response: #{response.body}")
+          raise AMEE::PermissionDenied.new("You do not have permission to perform the requested operation.\nRequest: #{request.method} #{request.path}\n#{request.body}\Response: #{response.body}")
         when '401'
           authenticate
           return false
         when '400'
           if response.body.include? "would have resulted in a duplicate resource being created"
-            raise AMEE::DuplicateResource.new("The specified resource already exists. This is most often caused by creating an item that overlaps another in time. AMEE Response: #{response.body}")
+            raise AMEE::DuplicateResource.new("The specified resource already exists. This is most often caused by creating an item that overlaps another in time.\nRequest: #{request.method} #{request.path}\n#{request.to_yaml}\Response: #{response.body}")
           else
-            raise AMEE::UnknownError.new("An error occurred while talking to AMEE: HTTP response code #{response.code}. AMEE Response: #{response.body}")
+            raise AMEE::UnknownError.new("An error occurred while talking to AMEE: HTTP response code #{response.code}.\nRequest: #{request.method} #{request.path}\n#{request.body}\Response: #{response.body}")
           end
         else
-          raise AMEE::UnknownError.new("An error occurred while talking to AMEE: HTTP response code #{response.code}. AMEE Response: #{response.body}")
+          raise AMEE::UnknownError.new("An error occurred while talking to AMEE: HTTP response code #{response.code}.\nRequest: #{request.method} #{request.path}\n#{request.body}\Response: #{response.body}")
       end
     end
 
@@ -198,7 +198,7 @@ module AMEE
       # Do request
       begin
         response = send_request(request, format)
-      end while !response_ok?(response)
+      end while !response_ok?(response, request)
       # Return response
       return response
     rescue SocketError

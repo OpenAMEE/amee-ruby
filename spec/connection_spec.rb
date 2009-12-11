@@ -98,13 +98,15 @@ describe AMEE::Connection, "with authentication" do
   it "should raise error if permission for operation is denied" do
     flexmock(Net::HTTP).new_instances do |mock|
       mock.should_receive(:start => nil)
-      mock.should_receive(:request).and_return(flexmock(:code => '403', :body => ''))
+      mock.should_receive(:request).and_return(flexmock(:code => '403', :body => '{}'))
       mock.should_receive(:finish => nil)
     end
     amee = AMEE::Connection.new('server.example.com', 'username', 'password')
     lambda {
       amee.get('/data')
-    }.should raise_error(AMEE::PermissionDenied,"You do not have permission to perform the requested operation. AMEE Response: ")
+    }.should raise_error(AMEE::PermissionDenied,"You do not have permission to perform the requested operation.
+Request: GET /data
+Response: {}")
   end
 
   it "should raise error if authentication succeeds, but permission for operation is denied" do
@@ -112,26 +114,30 @@ describe AMEE::Connection, "with authentication" do
       mock.should_receive(:start => nil)
       mock.should_receive(:request).and_return(flexmock(:code => '401', :body => ''),
                                                flexmock(:code => '200', :body => '', :'[]' => 'dummy_auth_token_data'),
-                                               flexmock(:code => '403', :body => ''))
+                                               flexmock(:code => '403', :body => '{}'))
       mock.should_receive(:finish => nil)
     end
     amee = AMEE::Connection.new('server.example.com', 'username', 'password')
     lambda {
       amee.get('/data')
-    }.should raise_error(AMEE::PermissionDenied,"You do not have permission to perform the requested operation. AMEE Response: ")
+    }.should raise_error(AMEE::PermissionDenied,"You do not have permission to perform the requested operation.
+Request: GET /data
+Response: {}")
     amee.authenticated?.should be_true
   end
 
   it "should raise error if unhandled errors occur in connection" do
     flexmock(Net::HTTP).new_instances do |mock|
       mock.should_receive(:start => nil)
-      mock.should_receive(:request).and_return(flexmock(:code => '500', :body => ''))
+      mock.should_receive(:request).and_return(flexmock(:code => '500', :body => '{}'))
       mock.should_receive(:finish => nil)
     end
     amee = AMEE::Connection.new('server.example.com', 'username', 'password')
     lambda {
       amee.get('/data')
-    }.should raise_error(AMEE::UnknownError,"An error occurred while talking to AMEE: HTTP response code 500. AMEE Response: ")
+    }.should raise_error(AMEE::UnknownError,"An error occurred while talking to AMEE: HTTP response code 500.
+Request: GET /data
+Response: {}")
   end
 
 end
