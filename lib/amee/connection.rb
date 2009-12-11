@@ -183,7 +183,7 @@ module AMEE
           return false
         when '400'
           if response.body.include? "would have resulted in a duplicate resource being created"
-            raise AMEE::DuplicateResource.new("The specified resource already exists. This is most often caused by creating an item that overlaps another in time.\nRequest: #{request.method} #{request.path}\n#{request.to_yaml}\Response: #{response.body}")
+            raise AMEE::DuplicateResource.new("The specified resource already exists. This is most often caused by creating an item that overlaps another in time.\nRequest: #{request.method} #{request.path}\n#{request.body}\Response: #{response.body}")
           else
             raise AMEE::UnknownError.new("An error occurred while talking to AMEE: HTTP response code #{response.code}.\nRequest: #{request.method} #{request.path}\n#{request.body}\Response: #{response.body}")
           end
