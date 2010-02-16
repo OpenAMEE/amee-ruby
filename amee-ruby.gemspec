@@ -13,6 +13,6 @@ Gem::Specification.new do |s|
   s.files += ['examples/list_profiles.rb', 'examples/create_profile.rb', 'examples/create_profile_item.rb', 'examples/view_data_category.rb', 'examples/view_data_item.rb']
   s.files += ['init.rb', 'rails/init.rb', 'amee.example.yml']
   s.executables = ['ameesh']
-  s.add_dependency("activesupport")
+  s.add_dependency("activesupport", "~> 2.3.5")
   s.add_dependency("json")
 end

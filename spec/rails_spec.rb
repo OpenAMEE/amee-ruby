@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/spec_helper.rb'
 require 'amee/rails'
-require 'activerecord'
+require 'active_record'
 
 describe AMEE::Rails do
 

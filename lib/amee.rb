@@ -1,5 +1,5 @@
 require 'rexml/document'
-require 'activesupport'
+require 'active_support'
 
 # We don't NEED the JSON gem, but if it's available, use it.
 begin
