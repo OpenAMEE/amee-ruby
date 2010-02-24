@@ -77,7 +77,6 @@ module AMEE
         end
         begin
           data[:uid] = REXML::XPath.first(doc, ".//ItemValue/@uid").to_s
-          print data[:uid]
           data[:created] = DateTime.parse(REXML::XPath.first(doc, ".//ItemValue/@Created").to_s)
           data[:modified] = DateTime.parse(REXML::XPath.first(doc, ".//ItemValue/@Modified").to_s)
           data[:name] = REXML::XPath.first(doc, './/ItemValue/Name').text

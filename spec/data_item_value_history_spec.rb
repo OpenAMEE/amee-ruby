@@ -113,7 +113,7 @@ describe AMEE::Data::ItemValueHistory do
 
 end
 
-describe AMEE::Data::ItemValue, "with an authenticated connection" do
+describe AMEE::Data::ItemValueHistory, "with an authenticated connection" do
 
   it "should parse XML correctly" do
     connection = flexmock "connection"
