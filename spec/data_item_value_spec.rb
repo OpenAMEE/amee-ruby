@@ -123,7 +123,7 @@ describe AMEE::Data::ItemValue, "with an authenticated connection" do
           '<DataItemValueResource><ItemValue Created="2007-08-01 09:00:41.0" Modified="2007-08-01 09:00:41.0" uid="127612FA4922"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><StartDate></StartDate>1<Value>2</Value><ItemValueDefinition uid="653828811D42"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="8CB8A1789CD6"><Name>kgCO2PerJourney</Name><ValueType>DECIMAL</ValueType></ValueDefinition></ItemValueDefinition><DataItem uid="AD63A83B4D41"/></ItemValue><DataItem uid="AD63A83B4D41"/></DataItemValueResource>'+
           '</ItemValues></Resources>'
     connection.should_receive(:get).with(MockResourcePath).and_return(flexmock(:body => xml))
-    lambda{AMEE::Data::ItemValue.get(connection, MockResourcePath)}.should raise_error(AMEE::BadData, "Couldn't load DataItemValue from XML. Check that your URL is correct.\n#{xml}")
+    lambda{AMEE::Data::ItemValue.get(connection, MockResourcePath)}.should raise_error(AMEE::BadData, "Couldn't load DataItemValue from XML. This is an item value history.\n#{xml}")
   end
 
   it "should fail gracefully with incorrect JSON data" do

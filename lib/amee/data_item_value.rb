@@ -72,20 +72,25 @@ module AMEE
         # Read XML
         doc = REXML::Document.new(xml)
         data = {}
-        data[:uid] = REXML::XPath.first(doc, "/Resources/DataItemValueResource/ItemValue/@uid").to_s
-        data[:created] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataItemValueResource/ItemValue/@Created").to_s)
-        data[:modified] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataItemValueResource/ItemValue/@Modified").to_s)
-        data[:name] = REXML::XPath.first(doc, '/Resources/DataItemValueResource/ItemValue/Name').text
-        data[:path] = path.gsub(/^\/data/, '')
-        data[:value] = REXML::XPath.first(doc, '/Resources/DataItemValueResource/ItemValue/Value').text
-        data[:type] = REXML::XPath.first(doc, '/Resources/DataItemValueResource/ItemValue/ItemValueDefinition/ValueDefinition/ValueType').text
-        data[:from_profile] = REXML::XPath.first(doc, '/Resources/DataItemValueResource/ItemValue/ItemValueDefinition/FromProfile').text == "true" ? true : false
-        data[:from_data] = REXML::XPath.first(doc, '/Resources/DataItemValueResource/ItemValue/ItemValueDefinition/FromData').text == "true" ? true : false
-        data[:start_date] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataItemValueResource/ItemValue/StartDate").text) rescue nil
-        # Create object
-        ItemValue.new(data)
-      rescue
-        raise AMEE::BadData.new("Couldn't load DataItemValue from XML. Check that your URL is correct.\n#{xml}")
+        if REXML::XPath.match(doc,"//DataItemValueResource//ItemValue").length>1
+          raise AMEE::BadData.new("Couldn't load DataItemValue from XML. This is an item value history.\n#{xml}")
+        end
+        begin
+          data[:uid] = REXML::XPath.first(doc, "//DataItemValueResource/ItemValue/@uid").to_s
+          data[:created] = DateTime.parse(REXML::XPath.first(doc, "//DataItemValueResource/ItemValue/@Created").to_s)
+          data[:modified] = DateTime.parse(REXML::XPath.first(doc, "//DataItemValueResource/ItemValue/@Modified").to_s)
+          data[:name] = REXML::XPath.first(doc, '//DataItemValueResource/ItemValue/Name').text
+          data[:path] = path.gsub(/^\/data/, '')
+          data[:value] = REXML::XPath.first(doc, '//DataItemValueResource/ItemValue/Value').text
+          data[:type] = REXML::XPath.first(doc, '//DataItemValueResource/ItemValue/ItemValueDefinition/ValueDefinition/ValueType').text
+          data[:from_profile] = REXML::XPath.first(doc, '//DataItemValueResource/ItemValue/ItemValueDefinition/FromProfile').text == "true" ? true : false
+          data[:from_data] = REXML::XPath.first(doc, '//DataItemValueResource/ItemValue/ItemValueDefinition/FromData').text == "true" ? true : false
+          data[:start_date] = DateTime.parse(REXML::XPath.first(doc, "//DataItemValueResource/ItemValue/StartDate").text) rescue nil
+          # Create object
+          ItemValue.new(data)
+        rescue
+          raise AMEE::BadData.new("Couldn't load DataItemValue from XML. Check that your URL is correct.\n#{xml}")
+        end
       end
 
       def self.get(connection, path)
@@ -119,7 +124,7 @@ module AMEE
         data_item.path=data_item_path
         data_item.connection=connection
         if start_date
-         ItemValue.create(data_item,:value=>value,:start_date=>start_date,
+          ItemValue.create(data_item,:value=>value,:start_date=>start_date,
             :itemValueDefinitionPath=>@path.split(/\//).pop,:get_item=>false)
         else
           ItemValue.create(data_item,:value=>value,
@@ -199,8 +204,8 @@ module AMEE
 
       def self.delete(connection, path)
         connection.delete(path)
-      #rescue
-       # raise AMEE::BadData.new("Couldn't delete DataItemValue. Check that your information is correct.")
+        #rescue
+        # raise AMEE::BadData.new("Couldn't delete DataItemValue. Check that your information is correct.")
       end      
     
     end
