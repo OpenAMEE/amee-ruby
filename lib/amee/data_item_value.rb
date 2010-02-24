@@ -52,7 +52,7 @@ module AMEE
 
       def self.from_json(json, path)
         # Read JSON
-        doc = JSON.parse(json)['itemValue']
+        doc = json.is_a?(String) ? JSON.parse(json)['itemValue'] : json
         data = {}
         data[:uid] = doc['uid']
         data[:created] = DateTime.parse(doc['created'])
@@ -70,22 +70,23 @@ module AMEE
       
       def self.from_xml(xml, path)
         # Read XML
-        doc = REXML::Document.new(xml)
+        doc = xml.is_a?(String) ? REXML::Document.new(xml) : xml
         data = {}
-        if REXML::XPath.match(doc,"//DataItemValueResource//ItemValue").length>1
+        if REXML::XPath.match(doc,".//ItemValue").length>1
           raise AMEE::BadData.new("Couldn't load DataItemValue from XML. This is an item value history.\n#{xml}")
         end
         begin
-          data[:uid] = REXML::XPath.first(doc, "//DataItemValueResource/ItemValue/@uid").to_s
-          data[:created] = DateTime.parse(REXML::XPath.first(doc, "//DataItemValueResource/ItemValue/@Created").to_s)
-          data[:modified] = DateTime.parse(REXML::XPath.first(doc, "//DataItemValueResource/ItemValue/@Modified").to_s)
-          data[:name] = REXML::XPath.first(doc, '//DataItemValueResource/ItemValue/Name').text
+          data[:uid] = REXML::XPath.first(doc, ".//ItemValue/@uid").to_s
+          print data[:uid]
+          data[:created] = DateTime.parse(REXML::XPath.first(doc, ".//ItemValue/@Created").to_s)
+          data[:modified] = DateTime.parse(REXML::XPath.first(doc, ".//ItemValue/@Modified").to_s)
+          data[:name] = REXML::XPath.first(doc, './/ItemValue/Name').text
           data[:path] = path.gsub(/^\/data/, '')
-          data[:value] = REXML::XPath.first(doc, '//DataItemValueResource/ItemValue/Value').text
-          data[:type] = REXML::XPath.first(doc, '//DataItemValueResource/ItemValue/ItemValueDefinition/ValueDefinition/ValueType').text
-          data[:from_profile] = REXML::XPath.first(doc, '//DataItemValueResource/ItemValue/ItemValueDefinition/FromProfile').text == "true" ? true : false
-          data[:from_data] = REXML::XPath.first(doc, '//DataItemValueResource/ItemValue/ItemValueDefinition/FromData').text == "true" ? true : false
-          data[:start_date] = DateTime.parse(REXML::XPath.first(doc, "//DataItemValueResource/ItemValue/StartDate").text) rescue nil
+          data[:value] = REXML::XPath.first(doc, './/ItemValue/Value').text
+          data[:type] = REXML::XPath.first(doc, './/ItemValue/ItemValueDefinition/ValueDefinition/ValueType').text
+          data[:from_profile] = REXML::XPath.first(doc, './/ItemValue/ItemValueDefinition/FromProfile').text == "true" ? true : false
+          data[:from_data] = REXML::XPath.first(doc, './/ItemValue/ItemValueDefinition/FromData').text == "true" ? true : false
+          data[:start_date] = DateTime.parse(REXML::XPath.first(doc, ".//ItemValue/StartDate").text) rescue nil
           # Create object
           ItemValue.new(data)
         rescue

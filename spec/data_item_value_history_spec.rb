@@ -5,27 +5,27 @@ TestSeriesTwo=[[Time.at(0),2],[Time.at(1),6],[Time.at(5),7],[Time.at(9),11]]
 
 MockResourcePath="/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney"
 MockDataItemPath="/data/transport/plane/generic/AD63A83B4D41"
-MockResourceXMLOne='<Resources><ItemValues>'+
-          '<DataItemValueResource><ItemValue Created="2007-08-01 09:00:41.0" Modified="2007-08-01 09:00:41.0" uid="127612FA4922"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><StartDate></StartDate>0<Value>1</Value><ItemValueDefinition uid="653828811D42"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="8CB8A1789CD6"><Name>kgCO2PerJourney</Name><ValueType>DECIMAL</ValueType></ValueDefinition></ItemValueDefinition><DataItem uid="AD63A83B4D41"/></ItemValue><DataItem uid="AD63A83B4D41"/></DataItemValueResource>'+
-          '<DataItemValueResource><ItemValue Created="2007-08-01 09:00:41.0" Modified="2007-08-01 09:00:41.0" uid="127612FA4922"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><StartDate></StartDate>1<Value>2</Value><ItemValueDefinition uid="653828811D42"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="8CB8A1789CD6"><Name>kgCO2PerJourney</Name><ValueType>DECIMAL</ValueType></ValueDefinition></ItemValueDefinition><DataItem uid="AD63A83B4D41"/></ItemValue><DataItem uid="AD63A83B4D41"/></DataItemValueResource>'+
-          '<DataItemValueResource><ItemValue Created="2007-08-01 09:00:41.0" Modified="2007-08-01 09:00:41.0" uid="127612FA4923"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><StartDate></StartDate>3<Value>4</Value><ItemValueDefinition uid="653828811D42"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="8CB8A1789CD6"><Name>kgCO2PerJourney</Name><ValueType>DECIMAL</ValueType></ValueDefinition></ItemValueDefinition><DataItem uid="AD63A83B4D41"/></ItemValue><DataItem uid="AD63A83B4D41"/></DataItemValueResource>'+
+MockResourceXML='<Resources><ItemValues>'+
+          '<DataItemValueResource><ItemValue Created="2007-08-01 09:00:41.0" Modified="2007-08-01 09:00:41.0" uid="127612FA4921"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><StartDate>'+Time.at(0).xmlschema+'</StartDate><Value>1</Value><ItemValueDefinition uid="653828811D42"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="8CB8A1789CD6"><Name>kgCO2PerJourney</Name><ValueType>DECIMAL</ValueType></ValueDefinition></ItemValueDefinition><DataItem uid="AD63A83B4D41"/></ItemValue><DataItem uid="AD63A83B4D41"/></DataItemValueResource>'+
+          '<DataItemValueResource><ItemValue Created="2007-08-01 09:00:41.0" Modified="2007-08-01 09:00:41.0" uid="127612FA4922"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><StartDate>'+Time.at(1).xmlschema+'</StartDate><Value>2</Value><ItemValueDefinition uid="653828811D42"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="8CB8A1789CD6"><Name>kgCO2PerJourney</Name><ValueType>DECIMAL</ValueType></ValueDefinition></ItemValueDefinition><DataItem uid="AD63A83B4D41"/></ItemValue><DataItem uid="AD63A83B4D41"/></DataItemValueResource>'+
+          '<DataItemValueResource><ItemValue Created="2007-08-01 09:00:41.0" Modified="2007-08-01 09:00:41.0" uid="127612FA4923"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><StartDate>'+Time.at(3).xmlschema+'</StartDate><Value>4</Value><ItemValueDefinition uid="653828811D42"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="8CB8A1789CD6"><Name>kgCO2PerJourney</Name><ValueType>DECIMAL</ValueType></ValueDefinition></ItemValueDefinition><DataItem uid="AD63A83B4D41"/></ItemValue><DataItem uid="AD63A83B4D41"/></DataItemValueResource>'+
           '</ItemValues></Resources>'
-MockResourceJSONOne='{"dataItem":{"uid":"AD63A83B4D41"},"itemValues":['+
-'{"item":{"uid":"AD63A83B4D41"},"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","startDate":"0",value":"1","uid":"127612FA4921","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey","itemValueDefinition":{"valueDefinition":{"valueType":"DECIMAL","uid":"8CB8A1789CD6","name":"kgCO2PerJourney"},"uid":"653828811D42","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey"}'+
-'{"item":{"uid":"AD63A83B4D41"},"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","startDate":"1","value":2","uid":"127612FA4922","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey","itemValueDefinition":{"valueDefinition":{"valueType":"DECIMAL","uid":"8CB8A1789CD6","name":"kgCO2PerJourney"},"uid":"653828811D42","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey"}'+
-'{"item":{"uid":"AD63A83B4D41"},"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","startDate":"3","value":4","uid":"127612FA4923","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey","itemValueDefinition":{"valueDefinition":{"valueType":"DECIMAL","uid":"8CB8A1789CD6","name":"kgCO2PerJourney"},"uid":"653828811D42","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey"}'+
+MockResourceJSON='{"dataItem":{"uid":"AD63A83B4D41"},"itemValues":['+
+' {"item":{"uid":"AD63A83B4D41"},"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","startDate":"'+Time.at(0).xmlschema+'","value":"1","uid":"127612FA4921","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey","itemValueDefinition":{"valueDefinition":{"valueType":"DECIMAL","uid":"8CB8A1789CD6","name":"kgCO2PerJourney"},"uid":"653828811D42","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey"}}'+
+',{"item":{"uid":"AD63A83B4D41"},"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","startDate":"'+Time.at(1).xmlschema+'","value":"2","uid":"127612FA4922","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey","itemValueDefinition":{"valueDefinition":{"valueType":"DECIMAL","uid":"8CB8A1789CD6","name":"kgCO2PerJourney"},"uid":"653828811D42","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey"}}'+
+',{"item":{"uid":"AD63A83B4D41"},"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","startDate":"'+Time.at(3).xmlschema+'","value":"4","uid":"127612FA4923","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey","itemValueDefinition":{"valueDefinition":{"valueType":"DECIMAL","uid":"8CB8A1789CD6","name":"kgCO2PerJourney"},"uid":"653828811D42","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey"}}'+
 ']}'
 MockResourceXMLTwo='<Resources><ItemValues>'+
-          '<DataItemValueResource><ItemValue Created="2007-08-01 09:00:41.0" Modified="2007-08-01 09:00:41.0" uid="127612FA4922"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><StartDate></StartDate>0<Value>1</Value><ItemValueDefinition uid="653828811D42"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="8CB8A1789CD6"><Name>kgCO2PerJourney</Name><ValueType>DECIMAL</ValueType></ValueDefinition></ItemValueDefinition><DataItem uid="AD63A83B4D41"/></ItemValue><DataItem uid="AD63A83B4D41"/></DataItemValueResource>'+
-          '<DataItemValueResource><ItemValue Created="2007-08-01 09:00:41.0" Modified="2007-08-01 09:00:41.0" uid="127612FA4922"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><StartDate></StartDate>1<Value>6</Value><ItemValueDefinition uid="653828811D42"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="8CB8A1789CD6"><Name>kgCO2PerJourney</Name><ValueType>DECIMAL</ValueType></ValueDefinition></ItemValueDefinition><DataItem uid="AD63A83B4D41"/></ItemValue><DataItem uid="AD63A83B4D41"/></DataItemValueResource>'+
-          '<DataItemValueResource><ItemValue Created="2007-08-01 09:00:41.0" Modified="2007-08-01 09:00:41.0" uid="127612FA4924"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><StartDate></StartDate>5<Value>7</Value><ItemValueDefinition uid="653828811D42"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="8CB8A1789CD6"><Name>kgCO2PerJourney</Name><ValueType>DECIMAL</ValueType></ValueDefinition></ItemValueDefinition><DataItem uid="AD63A83B4D41"/></ItemValue><DataItem uid="AD63A83B4D41"/></DataItemValueResource>'+
-          '<DataItemValueResource><ItemValue Created="2007-08-01 09:00:41.0" Modified="2007-08-01 09:00:41.0" uid="127612FA4925"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><StartDate></StartDate>9<Value>11</Value><ItemValueDefinition uid="653828811D42"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="8CB8A1789CD6"><Name>kgCO2PerJourney</Name><ValueType>DECIMAL</ValueType></ValueDefinition></ItemValueDefinition><DataItem uid="AD63A83B4D41"/></ItemValue><DataItem uid="AD63A83B4D41"/></DataItemValueResource>'+
+          '<DataItemValueResource><ItemValue Created="2007-08-01 09:00:41.0" Modified="2007-08-01 09:00:41.0" uid="127612FA4921"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><StartDate>'+Time.at(0).xmlschema+'</StartDate><Value>1</Value><ItemValueDefinition uid="653828811D42"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="8CB8A1789CD6"><Name>kgCO2PerJourney</Name><ValueType>DECIMAL</ValueType></ValueDefinition></ItemValueDefinition><DataItem uid="AD63A83B4D41"/></ItemValue><DataItem uid="AD63A83B4D41"/></DataItemValueResource>'+
+          '<DataItemValueResource><ItemValue Created="2007-08-01 09:00:41.0" Modified="2007-08-01 09:00:41.0" uid="127612FA4922"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><StartDate>'+Time.at(1).xmlschema+'</StartDate><Value>6</Value><ItemValueDefinition uid="653828811D42"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="8CB8A1789CD6"><Name>kgCO2PerJourney</Name><ValueType>DECIMAL</ValueType></ValueDefinition></ItemValueDefinition><DataItem uid="AD63A83B4D41"/></ItemValue><DataItem uid="AD63A83B4D41"/></DataItemValueResource>'+
+          '<DataItemValueResource><ItemValue Created="2007-08-01 09:00:41.0" Modified="2007-08-01 09:00:41.0" uid="127612FA4924"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><StartDate>'+Time.at(5).xmlschema+'</StartDate><Value>7</Value><ItemValueDefinition uid="653828811D42"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="8CB8A1789CD6"><Name>kgCO2PerJourney</Name><ValueType>DECIMAL</ValueType></ValueDefinition></ItemValueDefinition><DataItem uid="AD63A83B4D41"/></ItemValue><DataItem uid="AD63A83B4D41"/></DataItemValueResource>'+
+          '<DataItemValueResource><ItemValue Created="2007-08-01 09:00:41.0" Modified="2007-08-01 09:00:41.0" uid="127612FA4925"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><StartDate>'+Time.at(9).xmlschema+'</StartDate><Value>11</Value><ItemValueDefinition uid="653828811D42"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="8CB8A1789CD6"><Name>kgCO2PerJourney</Name><ValueType>DECIMAL</ValueType></ValueDefinition></ItemValueDefinition><DataItem uid="AD63A83B4D41"/></ItemValue><DataItem uid="AD63A83B4D41"/></DataItemValueResource>'+
           '</ItemValues></Resources>'
 MockResourceJSONTwo='{"dataItem":{"uid":"AD63A83B4D41"},"itemValues":['+
-'{"item":{"uid":"AD63A83B4D41"},"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","startDate":"0",value":"1","uid":"127612FA4921","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey","itemValueDefinition":{"valueDefinition":{"valueType":"DECIMAL","uid":"8CB8A1789CD6","name":"kgCO2PerJourney"},"uid":"653828811D42","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey"}'+
-'{"item":{"uid":"AD63A83B4D41"},"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","startDate":"1","value":6","uid":"127612FA4922","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey","itemValueDefinition":{"valueDefinition":{"valueType":"DECIMAL","uid":"8CB8A1789CD6","name":"kgCO2PerJourney"},"uid":"653828811D42","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey"}'+
-'{"item":{"uid":"AD63A83B4D41"},"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","startDate":"5","value":7","uid":"127612FA4924","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey","itemValueDefinition":{"valueDefinition":{"valueType":"DECIMAL","uid":"8CB8A1789CD6","name":"kgCO2PerJourney"},"uid":"653828811D42","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey"}'+
-'{"item":{"uid":"AD63A83B4D41"},"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","startDate":"9","value":11","uid":"127612FA4925","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey","itemValueDefinition":{"valueDefinition":{"valueType":"DECIMAL","uid":"8CB8A1789CD6","name":"kgCO2PerJourney"},"uid":"653828811D42","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey"}'+
+' {"item":{"uid":"AD63A83B4D41"},"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","startDate":"'+Time.at(0).xmlschema+'","value":"1","uid":"127612FA4921","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey","itemValueDefinition":{"valueDefinition":{"valueType":"DECIMAL","uid":"8CB8A1789CD6","name":"kgCO2PerJourney"},"uid":"653828811D42","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey"}}'+
+',{"item":{"uid":"AD63A83B4D41"},"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","startDate":"'+Time.at(1).xmlschema+'","value":"6","uid":"127612FA4922","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey","itemValueDefinition":{"valueDefinition":{"valueType":"DECIMAL","uid":"8CB8A1789CD6","name":"kgCO2PerJourney"},"uid":"653828811D42","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey"}}'+
+',{"item":{"uid":"AD63A83B4D41"},"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","startDate":"'+Time.at(5).xmlschema+'","value":"7","uid":"127612FA4924","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey","itemValueDefinition":{"valueDefinition":{"valueType":"DECIMAL","uid":"8CB8A1789CD6","name":"kgCO2PerJourney"},"uid":"653828811D42","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey"}}'+
+',{"item":{"uid":"AD63A83B4D41"},"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","startDate":"'+Time.at(9).xmlschema+'","value":"11","uid":"127612FA4925","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey","itemValueDefinition":{"valueDefinition":{"valueType":"DECIMAL","uid":"8CB8A1789CD6","name":"kgCO2PerJourney"},"uid":"653828811D42","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey"}}'+
 ']}'
 describe AMEE::Data::ItemValueHistory do
   
@@ -56,22 +56,24 @@ describe AMEE::Data::ItemValueHistory do
     @history = AMEE::Data::ItemValueHistory.new(:series => series, :type => type)
     @history.series.should == series
     @history.type.should == type
-    @history.values[0].is_a(AMEE::Data::ItemValue).should be_true
+    @history.values[0].is_a?(AMEE::Data::ItemValue).should be_true
     @history.values[0].value.should == 1
-    @history.values[0].start_date.should == 0
+    @history.values[0].start_date.should == Time.at(0)
   end
 
   it "can be created by pushing to the array of item values" do
     series=TestSeriesOne
     type = "TEXT"
-    @history = AMEE::Data::ItemValueHistory.new
+    @history = AMEE::Data::ItemValueHistory.new(:type=>type)
     @history.series.should == []
     @history.type.should == type
-    @fstvalue = AMEE::Data::ItemValue.new(:type=>type,:value=>1,:start_date=>0)
-    @sndvalue = AMEE::Data::ItemValue.new(:type=>type,:value=>2,:start_date=>1)
+    @fstvalue = AMEE::Data::ItemValue.new(:type=>type,:value=>1,:start_date=>Time.at(0))
+    @sndvalue = AMEE::Data::ItemValue.new(:type=>type,:value=>2,:start_date=>Time.at(1))
+    @trdvalue = AMEE::Data::ItemValue.new(:type=>type,:value=>4,:start_date=>Time.at(3))
     @history.values.push @fstvalue
     @history.values.push @sndvalue
-    @history.values[0].is_a(AMEE::Data::ItemValue).should be_true
+    @history.values.push @trdvalue
+    @history.values[0].is_a?(AMEE::Data::ItemValue).should be_true
     @history.values[0].value.should == 1
     @history.values[0].start_date.should == Time.at(0)
     @history.series.should == series
@@ -79,12 +81,12 @@ describe AMEE::Data::ItemValueHistory do
 
   it "should support DECIMAL data type" do
     @history = AMEE::Data::ItemValueHistory.new(:series => TestSeriesOne, :type => "DECIMAL")
-    @history.series.should == series
+    @history.series.should == TestSeriesOne
   end
 
   it "should support TEXT data type" do
     @history = AMEE::Data::ItemValueHistory.new(:series => TestSeriesOne, :type => "TEXT")
-    @history.series.should == series
+    @history.series.should == TestSeriesOne
   end
 
   it "allows value to be changed after creation" do
@@ -109,8 +111,6 @@ describe AMEE::Data::ItemValueHistory do
     }.should raise_error
   end
 
-  it "shows deleted, created status on items after series changed"
-
 end
 
 describe AMEE::Data::ItemValue, "with an authenticated connection" do
@@ -119,13 +119,13 @@ describe AMEE::Data::ItemValue, "with an authenticated connection" do
     connection = flexmock "connection"
     connection.should_receive(:get).with(MockResourcePath).
       and_return(flexmock(:body => MockResourceXML))
-    @history = AMEE::Data::ItemValue.get(connection, MockResourcePath)
+    @history = AMEE::Data::ItemValueHistory.get(connection, MockResourcePath)
+    @history.series.should == TestSeriesOne
     @fstvalue=@history.values[0]
     @sndvalue=@history.values[1]
     @fstvalue.uid.should == "127612FA4921"
     @sndvalue.uid.should == "127612FA4922"
     @fstvalue.name.should == "kgCO2 Per Passenger Journey"
-    @fstvalue.path.should == MockResourcePath
     @fstvalue.full_path.should == MockResourcePath
     @fstvalue.created.should == DateTime.new(2007,8,1,9,00,41)
     @fstvalue.modified.should == DateTime.new(2007,8,1,9,00,41)
@@ -137,13 +137,12 @@ describe AMEE::Data::ItemValue, "with an authenticated connection" do
   it "should parse JSON correctly" do
     connection = flexmock "connection"
     connection.should_receive(:get).with(MockResourcePath).and_return(flexmock(:body => MockResourceJSON))
-    @history = AMEE::Data::ItemValue.get(connection, MockResourcePath)
+    @history = AMEE::Data::ItemValueHistory.get(connection, MockResourcePath)
     @fstvalue=@history.values[0]
     @sndvalue=@history.values[1]
     @fstvalue.uid.should == "127612FA4921"
     @sndvalue.uid.should == "127612FA4922"
     @fstvalue.name.should == "kgCO2 Per Passenger Journey"
-    @fstvalue.path.should == MockResourcePath
     @fstvalue.full_path.should == MockResourcePath
     @fstvalue.created.should == DateTime.new(2007,8,1,9,00,41)
     @fstvalue.modified.should == DateTime.new(2007,8,1,9,00,41)
@@ -180,17 +179,17 @@ describe AMEE::Data::ItemValue, "after loading" do
     @path = MockResourcePath
     @connection = flexmock "connection"
     @connection.should_receive(:get).with(@path).and_return(flexmock(:body => MockResourceJSON))
-    @val = AMEE::Data::ItemValue.get(@connection, "")
+    @val = AMEE::Data::ItemValueHistory.get(@connection, "")
   end
 
   it "can have series changed and saved back to server" do
-    @connection.should_receive(:put).with(MockDataItemPath+"/127612FA4921", :value => 2, :start_time => Time.at(0)).and_return(flexmock(:body => ''))
-    @connection.should_receive(:put).with(MockDataItemPath+"/127612FA4922", :value => 6, :start_time => Time.at(1)).and_return(flexmock(:body => ''))
+    @connection.should_receive(:put).with(MockDataItemPath+"/127612FA4921", :value => 2, :start_date => Time.at(0)).and_return(flexmock(:body => ''))
+    @connection.should_receive(:put).with(MockDataItemPath+"/127612FA4922", :value => 6, :start_date => Time.at(1)).and_return(flexmock(:body => ''))
     @connection.should_receive(:delete).with(MockDataItemPath+"/127612FA4923").and_return(flexmock(:body => ''))
     @connection.should_receive(:post).with(MockDataItemPath,:itemValueDefinitionPath=>'kgCO2PerPassengerJourney',
-      :value => 7, :start_time => Time.at(5)).and_return(flexmock(:body => ''))
+      :value => 7, :start_date => Time.at(5)).and_return(flexmock(:body => ''))
     @connection.should_receive(:post).with(MockDataItemPath,:itemValueDefinitionPath=>'kgCO2PerPassengerJourney',
-      :value => 11, :start_time => Time.at(9)).and_return(flexmock(:body => ''))
+      :value => 11, :start_date => Time.at(9)).and_return(flexmock(:body => ''))
     lambda {
       @val.series = TimeSeriesTwo
       @val.save!
@@ -199,13 +198,13 @@ describe AMEE::Data::ItemValue, "after loading" do
 
   it "can have create a new series" do
     @connection.should_receive(:post).with(MockDataItemPath,:itemValueDefinitionPath=>'kgCO2PerPassengerJourney',
-      :value => 2, :start_time => Time.at(0)).and_return(flexmock(:body => ''))
+      :value => 2, :start_date => Time.at(0)).and_return(flexmock(:body => ''))
     @connection.should_receive(:post).with(MockDataItemPath,:itemValueDefinitionPath=>'kgCO2PerPassengerJourney',
-      :value => 6, :start_time => Time.at(1)).and_return(flexmock(:body => ''))
+      :value => 6, :start_date => Time.at(1)).and_return(flexmock(:body => ''))
     @connection.should_receive(:post).with(MockDataItemPath,:itemValueDefinitionPath=>'kgCO2PerPassengerJourney',
-      :value => 7, :start_time => Time.at(5)).and_return(flexmock(:body => ''))
+      :value => 7, :start_date => Time.at(5)).and_return(flexmock(:body => ''))
     @connection.should_receive(:post).with(MockDataItemPath,:itemValueDefinitionPath=>'kgCO2PerPassengerJourney',
-      :value => 11, :start_time => Time.at(9)).and_return(flexmock(:body => ''))
+      :value => 11, :start_date => Time.at(9)).and_return(flexmock(:body => ''))
     lambda {
       @val.series = TimeSeriesTwo
       @val.create!
