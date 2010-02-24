@@ -230,7 +230,6 @@ describe AMEE::Data::ItemValue, "after loading" do
       :value => 7, :startDate => DateTime.new(5)).once.and_return({'Location'=>'http://foo.com/'})
     @connection.should_receive(:post).with(MockDataItemPath,:itemValueDefinitionPath=>'kgCO2PerPassengerJourney',
       :value => 11, :startDate => DateTime.new(9)).once.and_return({'Location'=>'http://foo.com/'})
-    pp @connection
     lambda {
       @val.series = TestSeriesTwo
       @val.save!

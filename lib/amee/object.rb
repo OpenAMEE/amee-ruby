@@ -7,7 +7,7 @@ module AMEE
       @modified = data ? data[:modified] : @created
       @path = data ? data[:path] : nil
       @name = data ? data[:name] : nil
-      @connection = data[:connection]
+      @connection = data ? data[:connection] : nil
     end
     
     attr_accessor :connection
