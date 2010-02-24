@@ -4,6 +4,7 @@ module AMEE
 
       def initialize(data = {})
         @type = data ? data[:type] : nil
+        @path = data ? data[:path] : nil
         @values=data&&data[:values] ? data[:values] : []
         self.series=data[:series] if data[:series]
       end
@@ -81,15 +82,19 @@ module AMEE
       end
 
       def save!
-        #stub
+        ## STUB
       end
 
       def delete!
-        #stub
+         # deprecated, as DI cannot exist without at least one point
+        raise AMEE::NotSupported("Cannot create a Data Item Value History from scratch:
+           at least one data point must always exist when the DI is created")
       end
 
       def create!
-        #stub
+        # deprecated, as DI cannot exist without at least one point
+        raise AMEE::NotSupported("Cannot create a Data Item Value History from scratch:
+           at least one data point must exist when the DI is created")
       end
 
       def self.parse(connection, response, path) 
@@ -105,54 +110,6 @@ module AMEE
       #rescue
       #  raise AMEE::BadData.new("Couldn't load DataItemValue. Check that your URL is correct.\n#{response}")
       end
-      
-      def self.create(data_item, options = {})
-        # Do we want to automatically fetch the item afterwards?
-        get_item = options.delete(:get_item)
-        get_item = true if get_item.nil?
-        # Store format if set
-        format = options[:format]
-        unless options.is_a?(Hash)
-          raise AMEE::ArgumentError.new("Third argument must be a hash of options!")
-        end
-
-        ##STUB
-
-        if get_item == true
-          get_options = {}
-          get_options[:format] = format if format
-          return AMEE::Data::ItemValue.get(data_item.connection, location)
-        else
-          return location
-        end
-      rescue
-        raise AMEE::BadData.new("Couldn't create DataItemValue. Check that your information is correct.")
-      end
-
-      def self.update(connection, path, options = {})
-        # Do we want to automatically fetch the item afterwards?
-        get_item = options.delete(:get_item)
-        get_item = true if get_item.nil?
-       
-
-        ##STUB
-
-        if get_item
-          if response.body.empty?
-            return AMEE::Data::ItemValue.get(connection, path)
-          else
-            return AMEE::Data::ItemValue.parse(connection, response.body)
-          end
-        end
-      rescue
-        raise AMEE::BadData.new("Couldn't update DataItemValue. Check that your information is correct.\n#{response}")
-      end
-
-      def self.delete(connection, path)
-        ##STUB
-      rescue
-        raise AMEE::BadData.new("Couldn't delete DataItemValue. Check that your information is correct.")
-      end      
     
     end
   end

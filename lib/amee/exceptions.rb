@@ -23,5 +23,7 @@ module AMEE
 
   class UnknownError < Exception
   end
-  
+
+  class NotSupported < Exception
+  end
 end
