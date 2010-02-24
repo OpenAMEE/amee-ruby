@@ -34,10 +34,22 @@ module AMEE
         @from_data
       end
       
-      def start_date
-        @start_date
+      attr_accessor :start_date
+      attr_accessor :uid
+
+      def uid_path
+        # create a path which is safe for DIVHs by using the UID if one is avai
+        if uid
+          @path.split(/\//)[0..-2].push(uid).join('/')
+        else
+          @path
+        end
       end
-      
+
+      def full_uid_path
+        "/data#{uid_path}"
+      end
+
       def self.from_json(json, path)
         # Read JSON
         doc = JSON.parse(json)['itemValue']
@@ -89,7 +101,30 @@ module AMEE
       end
 
       def save!
-        response = @connection.put(full_path, :value => value).body
+        if start_date
+          ItemValue.update(connection,full_uid_path,:value=>value,
+            :start_date=>start_date,:get_item=>false)
+        else
+          ItemValue.update(connection,full_uid_path,:value=>value,:get_item=>false)
+        end
+      end
+
+      def delete!
+        ItemValue.delete @connection,full_uid_path
+      end
+
+      def create!
+        data_item_path=path.split(/\//)[0..-2].join('/')
+        data_item=AMEE::Data::Item.new
+        data_item.path=data_item_path
+        data_item.connection=connection
+        if start_date
+         ItemValue.create(data_item,:value=>value,:start_date=>start_date,
+            :itemValueDefinitionPath=>@path.split(/\//).pop,:get_item=>false)
+        else
+          ItemValue.create(data_item,:value=>value,
+            :itemValueDefinitionPath=>@path.split(/\//).pop,:get_item=>false)
+        end
       end
 
       def self.parse(connection, response, path) 
@@ -139,6 +174,11 @@ module AMEE
         # Do we want to automatically fetch the item afterwards?
         get_item = options.delete(:get_item)
         get_item = true if get_item.nil?
+        # Set startDate
+        if (options[:start_date])
+          options[:startDate] = options[:start_date].xmlschema
+          options.delete(:start_date)
+        end
         # Go
         response = connection.put(path, options)
         if get_item
@@ -155,11 +195,12 @@ module AMEE
       def update(options = {})
         AMEE::Data::ItemValue.update(connection, full_path, options)
       end
-      
+
+
       def self.delete(connection, path)
         connection.delete(path)
-      rescue
-        raise AMEE::BadData.new("Couldn't delete DataItemValue. Check that your information is correct.")
+      #rescue
+       # raise AMEE::BadData.new("Couldn't delete DataItemValue. Check that your information is correct.")
       end      
     
     end
