@@ -171,8 +171,8 @@ module AMEE
         else
           return location
         end
-      rescue
-        raise AMEE::BadData.new("Couldn't create DataItemValue. Check that your information is correct.")
+      #rescue
+      #  raise AMEE::BadData.new("Couldn't create DataItemValue. Check that your information is correct.")
       end
 
       def self.update(connection, path, options = {})
@@ -204,8 +204,8 @@ module AMEE
 
       def self.delete(connection, path)
         connection.delete(path)
-        #rescue
-        # raise AMEE::BadData.new("Couldn't delete DataItemValue. Check that your information is correct.")
+        rescue
+         raise AMEE::BadData.new("Couldn't delete DataItemValue. Check that your information is correct.")
       end      
     
     end
