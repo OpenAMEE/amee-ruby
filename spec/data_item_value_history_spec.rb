@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/spec_helper.rb'
 
-TestSeriesOne=[[0,1],[1,2],[3,4]]
-TestSeriesTwo=[[0,2],[1,6],[5,7],[9,11]]
+TestSeriesOne=[[Time.at(0),1],[Time.at(1),2],[Time.at(3),4]]
+TestSeriesTwo=[[Time.at(0),2],[Time.at(1),6],[Time.at(5),7],[Time.at(9),11]]
 
 MockResourcePath="/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney"
 MockDataItemPath="/data/transport/plane/generic/AD63A83B4D41"
@@ -73,7 +73,7 @@ describe AMEE::Data::ItemValueHistory do
     @history.values.push @sndvalue
     @history.values[0].is_a(AMEE::Data::ItemValue).should be_true
     @history.values[0].value.should == 1
-    @history.values[0].start_date.should == 0
+    @history.values[0].start_date.should == Time.at(0)
     @history.series.should == series
   end
 
@@ -97,6 +97,19 @@ describe AMEE::Data::ItemValueHistory do
     @history.series.should == series
     @history.values[1].value.should == 6
   end
+
+  it "allows item value to be found by time" do
+    series=TestSeriesTwo
+    type = "TEXT"
+    @history = AMEE::Data::ItemValueHistory.new(:series => series, :type => type)
+    @value=@history.value_at(Time.at(5))
+    @value.value.should == 7
+    lambda {
+      @history.value_at(Time.at(6))
+    }.should raise_error
+  end
+
+  it "shows deleted, created status on items after series changed"
 
 end
 
@@ -171,16 +184,31 @@ describe AMEE::Data::ItemValue, "after loading" do
   end
 
   it "can have series changed and saved back to server" do
-    @connection.should_receive(:put).with(MockResourcePath, :value => 2, :start_time => 0).and_return(flexmock(:body => ''))
-    @connection.should_receive(:put).with(MockResourcePath, :value => 6, :start_time => 1).and_return(flexmock(:body => ''))
+    @connection.should_receive(:put).with(MockDataItemPath+"/127612FA4921", :value => 2, :start_time => Time.at(0)).and_return(flexmock(:body => ''))
+    @connection.should_receive(:put).with(MockDataItemPath+"/127612FA4922", :value => 6, :start_time => Time.at(1)).and_return(flexmock(:body => ''))
     @connection.should_receive(:delete).with(MockDataItemPath+"/127612FA4923").and_return(flexmock(:body => ''))
     @connection.should_receive(:post).with(MockDataItemPath,:itemValueDefinitionPath=>'kgCO2PerPassengerJourney',
-      :value => 7, :start_time => 5).and_return(flexmock(:body => ''))
+      :value => 7, :start_time => Time.at(5)).and_return(flexmock(:body => ''))
     @connection.should_receive(:post).with(MockDataItemPath,:itemValueDefinitionPath=>'kgCO2PerPassengerJourney',
-      :value => 11, :start_time => 9).and_return(flexmock(:body => ''))
+      :value => 11, :start_time => Time.at(9)).and_return(flexmock(:body => ''))
     lambda {
       @val.series = TimeSeriesTwo
       @val.save!
+    }.should_not raise_error
+  end
+
+  it "can have create a new series" do
+    @connection.should_receive(:post).with(MockDataItemPath,:itemValueDefinitionPath=>'kgCO2PerPassengerJourney',
+      :value => 2, :start_time => Time.at(0)).and_return(flexmock(:body => ''))
+    @connection.should_receive(:post).with(MockDataItemPath,:itemValueDefinitionPath=>'kgCO2PerPassengerJourney',
+      :value => 6, :start_time => Time.at(1)).and_return(flexmock(:body => ''))
+    @connection.should_receive(:post).with(MockDataItemPath,:itemValueDefinitionPath=>'kgCO2PerPassengerJourney',
+      :value => 7, :start_time => Time.at(5)).and_return(flexmock(:body => ''))
+    @connection.should_receive(:post).with(MockDataItemPath,:itemValueDefinitionPath=>'kgCO2PerPassengerJourney',
+      :value => 11, :start_time => Time.at(9)).and_return(flexmock(:body => ''))
+    lambda {
+      @val.series = TimeSeriesTwo
+      @val.create!
     }.should_not raise_error
   end
 
