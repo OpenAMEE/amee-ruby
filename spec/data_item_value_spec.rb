@@ -5,7 +5,8 @@ MockResourceShortPath="/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJo
 MockResourcePath="/data#{MockResourceShortPath}"
 MockResourceShortUIDPath="/transport/plane/generic/AD63A83B4D41/127612FA4921"
 MockResourceUIDPath="/data#{MockResourceShortUIDPath}"
-MockResourceDataItemPath="/data/transport/plane/generic/AD63A83B4D41"
+MockResourceDataItemShortPath="/transport/plane/generic/AD63A83B4D41"
+MockResourceDataItemPath="/data#{MockResourceDataItemShortPath}"
 
 describe AMEE::Data::ItemValue do
   
@@ -201,12 +202,14 @@ describe AMEE::Data::ItemValue, "after loading" do
     @connection.should_receive(:post).
       with(MockResourceDataItemPath,
       :kgCO2PerPassengerJourney=>42,
-      :startDate=>Time.at(10).xmlschema).
+      :startDate=>(AMEE::Epoch+3).xmlschema).
       and_return({'Location'=>'http://foo.com/'})
-    lambda {
-      @val.value=42
-      @val.start_date=Time.at(10)
-      @val.create!
+    @new=AMEE::Data::ItemValue.new(:value=>42,
+      :start_date=>AMEE::Epoch+3,
+      :connection=>@connection,
+      :path=>MockResourceDataItemShortPath+"/kgCO2PerPassengerJourney")
+    lambda {      
+      @new.create!
     }.should_not raise_error
   end
 

@@ -56,8 +56,8 @@ module AMEE
         doc = json.is_a?(String) ? JSON.parse(json)['itemValue'] : json
         data = {}
         data[:uid] = doc['uid']
-        data[:created] = DateTime.parse(doc['created'])
-        data[:modified] = DateTime.parse(doc['modified'])
+        data[:created] = DateTime.parse(doc['created']) rescue nil
+        data[:modified] = DateTime.parse(doc['modified']) rescue nil
         data[:name] = doc['name']
         data[:path] = path.gsub(/^\/data/, '')
         data[:value] = doc['value']
@@ -125,12 +125,13 @@ module AMEE
         data_item=AMEE::Data::Item.new
         data_item.path=data_item_path
         data_item.connection=connection
+        data_item.connection or raise "No connection to AMEE available"
         if start_date
           ItemValue.create(data_item,:start_date=>start_date,
             @path.split(/\//).pop.to_sym => value,:get_item=>false)
         else
-          ItemValue.create(data_item,:value=>value,
-            :itemValueDefinitionPath=>@path.split(/\//).pop,:get_item=>false)
+          ItemValue.create(data_item,
+            @path.split(/\//).pop.to_sym => value,:get_item=>false)
         end
       end
 
@@ -162,7 +163,7 @@ module AMEE
           options[:startDate] = options[:start_date].xmlschema
           options.delete(:start_date)
         end
-      
+
         response = data_item.connection.post(data_item.full_path, options)
         location = response['Location'].match("http://.*?(/.*)")[1]
 
@@ -173,8 +174,8 @@ module AMEE
         else
           return location
         end
-      rescue
-        raise AMEE::BadData.new("Couldn't create DataItemValue. Check that your information is correct.")
+      #rescue
+      #  raise AMEE::BadData.new("Couldn't create DataItemValue. Check that your information is correct.")
       end
 
       def self.update(connection, path, options = {})

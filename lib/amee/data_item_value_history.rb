@@ -21,13 +21,15 @@ module AMEE
 
       def series
         values.map {|x|
-          [x.start_date,x.value]
+          [x.start_date.utc,x.value]
+        }.sort {|x,y|
+          x[0]<=>y[0]
         }
       end
 
       def times
         values.map {|x|
-          x.start_date
+          x.start_date.utc
         }
       end
 
@@ -37,7 +39,8 @@ module AMEE
           AMEE::Data::ItemValue.new(:value=>x[1],
             :start_date=>x[0],
             :path=>path,
-            :connection=>connection
+            :connection=>connection,
+            :type=>type
           )
         }
       end
