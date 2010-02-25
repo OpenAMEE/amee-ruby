@@ -27,6 +27,13 @@ MockResourceJSONTwo='{"dataItem":{"uid":"AD63A83B4D41"},"itemValues":['+
   ',{"item":{"uid":"AD63A83B4D41"},"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","startDate":"'+DateTime.new(5).xmlschema+'","value":"7","uid":"127612FA4924","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey","itemValueDefinition":{"valueDefinition":{"valueType":"DECIMAL","uid":"8CB8A1789CD6","name":"kgCO2PerJourney"},"uid":"653828811D42","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey"}}'+
   ',{"item":{"uid":"AD63A83B4D41"},"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","startDate":"'+DateTime.new(9).xmlschema+'","value":"11","uid":"127612FA4925","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey","itemValueDefinition":{"valueDefinition":{"valueType":"DECIMAL","uid":"8CB8A1789CD6","name":"kgCO2PerJourney"},"uid":"653828811D42","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey"}}'+
   ']}'
+MockResourceXMLSingle='<Resources><DataItemValueResource><ItemValue Created="2007-08-01 09:00:41.0" Modified="2007-08-01 09:00:41.0" uid="127612FA4921"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><StartDate>'+DateTime.new(0).xmlschema+'</StartDate><Value>1</Value><ItemValueDefinition uid="653828811D42"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="8CB8A1789CD6"><Name>kgCO2PerJourney</Name><ValueType>DECIMAL</ValueType></ValueDefinition></ItemValueDefinition><DataItem uid="AD63A83B4D41"/></ItemValue><DataItem uid="AD63A83B4D41"/></DataItemValueResource>'+
+ '</Resources>'
+MockResourceJSONSingle='{"dataItem":{"uid":"AD63A83B4D41"},"itemValue":'+
+  ' {"item":{"uid":"AD63A83B4D41"},"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","startDate":"'+DateTime.new(0).xmlschema+'","value":"1","uid":"127612FA4921","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey","itemValueDefinition":{"valueDefinition":{"valueType":"DECIMAL","uid":"8CB8A1789CD6","name":"kgCO2PerJourney"},"uid":"653828811D42","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey"}}'+
+   '}'
+
+
 describe AMEE::Data::ItemValueHistory do
   
   before(:each) do
@@ -157,7 +164,7 @@ describe AMEE::Data::ItemValueHistory, "with an authenticated connection" do
 
   it "should parse XML correctly" do
     connection = flexmock "connection"
-    connection.should_receive(:get).with(MockResourcePath).
+    connection.should_receive(:get).with(MockResourcePath,:valuesPerPage=>2).
       and_return(flexmock(:body => MockResourceXML))
     @history = AMEE::Data::ItemValueHistory.get(connection, MockResourcePath)
     @history.series.should == TestSeriesOne
@@ -176,7 +183,7 @@ describe AMEE::Data::ItemValueHistory, "with an authenticated connection" do
 
   it "should parse JSON correctly" do
     connection = flexmock "connection"
-    connection.should_receive(:get).with(MockResourcePath).and_return(flexmock(:body => MockResourceJSON))
+    connection.should_receive(:get).with(MockResourcePath,:valuesPerPage=>2).and_return(flexmock(:body => MockResourceJSON))
     @history = AMEE::Data::ItemValueHistory.get(connection, MockResourcePath)
     @fstvalue=@history.values[0]
     @sndvalue=@history.values[1]
@@ -191,24 +198,54 @@ describe AMEE::Data::ItemValueHistory, "with an authenticated connection" do
     @history.type.should == "DECIMAL"
   end
 
+  it "should parse JSON correctly if theres only one point" do
+    connection = flexmock "connection"
+    connection.should_receive(:get).with(MockResourcePath,:valuesPerPage=>2).and_return(flexmock(:body => MockResourceJSONSingle))
+    @history = AMEE::Data::ItemValueHistory.get(connection, MockResourcePath)
+    @fstvalue=@history.values[0]
+    @fstvalue.uid.should == "127612FA4921"
+    @fstvalue.name.should == "kgCO2 Per Passenger Journey"
+    @fstvalue.full_path.should == MockResourcePath
+    @fstvalue.created.should == DateTime.new(2007,8,1,9,00,41)
+    @fstvalue.modified.should == DateTime.new(2007,8,1,9,00,41)
+    @fstvalue.type.should == "DECIMAL"
+    @history.series.should == [[DateTime.new(0),1]]
+    @history.type.should == "DECIMAL"
+  end
+
+  it "should parse XML correctly if theres only one point" do
+    connection = flexmock "connection"
+    connection.should_receive(:get).with(MockResourcePath,:valuesPerPage=>2).and_return(flexmock(:body => MockResourceXMLSingle))
+    @history = AMEE::Data::ItemValueHistory.get(connection, MockResourcePath)
+    @fstvalue=@history.values[0]
+    @fstvalue.uid.should == "127612FA4921"
+    @fstvalue.name.should == "kgCO2 Per Passenger Journey"
+    @fstvalue.full_path.should == MockResourcePath
+    @fstvalue.created.should == DateTime.new(2007,8,1,9,00,41)
+    @fstvalue.modified.should == DateTime.new(2007,8,1,9,00,41)
+    @fstvalue.type.should == "DECIMAL"
+    @history.series.should == [[DateTime.new(0),1]]
+    @history.type.should == "DECIMAL"
+  end
+
   it "should fail gracefully with incorrect XML data" do
     connection = flexmock "connection"
     xml = '<?xml version="1.0" encoding="UTF-8"?><Resources></Resources>'
-    connection.should_receive(:get).with("/data").and_return(flexmock(:body => xml))
-    lambda{AMEE::Data::ItemValue.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItemValue from XML. Check that your URL is correct.\n#{xml}")
+    connection.should_receive(:get).with("/data",:valuesPerPage=>2).and_return(flexmock(:body => xml))
+    lambda{AMEE::Data::ItemValueHistory.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItemValueHistory from XML. Check that your URL is correct.\n#{xml}")
   end
 
   it "should fail gracefully with incorrect JSON data" do
     connection = flexmock "connection"
     json = '{}'
-    connection.should_receive(:get).with("/data").and_return(flexmock(:body => json))
-    lambda{AMEE::Data::ItemValue.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItemValue from JSON. Check that your URL is correct.\n#{json}")
+    connection.should_receive(:get).with("/data",:valuesPerPage=>2).and_return(flexmock(:body => json))
+    lambda{AMEE::Data::ItemValueHistory.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItemValue from JSON. Check that your URL is correct.\n")
   end
 
   it "should fail gracefully on other errors" do
     connection = flexmock "connection"
-    connection.should_receive(:get).with("/data").and_raise("unidentified error")
-    lambda{AMEE::Data::ItemValue.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItemValue. Check that your URL is correct.")
+    connection.should_receive(:get).with("/data",:valuesPerPage=>2).and_raise("unidentified error")
+    lambda{AMEE::Data::ItemValueHistory.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItemValueHistory. Check that your URL is correct.")
   end
 
 end
@@ -218,7 +255,7 @@ describe AMEE::Data::ItemValue, "after loading" do
   before(:each) do
     @path = MockResourcePath
     @connection = flexmock "connection"
-    @connection.should_receive(:get).with(@path).and_return(flexmock(:body => MockResourceJSON))
+    @connection.should_receive(:get).with(@path,:valuesPerPage=>2).and_return(flexmock(:body => MockResourceJSON))
     @val = AMEE::Data::ItemValueHistory.get(@connection, @path)
   end
 

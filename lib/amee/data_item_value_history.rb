@@ -65,6 +65,7 @@ module AMEE
         data = {}
         data[:path] = path.gsub(/^\/data/, '')
         doc = JSON.parse(json)['itemValues']
+        doc=[JSON.parse(json)['itemValue']] unless doc
         data[:values]=doc.map do |json_item_value|
           ItemValue.from_json(json_item_value,path)
         end
@@ -81,6 +82,7 @@ module AMEE
         data[:path] = path.gsub(/^\/data/, '')
         doc = REXML::Document.new(xml)
         valuedocs=REXML::XPath.match(doc, '//DataItemValueResource')
+        raise  if valuedocs.length==0
         data[:values] = valuedocs.map do |xml_item_value|
           ItemValue.from_xml(xml_item_value,path)
         end
@@ -93,7 +95,7 @@ module AMEE
 
       def self.get(connection, path)
         # Load data from path
-        response = connection.get(path).body
+        response = connection.get(path,:valuesPerPage=>2).body
         # Parse data from response
         data = {}
         value = ItemValueHistory.parse(connection, response, path)
@@ -144,8 +146,8 @@ module AMEE
         history.connection = connection
         # Done
         return history
-      rescue
-        raise AMEE::BadData.new("Couldn't load DataItemValueHistory. Check that your URL is correct.\n#{response}")
+      #rescue
+      #  raise AMEE::BadData.new("Couldn't load DataItemValueHistory. Check that your URL is correct.\n#{response}")
       end
 
       def compare(origin)
