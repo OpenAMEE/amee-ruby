@@ -1,4 +1,5 @@
 module AMEE
+  Epoch=DateTime.parse(Time.at(0).xmlschema).utc
   module Data
     class ItemValue < AMEE::Data::Object
 
@@ -72,20 +73,20 @@ module AMEE
         # Read XML
         doc = xml.is_a?(String) ? REXML::Document.new(xml) : xml
         data = {}
-        if REXML::XPath.match(doc,".//ItemValue").length>1
+        if REXML::XPath.match(doc,"descendant-or-self::ItemValue").length>1
           raise AMEE::BadData.new("Couldn't load DataItemValue from XML. This is an item value history.\n#{xml}")
         end
         begin
-          data[:uid] = REXML::XPath.first(doc, ".//ItemValue/@uid").to_s
-          data[:created] = DateTime.parse(REXML::XPath.first(doc, ".//ItemValue/@Created").to_s)
-          data[:modified] = DateTime.parse(REXML::XPath.first(doc, ".//ItemValue/@Modified").to_s)
-          data[:name] = REXML::XPath.first(doc, './/ItemValue/Name').text
+          data[:uid] = REXML::XPath.first(doc, "descendant-or-self::ItemValue/@uid").to_s
+          data[:created] = DateTime.parse(REXML::XPath.first(doc, "descendant-or-self::ItemValue/@Created").to_s) rescue nil
+          data[:modified] = DateTime.parse(REXML::XPath.first(doc, "descendant-or-self::ItemValue/@Modified").to_s) rescue nil
+          data[:name] = REXML::XPath.first(doc, 'descendant-or-self::ItemValue/Name').text
           data[:path] = path.gsub(/^\/data/, '')
-          data[:value] = REXML::XPath.first(doc, './/ItemValue/Value').text
-          data[:type] = REXML::XPath.first(doc, './/ItemValue/ItemValueDefinition/ValueDefinition/ValueType').text
-          data[:from_profile] = REXML::XPath.first(doc, './/ItemValue/ItemValueDefinition/FromProfile').text == "true" ? true : false
-          data[:from_data] = REXML::XPath.first(doc, './/ItemValue/ItemValueDefinition/FromData').text == "true" ? true : false
-          data[:start_date] = DateTime.parse(REXML::XPath.first(doc, ".//ItemValue/StartDate").text) rescue nil
+          data[:value] = REXML::XPath.first(doc, 'descendant-or-self::ItemValue/Value').text
+          data[:type] = REXML::XPath.first(doc, 'descendant-or-self::ItemValue/ItemValueDefinition/ValueDefinition/ValueType').text
+          data[:from_profile] = REXML::XPath.first(doc, 'descendant-or-self::ItemValue/ItemValueDefinition/FromProfile').text == "true" ? true : false
+          data[:from_data] = REXML::XPath.first(doc, 'descendant-or-self::ItemValue/ItemValueDefinition/FromData').text == "true" ? true : false
+          data[:start_date] = DateTime.parse(REXML::XPath.first(doc, "descendant-or-self::ItemValue/StartDate").text) rescue nil
           # Create object
           ItemValue.new(data)
         rescue
@@ -115,6 +116,7 @@ module AMEE
       end
 
       def delete!
+        raise AMEE::BadData.new("Cannot delete initial value for time series") if start_date==AMEE::Epoch
         ItemValue.delete @connection,full_uid_path
       end
 
@@ -124,8 +126,8 @@ module AMEE
         data_item.path=data_item_path
         data_item.connection=connection
         if start_date
-          ItemValue.create(data_item,:value=>value,:start_date=>start_date,
-            :itemValueDefinitionPath=>@path.split(/\//).pop,:get_item=>false)
+          ItemValue.create(data_item,:start_date=>start_date,
+            @path.split(/\//).pop.to_sym => value,:get_item=>false)
         else
           ItemValue.create(data_item,:value=>value,
             :itemValueDefinitionPath=>@path.split(/\//).pop,:get_item=>false)
@@ -171,8 +173,8 @@ module AMEE
         else
           return location
         end
-      #rescue
-      #  raise AMEE::BadData.new("Couldn't create DataItemValue. Check that your information is correct.")
+      rescue
+        raise AMEE::BadData.new("Couldn't create DataItemValue. Check that your information is correct.")
       end
 
       def self.update(connection, path, options = {})
@@ -181,7 +183,7 @@ module AMEE
         get_item = true if get_item.nil?
         # Set startDate
         if (options[:start_date])
-          options[:startDate] = options[:start_date].xmlschema
+          options[:startDate] = options[:start_date].xmlschema if options[:start_date]!=Epoch
           options.delete(:start_date)
         end
         # Go
