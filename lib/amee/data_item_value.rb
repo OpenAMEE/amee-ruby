@@ -1,4 +1,5 @@
 module AMEE
+  Epoch=DateTime.parse(Time.at(0).xmlschema).utc
   module Data
     class ItemValue < AMEE::Data::Object
 
@@ -34,17 +35,29 @@ module AMEE
         @from_data
       end
       
-      def start_date
-        @start_date
+      attr_accessor :start_date
+      attr_accessor :uid
+
+      def uid_path
+        # create a path which is safe for DIVHs by using the UID if one is avai
+        if uid
+          @path.split(/\//)[0..-2].push(uid).join('/')
+        else
+          @path
+        end
       end
-      
+
+      def full_uid_path
+        "/data#{uid_path}"
+      end
+
       def self.from_json(json, path)
         # Read JSON
-        doc = JSON.parse(json)['itemValue']
+        doc = json.is_a?(String) ? JSON.parse(json)['itemValue'] : json
         data = {}
         data[:uid] = doc['uid']
-        data[:created] = DateTime.parse(doc['created'])
-        data[:modified] = DateTime.parse(doc['modified'])
+        data[:created] = DateTime.parse(doc['created']) rescue nil
+        data[:modified] = DateTime.parse(doc['modified']) rescue nil
         data[:name] = doc['name']
         data[:path] = path.gsub(/^\/data/, '')
         data[:value] = doc['value']
@@ -58,22 +71,27 @@ module AMEE
       
       def self.from_xml(xml, path)
         # Read XML
-        doc = REXML::Document.new(xml)
+        doc = xml.is_a?(String) ? REXML::Document.new(xml) : xml
         data = {}
-        data[:uid] = REXML::XPath.first(doc, "/Resources/DataItemValueResource/ItemValue/@uid").to_s
-        data[:created] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataItemValueResource/ItemValue/@Created").to_s)
-        data[:modified] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataItemValueResource/ItemValue/@Modified").to_s)
-        data[:name] = REXML::XPath.first(doc, '/Resources/DataItemValueResource/ItemValue/Name').text
-        data[:path] = path.gsub(/^\/data/, '')
-        data[:value] = REXML::XPath.first(doc, '/Resources/DataItemValueResource/ItemValue/Value').text
-        data[:type] = REXML::XPath.first(doc, '/Resources/DataItemValueResource/ItemValue/ItemValueDefinition/ValueDefinition/ValueType').text
-        data[:from_profile] = REXML::XPath.first(doc, '/Resources/DataItemValueResource/ItemValue/ItemValueDefinition/FromProfile').text == "true" ? true : false
-        data[:from_data] = REXML::XPath.first(doc, '/Resources/DataItemValueResource/ItemValue/ItemValueDefinition/FromData').text == "true" ? true : false
-        data[:start_date] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataItemValueResource/ItemValue/StartDate").text) rescue nil
-        # Create object
-        ItemValue.new(data)
-      rescue
-        raise AMEE::BadData.new("Couldn't load DataItemValue from XML. Check that your URL is correct.\n#{xml}")
+        if REXML::XPath.match(doc,"descendant-or-self::ItemValue").length>1
+          raise AMEE::BadData.new("Couldn't load DataItemValue from XML. This is an item value history.\n#{xml}")
+        end
+        begin
+          data[:uid] = REXML::XPath.first(doc, "descendant-or-self::ItemValue/@uid").to_s
+          data[:created] = DateTime.parse(REXML::XPath.first(doc, "descendant-or-self::ItemValue/@Created").to_s) rescue nil
+          data[:modified] = DateTime.parse(REXML::XPath.first(doc, "descendant-or-self::ItemValue/@Modified").to_s) rescue nil
+          data[:name] = REXML::XPath.first(doc, 'descendant-or-self::ItemValue/Name').text
+          data[:path] = path.gsub(/^\/data/, '')
+          data[:value] = REXML::XPath.first(doc, 'descendant-or-self::ItemValue/Value').text
+          data[:type] = REXML::XPath.first(doc, 'descendant-or-self::ItemValue/ItemValueDefinition/ValueDefinition/ValueType').text
+          data[:from_profile] =  false
+          data[:from_data] = true
+          data[:start_date] = DateTime.parse(REXML::XPath.first(doc, "descendant-or-self::ItemValue/StartDate").text) rescue nil
+          # Create object
+          ItemValue.new(data)
+        rescue
+          raise AMEE::BadData.new("Couldn't load DataItemValue from XML. Check that your URL is correct.\n#{xml}")
+        end
       end
 
       def self.get(connection, path)
@@ -89,7 +107,32 @@ module AMEE
       end
 
       def save!
-        response = @connection.put(full_path, :value => value).body
+        if start_date
+          ItemValue.update(connection,full_uid_path,:value=>value,
+            :start_date=>start_date,:get_item=>false)
+        else
+          ItemValue.update(connection,full_uid_path,:value=>value,:get_item=>false)
+        end
+      end
+
+      def delete!
+        raise AMEE::BadData.new("Cannot delete initial value for time series") if start_date==AMEE::Epoch
+        ItemValue.delete @connection,full_uid_path
+      end
+
+      def create!
+        data_item_path=path.split(/\//)[0..-2].join('/')
+        data_item=AMEE::Data::Item.new
+        data_item.path=data_item_path
+        data_item.connection=connection
+        data_item.connection or raise "No connection to AMEE available"
+        if start_date
+          ItemValue.create(data_item,:start_date=>start_date,
+            @path.split(/\//).pop.to_sym => value,:get_item=>false)
+        else
+          ItemValue.create(data_item,
+            @path.split(/\//).pop.to_sym => value,:get_item=>false)
+        end
       end
 
       def self.parse(connection, response, path) 
@@ -107,6 +150,7 @@ module AMEE
       end
       
       def self.create(data_item, options = {})
+
         # Do we want to automatically fetch the item afterwards?
         get_item = options.delete(:get_item)
         get_item = true if get_item.nil?
@@ -115,15 +159,15 @@ module AMEE
         unless options.is_a?(Hash)
           raise AMEE::ArgumentError.new("Third argument must be a hash of options!")
         end
+  
         # Set startDate
         if (options[:start_date])
           options[:startDate] = options[:start_date].xmlschema
           options.delete(:start_date)
         end
-      
+
         response = data_item.connection.post(data_item.full_path, options)
         location = response['Location'].match("http://.*?(/.*)")[1]
-
         if get_item == true
           get_options = {}
           get_options[:format] = format if format
@@ -131,14 +175,19 @@ module AMEE
         else
           return location
         end
-      rescue
-        raise AMEE::BadData.new("Couldn't create DataItemValue. Check that your information is correct.")
+      #rescue
+      #  raise AMEE::BadData.new("Couldn't create DataItemValue. Check that your information is correct.")
       end
 
       def self.update(connection, path, options = {})
         # Do we want to automatically fetch the item afterwards?
         get_item = options.delete(:get_item)
         get_item = true if get_item.nil?
+        # Set startDate
+        if (options[:start_date])
+          options[:startDate] = options[:start_date].xmlschema if options[:start_date]!=Epoch
+          options.delete(:start_date)
+        end
         # Go
         response = connection.put(path, options)
         if get_item
@@ -155,11 +204,12 @@ module AMEE
       def update(options = {})
         AMEE::Data::ItemValue.update(connection, full_path, options)
       end
-      
+
+
       def self.delete(connection, path)
         connection.delete(path)
-      rescue
-        raise AMEE::BadData.new("Couldn't delete DataItemValue. Check that your information is correct.")
+        rescue
+         raise AMEE::BadData.new("Couldn't delete DataItemValue. Check that your information is correct.")
       end      
     
     end
