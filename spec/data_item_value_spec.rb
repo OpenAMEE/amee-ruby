@@ -188,7 +188,7 @@ describe AMEE::Data::ItemValue, "after loading" do
     }.should_not raise_error
   end
 
-  it "can be deleted with no uid" do
+  it "can be deleted by path if there is no uid" do
     @connection.should_receive(:delete).
       with(MockResourcePath).
       and_return(flexmock(:body => ''))

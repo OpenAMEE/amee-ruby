@@ -280,20 +280,17 @@ describe AMEE::Data::ItemValueHistory, "after loading" do
     }.should_not raise_error
   end
 
-  it "can create a new series" do
-    pending "ability to have empty DI" do
-      @connection.should_receive(:post).with(MockDataItemPath,
-        :kgCO2PerPassengerJourney => 2, :startDate => AMEE::Epoch).once.and_return({'Location'=>'http://foo.com/'})
-      @connection.should_receive(:post).with(MockDataItemPath,
-        :kgCO2PerPassengerJourney => 6, :startDate => AMEE::Epoch+1).once.and_return({'Location'=>'http://foo.com/'})
-      @connection.should_receive(:post).with(MockDataItemPath,
-        :kgCO2PerPassengerJourney => 7, :startDate => AMEE::Epoch+5).once.and_return({'Location'=>'http://foo.com/'})
-      @connection.should_receive(:post).with(MockDataItemPath,
-        :kgCO2PerPassengerJourney => 11, :startDate => AMEE::Epoch+9).once.and_return({'Location'=>'http://foo.com/'})
-      lambda {
-        @val.series = TestSeriesTwo
-        @val.create!
-      }.should_not raise_error
-    end
+  it "cannot create a new series (unsupported by platform)" do
+    lambda {
+      @val.series = TestSeriesTwo
+      @val.create!
+    }.should raise_error(AMEE::NotSupported,"Cannot create a Data Item Value History from scratch: at least one data point must exist when the DI is created")
   end
+
+  it "cannot delete an entire series (unsupported by platform)" do
+    lambda {
+      @val.delete!
+    }.should raise_error(AMEE::NotSupported,"Cannot delete all of history: at least one data point must always exist.")
+  end
+
 end
