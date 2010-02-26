@@ -15,4 +15,5 @@ Gem::Specification.new do |s|
   s.executables = ['ameesh']
   s.add_dependency("activesupport", "~> 2.3.5")
   s.add_dependency("json")
+  s.add_dependency("rspec_spinner")
 end
