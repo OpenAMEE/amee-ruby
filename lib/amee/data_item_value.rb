@@ -84,8 +84,8 @@ module AMEE
           data[:path] = path.gsub(/^\/data/, '')
           data[:value] = REXML::XPath.first(doc, 'descendant-or-self::ItemValue/Value').text
           data[:type] = REXML::XPath.first(doc, 'descendant-or-self::ItemValue/ItemValueDefinition/ValueDefinition/ValueType').text
-          data[:from_profile] = REXML::XPath.first(doc, 'descendant-or-self::ItemValue/ItemValueDefinition/FromProfile').text == "true" ? true : false
-          data[:from_data] = REXML::XPath.first(doc, 'descendant-or-self::ItemValue/ItemValueDefinition/FromData').text == "true" ? true : false
+          data[:from_profile] =  false
+          data[:from_data] = true
           data[:start_date] = DateTime.parse(REXML::XPath.first(doc, "descendant-or-self::ItemValue/StartDate").text) rescue nil
           # Create object
           ItemValue.new(data)
@@ -150,6 +150,7 @@ module AMEE
       end
       
       def self.create(data_item, options = {})
+
         # Do we want to automatically fetch the item afterwards?
         get_item = options.delete(:get_item)
         get_item = true if get_item.nil?
@@ -158,6 +159,7 @@ module AMEE
         unless options.is_a?(Hash)
           raise AMEE::ArgumentError.new("Third argument must be a hash of options!")
         end
+  
         # Set startDate
         if (options[:start_date])
           options[:startDate] = options[:start_date].xmlschema
@@ -166,7 +168,6 @@ module AMEE
 
         response = data_item.connection.post(data_item.full_path, options)
         location = response['Location'].match("http://.*?(/.*)")[1]
-
         if get_item == true
           get_options = {}
           get_options[:format] = format if format

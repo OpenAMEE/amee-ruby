@@ -113,7 +113,7 @@ module AMEE
         raise AMEE::BadData.new("Can't save without a path") unless @path
         raise AMEE::BadData.new("Can't save without a connection") unless @connection
         origin=ItemValueHistory.get(connection,full_path)
-        changes=compare(ItemValueHistory.get(connection,full_path))
+        changes=compare(origin)
         changes[:updates].each do |update|
           # we've decided to identify these, but the version in the thing to be
           # saved is probably home made, so copy over the uid
