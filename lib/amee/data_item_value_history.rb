@@ -130,14 +130,12 @@ module AMEE
 
       def delete!
          # deprecated, as DI cannot exist without at least one point
-        raise AMEE::NotSupported("Cannot delete all of history:
-           at least one data point must always exist.")
+        raise AMEE::NotSupported.new("Cannot delete all of history: at least one data point must always exist.")
       end
 
       def create!
         # deprecated, as DI cannot exist without at least one point
-        raise AMEE::NotSupported("Cannot create a Data Item Value History from scratch:
-           at least one data point must exist when the DI is created")
+        raise AMEE::NotSupported.new("Cannot create a Data Item Value History from scratch: at least one data point must exist when the DI is created")
       end
 
       def self.parse(connection, response, path) 

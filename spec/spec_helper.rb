@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'spec'
+require 'rspec_spinner'
 
 $:.unshift(File.dirname(__FILE__) + '/../lib')
 require 'amee'
