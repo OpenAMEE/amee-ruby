@@ -8,12 +8,14 @@ module AMEE
         @children = data ? data[:children] : []
         @items = data ? data[:items] : []
         @pager = data ? data[:pager] : nil
+        @itemdef = data ? data[:itemdef] : nil
         super
       end
 
       attr_reader :children
       attr_reader :items
       attr_reader :pager
+      attr_reader :itemdef
 
       def self.from_json(json)
         # Parse json
@@ -26,6 +28,8 @@ module AMEE
         data[:path] = doc['path']
         data[:children] = []
         data[:pager] = AMEE::Pager.from_json(doc['children']['pager'])
+        itemdef=doc['dataCategory']['itemDefinition']
+        data[:itemdef] = itemdef ? itemdef['uid'] : nil
         doc['children']['dataCategories'].each do |child|
           category_data = {}
           category_data[:name] = child['name']
@@ -59,6 +63,8 @@ module AMEE
         data[:name] = REXML::XPath.first(doc, '/Resources/DataCategoryResource/DataCategory/?ame').text
         data[:path] = REXML::XPath.first(doc, '/Resources/DataCategoryResource//?ath').text || ""
         data[:pager] = AMEE::Pager.from_xml(REXML::XPath.first(doc, '//Pager'))
+        itemdefattrib=REXML::XPath.first(doc, '/Resources/DataCategoryResource//ItemDefinition/@uid')
+        data[:itemdef] = itemdefattrib ? itemdefattrib.to_s : nil
         data[:children] = []
         REXML::XPath.each(doc, '/Resources/DataCategoryResource//Children/DataCategories/DataCategory') do |child|
           category_data = {}
