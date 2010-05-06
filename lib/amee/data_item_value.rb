@@ -16,7 +16,7 @@ module AMEE
 
       def value
         case type
-        when "DECIMAL"
+        when "DECIMAL", "DOUBLE"
           @value.to_f
         else
           @value

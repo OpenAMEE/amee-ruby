@@ -52,8 +52,8 @@ describe AMEE::Data::ItemValue do
     @value.from_data?.should be_true
   end
 
-  it "should support DECIMAL data type" do
-    @value = AMEE::Data::ItemValue.new(:value => "1.5", :type => "DECIMAL")
+  it "should support DOUBLE data type" do
+    @value = AMEE::Data::ItemValue.new(:value => "1.5", :type => "DOUBLE")
     @value.value.should == 1.5
   end
 
@@ -80,7 +80,7 @@ describe AMEE::Data::ItemValue, "with an authenticated connection" do
 
   it "should parse XML correctly" do
     connection = flexmock "connection"
-    connection.should_receive(:get).with(MockResourcePath).and_return(flexmock(:body => '<Resources><DataItemValueResource><ItemValue Created="2007-08-01 09:00:41.0" Modified="2007-08-01 09:00:41.0" uid="127612FA4921"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><Value>0.1</Value><ItemValueDefinition uid="653828811D42"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="8CB8A1789CD6"><Name>kgCO2PerJourney</Name><ValueType>DECIMAL</ValueType></ValueDefinition></ItemValueDefinition><DataItem uid="AD63A83B4D41"/></ItemValue><DataItem uid="AD63A83B4D41"/></DataItemValueResource></Resources>'))
+    connection.should_receive(:get).with(MockResourcePath).and_return(flexmock(:body => '<Resources><DataItemValueResource><ItemValue Created="2007-08-01 09:00:41.0" Modified="2007-08-01 09:00:41.0" uid="127612FA4921"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><Value>0.1</Value><ItemValueDefinition uid="653828811D42"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="8CB8A1789CD6"><Name>kgCO2PerJourney</Name><ValueType>DOUBLE</ValueType></ValueDefinition></ItemValueDefinition><DataItem uid="AD63A83B4D41"/></ItemValue><DataItem uid="AD63A83B4D41"/></DataItemValueResource></Resources>'))
     @value = AMEE::Data::ItemValue.get(connection, MockResourcePath)
     @value.uid.should == "127612FA4921"
     @value.name.should == "kgCO2 Per Passenger Journey"
@@ -89,14 +89,14 @@ describe AMEE::Data::ItemValue, "with an authenticated connection" do
     @value.created.should == DateTime.new(2007,8,1,9,00,41)
     @value.modified.should == DateTime.new(2007,8,1,9,00,41)
     @value.value.should == 0.1
-    @value.type.should == "DECIMAL"
+    @value.type.should == "DOUBLE"
     @value.from_profile?.should be_false
     @value.from_data?.should be_true
   end
 
   it "should parse JSON correctly" do
     connection = flexmock "connection"
-    connection.should_receive(:get).with(MockResourcePath).and_return(flexmock(:body => '{"dataItem":{"uid":"AD63A83B4D41"},"itemValue":{"item":{"uid":"AD63A83B4D41"},"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","value":"0.1","uid":"127612FA4921","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey","itemValueDefinition":{"valueDefinition":{"valueType":"DECIMAL","uid":"8CB8A1789CD6","name":"kgCO2PerJourney"},"uid":"653828811D42","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey"}}}'))
+    connection.should_receive(:get).with(MockResourcePath).and_return(flexmock(:body => '{"dataItem":{"uid":"AD63A83B4D41"},"itemValue":{"item":{"uid":"AD63A83B4D41"},"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","value":"0.1","uid":"127612FA4921","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey","itemValueDefinition":{"valueDefinition":{"valueType":"DOUBLE","uid":"8CB8A1789CD6","name":"kgCO2PerJourney"},"uid":"653828811D42","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey"}}}'))
     @value = AMEE::Data::ItemValue.get(connection, MockResourcePath)
     @value.uid.should == "127612FA4921"
     @value.name.should == "kgCO2 Per Passenger Journey"
@@ -105,7 +105,7 @@ describe AMEE::Data::ItemValue, "with an authenticated connection" do
     @value.created.should == DateTime.new(2007,8,1,9,00,41)
     @value.modified.should == DateTime.new(2007,8,1,9,00,41)
     @value.value.should == 0.1
-    @value.type.should == "DECIMAL"
+    @value.type.should == "DOUBLE"
     #@value.from_profile?.should be_false # NOT SET IN JSON
     #@value.from_data?.should be_true # NOT SET IN JSON
   end
@@ -120,8 +120,8 @@ describe AMEE::Data::ItemValue, "with an authenticated connection" do
   it "should fail gracefully when the return is an item value history" do
     connection = flexmock "connection"
     xml = '<Resources><DataItemValueResource><ItemValues>'+
-          '<ItemValue Created="2007-08-01 09:00:41.0" Modified="2007-08-01 09:00:41.0" uid="127612FA4922"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><StartDate></StartDate>0<Value>1</Value><ItemValueDefinition uid="653828811D42"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="8CB8A1789CD6"><Name>kgCO2PerJourney</Name><ValueType>DECIMAL</ValueType></ValueDefinition></ItemValueDefinition><DataItem uid="AD63A83B4D41"/></ItemValue><DataItem uid="AD63A83B4D41"/>'+
-          '<ItemValue Created="2007-08-01 09:00:41.0" Modified="2007-08-01 09:00:41.0" uid="127612FA4922"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><StartDate></StartDate>1<Value>2</Value><ItemValueDefinition uid="653828811D42"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="8CB8A1789CD6"><Name>kgCO2PerJourney</Name><ValueType>DECIMAL</ValueType></ValueDefinition></ItemValueDefinition><DataItem uid="AD63A83B4D41"/></ItemValue><DataItem uid="AD63A83B4D41"/>'+
+          '<ItemValue Created="2007-08-01 09:00:41.0" Modified="2007-08-01 09:00:41.0" uid="127612FA4922"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><StartDate></StartDate>0<Value>1</Value><ItemValueDefinition uid="653828811D42"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="8CB8A1789CD6"><Name>kgCO2PerJourney</Name><ValueType>DOUBLE</ValueType></ValueDefinition></ItemValueDefinition><DataItem uid="AD63A83B4D41"/></ItemValue><DataItem uid="AD63A83B4D41"/>'+
+          '<ItemValue Created="2007-08-01 09:00:41.0" Modified="2007-08-01 09:00:41.0" uid="127612FA4922"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><StartDate></StartDate>1<Value>2</Value><ItemValueDefinition uid="653828811D42"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="8CB8A1789CD6"><Name>kgCO2PerJourney</Name><ValueType>DOUBLE</ValueType></ValueDefinition></ItemValueDefinition><DataItem uid="AD63A83B4D41"/></ItemValue><DataItem uid="AD63A83B4D41"/>'+
           '</ItemValues></DataItemValueResource></Resources>'
     connection.should_receive(:get).with(MockResourcePath).and_return(flexmock(:body => xml))
     lambda{AMEE::Data::ItemValue.get(connection, MockResourcePath)}.should raise_error(AMEE::BadData, "Couldn't load DataItemValue from XML. This is an item value history.\n#{xml}")
@@ -129,7 +129,7 @@ describe AMEE::Data::ItemValue, "with an authenticated connection" do
 
   it "should should handle this data" do
     connection = flexmock "connection"
-    xml = "<DataItemValueResource><ItemValues><ItemValue uid='14E0F070EDD6'><Path>massCO2PerEnergy</Path><Name>Mass CO2 per Energy</Name><Value>0.1382909</Value><Unit>kg</Unit><PerUnit>kWh</PerUnit><StartDate>1970-01-01T01:00:00+01:00</StartDate><ItemValueDefinition uid='073CE1A98F4C'><Path>massCO2PerEnergy</Path><Name>Mass CO2 per Energy</Name><ValueDefinition modified='2007-07-27 09:30:44.0' uid='45433E48B39F' created='2007-07-27 09:30:44.0'><Name>amount</Name><ValueType>DECIMAL</ValueType><Description/><Environment uid='5F5887BCF726'/></ValueDefinition><Unit>kg</Unit><PerUnit>kWh</PerUnit><FromProfile>false</FromProfile><FromData>true</FromData><DrillDown>false</DrillDown></ItemValueDefinition></ItemValue></ItemValues><DataItem uid='9FFE9E794049'/><Path>/test/api/item_history_test/9FFE9E794049/massCO2PerEnergy</Path></DataItemValueResource>"
+    xml = "<DataItemValueResource><ItemValues><ItemValue uid='14E0F070EDD6'><Path>massCO2PerEnergy</Path><Name>Mass CO2 per Energy</Name><Value>0.1382909</Value><Unit>kg</Unit><PerUnit>kWh</PerUnit><StartDate>1970-01-01T01:00:00+01:00</StartDate><ItemValueDefinition uid='073CE1A98F4C'><Path>massCO2PerEnergy</Path><Name>Mass CO2 per Energy</Name><ValueDefinition modified='2007-07-27 09:30:44.0' uid='45433E48B39F' created='2007-07-27 09:30:44.0'><Name>amount</Name><ValueType>DOUBLE</ValueType><Description/><Environment uid='5F5887BCF726'/></ValueDefinition><Unit>kg</Unit><PerUnit>kWh</PerUnit><FromProfile>false</FromProfile><FromData>true</FromData><DrillDown>false</DrillDown></ItemValueDefinition></ItemValue></ItemValues><DataItem uid='9FFE9E794049'/><Path>/test/api/item_history_test/9FFE9E794049/massCO2PerEnergy</Path></DataItemValueResource>"
     connection.should_receive(:get).with(MockResourcePath).and_return(flexmock(:body => xml))
     lambda{AMEE::Data::ItemValue.get(connection, MockResourcePath)}.should_not raise_error
   end
@@ -154,7 +154,7 @@ describe AMEE::Data::ItemValue, "after loading" do
   before(:each) do
     @path = MockResourcePath
     @connection = flexmock "connection"
-    @connection.should_receive(:get).with(@path).and_return(flexmock(:body => '{"dataItem":{"uid":"AD63A83B4D41"},"itemValue":{"item":{"uid":"AD63A83B4D41"},"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","value":"0.1","uid":"127612FA4921","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey","itemValueDefinition":{"valueDefinition":{"valueType":"DECIMAL","uid":"8CB8A1789CD6","name":"kgCO2PerJourney"},"uid":"653828811D42","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey"}}}'))
+    @connection.should_receive(:get).with(@path).and_return(flexmock(:body => '{"dataItem":{"uid":"AD63A83B4D41"},"itemValue":{"item":{"uid":"AD63A83B4D41"},"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","value":"0.1","uid":"127612FA4921","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey","itemValueDefinition":{"valueDefinition":{"valueType":"DOUBLE","uid":"8CB8A1789CD6","name":"kgCO2PerJourney"},"uid":"653828811D42","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey"}}}'))
     @val = AMEE::Data::ItemValue.get(@connection, "/data/transport/plane/generic/AD63A83B4D41/kgCO2PerPassengerJourney")
   end
 
