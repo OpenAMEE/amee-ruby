@@ -58,6 +58,8 @@ module AMEE
             when 'amount'
               item_data[:amount] = value['value'].to_f
               item_data[:amount_unit] = value['unit']
+            when 'amounts'
+              # add new code per COM-69 here.
             when 'itemValues'
               value.each do |itemval|
                 path = itemval['path'].to_sym
@@ -292,6 +294,8 @@ module AMEE
             when 'amount'
               item_data[:amount] = element.text.to_f
               item_data[:amount_unit] = element.attributes['unit'].to_s
+            when 'amounts'
+              # add new code per COM-69 here.
             when 'itemvalues'
               element.elements.each do |itemvalue|
                 path = itemvalue.elements['Path'].text
