@@ -21,7 +21,7 @@ module AMEE
       end
       # Make connection to server
       @http = Net::HTTP.new(@server)
-      @http.read_timeout = 5
+      @http.read_timeout = 60
       @http.set_debug_output($stdout) if options[:enable_debug]
     end
 

@@ -15,10 +15,10 @@ describe AMEE::Connection do
     c.should be_valid
   end
   
-  it "has default timeout of 5 seconds" do
+  it "has default timeout of 60 seconds" do
     flexmock(Net::HTTP).new_instances.should_receive(:start => nil)
     c = AMEE::Connection.new('server.example.com', 'username', 'password')
-    c.timeout.should be(5)
+    c.timeout.should be(60)
   end
 
   it "can set timeout" do
