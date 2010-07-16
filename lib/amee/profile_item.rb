@@ -92,20 +92,24 @@ module AMEE
           data[:values] << value_data
         end
         if doc['profileItem']['amounts']
-          data[:amounts] = doc['profileItem']['amounts']['amount'].map do |item|
-            {
-              :type => item['type'],
-              :value => item['value'].to_f,
-              :unit => item['unit'],
-              :per_unit => item['perUnit'],
-              :default => (item['default'] == 'true'),
-            }
+          if doc['profileItem']['amounts']['amount']
+            data[:amounts] = doc['profileItem']['amounts']['amount'].map do |item|
+              {
+                :type => item['type'],
+                :value => item['value'].to_f,
+                :unit => item['unit'],
+                :per_unit => item['perUnit'],
+                :default => (item['default'] == 'true'),
+              }
+            end
           end
-          data[:notes] = doc['profileItem']['amounts']['note'].map do |item|
-            {
-              :type => item['type'],
-              :value => item['value'],
-            }
+          if doc['profileItem']['amounts']['note']
+            data[:notes] = doc['profileItem']['amounts']['note'].map do |item|
+              {
+                :type => item['type'],
+                :value => item['value'],
+              }
+            end
           end
         end
         # Create object
