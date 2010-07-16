@@ -9,6 +9,8 @@ module AMEE
         @items = data ? data[:items] : []
         @total_amount = data[:total_amount]
         @total_amount_unit = data[:total_amount_unit]
+        @amounts = data[:amounts] || []
+        @notes = data[:notes] || []
         @start_date = data[:start_date]
         @end_date = data[:end_date]
         @pager = data[:pager]
@@ -19,6 +21,8 @@ module AMEE
       attr_reader :items
       attr_reader :total_amount
       attr_reader :total_amount_unit
+      attr_reader :amounts
+      attr_reader :notes
       attr_reader :pager
 
       def start_date
@@ -59,7 +63,27 @@ module AMEE
               item_data[:amount] = value['value'].to_f
               item_data[:amount_unit] = value['unit']
             when 'amounts'
-              # add new code per COM-69 here.
+              item_data[:amounts] = []
+              if value['amount']
+                value['amount'].each do |x|
+                  d = {}
+                  d[:type] = x['type']
+                  d[:value] = x['value'].to_f
+                  d[:unit] = x['unit']
+                  d[:per_unit] = x['perUnit']
+                  d[:default] = x['default'] == 'true'
+                  item_data[:amounts] << d
+                end
+              end
+              item_data[:notes] = []
+              if value['note']
+                value['note'].each do |x|
+                  d = {}
+                  d[:type] = x['type']
+                  d[:value] = x['value']
+                  item_data[:notes] << d
+                end
+              end
             when 'itemValues'
               value.each do |itemval|
                 path = itemval['path'].to_sym
@@ -295,7 +319,25 @@ module AMEE
               item_data[:amount] = element.text.to_f
               item_data[:amount_unit] = element.attributes['unit'].to_s
             when 'amounts'
-              # add new code per COM-69 here.
+              element.elements.each do |x|
+                case x.name
+                when 'Amount'
+                  item_data[:amounts] ||= []
+                  d = {}
+                  d[:type] = x.attributes['type'].to_s
+                  d[:value] = x.text.to_f
+                  d[:unit] = x.attributes['unit'].to_s
+                  d[:per_unit] = x.attributes['perUnit'].to_s if x.attributes['perUnit']
+                  d[:default] = x.attributes['default'] == 'true'
+                  item_data[:amounts] << d
+                when 'Note'
+                  item_data[:notes] ||= []
+                  d = {}
+                  d[:type] = x.attributes['type'].to_s
+                  d[:value] = x.text
+                  item_data[:notes] << d
+                end
+              end
             when 'itemvalues'
               element.elements.each do |itemvalue|
                 path = itemvalue.elements['Path'].text
