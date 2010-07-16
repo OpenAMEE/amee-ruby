@@ -7,6 +7,7 @@ module AMEE
         @total_amount = data[:total_amount]
         @total_amount_unit = data[:total_amount_unit]
         @amounts = data[:amounts] || []
+        @notes = data[:notes] || []
         @start_date = data[:start_date] || data[:valid_from]
         @end_date = data[:end_date] || (data[:end] == true ? @start_date : nil )
         @data_item_uid = data[:data_item_uid]
@@ -17,6 +18,7 @@ module AMEE
       attr_reader :total_amount
       attr_reader :total_amount_unit
       attr_reader :amounts
+      attr_reader :notes
       attr_reader :start_date
       attr_reader :end_date
       attr_reader :data_item_uid
@@ -89,14 +91,22 @@ module AMEE
           end
           data[:values] << value_data
         end
-        data[:amounts] = doc['profileItem']['amounts']['amount'].map do |item|
-          {
-            :type => item['type'],
-            :value => item['value'].to_f,
-            :unit => item['unit'],
-            :per_unit => item['perUnit'],
-            :default => (item['default'] == 'true'),
-          }
+        if doc['profileItem']['amounts']
+          data[:amounts] = doc['profileItem']['amounts']['amount'].map do |item|
+            {
+              :type => item['type'],
+              :value => item['value'].to_f,
+              :unit => item['unit'],
+              :per_unit => item['perUnit'],
+              :default => (item['default'] == 'true'),
+            }
+          end
+          data[:notes] = doc['profileItem']['amounts']['note'].map do |item|
+            {
+              :type => item['type'],
+              :value => item['value'],
+            }
+          end
         end
         # Create object
         Item.new(data)
@@ -175,6 +185,12 @@ module AMEE
           x[:per_unit] = item.attribute('perUnit').value if item.attribute('perUnit')
           x[:default] = (item.attribute('default').value == 'true') if item.attribute('default')
           x
+        end
+        data[:notes] = REXML::XPath.each(doc, '/Resources/ProfileItemResource/ProfileItem/Amounts/Note').map do |item|
+          {
+            :type => item.attribute('type').value,
+            :value => item.text,
+          }
         end
         # Create object
         Item.new(data)
