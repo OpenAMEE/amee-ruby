@@ -6,6 +6,7 @@ module AMEE
         @values = data ? data[:values] : []
         @total_amount = data[:total_amount]
         @total_amount_unit = data[:total_amount_unit]
+        @amounts = data[:amounts] || []
         @start_date = data[:start_date] || data[:valid_from]
         @end_date = data[:end_date] || (data[:end] == true ? @start_date : nil )
         @data_item_uid = data[:data_item_uid]
@@ -15,6 +16,7 @@ module AMEE
       attr_reader :values
       attr_reader :total_amount
       attr_reader :total_amount_unit
+      attr_reader :amounts
       attr_reader :start_date
       attr_reader :end_date
       attr_reader :data_item_uid
@@ -87,6 +89,15 @@ module AMEE
           end
           data[:values] << value_data
         end
+        data[:amounts] = doc['profileItem']['amounts']['amount'].map do |item|
+          {
+            :type => item['type'],
+            :value => item['value'].to_f,
+            :unit => item['unit'],
+            :per_unit => item['perUnit'],
+            :default => (item['default'] == 'true'),
+          }
+        end
         # Create object
         Item.new(data)
       rescue
@@ -154,6 +165,16 @@ module AMEE
           end
           value_data[:uid] = item.attributes['uid'].to_s
           data[:values] << value_data
+        end
+        data[:amounts] = REXML::XPath.each(doc, '/Resources/ProfileItemResource/ProfileItem/Amounts/Amount').map do |item|
+          x = {
+            :type => item.attribute('type').value,
+            :value => item.text.to_f,
+            :unit => item.attribute('unit').value,
+          }
+          x[:per_unit] = item.attribute('perUnit').value if item.attribute('perUnit')
+          x[:default] = (item.attribute('default').value == 'true') if item.attribute('default')
+          x
         end
         # Create object
         Item.new(data)
