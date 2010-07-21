@@ -47,6 +47,7 @@ require 'amee/profile_item_value'
 require 'amee/drill_down'
 require 'amee/pager'
 require 'amee/item_definition'
+require 'amee/item_value_definition'
 require 'amee/user'
 
 class Date
