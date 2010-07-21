@@ -1,6 +1,7 @@
 module AMEE
   class Object
-    
+    include ParseHelper
+    extend ParseHelper # because sometimes things parse themselves in class methdos
     def initialize(data = nil)
       @uid = data ? data[:uid] : nil
       @created = data ? data[:created] : Time.now
@@ -9,13 +10,13 @@ module AMEE
       @name = data ? data[:name] : nil
       @connection = data ? data[:connection] : nil
     end
-    
+
     attr_accessor :connection
     attr_reader :uid
     attr_reader :created
     attr_reader :modified
     attr_reader :path
     attr_reader :name
-    
+
   end
 end
