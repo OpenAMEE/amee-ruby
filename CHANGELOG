@@ -1,0 +1,11 @@
+= Changelog
+
+== 2.2.0
+
+* Add SSL support. SSL connections are now used by default.
+* Log4r support
+* Support for reading ItemValueDefinitions
+    * Include accessors from other objects
+* Internal improvements including
+    * Improved paging support
+    * Tidier code for collections

@@ -12,12 +12,14 @@ Documentation: http://docs.github.com/Floppy/amee-ruby
 
 == INSTALLATION
 
-1) Enable gems from gemcutter, if you haven't already done so: 
-    > sudo gem install gemcutter
-    > sudo gem tumble
-
-2) Install gem
+1) Install gem
     > sudo gem install amee
+
+== IMPORTANT CHANGES when upgrading to 2.2.0 and above
+
+SSL connections are now supported, and are used BY DEFAULT.If you do not want to
+use SSL, you can disable it using the ":ssl => false" option to Connection.new, or
+by adding "ssl: false" to your amee.yml if you are using Rails.
 
 == IMPORTANT CHANGES when upgrading beyond 2.0.25
 
@@ -60,7 +62,7 @@ This gem can also be used as a Rails plugin. You can either extract it into
 vendor/plugins, or use the new-style config.gem command in environment.rb. For
 example:
 
-    config.gem "amee", :version => '>= 2.0.26'
+    config.gem "amee", :version => '~> 2.2.0'
 
 If you copy amee.example.yml from the gem source directory to amee.yml in your
 app's config directory, a persistent AMEE connection will be available from 

@@ -2,11 +2,14 @@ development:
   server: stage.amee.com
   username: your_amee_username
   password: your_amee_password
+  #ssl: false # Uncomment if you don't want to use SSL
 test:
   server: stage.amee.com
   username: your_amee_username
   password: your_amee_password
+  #ssl: false # Uncomment if you don't want to use SSL
 production:
   server: live.amee.com
   username: your_amee_username
   password: your_amee_password
+  #ssl: false # Uncomment if you don't want to use SSL
