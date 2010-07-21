@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/Floppy/amee-ruby"
   s.has_rdoc = true
   s.authors = ["James Smith"]
-  s.files = ["README", "COPYING"]
+  s.files = ["README", "COPYING", "CHANGELOG"]
   s.files += ['lib/amee.rb', 'lib/amee/connection.rb', 'lib/amee/data_item.rb',
     'lib/amee/exceptions.rb', 'lib/amee/profile.rb', 'lib/amee/profile_object.rb',
     'lib/amee/profile_category.rb', 'lib/amee/profile_item.rb',
