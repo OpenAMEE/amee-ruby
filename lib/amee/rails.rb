@@ -9,6 +9,9 @@ module AMEE
       def self.global(options = {})
         unless @connection
           $AMEE_CONFIG ||= {} # Make default values nil
+          if $AMEE_CONFIG['ssl'] == false
+            options.merge! :ssl => false
+          end
           @connection = self.connect($AMEE_CONFIG['server'], $AMEE_CONFIG['username'], $AMEE_CONFIG['password'], options)
           # Also store as $amee for backwards compatibility, though this is now deprecated
           $amee = @connection
@@ -37,7 +40,7 @@ module AMEE
         alias_method_chain :save, :amee
         before_destroy :amee_destroy
         # Check that this object has an AMEE profile UID when saving
-        validates_presence_of :amee_profile        
+        validates_presence_of :amee_profile
       end
     end
 

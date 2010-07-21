@@ -9,15 +9,15 @@ MockResourceDataItemShortPath="/transport/plane/generic/AD63A83B4D41"
 MockResourceDataItemPath="/data#{MockResourceDataItemShortPath}"
 
 describe AMEE::Data::ItemValue do
-  
+
   before(:each) do
     @value = AMEE::Data::ItemValue.new
   end
-  
+
   it "should have common AMEE object properties" do
     @value.is_a?(AMEE::Data::Object).should be_true
   end
-  
+
   it "should have a value" do
     @value.should respond_to(:value)
   end
@@ -33,7 +33,7 @@ describe AMEE::Data::ItemValue do
   it "can be from data" do
     @value.should respond_to(:from_data?)
   end
-  
+
   it "should initialize AMEE::Object data on creation" do
     uid = 'ABCD1234'
     @value = AMEE::Data::ItemValue.new(:uid => uid)
@@ -208,7 +208,22 @@ describe AMEE::Data::ItemValue, "after loading" do
       :start_date=>AMEE::Epoch+3,
       :connection=>@connection,
       :path=>MockResourceDataItemShortPath+"/kgCO2PerPassengerJourney")
-    lambda {      
+    lambda {
+      @new.create!
+    }.should_not raise_error
+  end
+
+  it "can be created over SSL" do
+    @connection.should_receive(:post).
+      with(MockResourceDataItemPath,
+      :kgCO2PerPassengerJourney=>42,
+      :startDate=>(AMEE::Epoch+3).xmlschema).
+      and_return({'Location'=>'https://foo.com/'})
+    @new=AMEE::Data::ItemValue.new(:value=>42,
+      :start_date=>AMEE::Epoch+3,
+      :connection=>@connection,
+      :path=>MockResourceDataItemShortPath+"/kgCO2PerPassengerJourney")
+    lambda {
       @new.create!
     }.should_not raise_error
   end

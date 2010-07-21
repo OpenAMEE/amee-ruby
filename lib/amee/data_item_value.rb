@@ -30,11 +30,11 @@ module AMEE
       def from_profile?
         @from_profile
       end
-      
+
       def from_data?
         @from_data
       end
-      
+
       attr_accessor :start_date
       attr_accessor :uid
 
@@ -65,10 +65,10 @@ module AMEE
         data[:start_date] = DateTime.parse(doc['startDate']) rescue nil
         # Create object
         ItemValue.new(data)
-      rescue 
+      rescue
         raise AMEE::BadData.new("Couldn't load DataItemValue from JSON. Check that your URL is correct.\n#{json}")
       end
-      
+
       def self.from_xml(xml, path)
         # Read XML
         doc = xml.is_a?(String) ? REXML::Document.new(xml) : xml
@@ -135,7 +135,7 @@ module AMEE
         end
       end
 
-      def self.parse(connection, response, path) 
+      def self.parse(connection, response, path)
         if response.is_json?
           value = ItemValue.from_json(response, path)
         else
@@ -148,7 +148,7 @@ module AMEE
       rescue
         raise AMEE::BadData.new("Couldn't load DataItemValue. Check that your URL is correct.\n#{response}")
       end
-      
+
       def self.create(data_item, options = {})
 
         # Do we want to automatically fetch the item afterwards?
@@ -159,7 +159,7 @@ module AMEE
         unless options.is_a?(Hash)
           raise AMEE::ArgumentError.new("Third argument must be a hash of options!")
         end
-  
+
         # Set startDate
         if (options[:start_date])
           options[:startDate] = options[:start_date].xmlschema
@@ -167,7 +167,7 @@ module AMEE
         end
 
         response = data_item.connection.post(data_item.full_path, options)
-        location = response['Location'].match("http://.*?(/.*)")[1]
+        location = response['Location'].match("https??://.*?(/.*)")[1]
         if get_item == true
           get_options = {}
           get_options[:format] = format if format
@@ -200,7 +200,7 @@ module AMEE
       rescue
         raise AMEE::BadData.new("Couldn't update DataItemValue. Check that your information is correct.\n#{response}")
       end
-      
+
       def update(options = {})
         AMEE::Data::ItemValue.update(connection, full_path, options)
       end
@@ -210,8 +210,8 @@ module AMEE
         connection.delete(path)
         rescue
          raise AMEE::BadData.new("Couldn't delete DataItemValue. Check that your information is correct.")
-      end      
-    
+      end
+
     end
   end
 end

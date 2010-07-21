@@ -162,7 +162,7 @@ module AMEE
         options[:newObjectType] = "DC"
         response = connection.post(path, options)
         if response['Location']
-          location = response['Location'].match("http://.*?(/.*)")[1]
+          location = response['Location'].match("https??://.*?(/.*)")[1]
         else
           category = Category.parse(connection, response.body)
           location = category.full_path

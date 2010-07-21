@@ -1,11 +1,11 @@
 require File.dirname(__FILE__) + '/spec_helper.rb'
 
 describe AMEE::Profile::Item do
-  
+
   before(:each) do
     @item = AMEE::Profile::Item.new
   end
-  
+
   it "should have common AMEE object properties" do
     @item.is_a?(AMEE::Profile::Object).should be_true
   end
@@ -109,6 +109,26 @@ describe AMEE::Profile::Item do
     connection.should_receive(:version).and_return(2.0)
     connection.should_receive(:get).with("/profiles/E54C5525AA3E/home/energy/quantity", {}).and_return(flexmock(:body => '{"totalAmountPerMonth":0,"dataCategory":{"uid":"A92693A99BAD","path":"quantity","name":"Quantity"},"profileDate":"200901","path":"/home/energy/quantity","profile":{"uid":"E54C5525AA3E"},"children":{"pager":{"to":0,"lastPage":1,"start":0,"nextPage":-1,"items":0,"itemsPerPage":10,"from":0,"previousPage":-1,"requestedPage":1,"currentPage":1,"itemsFound":0},"dataCategories":[],"profileItems":{"rows":[],"label":"ProfileItems"}}}'))
     connection.should_receive(:post).with("/profiles/E54C5525AA3E/home/energy/quantity", :dataItemUid => '66056991EE23', :kWhPerMonth => "10").and_return(flexmock(:body => '', :'[]' => 'http://example.server.com/profiles/E54C5525AA3E/home/energy/quantity/8C7BD1AB69D3'))
+    category = AMEE::Profile::Category.get(connection, "/profiles/E54C5525AA3E/home/energy/quantity")
+    location = AMEE::Profile::Item.create(category, '66056991EE23', :kWhPerMonth => "10", :get_item => false)
+    location.should == "/profiles/E54C5525AA3E/home/energy/quantity/8C7BD1AB69D3"
+  end
+
+  it "should be able to create new profile items and just get location of new resource (V2 XML SSL)" do
+    connection = flexmock "connection"
+    connection.should_receive(:version).and_return(2.0)
+    connection.should_receive(:get).with("/profiles/E54C5525AA3E/home/energy/quantity", {}).and_return(flexmock(:body => '<?xml version="1.0" encoding="UTF-8"?><Resources><ProfileCategoryResource><Path>/home/energy/quantity</Path><ProfileDate>200901</ProfileDate><Profile uid="E54C5525AA3E"/><DataCategory uid="A92693A99BAD"><Name>Quantity</Name><Path>quantity</Path></DataCategory><Children><ProfileCategories/><ProfileItems/><Pager><Start>0</Start><From>0</From><To>0</To><Items>0</Items><CurrentPage>1</CurrentPage><RequestedPage>1</RequestedPage><NextPage>-1</NextPage><PreviousPage>-1</PreviousPage><LastPage>1</LastPage><ItemsPerPage>10</ItemsPerPage><ItemsFound>0</ItemsFound></Pager></Children><TotalAmountPerMonth>0.000</TotalAmountPerMonth></ProfileCategoryResource></Resources>'))
+    connection.should_receive(:post).with("/profiles/E54C5525AA3E/home/energy/quantity", :dataItemUid => '66056991EE23', :kWhPerMonth => "10").and_return(flexmock(:body => '', :'[]' => 'https://example.server.com/profiles/E54C5525AA3E/home/energy/quantity/62BCC8C84D0C'))
+    category = AMEE::Profile::Category.get(connection, "/profiles/E54C5525AA3E/home/energy/quantity")
+    location = AMEE::Profile::Item.create(category, '66056991EE23', :kWhPerMonth => "10", :get_item => false)
+    location.should == "/profiles/E54C5525AA3E/home/energy/quantity/62BCC8C84D0C"
+  end
+
+  it "should be able to create new profile items and just get location of new resource (V2 JSON SSL)" do
+    connection = flexmock "connection"
+    connection.should_receive(:version).and_return(2.0)
+    connection.should_receive(:get).with("/profiles/E54C5525AA3E/home/energy/quantity", {}).and_return(flexmock(:body => '{"totalAmountPerMonth":0,"dataCategory":{"uid":"A92693A99BAD","path":"quantity","name":"Quantity"},"profileDate":"200901","path":"/home/energy/quantity","profile":{"uid":"E54C5525AA3E"},"children":{"pager":{"to":0,"lastPage":1,"start":0,"nextPage":-1,"items":0,"itemsPerPage":10,"from":0,"previousPage":-1,"requestedPage":1,"currentPage":1,"itemsFound":0},"dataCategories":[],"profileItems":{"rows":[],"label":"ProfileItems"}}}'))
+    connection.should_receive(:post).with("/profiles/E54C5525AA3E/home/energy/quantity", :dataItemUid => '66056991EE23', :kWhPerMonth => "10").and_return(flexmock(:body => '', :'[]' => 'https://example.server.com/profiles/E54C5525AA3E/home/energy/quantity/8C7BD1AB69D3'))
     category = AMEE::Profile::Category.get(connection, "/profiles/E54C5525AA3E/home/energy/quantity")
     location = AMEE::Profile::Item.create(category, '66056991EE23', :kWhPerMonth => "10", :get_item => false)
     location.should == "/profiles/E54C5525AA3E/home/energy/quantity/8C7BD1AB69D3"
@@ -396,7 +416,7 @@ describe AMEE::Profile::Item, "should be able to update profile items" do
     item = AMEE::Profile::Item.get(connection, "/profiles/92C8DB30F46B/home/energy/quantity/6E9B1517D753")
     item.update()
   end
-  
+
   it "without having an existing item" do
     connection = flexmock "connection"
     connection.should_receive(:version).and_return(1.0)

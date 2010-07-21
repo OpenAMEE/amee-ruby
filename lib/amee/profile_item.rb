@@ -139,7 +139,7 @@ module AMEE
             value = element.text
             case key
               when 'Name', 'Path', 'Value'
-                value_data[key.downcase.to_sym] = value              
+                value_data[key.downcase.to_sym] = value
             end
           end
           value_data[:uid] = item.attributes['uid'].to_s
@@ -296,7 +296,7 @@ module AMEE
         end
         if options[:end_date] && connection.version >= 2
           options[:endDate] = options[:end_date].xmlschema
-        end        
+        end
         if options[:duration] && connection.version >= 2
           options[:duration] = "PT#{options[:duration] * 86400}S"
         end
@@ -304,7 +304,7 @@ module AMEE
         options.merge! :dataItemUid => data_item_uid
         response = connection.post(path, options)
         if response['Location']
-          location = response['Location'].match("http://.*?(/.*)")[1]
+          location = response['Location'].match("https??://.*?(/.*)")[1]
         else
           category = Category.parse(connection, response.body, nil)
           location = category.full_path + "/" + category.items[0][:path]
@@ -357,7 +357,7 @@ module AMEE
         options.delete(:start_date)
         if options[:end_date] && connection.version >= 2
           options[:endDate] = options[:end_date].xmlschema
-        end        
+        end
         options.delete(:end_date)
         if options[:duration] && connection.version >= 2
           options[:duration] = "PT#{options[:duration] * 86400}S"

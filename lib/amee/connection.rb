@@ -1,7 +1,10 @@
 require 'net/http'
+require 'net/https'
 
 module AMEE
   class Connection
+
+    RootCA = File.dirname(__FILE__) + '/../../cacert.pem'
 
     def initialize(server, username, password, options = {})
       unless options.is_a?(Hash)
@@ -10,6 +13,8 @@ module AMEE
       @server = server
       @username = username
       @password = password
+      @ssl = (options[:ssl] == false) ? false : true
+      @port = @ssl ? 443 : 80
       @auth_token = nil
       @format = options[:format] || (defined?(JSON) ? :json : :xml)
       @amee_source = options[:amee_source]
@@ -21,7 +26,15 @@ module AMEE
         $cache ||= {}
       end
       # Make connection to server
-      @http = Net::HTTP.new(@server)
+      @http = Net::HTTP.new(@server, @port)
+      if @ssl == true
+        @http.use_ssl = true
+        if File.exists? RootCA
+          @http.ca_file = RootCA
+          @http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+          @http.verify_depth = 5
+        end
+      end
       @http.read_timeout = 60
       @http.set_debug_output($stdout) if options[:enable_debug]
       @debug = options[:enable_debug]
@@ -31,11 +44,11 @@ module AMEE
     attr_reader :server
     attr_reader :username
     attr_reader :password
-    
+
     def timeout
       @http.read_timeout
     end
-    
+
     def timeout=(t)
       @http.read_timeout = t
     end
@@ -48,7 +61,7 @@ module AMEE
     def valid?
       @username && @password && @server
     end
-    
+
     def authenticated?
       !@auth_token.nil?
     end
@@ -70,7 +83,7 @@ module AMEE
       $cache[path] = response if @enable_caching
       return response
     end
-    
+
     def post(path, data = {})
       # Allow format override
       format = data.delete(:format) || @format
@@ -170,7 +183,7 @@ module AMEE
         return 'application/atom+xml'
       end
     end
-    
+
     def redirect?(response)
       response.code == '301' || response.code == '302'
     end
@@ -213,7 +226,7 @@ module AMEE
       # Close HTTP connection
       @http.finish if @http.started?
     end
-        
+
     def send_request(request, format = @format)
       # Set auth token in cookie (and header just in case someone's stripping cookies)
       request['Cookie'] = "authToken=#{@auth_token}"

@@ -35,16 +35,16 @@ MockResourceJSONSingle='{"dataItem":{"uid":"AD63A83B4D41"},"itemValue":'+
 
 
 describe AMEE::Data::ItemValueHistory do
-  
+
   before(:each) do
     @history = AMEE::Data::ItemValueHistory.new
   end
-  
+
   it "should NOT have common AMEE object properties" do
     # we can't be an AMEE object, since we have a set of UIDs, not one UID
     @history.is_a?(AMEE::Data::Object).should be_false
   end
- 
+
   it "should have an array of ItemValue objects" do
     @history.should respond_to(:values)
   end
@@ -141,9 +141,9 @@ describe AMEE::Data::ItemValueHistory, "when comparing to another history" do
     @changes.length.should eql 2
     @changes[1].value.should eql 6
     @changes[1].start_date.should eql AMEE::Epoch+1
-    @changes[0].start_date.should eql AMEE::Epoch    
+    @changes[0].start_date.should eql AMEE::Epoch
     @changes[0].value.should eql 2
-    
+
   end
   it "should return an array of items to create" do
     @changes=@comparison[:insertions].sort{|x,y| x.start_date <=> y.start_date}
@@ -274,6 +274,21 @@ describe AMEE::Data::ItemValueHistory, "after loading" do
       :kgCO2PerPassengerJourney => 7, :startDate => AMEE::Epoch+5).once.and_return({'Location'=>'http://foo.com/'})
     @connection.should_receive(:post).with(MockDataItemPath,
       :kgCO2PerPassengerJourney => 11, :startDate => AMEE::Epoch+9).once.and_return({'Location'=>'http://foo.com/'})
+    lambda {
+      @val.series = TestSeriesTwo
+      @val.save!
+    }.should_not raise_error
+  end
+
+  it "can have series changed and saved back to server (using SSL)" do
+    @connection.should_receive(:put).with(MockDataItemPath+"/127612FA4921", :value => 2).once.and_return(flexmock(:body => ''))
+    # note this one shouldn't include a start date as it is the epoch point
+    @connection.should_receive(:put).with(MockDataItemPath+"/127612FA4922", :value => 6, :startDate => AMEE::Epoch+1).once.and_return(flexmock(:body => ''))
+    @connection.should_receive(:delete).with(MockDataItemPath+"/127612FA4923").once.and_return(flexmock(:body => ''))
+    @connection.should_receive(:post).with(MockDataItemPath,
+      :kgCO2PerPassengerJourney => 7, :startDate => AMEE::Epoch+5).once.and_return({'Location'=>'https://foo.com/'})
+    @connection.should_receive(:post).with(MockDataItemPath,
+      :kgCO2PerPassengerJourney => 11, :startDate => AMEE::Epoch+9).once.and_return({'Location'=>'https://foo.com/'})
     lambda {
       @val.series = TestSeriesTwo
       @val.save!
