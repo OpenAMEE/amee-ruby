@@ -12,6 +12,7 @@ module AMEE
       @password = password
       @auth_token = nil
       @format = options[:format] || (defined?(JSON) ? :json : :xml)
+      @amee_source = options[:amee_source]
       if !valid?
        raise "You must supply connection details - server, username and password are all required!"
       end
@@ -141,6 +142,7 @@ module AMEE
       post = Net::HTTP::Post.new("/auth/signIn")
       post.body = "username=#{@username}&password=#{@password}"
       post['Accept'] = content_type(:xml)
+      post['X-AMEE-Source'] = @amee_source if @amee_source
       response = @http.request(post)
       @auth_token = response['authToken']
       unless authenticated?
@@ -218,6 +220,8 @@ module AMEE
       request['authToken'] = @auth_token
       # Set accept header
       request['Accept'] = content_type(format)
+      # Set AMEE source header if set
+      request['X-AMEE-Source'] = @amee_source if @amee_source
       # Do the business
       response = @http.request(request)
       # Done
