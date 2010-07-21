@@ -1,57 +1,43 @@
 module AMEE
   module Admin
 
-    class ItemDefinitionList < Array
-
-      def initialize(connection, options = {})
-        # Load data from path
-        response = connection.get('/definitions/itemDefinitions', options).body
-        # Parse data from response
-        if response.is_json?
-          # Read JSON
-          doc = JSON.parse(response)
-          @pager = AMEE::Pager.from_json(doc['pager'])
-          doc['itemDefinitions'].each do |p|
-            data = {}
-            data[:uid] = p['uid']
-            data[:name] = p['name']
-            # Create ItemDefinition
-            item_definition = ItemDefinition.new(data)
-            # Store in array
-            self << item_definition
-          end
-        else
-          # Read XML
-          doc = REXML::Document.new(response)
-          @pager = AMEE::Pager.from_xml(REXML::XPath.first(doc, '/Resources/ItemDefinitionsResource/Pager'))
-          REXML::XPath.each(doc, '/Resources/ItemDefinitionsResource/ItemDefinitions/ItemDefinition') do |p|
-            data = {}
-            data[:uid] = p.attributes['uid'].to_s
-            data[:name] = p.elements['Name'].text || data[:uid]
-            # Create ItemDefinition
-            item_definition = ItemDefinition.new(data)
-            # Store connection in ItemDefinition object
-            item_definition.connection = connection
-            # Store in array
-            self << item_definition
-          end
-        end
-      rescue
-        raise AMEE::BadData.new("Couldn't load ItemDefinition list.\n#{response}")
+    class ItemDefinitionList < AMEE::Collection
+      def collectionpath
+        '/definitions/itemDefinitions'
+      end
+      def klass
+        ItemDefinition
+      end
+      def jsoncollector
+        @doc['itemDefinitions']
+      end
+      def xmlcollectorpath
+        '/Resources/ItemDefinitionsResource/ItemDefinitions/ItemDefinition'
       end
 
-      attr_reader :pager
-
+      def parse_json(p)
+        data = {}
+        data[:uid] = p['uid']
+        data[:name] = p['name']
+        data
+      end
+      def parse_xml(p)
+        data = {}
+        data[:uid] = x '@uid',:doc=>p
+        data[:name] = x('Name',:doc=>p) || data[:uid]
+        data
+      end
     end
 
     class ItemDefinition < AMEE::Object
 
       def initialize(data = {})
         @name = data[:name]
+        @drill_downs = data[:drillDown]
         super
       end
 
-      attr_reader :name
+      attr_reader :name, :drill_downs
 
       def self.list(connection)
         ItemDefinitionList.new(connection)
@@ -78,6 +64,7 @@ module AMEE
         data[:created] = DateTime.parse(doc['itemDefinition']['created'])
         data[:modified] = DateTime.parse(doc['itemDefinition']['modified'])
         data[:name] = doc['itemDefinition']['name']
+        data[:drillDown] = doc['itemDefinition']['drillDown'].split(",") rescue nil
         # Create object
         ItemDefinition.new(data)
       rescue
@@ -93,6 +80,7 @@ module AMEE
         data[:created] = DateTime.parse(REXML::XPath.first(doc, prefix + "ItemDefinition/@created").to_s)
         data[:modified] = DateTime.parse(REXML::XPath.first(doc, prefix + "ItemDefinition/@modified").to_s)
         data[:name] = REXML::XPath.first(doc, prefix + "ItemDefinition/Name").text
+        data[:drillDown] = REXML::XPath.first(doc, prefix + "ItemDefinition/DrillDown").text.split(",") rescue nil
         # Create object
         ItemDefinition.new(data)
       rescue
@@ -127,6 +115,14 @@ module AMEE
         raise AMEE::BadData.new("Couldn't update ItemDefinition. Check that your information is correct.\n#{response}")
       end
 
+      def self.load(connection,uid,options={})
+        ItemDefinition.get(connection,"/definitions/itemDefinitions/#{uid}",options)
+      end
+
+      def item_value_definition_list
+        @item_value_definitions ||= AMEE::Admin::ItemValueDefinitionList.new(connection,uid)
+      end
+
       def self.create(connection, options = {})
         unless options.is_a?(Hash)
           raise AMEE::ArgumentError.new("Second argument must be a hash of options!")
@@ -152,7 +148,5 @@ module AMEE
       end
 
     end
-
   end
-
 end
