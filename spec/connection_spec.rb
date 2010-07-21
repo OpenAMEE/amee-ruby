@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/spec_helper.rb'
 
 describe AMEE::Connection do
-  
+
   it "requires server name, username, and password" do
     flexmock(Net::HTTP).new_instances.should_receive(:start => nil)
     lambda{AMEE::Connection.new(nil, nil, nil)}.should raise_error
@@ -14,7 +14,7 @@ describe AMEE::Connection do
     c = AMEE::Connection.new('server.example.com', 'username', 'password')
     c.should be_valid
   end
-  
+
   it "has default timeout of 60 seconds" do
     flexmock(Net::HTTP).new_instances.should_receive(:start => nil)
     c = AMEE::Connection.new('server.example.com', 'username', 'password')
@@ -31,7 +31,7 @@ describe AMEE::Connection do
 end
 
 describe AMEE::Connection, "with authentication" do
-  
+
   it "should start out unauthenticated" do
     flexmock(Net::HTTP).new_instances.should_receive(:start => nil)
     amee = AMEE::Connection.new('server.example.com', 'username', 'password')
@@ -92,7 +92,7 @@ describe AMEE::Connection, "with authentication" do
   it "should handle 404s gracefully" do
     flexmock(Net::HTTP).new_instances.should_receive(:start => nil, :request => flexmock(:code => '404', :body => ""), :finish => nil)
     amee = AMEE::Connection.new('server.example.com', 'username', 'password')
-    lambda{amee.get('/missing_url')}.should raise_error(AMEE::NotFound, "URL doesn't exist on server.")
+    lambda{amee.get('/missing_url')}.should raise_error(AMEE::NotFound, "The URL was not found on the server.\nRequest: GET /missing_url")
   end
 
   it "should raise error if permission for operation is denied" do
@@ -143,7 +143,7 @@ Response: {}")
 end
 
 describe AMEE::Connection, "with incorrect server name" do
-  
+
   it "should raise a useful error" do
     flexmock(Net::HTTP).new_instances.should_receive(:start).and_raise(SocketError.new)
     amee = AMEE::Connection.new('badservername.example.com', 'username', 'password')
@@ -155,7 +155,7 @@ describe AMEE::Connection, "with incorrect server name" do
 end
 
 describe AMEE::Connection, "with bad authentication information" do
-  
+
   it "should be capable of making requests for public URLs" do
     flexmock(Net::HTTP).new_instances.should_receive(:start => nil, :request => flexmock(:code => '200', :body => ""), :finish => nil)
     amee = AMEE::Connection.new('server.example.com', 'wrong', 'details')
@@ -171,7 +171,7 @@ describe AMEE::Connection, "with bad authentication information" do
 end
 
 describe AMEE::Connection, "with authentication" do
-  
+
   it "should be able to send post requests" do
     flexmock(Net::HTTP).new_instances do |mock|
       mock.should_receive(:start => nil)
@@ -183,7 +183,7 @@ describe AMEE::Connection, "with authentication" do
       response.should be_empty
     end
   end
-  
+
   it "should be able to send put requests" do
     flexmock(Net::HTTP).new_instances do |mock|
       mock.should_receive(:start => nil)

@@ -176,6 +176,8 @@ module AMEE
       case response.code
         when '200', '201'
           return true
+        when '404'
+          raise AMEE::NotFound.new("The URL was not found on the server.\nRequest: #{request.method} #{request.path}")
         when '403'
           raise AMEE::PermissionDenied.new("You do not have permission to perform the requested operation.\nRequest: #{request.method} #{request.path}\n#{request.body}\Response: #{response.body}")
         when '401'
@@ -216,10 +218,6 @@ module AMEE
       request['Accept'] = content_type(format)
       # Do the business
       response = @http.request(request)
-      # Handle 404s
-      if response.code == '404'
-        raise AMEE::NotFound.new("URL doesn't exist on server.") 
-      end
       # Done
       response
     end
