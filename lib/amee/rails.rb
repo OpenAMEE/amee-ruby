@@ -25,6 +25,7 @@ module AMEE
 
     def self.included(base)
       base.extend ClassMethods
+      AMEE::Logger.to(::Rails.logger) if defined? ::Rails
     end
 
     module ClassMethods

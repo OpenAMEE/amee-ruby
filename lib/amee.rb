@@ -1,5 +1,6 @@
 require 'rexml/document'
 require 'active_support'
+require 'log4r'
 
 # We don't NEED the JSON gem, but if it's available, use it.
 begin
@@ -26,6 +27,7 @@ class String
   end
 end
 
+require 'amee/logger'
 require 'amee/version'
 require 'amee/exceptions'
 require 'amee/connection'

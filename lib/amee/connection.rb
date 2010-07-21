@@ -200,6 +200,7 @@ module AMEE
       @http.start
       # Do request
       begin
+        Logger.log.debug("Requesting #{request.class} at #{request.path} with #{request.body} in format #{format}")
         response = send_request(request, format)
       end while !response_ok?(response, request)
       # Return response
