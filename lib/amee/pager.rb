@@ -56,6 +56,49 @@ module AMEE
                         :items_per_page => node["itemsPerPage"],
                         :items_found => node["itemsFound"]})
     end
+    def more?
+      current_page<=last_page
+    end
+    def next!
+      @current_page+=1
+      more?
+    end
+    def page_fragment
+      "?page=#{current_page}"
+    end
+    def options
+      {:page => current_page}
+    end
+  end
 
+  class Limiter
+    extend ParseHelper
+    def initialize(data)
+      @offset=data[:resultStart] || 0
+      @limit=data[:resultLimit] || 10
+      @truncated=data[:truncated] || false
+    end
+    attr_reader :offset,:limit,:truncated
+    def more?
+      truncated
+    end
+    def next!
+      @offset+=limit
+      more?
+    end
+    def page_fragment
+      "?resultStart=#{offset}&resultLimit=#{limit}"
+    end
+    def options
+      {:resultStart=>offset,:resultLimit=>limit}
+    end
+    def self.from_json(doc,options={})
+      raise AMEE::NotSupported
+    end
+    def self.from_xml(node,options={})
+      t=x('@truncated',:doc=>node)
+      options[:truncated] = (t=='true') if t
+      Limiter.new options
+    end
   end
 end
