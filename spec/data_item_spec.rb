@@ -5,11 +5,11 @@ describe AMEE::Data::Item do
   before(:each) do
     @item = AMEE::Data::Item.new
   end
-  
+
   it "should have common AMEE object properties" do
     @item.is_a?(AMEE::Data::Object).should be_true
   end
-  
+
   it "should have values" do
     @item.should respond_to(:values)
   end
@@ -37,7 +37,7 @@ describe AMEE::Data::Item do
     @item.choices.should == choices
     @item.label.should == label
   end
-  
+
 end
 
 describe AMEE::Data::Item, "with an authenticated connection" do
@@ -49,10 +49,11 @@ describe AMEE::Data::Item, "with an authenticated connection" do
     @data.uid.should == "AD63A83B4D41"
     @data.path.should == "/transport/plane/generic/AD63A83B4D41"
     @data.full_path.should == "/data/transport/plane/generic/AD63A83B4D41"
+    @data.category_uid.should == "FBA97B70DBDF"
     @data.created.should == DateTime.new(2007,8,1,9,00,41)
     @data.modified.should == DateTime.new(2007,8,1,9,00,41)
     @data.label.should == "domestic"
-    @data.item_definition.should == "441BF4BEA15B"
+    @data.item_definition_uid.should == "441BF4BEA15B"
     @data.values.size.should == 5
     @data.values[0][:name].should == "kgCO2 Per Passenger Journey"
     @data.values[0][:path].should == "kgCO2PerPassengerJourney"
@@ -86,6 +87,7 @@ describe AMEE::Data::Item, "with an authenticated connection" do
     @data.uid.should == "AD63A83B4D41"
     @data.path.should == "/transport/plane/generic/AD63A83B4D41"
     @data.full_path.should == "/data/transport/plane/generic/AD63A83B4D41"
+    @data.category_uid.should == "FBA97B70DBDF"
     @data.created.should == DateTime.new(2007,8,1,9,00,41)
     @data.modified.should == DateTime.new(2007,8,1,9,00,41)
     @data.label.should == "domestic"
@@ -164,7 +166,7 @@ describe "with sensible data" do
     @data.update(:kgCO2PerPassengerKm => 0.159)
     #@data.value("kgCO2PerPassengerKm").should == "0.159"
   end
-  
+
   it "fails gracefully if update fails" do
     connection = flexmock "connection"
     connection.should_receive(:get).with("/data/transport/plane/generic/AD63A83B4D41", {}).and_return(flexmock(:body => '{"amountPerMonth":0,"userValueChoices":{"choices":[{"value":"","name":"distanceKmPerYear"},{"value":"","name":"journeysPerYear"},{"value":"-999","name":"lat1"},{"value":"-999","name":"lat2"},{"value":"-999","name":"long1"},{"value":"-999","name":"long2"}],"name":"userValueChoices"},"path":"/transport/plane/generic/AD63A83B4D41","dataItem":{"modified":"2007-08-01 09:00:41.0","created":"2007-08-01 09:00:41.0","itemDefinition":{"uid":"441BF4BEA15B"},"itemValues":[{"value":"0","uid":"127612FA4921","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey","itemValueDefinition":{"valueDefinition":{"valueType":"DOUBLE","uid":"8CB8A1789CD6","name":"kgCO2PerJourney"},"uid":"653828811D42","path":"kgCO2PerPassengerJourney","name":"kgCO2 Per Passenger Journey"}},{"value":"0.158","uid":"7F27A5707101","path":"kgCO2PerPassengerKm","name":"kgCO2 Per Passenger Km","itemValueDefinition":{"valueDefinition":{"valueType":"DOUBLE","uid":"996AE5477B3F","name":"kgCO2PerKm"},"uid":"D7B4340D9404","path":"kgCO2PerPassengerKm","name":"kgCO2 Per Passenger Km"}},{"value":"-","uid":"FF50EC918A8E","path":"size","name":"Size","itemValueDefinition":{"valueDefinition":{"valueType":"TEXT","uid":"CCEB59CACE1B","name":"text"},"uid":"5D7FB5F552A5","path":"size","name":"Size"}},{"value":"domestic","uid":"FDD62D27AA15","path":"type","name":"Type","itemValueDefinition":{"valueDefinition":{"valueType":"TEXT","uid":"CCEB59CACE1B","name":"text"},"uid":"C376560CB19F","path":"type","name":"Type"}},{"value":"DfT INAS Division, 29 March 2007","uid":"9BE08FBEC54E","path":"source","name":"Source","itemValueDefinition":{"valueDefinition":{"valueType":"TEXT","uid":"CCEB59CACE1B","name":"text"},"uid":"0F0592F05AAC","path":"source","name":"Source"}}],"label":"domestic","dataCategory":{"uid":"FBA97B70DBDF","path":"generic","name":"Generic"},"uid":"AD63A83B4D41","environment":{"uid":"5F5887BCF726"},"path":"","name":"AD63A83B4D41"}}'))
@@ -173,5 +175,5 @@ describe "with sensible data" do
     lambda{@data.update(:kgCO2PerPassengerKm => 0.159)}.should raise_error(AMEE::BadData, "Couldn't update DataItem. Check that your information is correct.\n")
   end
 
-  
+
 end

@@ -8,21 +8,29 @@ module AMEE
         @values = data[:values]
         @choices = data[:choices]
         @label = data[:label]
-        @item_definition = data[:item_definition]
+        @item_definition_uid = data[:item_definition]
         @total_amount = data[:total_amount]
         @total_amount_unit = data[:total_amount_unit]
         @start_date = data[:start_date]
+        @category_uid = data[:category_uid]
         super
       end
 
       attr_reader :values
       attr_reader :choices
       attr_reader :label
-      attr_reader :item_definition
       attr_reader :total_amount
       attr_reader :total_amount_unit
       attr_reader :start_date
-      
+      attr_reader :category_uid
+      attr_reader :item_definition_uid
+
+      def item_definition
+        return nil unless item_definition_uid
+        @item_definition ||= AMEE::Admin::ItemDefinition.load(connection,item_definition_uid)
+      end
+
+
       def self.from_json(json)
         # Read JSON
         doc = JSON.parse(json)
@@ -34,6 +42,7 @@ module AMEE
         data[:path] = doc['path']
         data[:label] = doc['dataItem']['label']
         data[:item_definition] = doc['dataItem']['itemDefinition']['uid']
+        data[:category_uid] = doc['dataItem']['dataCategory']['uid']
         # Read v2 total
         data[:total_amount] = doc['amount']['value'] rescue nil
         data[:total_amount_unit] = doc['amount']['unit'] rescue nil
@@ -67,7 +76,7 @@ module AMEE
       rescue
         raise AMEE::BadData.new("Couldn't load DataItem from JSON. Check that your URL is correct.\n#{json}")
       end
-      
+
       def self.from_xml(xml)
         # Parse data from response into hash
         doc = REXML::Document.new(xml)
@@ -79,6 +88,7 @@ module AMEE
         data[:path] = (REXML::XPath.first(doc, '/Resources/DataItemResource/Path') || REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/path')).text
         data[:label] = (REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/Label') || REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/label')).text
         data[:item_definition] = REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/ItemDefinition/@uid').to_s
+        data[:category_uid] = REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/DataCategory/@uid').to_s
         # Read v2 total
         data[:total_amount] = REXML::XPath.first(doc, '/Resources/DataItemResource/Amount').text.to_f rescue nil
         data[:total_amount_unit] = REXML::XPath.first(doc, '/Resources/DataItemResource/Amount/@unit').to_s rescue nil
@@ -113,7 +123,7 @@ module AMEE
         raise AMEE::BadData.new("Couldn't load DataItem from XML. Check that your URL is correct.\n#{xml}")
       end
 
-      
+
       def self.get(connection, path, options = {})
         # Load data from path
         response = connection.get(path, options).body
@@ -203,7 +213,7 @@ module AMEE
       rescue
         raise AMEE::BadData.new("Couldn't update DataItem. Check that your information is correct.\n#{response}")
       end
-      
+
       def update(options = {})
         AMEE::Data::Item.update(connection, full_path, options)
       end
@@ -213,7 +223,7 @@ module AMEE
       rescue
         raise AMEE::BadData.new("Couldn't delete DataItem. Check that your information is correct.")
       end
-      
+
       def value(name_or_path_or_uid)
         val = values.find{ |x| x[:name] == name_or_path_or_uid || x[:path] == name_or_path_or_uid || x[:uid] == name_or_path_or_uid}
         val ? val[:value] : nil
