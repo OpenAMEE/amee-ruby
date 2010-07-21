@@ -52,12 +52,15 @@ module AMEE
       rescue
         raise AMEE::BadData.new("Couldn't load DataCategory from JSON data. Check that your URL is correct.\n#{json}")
       end
-      
+
+      def self.xmlpathpreamble
+        "/Resources/DataCategoryResource/DataCategory/"
+      end
       def self.from_xml(xml)
         # Parse XML
-        doc = REXML::Document.new(xml)
+        @doc = doc= REXML::Document.new(xml)
         data = {}
-        data[:uid] = REXML::XPath.first(doc, "/Resources/DataCategoryResource/DataCategory/@uid").to_s
+        data[:uid] = x '@uid'
         data[:created] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataCategoryResource/DataCategory/@created").to_s)
         data[:modified] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataCategoryResource/DataCategory/@modified").to_s)
         data[:name] = REXML::XPath.first(doc, '/Resources/DataCategoryResource/DataCategory/?ame').text
@@ -90,7 +93,7 @@ module AMEE
       rescue
         raise AMEE::BadData.new("Couldn't load DataCategory from XML data. Check that your URL is correct.\n#{xml}")
       end
-      
+
       def self.get(connection, path, orig_options = {})
         unless orig_options.is_a?(Hash)
           raise AMEE::ArgumentError.new("Third argument must be a hash of options!")
@@ -119,11 +122,11 @@ module AMEE
       rescue
         raise AMEE::BadData.new("Couldn't load DataCategory. Check that your URL is correct.\n#{response}")
       end
-      
+
       def self.root(connection)
         self.get(connection, '/data')
       end
-      
+
       def child(child_path)
         AMEE::Data::Category.get(connection, "#{full_path}/#{child_path}")
       end
@@ -148,7 +151,7 @@ module AMEE
 
         connection = category.connection
         path = category.full_path
-        
+
         # Do we want to automatically fetch the item afterwards?
         get_item = options.delete(:get_item)
 
@@ -200,7 +203,7 @@ module AMEE
      rescue
        raise AMEE::BadData.new("Couldn't update Data Category. Check that your information is correct.")
      end
-       
+
     end
   end
 end
