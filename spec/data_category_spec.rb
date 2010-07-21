@@ -1,15 +1,15 @@
 require File.dirname(__FILE__) + '/spec_helper.rb'
 
 describe AMEE::Data::Category do
-  
+
   before(:each) do
     @cat = AMEE::Data::Category.new
   end
-  
+
   it "should have common AMEE object properties" do
     @cat.is_a?(AMEE::Data::Object).should be_true
   end
-  
+
   it "should have children" do
     @cat.should respond_to(:children)
   end
@@ -31,7 +31,7 @@ describe AMEE::Data::Category do
     @cat.children.should == children
     @cat.items.should == items
   end
- 
+
 end
 
 describe AMEE::Data::Category, "accessing AMEE V0" do
@@ -115,6 +115,17 @@ describe AMEE::Data::Category, "with an authenticated XML connection" do
     @data.pager.should_not be_nil
   end
 
+  it "should be able to get the itemdef" do
+    connection = flexmock "connection"
+    connection.should_receive(:get).with("/data/transport/plane/generic", {:itemsPerPage => 10}).and_return(flexmock(:body => '<?xml version="1.0" encoding="UTF-8"?><Resources><DataCategoryResource><Path>/transport/plane/generic</Path><DataCategory created="2007-08-01 09:00:23.0" modified="2007-08-01 09:00:23.0" uid="FBA97B70DBDF"><Name>Generic</Name><Path>generic</Path><Environment uid="5F5887BCF726"/><DataCategory uid="6F3692D81CD9"><Name>Plane</Name><Path>plane</Path></DataCategory><ItemDefinition uid="441BF4BEA15B"/></DataCategory><Children><DataCategories/><DataItems><DataItem created="2007-08-01 09:00:41.0" modified="2007-08-01 09:00:41.0" uid="AD63A83B4D41"><kgCO2PerPassengerJourney>0</kgCO2PerPassengerJourney><type>domestic</type><label>domestic</label><size>-</size><path>AD63A83B4D41</path><source>DfT INAS Division, 29 March 2007</source><kgCO2PerPassengerKm>0.158</kgCO2PerPassengerKm></DataItem><DataItem created="2007-08-01 09:00:41.0" modified="2007-08-01 09:00:41.0" uid="FFC7A05D54AD"><kgCO2PerPassengerJourney>73</kgCO2PerPassengerJourney><type>domestic</type><label>domestic, one way</label><size>one way</size><path>FFC7A05D54AD</path><source>DfT INAS Division, 29 March 2007</source><kgCO2PerPassengerKm>0</kgCO2PerPassengerKm></DataItem><DataItem created="2007-08-01 09:00:41.0" modified="2007-08-01 09:00:41.0" uid="F5498AD6FC75"><kgCO2PerPassengerJourney>146</kgCO2PerPassengerJourney><type>domestic</type><label>domestic, return</label><size>return</size><path>F5498AD6FC75</path><source>DfT INAS Division, 29 March 2007</source><kgCO2PerPassengerKm>0</kgCO2PerPassengerKm></DataItem><DataItem created="2007-08-01 09:00:41.0" modified="2007-08-01 09:00:41.0" uid="7D4220DF72F9"><kgCO2PerPassengerJourney>0</kgCO2PerPassengerJourney><type>long haul</type><label>long haul</label><size>-</size><path>7D4220DF72F9</path><source>DfT INAS Division, 29 March 2007</source><kgCO2PerPassengerKm>0.105</kgCO2PerPassengerKm></DataItem><DataItem created="2007-08-01 09:00:41.0" modified="2007-08-01 09:00:41.0" uid="46117F6C0B7E"><kgCO2PerPassengerJourney>801</kgCO2PerPassengerJourney><type>long haul</type><label>long haul, one way</label><size>one way</size><path>46117F6C0B7E</path><source>DfT INAS Division, 29 March 2007</source><kgCO2PerPassengerKm>0</kgCO2PerPassengerKm></DataItem><DataItem created="2007-08-01 09:00:41.0" modified="2007-08-01 09:00:41.0" uid="96D538B1B246"><kgCO2PerPassengerJourney>1602</kgCO2PerPassengerJourney><type>long haul</type><label>long haul, return</label><size>return</size><path>96D538B1B246</path><source>DfT INAS Division, 29 March 2007</source><kgCO2PerPassengerKm>0</kgCO2PerPassengerKm></DataItem><DataItem created="2007-08-01 09:00:41.0" modified="2007-08-01 09:00:41.0" uid="9DA419052FDF"><kgCO2PerPassengerJourney>0</kgCO2PerPassengerJourney><type>short haul</type><label>short haul</label><size>-</size><path>9DA419052FDF</path><source>DfT INAS Division, 29 March 2007</source><kgCO2PerPassengerKm>0.13</kgCO2PerPassengerKm></DataItem><DataItem created="2007-08-01 09:00:41.0" modified="2007-08-01 09:00:41.0" uid="84B4A14C7424"><kgCO2PerPassengerJourney>170</kgCO2PerPassengerJourney><type>short haul</type><label>short haul, one way</label><size>one way</size><path>84B4A14C7424</path><source>DfT INAS Division, 29 March 2007</source><kgCO2PerPassengerKm>0</kgCO2PerPassengerKm></DataItem><DataItem created="2007-08-01 09:00:41.0" modified="2007-08-01 09:00:41.0" uid="8DA1BEAA1013"><kgCO2PerPassengerJourney>340</kgCO2PerPassengerJourney><type>short haul</type><label>short haul, return</label><size>return</size><path>8DA1BEAA1013</path><source>DfT INAS Division, 29 March 2007</source><kgCO2PerPassengerKm>0</kgCO2PerPassengerKm></DataItem></DataItems><Pager><Start>0</Start><From>1</From><To>9</To><Items>9</Items><CurrentPage>1</CurrentPage><RequestedPage>1</RequestedPage><NextPage>-1</NextPage><PreviousPage>-1</PreviousPage><LastPage>1</LastPage><ItemsPerPage>10</ItemsPerPage><ItemsFound>9</ItemsFound></Pager></Children></DataCategoryResource></Resources>'))
+    connection.should_receive(:get).with("/definitions/itemDefinitions/441BF4BEA15B",{}).and_return(flexmock(:body => '<?xml version="1.0" encoding="UTF-8" standalone="no"?><Resources><ItemDefinitionResource><ItemDefinition created="2007-07-27 09:30:44.0" modified="2007-07-27 09:30:44.0" uid="441BF4BEA15B"><Name>Plane Generic</Name><DrillDown>type,size</DrillDown><Environment uid="5F5887BCF726"/></ItemDefinition></ItemDefinitionResource></Resources>')).once
+    @data = AMEE::Data::Category.get(connection, "/data/transport/plane/generic")
+    @data.uid.should == "FBA97B70DBDF"
+    @data.itemdef.should == "441BF4BEA15B"
+    @itemdef=@data.item_definition
+    @itemdef.uid.should =="441BF4BEA15B"
+  end
+
   it "should fail gracefully with incorrect data" do
     connection = flexmock "connection"
     xml = '<?xml version="1.0" encoding="UTF-8"?><Resources></Resources>'
@@ -176,7 +187,7 @@ describe AMEE::Data::Category, "with an authenticated JSON connection" do
     @data.items.size.should be(9)
     @data.items[0][:uid].should == "AD63A83B4D41"
     @data.items[0][:label].should == "domestic"
-    @data.items[0][:path].should == "AD63A83B4D41"    
+    @data.items[0][:path].should == "AD63A83B4D41"
     @data.items[0][:source].should == "DfT INAS Division, 29 March 2007"
     @data.pager.should_not be_nil
   end

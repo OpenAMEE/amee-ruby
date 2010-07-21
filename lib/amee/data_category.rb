@@ -17,6 +17,11 @@ module AMEE
       attr_reader :pager
       attr_reader :itemdef
 
+      def item_definition
+        return nil unless itemdef
+        @item_definition ||= AMEE::Admin::ItemDefinition.load(connection,itemdef)
+      end
+
       def self.from_json(json)
         # Parse json
         doc = JSON.parse(json)
