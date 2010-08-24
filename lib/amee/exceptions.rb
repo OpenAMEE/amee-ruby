@@ -4,6 +4,18 @@ module AMEE
   end
 
   class BadData < Exception
+    def initialize(msg = nil, err = nil)
+      super(msg)
+      @msg = msg
+      @err = err
+    end
+    def to_s
+      if @err
+        [@msg, @err.message, @err.backtrace.first].join "\n"
+      else
+        super
+      end
+    end
   end
   
   class AuthFailed < Exception  
