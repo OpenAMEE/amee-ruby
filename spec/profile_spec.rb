@@ -27,7 +27,7 @@ describe AMEE::Profile::Profile, "with an authenticated connection" do
     connection = flexmock "connection"
     json = '{}'
     connection.should_receive(:get).with("/profiles", {}).and_return(flexmock(:body => json))
-    lambda{AMEE::Profile::Profile.list(connection)}.should raise_error(AMEE::BadData, "Couldn't load Profile list.\n#{json}")
+    lambda{AMEE::Profile::Profile.list(connection)}.should raise_error(AMEE::BadData, "Couldn't load Profile list.\n#{json}\nundefined method `each' for nil:NilClass\n./spec/../lib/amee/profile.rb:13:in `initialize'")
   end
 
   it "should parse JSON data correctly" do
@@ -80,7 +80,7 @@ describe AMEE::Profile::Profile, "with an authenticated connection" do
     connection = flexmock "connection"
     json = '{}'
     connection.should_receive(:post).with("/profiles", :profile => true).and_return(flexmock(:body => json))
-    lambda{AMEE::Profile::Profile.create(connection)}.should raise_error(AMEE::BadData, "Couldn't create Profile.\n#{json}")
+    lambda{AMEE::Profile::Profile.create(connection)}.should raise_error(AMEE::BadData, "Couldn't create Profile.\n#{json}\nundefined method `[]' for nil:NilClass\n./spec/../lib/amee/profile.rb:68:in `create'")
   end
 
 end
