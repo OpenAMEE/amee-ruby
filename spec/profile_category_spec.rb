@@ -142,7 +142,7 @@ describe AMEE::Profile::Category, "with an authenticated XML connection" do
     connection.should_receive(:version).and_return(1.0)
     xml = '<?xml version="1.0" encoding="UTF-8"?><Resources></Resources>'
     connection.should_receive(:get).with("/profiles/E54C5525AA3E", {}).and_return(flexmock(:body => xml))
-    lambda{AMEE::Profile::Category.get(connection, "/profiles/E54C5525AA3E")}.should raise_error(AMEE::BadData, "Couldn't load ProfileCategory from XML data. Check that your URL is correct.\n#{xml}")
+    lambda{AMEE::Profile::Category.get(connection, "/profiles/E54C5525AA3E")}.should raise_error(AMEE::BadData)
   end
 
   it "parses recursive GET requests" do
@@ -245,7 +245,7 @@ describe AMEE::Profile::Category, "with an authenticated version 2 XML connectio
     connection.should_receive(:version).and_return(2.0)
     xml = '<?xml version="1.0" encoding="UTF-8"?><Resources xmlns="http://schemas.amee.cc/2.0"></Resources>'
     connection.should_receive(:get).with("/profiles/E54C5525AA3E", {}).and_return(flexmock(:body => xml))
-    lambda{AMEE::Profile::Category.get(connection, "/profiles/E54C5525AA3E")}.should raise_error(AMEE::BadData, "Couldn't load ProfileCategory from V2 XML data. Check that your URL is correct.\n#{xml}")
+    lambda{AMEE::Profile::Category.get(connection, "/profiles/E54C5525AA3E")}.should raise_error(AMEE::BadData)
   end
 
 #  it "parses recursive GET requests" do
@@ -320,7 +320,7 @@ describe AMEE::Profile::Category, "with an authenticated version 2 Atom connecti
     connection.should_receive(:version).and_return(2.0)
     atom = '<?xml version="1.0" encoding="UTF-8"?><feed xmlns="http://www.w3.org/2005/Atom" xmlns:amee="http://schemas.amee.cc/2.0"></feed>'
     connection.should_receive(:get).with("/profiles/E54C5525AA3E", {}).and_return(flexmock(:body => atom))
-    lambda{AMEE::Profile::Category.get(connection, "/profiles/E54C5525AA3E")}.should raise_error(AMEE::BadData, "Couldn't load ProfileCategory from V2 Atom data. Check that your URL is correct.\n#{atom}")
+    lambda{AMEE::Profile::Category.get(connection, "/profiles/E54C5525AA3E")}.should raise_error(AMEE::BadData)
   end
 
 #  it "parses recursive GET requests" do
@@ -407,7 +407,7 @@ describe AMEE::Profile::Category, "with an authenticated JSON connection" do
     connection = flexmock "connection"
     json = '{"apiVersion":"2.0"}'
     connection.should_receive(:get).with("/profiles/E54C5525AA3E", {}).and_return(flexmock(:body => json))
-    lambda{AMEE::Profile::Category.get(connection, "/profiles/E54C5525AA3E")}.should raise_error(AMEE::BadData, "Couldn't load ProfileCategory from V2 JSON data. Check that your URL is correct.\n#{json}")
+    lambda{AMEE::Profile::Category.get(connection, "/profiles/E54C5525AA3E")}.should raise_error(AMEE::BadData)
   end
 
   it "parses recursive GET requests" do
@@ -522,7 +522,7 @@ describe AMEE::Profile::Category, "with an authenticated V2 JSON connection" do
 #  it "should fail gracefully with incorrect data" do
 #    connection = flexmock "connection"
 #    connection.should_receive(:get).with("/profiles/E54C5525AA3E", {}).and_return('{}'))
-#    lambda{AMEE::Profile::Category.get(connection, "/profiles/E54C5525AA3E")}.should raise_error(AMEE::BadData, "Couldn't load ProfileCategory from JSON data. Check that your URL is correct.")
+#    lambda{AMEE::Profile::Category.get(connection, "/profiles/E54C5525AA3E")}.should raise_error(AMEE::BadData)
 #  end
 
 #  it "parses recursive GET requests" do
@@ -559,7 +559,7 @@ describe AMEE::Profile::Category, "with an authenticated connection" do
   it "should fail gracefully on other GET errors" do
     connection = flexmock "connection"
     connection.should_receive(:get).with("/profiles/E54C5525AA3E", {}).and_raise("unidentified error")
-    lambda{AMEE::Profile::Category.get(connection, "/profiles/E54C5525AA3E")}.should raise_error(AMEE::BadData, "Couldn't load ProfileCategory. Check that your URL is correct.\n")
+    lambda{AMEE::Profile::Category.get(connection, "/profiles/E54C5525AA3E")}.should raise_error(AMEE::BadData)
   end
 
 end

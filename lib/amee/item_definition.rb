@@ -33,7 +33,7 @@ module AMEE
 
       def initialize(data = {})
         @name = data[:name]
-        @drill_downs = data[:drillDown]
+        @drill_downs = data[:drillDown] || []
         super
       end
 

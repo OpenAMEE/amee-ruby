@@ -215,8 +215,9 @@ module AMEE
       @http.start
       # Do request
       begin
-        Logger.log.debug("Requesting #{request.class} at #{request.path} with #{request.body} in format #{format}")
+        timethen=Time.now
         response = send_request(request, format)
+        Logger.log.debug("Requesting #{request.class} at #{request.path} with #{request.body} in format #{format}, taking #{(Time.now-timethen)*1000} miliseconds")
       end while !response_ok?(response, request)
       # Return response
       return response

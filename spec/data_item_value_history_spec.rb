@@ -233,25 +233,25 @@ describe AMEE::Data::ItemValueHistory, "with an authenticated connection" do
     connection = flexmock "connection"
     xml = '<?xml version="1.0" encoding="UTF-8"?><Resources></Resources>'
     connection.should_receive(:get).with("/data",:valuesPerPage=>2).and_return(flexmock(:body => xml))
-    lambda{AMEE::Data::ItemValueHistory.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItemValueHistory from XML. Check that your URL is correct.\n#{xml}")
+    lambda{AMEE::Data::ItemValueHistory.get(connection, "/data")}.should raise_error(AMEE::BadData)
   end
 
   it "should fail gracefully with incorrect JSON data" do
     connection = flexmock "connection"
     json = '{}'
     connection.should_receive(:get).with("/data",:valuesPerPage=>2).and_return(flexmock(:body => json))
-    lambda{AMEE::Data::ItemValueHistory.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItemValue from JSON. Check that your URL is correct.\n")
+    lambda{AMEE::Data::ItemValueHistory.get(connection, "/data")}.should raise_error(AMEE::BadData)
   end
 
   it "should fail gracefully on other errors" do
     connection = flexmock "connection"
     connection.should_receive(:get).with("/data",:valuesPerPage=>2).and_raise("unidentified error")
-    lambda{AMEE::Data::ItemValueHistory.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItemValueHistory. Check that your URL is correct.")
+    lambda{AMEE::Data::ItemValueHistory.get(connection, "/data")}.should raise_error(AMEE::BadData)
   end
 
   it "should fail gracefully if create series without epoch" do
     @history = AMEE::Data::ItemValueHistory.new()
-    lambda{@history.series=[[AMEE::Epoch+1,5]]}.should raise_error(AMEE::BadData,"Series must have initial (Epoch) value")
+    lambda{@history.series=[[AMEE::Epoch+1,5]]}.should raise_error(AMEE::BadData)
   end
 
 end

@@ -65,20 +65,20 @@ describe AMEE::Admin::ItemValueDefinitionList, "with an authenticated connection
     connection = flexmock "connection"
     xml = '<?xml version="1.0" encoding="UTF-8"?><Resources></Resources>'
     connection.should_receive(:get).with("/definitions/itemDefinitions/BD88D30D1214/itemValueDefinitions", {}).and_return(flexmock(:body => xml))
-    lambda{AMEE::Admin::ItemValueDefinitionList.new(connection, "BD88D30D1214")}.should raise_error(AMEE::BadData, "Couldn't load AMEE::Admin::ItemValueDefinitionList.\n#{xml}")
+    lambda{AMEE::Admin::ItemValueDefinitionList.new(connection, "BD88D30D1214")}.should raise_error(AMEE::BadData)
   end
 
   it "should fail gracefully with incorrect JSON data" do
     connection = flexmock "connection"
     json = '{}'
     connection.should_receive(:get).with("/definitions/itemDefinitions/BD88D30D1214/itemValueDefinitions", {}).and_return(flexmock(:body => json))
-    lambda{AMEE::Admin::ItemValueDefinitionList.new(connection, "BD88D30D1214")}.should raise_error(AMEE::BadData, "Couldn't load AMEE::Admin::ItemValueDefinitionList.\n#{json}")
+    lambda{AMEE::Admin::ItemValueDefinitionList.new(connection, "BD88D30D1214")}.should raise_error(AMEE::BadData)
   end
 
   it "should fail gracefully on other errors" do
     connection = flexmock "connection"
     connection.should_receive(:get).with("/definitions/itemDefinitions/BD88D30D1214/itemValueDefinitions", {}).and_raise("unidentified error")
-    lambda{AMEE::Admin::ItemValueDefinitionList.new(connection, "BD88D30D1214")}.should raise_error(AMEE::BadData, "Couldn't load AMEE::Admin::ItemValueDefinitionList.\n")
+    lambda{AMEE::Admin::ItemValueDefinitionList.new(connection, "BD88D30D1214")}.should raise_error(AMEE::BadData)
   end
 end
 
@@ -222,20 +222,20 @@ describe AMEE::Admin::ItemValueDefinition, "with an authenticated connection" do
     connection = flexmock "connection"
     xml = '<?xml version="1.0" encoding="UTF-8"?><Resources></Resources>'
     connection.should_receive(:get).with("/admin", {}).and_return(flexmock(:body => xml))
-    lambda{AMEE::Admin::ItemValueDefinition.get(connection, "/admin")}.should raise_error(AMEE::BadData, "Couldn't load ItemValueDefinition from XML. Check that your URL is correct.\n#{xml}")
+    lambda{AMEE::Admin::ItemValueDefinition.get(connection, "/admin")}.should raise_error(AMEE::BadData)
   end
 
   it "should fail gracefully with incorrect JSON data" do
     connection = flexmock "connection"
     json = '{}'
     connection.should_receive(:get).with("/admin", {}).and_return(flexmock(:body => json))
-    lambda{AMEE::Admin::ItemValueDefinition.get(connection, "/admin")}.should raise_error(AMEE::BadData, "Couldn't load ItemValueDefinition from JSON. Check that your URL is correct.\n#{json}")
+    lambda{AMEE::Admin::ItemValueDefinition.get(connection, "/admin")}.should raise_error(AMEE::BadData)
   end
 
   it "should fail gracefully on other errors" do
     connection = flexmock "connection"
     connection.should_receive(:get).with("/admin", {}).and_raise("unidentified error")
-    lambda{AMEE::Admin::ItemValueDefinition.get(connection, "/admin")}.should raise_error(AMEE::BadData, "Couldn't load ItemValueDefinition. Check that your URL is correct.\n")
+    lambda{AMEE::Admin::ItemValueDefinition.get(connection, "/admin")}.should raise_error(AMEE::BadData)
   end
 
 end

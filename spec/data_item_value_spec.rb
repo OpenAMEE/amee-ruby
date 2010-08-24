@@ -114,7 +114,7 @@ describe AMEE::Data::ItemValue, "with an authenticated connection" do
     connection = flexmock "connection"
     xml = '<?xml version="1.0" encoding="UTF-8"?><Resources></Resources>'
     connection.should_receive(:get).with("/data").and_return(flexmock(:body => xml))
-    lambda{AMEE::Data::ItemValue.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItemValue from XML. Check that your URL is correct.\n#{xml}")
+    lambda{AMEE::Data::ItemValue.get(connection, "/data")}.should raise_error(AMEE::BadData)
   end
 
   it "should fail gracefully when the return is an item value history" do
@@ -124,7 +124,7 @@ describe AMEE::Data::ItemValue, "with an authenticated connection" do
           '<ItemValue Created="2007-08-01 09:00:41.0" Modified="2007-08-01 09:00:41.0" uid="127612FA4922"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><StartDate></StartDate>1<Value>2</Value><ItemValueDefinition uid="653828811D42"><Path>kgCO2PerPassengerJourney</Path><Name>kgCO2 Per Passenger Journey</Name><FromProfile>false</FromProfile><FromData>true</FromData><ValueDefinition uid="8CB8A1789CD6"><Name>kgCO2PerJourney</Name><ValueType>DOUBLE</ValueType></ValueDefinition></ItemValueDefinition><DataItem uid="AD63A83B4D41"/></ItemValue><DataItem uid="AD63A83B4D41"/>'+
           '</ItemValues></DataItemValueResource></Resources>'
     connection.should_receive(:get).with(MockResourcePath).and_return(flexmock(:body => xml))
-    lambda{AMEE::Data::ItemValue.get(connection, MockResourcePath)}.should raise_error(AMEE::BadData, "Couldn't load DataItemValue from XML. This is an item value history.\n#{xml}")
+    lambda{AMEE::Data::ItemValue.get(connection, MockResourcePath)}.should raise_error(AMEE::BadData)
   end
 
   it "should should handle this data" do
@@ -138,13 +138,13 @@ describe AMEE::Data::ItemValue, "with an authenticated connection" do
     connection = flexmock "connection"
     json = '{}'
     connection.should_receive(:get).with("/data").and_return(flexmock(:body => json))
-    lambda{AMEE::Data::ItemValue.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItemValue from JSON. Check that your URL is correct.\n#{json}")
+    lambda{AMEE::Data::ItemValue.get(connection, "/data")}.should raise_error(AMEE::BadData)
   end
 
   it "should fail gracefully on other errors" do
     connection = flexmock "connection"
     connection.should_receive(:get).with("/data").and_raise("unidentified error")
-    lambda{AMEE::Data::ItemValue.get(connection, "/data")}.should raise_error(AMEE::BadData, "Couldn't load DataItemValue. Check that your URL is correct.")
+    lambda{AMEE::Data::ItemValue.get(connection, "/data")}.should raise_error(AMEE::BadData)
   end
 
 end

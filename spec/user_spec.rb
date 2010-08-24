@@ -108,20 +108,20 @@ describe AMEE::Admin::User, "with an authenticated connection" do
     connection = flexmock "connection"
     xml = '<?xml version="1.0" encoding="UTF-8"?><Resources></Resources>'
     connection.should_receive(:get).with(@path, {}).and_return(flexmock(:body => xml))
-    lambda{AMEE::Admin::User.get(connection, @path)}.should raise_error(AMEE::BadData, "Couldn't load User from XML. Check that your URL is correct.\n#{xml}")
+    lambda{AMEE::Admin::User.get(connection, @path)}.should raise_error(AMEE::BadData)
   end
 
   it "should fail gracefully with incorrect JSON data" do
     connection = flexmock "connection"
     json = '{}'
     connection.should_receive(:get).with(@path, {}).and_return(flexmock(:body => json))
-    lambda{AMEE::Admin::User.get(connection, @path)}.should raise_error(AMEE::BadData, "Couldn't load User from JSON. Check that your URL is correct.\n#{json}")
+    lambda{AMEE::Admin::User.get(connection, @path)}.should raise_error(AMEE::BadData)
   end
 
   it "should fail gracefully on other errors" do
     connection = flexmock "connection"
     connection.should_receive(:get).with(@path, {}).and_raise("unidentified error")
-    lambda{AMEE::Admin::User.get(connection, @path)}.should raise_error(AMEE::BadData, "Couldn't load User. Check that your URL is correct.\n")
+    lambda{AMEE::Admin::User.get(connection, @path)}.should raise_error(AMEE::BadData)
   end
 
   it "can update an existing user" do
