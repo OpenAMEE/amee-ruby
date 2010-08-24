@@ -41,8 +41,8 @@ module AMEE
             self << profile
           end
         end
-      rescue => err
-        raise AMEE::BadData.new("Couldn't load Profile list.\n#{response}", err)
+      rescue
+        raise AMEE::BadData.new("Couldn't load Profile list.\n#{response}")
       end
       
       attr_reader :pager
@@ -91,8 +91,8 @@ module AMEE
           # Done
           return profile
         end
-      rescue => err
-        raise AMEE::BadData.new("Couldn't create Profile.\n#{response}", err)
+      rescue
+        raise AMEE::BadData.new("Couldn't create Profile.\n#{response}")
       end
 
       def self.delete(connection, uid)
