@@ -38,4 +38,8 @@ module AMEE
 
   class NotSupported < Exception
   end
+
+  class Deprecated < Exception
+  end
+  
 end
