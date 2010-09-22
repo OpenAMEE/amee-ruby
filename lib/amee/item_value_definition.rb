@@ -30,8 +30,10 @@ module AMEE
         data[:unit] = p['unit']
         data[:perunit] = p['perunit']
         data[:valuetype] = p['valueDefinition']['valueType']
-        data=ItemValueDefinition.parsetype(data,p['drillDown'],p['fromProfile'],p['fromData'])
-        
+        data[:drill]=p['drillDown']
+        data[:from_profile]=p['fromProfile']
+        data[:from_data]=p['fromData']
+        data
       end
       def parse_xml(p)
         data = {}
@@ -42,11 +44,10 @@ module AMEE
         data[:unit] = x 'Unit',:doc => p
         data[:perunit] = x 'PerUnit',:doc => p
         data[:valuetype] =x 'ValueDefinition/ValueType',:doc => p
-        drill=(x('DrillDown',:doc => p)=='true')
-        profile=(x('FromProfile',:doc => p)=='true')
-        ldata=(x('FromData',:doc => p)=='true')
-        data=ItemValueDefinition.parsetype(data,drill,profile,ldata)
-        
+        data[:drill]=(x('DrillDown',:doc => p)=='true')
+        data[:from_profile]=(x('FromProfile',:doc => p)=='true')
+        data[:from_data]=(x('FromData',:doc => p)=='true')
+        data
       end
     end
 
@@ -57,28 +58,35 @@ module AMEE
         @name = data[:name]
         @uid = data[:uid]
         @path = data[:path]
-        @type = data[:type]
         @unit = data[:unit]
         @perunit = data[:perunit]
         @valuetype = data[:valuetype]
         @default = data[:default] == "" ? nil : data[:default]
         @choices = data[:choices] || []
         @versions = data[:versions] || []
+        @drill = data[:drill]
+        @from_data = @drill ? false : data[:from_data] # Drills are also data, but we don't want them to show as such for clarity
+        @from_profile = data[:from_profile]
         super
       end
 
-      attr_reader :name,:uid,:path,:itemdefuid, :type, :valuetype, :unit, :perunit, :type, :default, :choices, :versions
+      attr_reader :name,:uid,:path,:itemdefuid, :type, :valuetype, :unit, :perunit, :default, :choices, :versions
+
+      # This function has bee deprecated in favour of the separate profile? data? and drill? functions
+      def type
+        raise AMEE::Deprecated
+      end
 
       def profile?
-        type=='profile'
+        @from_profile
       end
 
       def data?
-        type=='data'
+        @from_data
       end
 
       def drill?
-        type=='drill'
+        @drill
       end
 
       def self.list(connection)
@@ -115,19 +123,17 @@ module AMEE
         data[:default] = p['value']
         data[:choices] = p['choices'].split(',')
         data[:versions] = p['apiVersions'].map{|v| v['apiVersion']}
-        data=ItemValueDefinition.parsetype(data,p['drillDown'],p['fromProfile'],p['fromData'])
+        data[:drill]=p['drillDown']
+        data[:from_profile]=p['fromProfile']
+        data[:from_data]=p['fromData']
         # Create object
         ItemValueDefinition.new(data)
       rescue
         raise AMEE::BadData.new("Couldn't load ItemValueDefinition from JSON. Check that your URL is correct.\n#{json}")
       end
 
-      def self.parsetype(data,drill,profile,ldata)
-        ( (profile && !(drill||ldata) ) || ldata) or raise 'inconsistent type'
-        data[:type]='profile' if profile
-        data[:type]='data' if ldata
-        data[:type]='drill' if drill
-        data
+      def self.xmlpathpreamble
+        "/Resources//ItemValueDefinition/"
       end
 
       def self.from_xml(xml, is_list = true)
@@ -149,10 +155,9 @@ module AMEE
         data[:default] = REXML::XPath.first(doc, prefix + "ItemValueDefinition/Value").text
         data[:choices] = REXML::XPath.first(doc, prefix + "ItemValueDefinition/Choices").text.split(',') rescue nil
         data[:versions] = REXML::XPath.each(doc, prefix + "ItemValueDefinition/APIVersions/APIVersion").map{|v| v.text}
-        drill=(REXML::XPath.first(doc, prefix + "ItemValueDefinition/DrillDown").text=='true')
-        profile=(REXML::XPath.first(doc, prefix + "ItemValueDefinition/FromProfile").text=='true')
-        ldata=(REXML::XPath.first(doc, prefix + "ItemValueDefinition/FromData").text=='true')
-        data=parsetype(data,drill,profile,ldata)
+        data[:drill]=(x('DrillDown',:doc => doc)=='true')
+        data[:from_profile]=(x('FromProfile',:doc => doc)=='true')
+        data[:from_data]=(x('FromData',:doc => doc)=='true')
         # Create object
         ItemValueDefinition.new(data)
       rescue

@@ -39,7 +39,6 @@ describe AMEE::Admin::ItemValueDefinitionList, "with an authenticated connection
     @data.first.path.should == "distancePerJourney"
     @data.first.unit.should == "km"
     @data.first.perunit.should == nil
-    @data.first.type.should == 'profile'
     @data.first.profile?.should == true
     @data.first.drill?.should == false
     @data.first.data?.should == false
@@ -55,7 +54,6 @@ describe AMEE::Admin::ItemValueDefinitionList, "with an authenticated connection
     @data.first.path.should == "distancePerJourney"
     @data.first.unit.should == "km"
     @data.first.perunit.should == nil
-    @data.first.type.should == 'profile'
     @data.first.profile?.should == true
     @data.first.drill?.should == false
     @data.first.data?.should == false
@@ -96,7 +94,6 @@ describe AMEE::Admin::ItemValueDefinition, "with an authenticated connection" do
     @data.path.should == "distancePerJourney"
     @data.unit.should == "km"
     @data.perunit.should == nil
-    @data.type.should == 'profile'
     @data.profile?.should == true
     @data.drill?.should == false
     @data.data?.should == false
@@ -119,7 +116,6 @@ describe AMEE::Admin::ItemValueDefinition, "with an authenticated connection" do
     @data.path.should == "source"
     @data.unit.should == nil
     @data.perunit.should == nil
-    @data.type.should == 'data'
     @data.profile?.should == false
     @data.drill?.should == false
     @data.data?.should == true
@@ -141,7 +137,6 @@ describe AMEE::Admin::ItemValueDefinition, "with an authenticated connection" do
     @data.path.should == "type"
     @data.unit.should == nil
     @data.perunit.should == nil
-    @data.type.should == 'drill'
     @data.profile?.should == false
     @data.drill?.should == true
     @data.data?.should == false
@@ -163,7 +158,6 @@ describe AMEE::Admin::ItemValueDefinition, "with an authenticated connection" do
     @data.path.should == "distancePerJourney"
     @data.unit.should == "km"
     @data.perunit.should == nil
-    @data.type.should == 'profile'
     @data.profile?.should == true
     @data.drill?.should == false
     @data.data?.should == false
@@ -186,7 +180,6 @@ describe AMEE::Admin::ItemValueDefinition, "with an authenticated connection" do
     @data.path.should == "source"
     @data.unit.should == nil
     @data.perunit.should == nil
-    @data.type.should == 'data'
     @data.profile?.should == false
     @data.drill?.should == false
     @data.data?.should == true
@@ -208,7 +201,6 @@ describe AMEE::Admin::ItemValueDefinition, "with an authenticated connection" do
     @data.path.should == "type"
     @data.unit.should == nil
     @data.perunit.should == nil
-    @data.type.should == 'drill'
     @data.profile?.should == false
     @data.drill?.should == true
     @data.data?.should == false

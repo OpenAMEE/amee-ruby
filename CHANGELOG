@@ -1,5 +1,9 @@
 = Changelog
 
+== 2.3.0
+ * Remove misleading ItemValueDefinition#type function. Use profile?, data? and
+   drill? separately instead.
+
 == 2.2.0
 
 * Add SSL support. SSL connections are now used by default.
