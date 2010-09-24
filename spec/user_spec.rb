@@ -159,15 +159,15 @@ describe AMEE::Admin::User, "with an authenticated connection without environmen
       :apiVersion => 2.0,
       :password => "test_pw"
     }
-    @users_path = "/users"
-    @path = "/users/_rubytest"
+    @users_path = "/admin/users"
+    @path = "/admin/users/_rubytest"
     @new_options = {
       :username => "_rubytest_changed",
       :name => "Test User created by Ruby Gem, then changed",
       :email => "ruby_changed@amee.cc",
       :APIVersion => 1.0
     }
-    @changed_path = "/users/_rubytest_changed"
+    @changed_path = "/admin/users/_rubytest_changed"
   end
 
   it "can create a new user" do

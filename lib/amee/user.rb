@@ -85,7 +85,7 @@ module AMEE
       end
 
       def self.create(connection, environment_uid, options = {})
-        prefix = environment_uid ? "/environments/#{environment_uid}" : ""
+        prefix = environment_uid ? "/environments/#{environment_uid}" : "/admin"
         unless options.is_a?(Hash)
           raise AMEE::ArgumentError.new("Second argument must be a hash of options!")
         end
@@ -104,7 +104,7 @@ module AMEE
       end
 
       def full_path
-        prefix = @environment_uid ? "/environments/#{@environment_uid}" : ""
+        prefix = @environment_uid ? "/environments/#{@environment_uid}" : "/admin"
         "#{prefix}/users/#{uid}"
       end
 
