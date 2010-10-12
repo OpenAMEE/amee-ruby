@@ -68,8 +68,8 @@ module AMEE
         data[:uid] = x '@uid'
         data[:created] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataCategoryResource/DataCategory/@created").to_s)
         data[:modified] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataCategoryResource/DataCategory/@modified").to_s)
-        data[:name] = REXML::XPath.first(doc, '/Resources/DataCategoryResource/DataCategory/?ame').text
-        data[:path] = REXML::XPath.first(doc, '/Resources/DataCategoryResource//?ath').text || ""
+        data[:name] = (REXML::XPath.first(doc, '/Resources/DataCategoryResource/DataCategory/Name') || REXML::XPath.first(doc, '/Resources/DataCategoryResource/DataCategory/name')).text
+        data[:path] = (REXML::XPath.first(doc, '/Resources/DataCategoryResource/Path') || REXML::XPath.first(doc, '/Resources/DataCategoryResource/DataCategory/path')).text || ""
         data[:pager] = AMEE::Pager.from_xml(REXML::XPath.first(doc, '//Pager'))
         itemdefattrib=REXML::XPath.first(doc, '/Resources/DataCategoryResource//ItemDefinition/@uid')
         data[:itemdef] = itemdefattrib ? itemdefattrib.to_s : nil
