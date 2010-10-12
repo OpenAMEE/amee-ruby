@@ -2,11 +2,12 @@ module AMEE
   class Collection < Array
     include ParseHelper
     attr_reader :pager,:connection,:doc,:json,:response
-    def initialize(connection, options = {})
+    def initialize(connection, options = {}, &block)
       # Load data from path
       @options=options
       @max=options.delete :resultMax
       @connection=connection
+      @filter = block
       # Parse data from response     
       each_page do
         parse_page
@@ -29,7 +30,8 @@ module AMEE
         REXML::XPath.each(doc, xmlcollectorpath) do |p|
           obj=klass.new(parse_xml(p))
           obj.connection = connection
-          self << obj
+          x= @filter ? @filter.call(obj) : obj
+          self << x if x
           break if @max&&length>=@max
         end
       end
