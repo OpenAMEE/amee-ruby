@@ -89,7 +89,9 @@ AMEE when your model is saved.
 The AMEE::Connection object implements an optional cache for GET requests. This is
 currently a very simple implementation which caches the result of all GET requests
 until a POST, PUT, or DELETE is executed, at which point the cache is cleared. To
-enable caching, set the enable_caching parameter of AMEE::Connection.new to true.
+enable caching, set the enable_caching parameter of AMEE::Connection.new to true,
+or add 'cache: true' to your amee.yml if using Rails.
+
 Caching is disabled by default.
 
 == UPGRADING TO VERSION > 2
