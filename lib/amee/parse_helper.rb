@@ -2,7 +2,11 @@ module ParseHelper
   def x(xpath,options = {})
     doc = options[:doc] || @doc
     preamble = options[:meta] == true ? metaxmlpathpreamble : xmlpathpreamble
-    nodes=REXML::XPath.match(doc,"#{preamble}#{xpath}")
+    if doc.is_a? Nokogiri::XML::Element
+      nodes = doc.xpath("#{preamble}#{xpath}")
+    else
+      nodes=REXML::XPath.match(doc,"#{preamble}#{xpath}")
+    end
     if nodes.length==1
       if nodes.first.respond_to?(:text)
         return nodes.first.text
@@ -23,6 +27,11 @@ module ParseHelper
   end
   def xmlpathpreamble
     ''
+  end
+  def load_xml_doc(xml)
+    doc = Nokogiri.XML(xml)
+    doc.remove_namespaces!
+    doc
   end
   private :x
 

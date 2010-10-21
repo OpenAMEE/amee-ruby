@@ -1,5 +1,6 @@
 module AMEE
   class Pager
+    extend ParseHelper
 
     def initialize(data)
       @start = data[:start]
@@ -29,17 +30,17 @@ module AMEE
 
     def self.from_xml(node)
       return nil if node.nil? || node.elements.empty?
-      return Pager.new({:start => node.elements["Start"].text.to_i,
-                        :from => node.elements["From"].text.to_i,
-                        :to => node.elements["To"].text.to_i,
-                        :items => node.elements["Items"].text.to_i,
-                        :current_page => node.elements["CurrentPage"].text.to_i,
-                        :requested_page => node.elements["RequestedPage"].text.to_i,
-                        :next_page => node.elements["NextPage"].text.to_i,
-                        :previous_page => node.elements["PreviousPage"].text.to_i,
-                        :last_page => node.elements["LastPage"].text.to_i,
-                        :items_per_page => node.elements["ItemsPerPage"].text.to_i,
-                        :items_found => node.elements["ItemsFound"].text.to_i})
+      return Pager.new({:start => x("Start", :doc => node).to_i,
+                        :from => x("From", :doc => node).to_i,
+                        :to => x("To", :doc => node).to_i,
+                        :items => x("Items", :doc => node).to_i,
+                        :current_page => x("CurrentPage", :doc => node).to_i,
+                        :requested_page => x("RequestedPage", :doc => node).to_i,
+                        :next_page => x("NextPage", :doc => node).to_i,
+                        :previous_page => x("PreviousPage", :doc => node).to_i,
+                        :last_page => x("LastPage", :doc => node).to_i,
+                        :items_per_page => x("ItemsPerPage", :doc => node).to_i,
+                        :items_found => x("ItemsFound", :doc => node).to_i})
     end
 
     def self.from_json(node)
