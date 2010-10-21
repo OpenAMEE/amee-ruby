@@ -3,6 +3,7 @@ require 'set'
 module AMEE
   module Data
     class ItemValueHistory
+      extend ParseHelper
 
       def initialize(data = {})
         @type = data ? data[:type] : nil
@@ -84,8 +85,8 @@ module AMEE
         # Read XML
         data = {}
         data[:path] = path.gsub(/^\/data/, '')
-        doc = REXML::Document.new(xml)
-        valuedocs=REXML::XPath.match(doc, '//ItemValue')
+        doc = load_xml_doc(xml)
+        valuedocs=doc.xpath('//ItemValue')
         raise  if valuedocs.length==0
         data[:values] = valuedocs.map do |xml_item_value|
           ItemValue.from_xml(xml_item_value,path)
