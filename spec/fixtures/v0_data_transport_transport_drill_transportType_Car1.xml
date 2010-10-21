@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Resources>
+    <DrillDownResource>
+        <DataCategory uid="CD13B9174A6A"/>
+        <ItemDefinition uid="7CD0FC1D3B36"/>
+        <Selections>
+            <Choice>
+                <name>transportType</name>
+                <value>Car1</value>
+            </Choice>
+        </Selections>
+        <Choices>
+            <name>transportStyle</name>
+            <Choice>
+                <name>-</name>
+                <value>-</value>
+            </Choice>
+        </Choices>
+    </DrillDownResource>
+</Resources>

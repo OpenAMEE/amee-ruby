@@ -15,6 +15,12 @@ Documentation: http://docs.github.com/Floppy/amee-ruby
 1) Install gem
     > sudo gem install amee
 
+== REQUIREMENTS
+
+'Nokogiri' is used for XML parsing, and requires libxml2. See
+http://nokogiri.org/tutorials/installing_nokogiri.html for instructions if you
+have problems installing.
+
 == IMPORTANT CHANGES when upgrading to 2.2.0 and above
 
 SSL connections are now supported, and are used BY DEFAULT.If you do not want to
@@ -86,13 +92,20 @@ AMEE when your model is saved.
 
 == CACHING
 
-The AMEE::Connection object implements an optional cache for GET requests. This is
-currently a very simple implementation which caches the result of all GET requests
-until a POST, PUT, or DELETE is executed, at which point the cache is cleared. To
-enable caching, set the enable_caching parameter of AMEE::Connection.new to true,
-or add 'cache: true' to your amee.yml if using Rails.
+The AMEE::Connection object implements an optional cache for GET requests.
 
-Caching is disabled by default.
+This uses ActiveSupport::Cache, and supports any ActiveSupport::Cache::Store
+caching method except for MemCacheStore (which doesn't provide required features).
+
+All GET requests are cached. POST, PUT, or DELETEs will clear the cache for any
+path that matches the affected URL. #expire, #expire_matching, and #expire_all
+functions are available for manual cache management. Also, all AMEE objects have
+and #expire-cache function to clear them and their descendants from the cache.
+
+To enable caching, pass ':cache => :memory_store' to AMEE::Connection.new, or add
+'cache: memory_store' to your amee.yml if using Rails. If you want to use the
+same caching configuration as your Rails app, you can add 'cache: rails' to 
+amee.yml instead. Caching is disabled by default.
 
 == UPGRADING TO VERSION > 2
 

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Resources xmlns="http://schemas.amee.cc/2.0">
+    <DataCategoryResource>
+        <Path>/home/energy/quantity</Path>
+        <DataCategory created="2007-07-27 08:30:44.0" modified="2010-09-01 12:37:29.0" uid="A92693A99BAD">
+            <Name>Quantity</Name>
+            <Path>quantity</Path>
+            <Deprecated>false</Deprecated>
+            <Environment uid="5F5887BCF726"/>
+            <DataCategory uid="30BA55A0C472">
+                <Name>Energy</Name>
+                <Path>energy</Path>
+                <Deprecated>false</Deprecated>
+            </DataCategory>
+            <ItemDefinition uid="212C818D8F16"/>
+        </DataCategory>
+        <Children>
+            <DataCategories/>
+            <DataItems>
+                <DataItem created="2007-07-27 09:49:32.0" modified="2009-09-15 15:06:12.0" uid="878854C275BC">
+                    <startDate>1970-01-01T00:00:00Z</startDate>
+                    <source>net CV RME-type Wells to wheels/European Commission/JRC 2006 http://ies.jrc.ec.europa.eu/our-activities/support-to-eu-policies/well-to-wheels-analysis/WTW.html</source>
+                    <kgCO2PerKg/>
+                    <path>878854C275BC</path>
+                    <label>biodiesel</label>
+                    <type>biodiesel</type>
+                    <endDate/>
+                    <kgCO2PerKWh/>
+                    <kgCO2PerLitre>2.5000</kgCO2PerLitre>
+                </DataItem>
+                <DataItem created="2007-07-27 09:49:32.0" modified="2009-09-15 15:06:12.0" uid="CFA7F3896189">
+                    <startDate>1970-01-01T00:00:00Z</startDate>
+                    <source>http://www.defra.gov.uk/environment/business/reporting/pdf/20090717-guidelines-ghg-conversion-factors.xls</source>
+                    <kgCO2PerKg>0.1215</kgCO2PerKg>
+                    <path>CFA7F3896189</path>
+                    <label>biomass</label>
+                    <type>biomass</type>
+                    <endDate/>
+                    <kgCO2PerKWh>0.0263</kgCO2PerKWh>
+                    <kgCO2PerLitre/>
+                </DataItem>
+                <DataItem created="2007-07-27 09:49:32.0" modified="2009-09-15 15:06:12.0" uid="A70149AF0F26">
+                    <startDate>1970-01-01T00:00:00Z</startDate>
+                    <source>http://www.defra.gov.uk/environment/business/reporting/pdf/20090717-guidelines-ghg-conversion-factors.xls</source>
+                    <kgCO2PerKg>2.5063</kgCO2PerKg>
+                    <path>A70149AF0F26</path>
+                    <label>coal</label>
+                    <type>coal</type>
+                    <endDate/>
+                    <kgCO2PerKWh>0.3114</kgCO2PerKWh>
+                    <kgCO2PerLitre/>
+                </DataItem>
+                <DataItem created="2009-03-08 21:34:00.0" modified="2009-09-15 15:06:12.0" uid="8982F4AD51BA">
+                    <startDate>1970-01-01T00:00:00Z</startDate>
+                    <source>defra/amee 2008</source>
+                    <kgCO2PerKg>2.810</kgCO2PerKg>
+                    <path>8982F4AD51BA</path>
+                    <label>coking coal</label>
+                    <type>coking coal</type>
+                    <endDate/>
+                    <kgCO2PerKWh>0.349</kgCO2PerKWh>
+                    <kgCO2PerLitre/>
+                </DataItem>
+                <DataItem created="2007-07-27 09:49:32.0" modified="2009-09-15 15:06:12.0" uid="D6C9BC81155D">
+                    <startDate>1970-01-01T00:00:00Z</startDate>
+                    <source>http://www.defra.gov.uk/environment/business/reporting/pdf/20090717-guidelines-ghg-conversion-factors.xls</source>
+                    <kgCO2PerKg>3.1643</kgCO2PerKg>
+                    <path>D6C9BC81155D</path>
+                    <label>diesel</label>
+                    <type>diesel</type>
+                    <endDate/>
+                    <kgCO2PerKWh>0.2748</kgCO2PerKWh>
+                    <kgCO2PerLitre>2.6391</kgCO2PerLitre>
+                </DataItem>
+                <DataItem created="2009-03-08 21:34:01.0" modified="2009-09-15 15:06:12.0" uid="D20E0D8A4164">
+                    <startDate>1970-01-01T00:00:00Z</startDate>
+                    <source>uses data in /home/energy/electricity</source>
+                    <kgCO2PerKg/>
+                    <path>D20E0D8A4164</path>
+                    <label>electricity</label>
+                    <type>electricity</type>
+                    <endDate/>
+                    <kgCO2PerKWh/>
+                    <kgCO2PerLitre/>
+                </DataItem>
+                <DataItem created="2007-07-27 09:49:32.0" modified="2009-09-15 15:06:12.0" uid="66056991EE23">
+                    <startDate>1970-01-01T00:00:00Z</startDate>
+                    <source>http://www.defra.gov.uk/environment/business/reporting/pdf/20090717-guidelines-ghg-conversion-factors.xls</source>
+                    <kgCO2PerKg>2.6935</kgCO2PerKg>
+                    <path>66056991EE23</path>
+                    <label>gas</label>
+                    <type>gas</type>
+                    <endDate/>
+                    <kgCO2PerKWh>0.2037</kgCO2PerKWh>
+                    <kgCO2PerLitre>0.0020091</kgCO2PerLitre>
+                </DataItem>
+                <DataItem created="2009-09-15 15:06:16.0" modified="2009-09-15 15:06:16.0" uid="72B64430E81B">
+                    <startDate>1970-01-01T00:00:00Z</startDate>
+                    <source>http://www.defra.gov.uk/environment/business/reporting/pdf/20090717-guidelines-ghg-conversion-factors.xls</source>
+                    <kgCO2PerKg>2.4269</kgCO2PerKg>
+                    <path>72B64430E81B</path>
+                    <label>gas gross CV</label>
+                    <type>gas gross CV</type>
+                    <endDate/>
+                    <kgCO2PerKWh>0.1836</kgCO2PerKWh>
+                    <kgCO2PerLitre>0.0018102</kgCO2PerLitre>
+                </DataItem>
+                <DataItem created="2007-07-27 09:49:32.0" modified="2009-09-15 15:06:12.0" uid="C024BCE859BB">
+                    <startDate>1970-01-01T00:00:00Z</startDate>
+                    <source>http://www.defra.gov.uk/environment/business/reporting/pdf/20090717-guidelines-ghg-conversion-factors.xls</source>
+                    <kgCO2PerKg>3.1496</kgCO2PerKg>
+                    <path>C024BCE859BB</path>
+                    <label>kerosene</label>
+                    <type>kerosene</type>
+                    <endDate/>
+                    <kgCO2PerKWh>0.2584</kgCO2PerKWh>
+                    <kgCO2PerLitre>2.5278</kgCO2PerLitre>
+                </DataItem>
+                <DataItem created="2007-07-27 09:49:32.0" modified="2009-09-15 15:06:12.0" uid="26709055568C">
+                    <startDate>1970-01-01T00:00:00Z</startDate>
+                    <source>http://www.defra.gov.uk/environment/business/reporting/pdf/20090717-guidelines-ghg-conversion-factors.xls</source>
+                    <kgCO2PerKg>2.9424</kgCO2PerKg>
+                    <path>26709055568C</path>
+                    <label>lpg</label>
+                    <type>lpg</type>
+                    <endDate/>
+                    <kgCO2PerKWh>0.2255</kgCO2PerKWh>
+                    <kgCO2PerLitre>1.4951</kgCO2PerLitre>
+                </DataItem>
+            </DataItems>
+            <Pager>
+                <Start>0</Start>
+                <From>1</From>
+                <To>10</To>
+                <Items>12</Items>
+                <CurrentPage>1</CurrentPage>
+                <RequestedPage>1</RequestedPage>
+                <NextPage>2</NextPage>
+                <PreviousPage>-1</PreviousPage>
+                <LastPage>2</LastPage>
+                <ItemsPerPage>10</ItemsPerPage>
+                <ItemsFound>10</ItemsFound>
+            </Pager>
+        </Children>
+    </DataCategoryResource>
+</Resources>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Resources xmlns="http://schemas.amee.cc/2.0">
+    <DataItemResource>
+        <DataItem created="2007-07-27 09:49:32.0" modified="2009-09-15 15:06:12.0" uid="878854C275BC">
+            <Name>878854C275BC</Name>
+            <ItemValues>
+                <ItemValue uid="7071F0E96196">
+                    <Path>kgCO2PerKg</Path>
+                    <Name>kgCO2 Per Kg</Name>
+                    <Value/>
+                    <Unit/>
+                    <PerUnit/>
+                    <StartDate>1969-12-31T19:00:00-05:00</StartDate>
+                    <ItemValueDefinition uid="B5AC731EF1D5">
+                        <Path>kgCO2PerKg</Path>
+                        <Name>kgCO2 Per Kg</Name>
+                        <ValueDefinition created="2007-07-27 08:30:44.0" modified="2007-07-27 08:30:44.0" uid="F066E097D76D">
+                            <Name>kgCO2PerKg</Name>
+                            <ValueType>DECIMAL</ValueType>
+                            <Description/>
+                            <Environment uid="5F5887BCF726"/>
+                        </ValueDefinition>
+                        <FromProfile>false</FromProfile>
+                        <FromData>true</FromData>
+                        <DrillDown>false</DrillDown>
+                    </ItemValueDefinition>
+                </ItemValue>
+                <ItemValue uid="015D3ACF02BD">
+                    <Path>source</Path>
+                    <Name>Source</Name>
+                    <Value>net CV RME-type Wells to wheels/European Commission/JRC 2006 http://ies.jrc.ec.europa.eu/our-activities/support-to-eu-policies/well-to-wheels-analysis/WTW.html</Value>
+                    <Unit/>
+                    <PerUnit/>
+                    <StartDate>1969-12-31T19:00:00-05:00</StartDate>
+                    <ItemValueDefinition uid="75DE0251B056">
+                        <Path>source</Path>
+                        <Name>Source</Name>
+                        <ValueDefinition created="2007-07-27 08:30:44.0" modified="2007-07-27 08:30:44.0" uid="CCEB59CACE1B">
+                            <Name>text</Name>
+                            <ValueType>TEXT</ValueType>
+                            <Description/>
+                            <Environment uid="5F5887BCF726"/>
+                        </ValueDefinition>
+                        <FromProfile>false</FromProfile>
+                        <FromData>true</FromData>
+                        <DrillDown>false</DrillDown>
+                    </ItemValueDefinition>
+                </ItemValue>
+                <ItemValue uid="1DFEF8E6D7E5">
+                    <Path>kgCO2PerKWh</Path>
+                    <Name>kgCO2 Per KWh</Name>
+                    <Value/>
+                    <Unit/>
+                    <PerUnit/>
+                    <StartDate>1969-12-31T19:00:00-05:00</StartDate>
+                    <ItemValueDefinition uid="469C1AE4B79A">
+                        <Path>kgCO2PerKWh</Path>
+                        <Name>kgCO2 Per KWh</Name>
+                        <ValueDefinition created="2007-07-27 08:30:44.0" modified="2007-07-27 08:30:44.0" uid="3EA39C552E81">
+                            <Name>kgCO2PerKWh</Name>
+                            <ValueType>DECIMAL</ValueType>
+                            <Description/>
+                            <Environment uid="5F5887BCF726"/>
+                        </ValueDefinition>
+                        <FromProfile>false</FromProfile>
+                        <FromData>true</FromData>
+                        <DrillDown>false</DrillDown>
+                    </ItemValueDefinition>
+                </ItemValue>
+                <ItemValue uid="219EE9D836E0">
+                    <Path>kgCO2PerLitre</Path>
+                    <Name>kgCO2 Per Litre</Name>
+                    <Value>2.5000</Value>
+                    <Unit/>
+                    <PerUnit/>
+                    <StartDate>1969-12-31T19:00:00-05:00</StartDate>
+                    <ItemValueDefinition uid="EAFBD1CA93E8">
+                        <Path>kgCO2PerLitre</Path>
+                        <Name>kgCO2 Per Litre</Name>
+                        <ValueDefinition created="2007-07-27 08:30:44.0" modified="2007-07-27 08:30:44.0" uid="C809A0FE1918">
+                            <Name>kgCO2PerLitre</Name>
+                            <ValueType>DECIMAL</ValueType>
+                            <Description/>
+                            <Environment uid="5F5887BCF726"/>
+                        </ValueDefinition>
+                        <FromProfile>false</FromProfile>
+                        <FromData>true</FromData>
+                        <DrillDown>false</DrillDown>
+                    </ItemValueDefinition>
+                </ItemValue>
+                <ItemValue uid="5A46861E475C">
+                    <Path>type</Path>
+                    <Name>Type</Name>
+                    <Value>biodiesel</Value>
+                    <Unit/>
+                    <PerUnit/>
+                    <StartDate>1969-12-31T19:00:00-05:00</StartDate>
+                    <ItemValueDefinition uid="5DF1F01B2106">
+                        <Path>type</Path>
+                        <Name>Type</Name>
+                        <ValueDefinition created="2007-07-27 08:30:44.0" modified="2007-07-27 08:30:44.0" uid="CCEB59CACE1B">
+                            <Name>text</Name>
+                            <ValueType>TEXT</ValueType>
+                            <Description/>
+                            <Environment uid="5F5887BCF726"/>
+                        </ValueDefinition>
+                        <FromProfile>false</FromProfile>
+                        <FromData>true</FromData>
+                        <DrillDown>true</DrillDown>
+                    </ItemValueDefinition>
+                </ItemValue>
+            </ItemValues>
+            <Environment uid="5F5887BCF726"/>
+            <ItemDefinition uid="212C818D8F16"/>
+            <DataCategory uid="A92693A99BAD">
+                <Name>Quantity</Name>
+                <Path>quantity</Path>
+                <Deprecated>false</Deprecated>
+            </DataCategory>
+            <Path>878854C275BC</Path>
+            <Label>biodiesel</Label>
+            <StartDate>1969-12-31T19:00:00-05:00</StartDate>
+            <EndDate/>
+        </DataItem>
+        <Path>/home/energy/quantity/878854C275BC</Path>
+        <Choices>
+            <Name>userValueChoices</Name>
+            <Choices>
+                <Choice>
+                    <Name>deliveries</Name>
+                    <Value/>
+                </Choice>
+                <Choice>
+                    <Name>greenTariff</Name>
+                    <Value/>
+                </Choice>
+                <Choice>
+                    <Name>lastReading</Name>
+                    <Value>0</Value>
+                </Choice>
+                <Choice>
+                    <Name>currentReading</Name>
+                    <Value>0</Value>
+                </Choice>
+                <Choice>
+                    <Name>includesHeating</Name>
+                    <Value>false</Value>
+                </Choice>
+                <Choice>
+                    <Name>massPerTime</Name>
+                    <Value>0</Value>
+                </Choice>
+                <Choice>
+                    <Name>volumePerTime</Name>
+                    <Value>0</Value>
+                </Choice>
+                <Choice>
+                    <Name>energyConsumption</Name>
+                    <Value>0</Value>
+                </Choice>
+                <Choice>
+                    <Name>season</Name>
+                    <Value/>
+                </Choice>
+                <Choice>
+                    <Name>paymentFrequency</Name>
+                    <Value/>
+                </Choice>
+            </Choices>
+        </Choices>
+        <AmountPerMonth>0.0</AmountPerMonth>
+        <Amount unit="kg/year">0.0</Amount>
+        <Amounts>
+            <Amount default="true" perUnit="year" type="CO2" unit="kg">0.0</Amount>
+        </Amounts>
+    </DataItemResource>
+</Resources>

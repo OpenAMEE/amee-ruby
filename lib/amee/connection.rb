@@ -21,9 +21,26 @@ module AMEE
       if !valid?
        raise "You must supply connection details - server, username and password are all required!"
       end
-      @enable_caching = options[:enable_caching]
-      if @enable_caching
-        $cache ||= {}
+      # Handle old option
+      if options[:enable_caching]
+        Kernel.warn '[DEPRECATED] :enable_caching => true is deprecated. Use :cache => :memory_store instead'
+        options[:cache] ||= :memory_store
+      end
+      # Create cache store
+      if options[:cache] &&
+        (options[:cache_store].is_a?(ActiveSupport::Cache::MemCacheStore) ||
+         options[:cache].to_sym == :mem_cache_store)         
+        raise 'ActiveSupport::Cache::MemCacheStore is not supported, as it doesn\'t allow regexp expiry'
+      end
+      if options[:cache_store].is_a?(ActiveSupport::Cache::Store)
+        # Allows assignment of the entire cache store in Rails apps
+        @cache = options[:cache_store]
+      elsif options[:cache]
+        if options[:cache_options]
+          @cache = ActiveSupport::Cache.lookup_store(options[:cache].to_sym, options[:cache_options])
+        else
+          @cache = ActiveSupport::Cache.lookup_store(options[:cache].to_sym)
+        end
       end
       # Make connection to server
       @http = Net::HTTP.new(@server, @port)
@@ -77,18 +94,15 @@ module AMEE
       if params.size > 0
         path += "?#{params.join('&')}"
       end
-      # Send request
-      return $cache[path] if @enable_caching and $cache[path]
-      response = do_request(Net::HTTP::Get.new(path), format)
-      $cache[path] = response if @enable_caching
-      return response
+      # Send request      
+      cache(path) { do_request(Net::HTTP::Get.new(path), format) }
     end
 
     def post(path, data = {})
       # Allow format override
       format = data.delete(:format) || @format
       # Clear cache
-      clear_cache
+      expire_matching "#{raw_path(path)}.*"
       # Create POST request
       post = Net::HTTP::Post.new(path)
       body = []
@@ -104,7 +118,7 @@ module AMEE
       # Allow format override
       format = options.delete(:format) || @format
       # Clear cache
-      clear_cache
+      expire_matching "#{raw_path(path)}.*"
       # Create POST request
       post = Net::HTTP::Post.new(path)
       post['Content-type'] = options[:content_type] || content_type(format)
@@ -117,7 +131,7 @@ module AMEE
       # Allow format override
       format = data.delete(:format) || @format
       # Clear cache
-      clear_cache
+      expire_matching "#{parent_path(path)}.*"
       # Create PUT request
       put = Net::HTTP::Put.new(path)
       body = []
@@ -133,7 +147,7 @@ module AMEE
       # Allow format override
       format = options.delete(:format) || @format
       # Clear cache
-      clear_cache
+      expire_matching "#{parent_path(path)}.*"
       # Create PUT request
       put = Net::HTTP::Put.new(path)
       put['Content-type'] = options[:content_type] || content_type(format)
@@ -143,7 +157,7 @@ module AMEE
     end
 
     def delete(path)
-      clear_cache
+      expire_matching "#{parent_path(path)}.*"
       # Create DELETE request
       delete = Net::HTTP::Delete.new(path)
       # Send request
@@ -242,12 +256,45 @@ module AMEE
       response
     end
 
+    def cache(path, &block)
+      key = cache_key(path)
+      if @cache && @cache.exist?(key)
+        puts "CACHE HIT on #{key}" if @debug
+        return @cache.read(key)
+      end
+      puts "CACHE MISS on #{key}" if @debug
+      data = block.call
+      @cache.write(key, data) if @cache
+      return data
+    end
+
+    def parent_path(path)
+      path.split('/')[0..-2].join('/')
+    end
+
+    def raw_path(path)
+      path.split(/[;?]/)[0]
+    end
+
+    def cache_key(path)
+      # We have to make sure cache keys don't get too long for the filesystem,
+      # so we cut them off if they're too long and add a digest for uniqueness.
+      newpath = (path.length < 255) ? path : path.first(192)+Digest::MD5.hexdigest(path)
+      (@server+newpath)
+    end
+
     public
 
-    def clear_cache
-      if @enable_caching
-        $cache = {}
-      end
+    def expire(path, options = nil)
+      @cache.delete(cache_key(path), options) if @cache
+    end
+
+    def expire_matching(matcher, options = nil)
+      @cache.delete_matched(Regexp.new(cache_key(matcher)), options) if @cache
+    end
+
+    def expire_all
+      @cache.clear if @cache
     end
 
   end

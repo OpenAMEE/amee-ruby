@@ -18,5 +18,9 @@ module AMEE
     attr_reader :path
     attr_reader :name
 
+    def expire_cache
+      @connection.expire_matching(full_path+'.*')
+    end
+
   end
 end
