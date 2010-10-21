@@ -8,6 +8,7 @@ module AMEE
         @choices = data ? data[:choices] : []
         @choice_name = data[:choice_name]
         @selections = data ? data[:selections] : []
+        raise AMEE::ArgumentError.new('No choice_name specified') if @choice_name.nil?
         super
       end
 
@@ -51,30 +52,26 @@ module AMEE
         data[:selections] = selections
         # Create object
         DrillDown.new(data)
-      rescue
+      rescue Exception
         raise AMEE::BadData.new("Couldn't load DrillDown resource from JSON data. Check that your URL is correct.\n#{json}")
       end
-      
+
+      def self.xmlpathpreamble
+        '/Resources/DrillDownResource/'
+      end
+
       def self.from_xml(xml)
         # Parse XML
-        doc = REXML::Document.new(xml)
+        @doc = load_xml_doc(xml)
         data = {}
-        data[:choice_name] = REXML::XPath.first(doc, "/Resources/DrillDownResource/Choices/?ame").text
-        choices = []
-        REXML::XPath.each(doc, "/Resources/DrillDownResource/Choices//Choice") do |c|
-          choices << (c.elements['Value'] || c.elements['value']).text
-        end
-        data[:choices] = choices
-        selections = {}
-        REXML::XPath.each(doc, "/Resources/DrillDownResource/Selections/Choice") do |c|
-          name = (c.elements['Name'] || c.elements['name']).text
-          value = (c.elements['Value'] || c.elements['value']).text
-          selections[name] = value
-        end
-        data[:selections] = selections
+        data[:choice_name] = x('Choices/Name') || x('Choices/name')
+        data[:choices] = [x('Choices/Choices/Choice/Value') || x('Choices/Choice/value')].flatten
+        names = x('Selections/Choice/Name') || x('Selections/Choice/name')
+        values = x('Selections/Choice/Value') || x('Selections/Choice/value')
+        data[:selections] = names && values ? Hash[*(names.zip(values)).flatten] : {}
         # Create object
         DrillDown.new(data)
-      rescue
+      rescue Exception
         raise AMEE::BadData.new("Couldn't load DrillDown resource from XML data. Check that your URL is correct.\n#{xml}")
       end
 
@@ -93,7 +90,7 @@ module AMEE
         drill.connection = connection
         # Done
         return drill
-      rescue
+      rescue Exception
         raise AMEE::BadData.new("Couldn't load DrillDown resource. Check that your URL is correct (#{path}).\n#{response}")
       end
       
