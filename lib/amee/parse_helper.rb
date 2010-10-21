@@ -2,7 +2,7 @@ module ParseHelper
   def x(xpath,options = {})
     doc = options[:doc] || @doc
     preamble = options[:meta] == true ? metaxmlpathpreamble : xmlpathpreamble
-    if doc.is_a? Nokogiri::XML::Element
+    if doc.is_a?(Nokogiri::XML::Node)
       nodes = doc.xpath("#{preamble}#{xpath}")
     else
       nodes=REXML::XPath.match(doc,"#{preamble}#{xpath}")
