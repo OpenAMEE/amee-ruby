@@ -147,6 +147,10 @@ module AMEE
         raise AMEE::BadData.new("Couldn't delete ProfileItem. Check that your information is correct.")
       end
 
+      def full_path
+        "/definitions/itemDefinitions/#{@uid}"
+      end
+
     end
   end
 end

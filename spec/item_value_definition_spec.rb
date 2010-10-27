@@ -111,6 +111,7 @@ describe AMEE::Admin::ItemValueDefinition, "with an authenticated connection" do
     @data.default.should == nil
     @data.choices.should == []
     @data.versions.should == ['2.0']
+    @data.full_path.should == '/definitions/itemDefinitions/BD88D30D1214/itemValueDefinitions/A8A212610A57'
   end
 
   it "should parse data item XML correctly" do
@@ -175,6 +176,7 @@ describe AMEE::Admin::ItemValueDefinition, "with an authenticated connection" do
     @data.default.should == nil
     @data.choices.should == []
     @data.versions.should == ['2.0']
+    @data.full_path.should == '/definitions/itemDefinitions/BD88D30D1214/itemValueDefinitions/A8A212610A57'
   end
 
   it "should parse data item JSON correctly" do

@@ -2,8 +2,8 @@ require './lib/amee/version.rb'
 
 Gem::Specification.new do |s|
   s.name = "amee"
-  s.version = AMEE::VERSION::STRING + ".rc1"
-  s.date = "2010-10-22"
+  s.version = AMEE::VERSION::STRING + ".rc2"
+  s.date = "2010-10-27"
   s.summary = "Ruby interface to the AMEE carbon calculator"
   s.email = "james@floppy.org.uk"
   s.homepage = "http://github.com/Floppy/amee-ruby"
