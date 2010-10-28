@@ -15,7 +15,6 @@ module AMEE
         @email = data[:email]
         @status = data[:status]
         @api_version  = data[:api_version].to_f rescue nil
-        @environment_uid = data[:environment_uid]
         super
       end
 
@@ -36,7 +35,6 @@ module AMEE
         # Read JSON
         doc = JSON.parse(json)
         data = {}
-        data[:environment_uid] = doc['user']['environment']['uid']
         data[:uid] = doc['user']['uid']
         data[:created] = DateTime.parse(doc['user']['created'])
         data[:modified] = DateTime.parse(doc['user']['modified'])
@@ -55,7 +53,6 @@ module AMEE
         # Parse data from response into hash
         doc = REXML::Document.new(xml)
         data = {}
-        data[:environment_uid] = REXML::XPath.first(doc, "//Environment/@uid").to_s
         data[:uid] = REXML::XPath.first(doc, "//User/@uid").to_s
         data[:created] = DateTime.parse(REXML::XPath.first(doc, "//User/@created").to_s)
         data[:modified] = DateTime.parse(REXML::XPath.first(doc, "//User/@modified").to_s)
@@ -104,8 +101,7 @@ module AMEE
       end
 
       def full_path
-        prefix = @environment_uid ? "/environments/#{@environment_uid}" : "/admin"
-        "#{prefix}/users/#{uid}"
+        "/admin/users/#{uid}"
       end
 
     end
