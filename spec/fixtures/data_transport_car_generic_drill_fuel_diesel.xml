@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Resources>
+    <DrillDownResource>
+        <DataCategory uid="87E55DA88017">
+            <Name>Generic</Name>
+            <Path>generic</Path>
+        </DataCategory>
+        <ItemDefinition uid="123C4A18B5D6"/>
+        <Selections>
+            <Choice>
+                <Name>fuel</Name>
+                <Value>diesel</Value>
+            </Choice>
+        </Selections>
+        <Choices>
+            <Name>size</Name>
+            <Choices>
+                <Choice>
+                    <Name>large</Name>
+                    <Value>large</Value>
+                </Choice>
+                <Choice>
+                    <Name>medium</Name>
+                    <Value>medium</Value>
+                </Choice>
+                <Choice>
+                    <Name>small</Name>
+                    <Value>small</Value>
+                </Choice>
+            </Choices>
+        </Choices>
+    </DrillDownResource>
+</Resources>

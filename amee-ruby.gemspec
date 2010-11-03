@@ -3,7 +3,7 @@ require './lib/amee/version.rb'
 Gem::Specification.new do |s|
   s.name = "amee"
   s.version = AMEE::VERSION::STRING
-  s.date = "2010-10-12"
+  s.date = "2010-11-03"
   s.summary = "Ruby interface to the AMEE carbon calculator"
   s.email = "james@floppy.org.uk"
   s.homepage = "http://github.com/Floppy/amee-ruby"
@@ -28,4 +28,5 @@ Gem::Specification.new do |s|
   s.add_dependency("json")
   s.add_dependency("rspec_spinner")
   s.add_dependency("log4r")
+  s.add_dependency("nokogiri", "~> 1.4.3.1")
 end

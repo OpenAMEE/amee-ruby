@@ -39,6 +39,7 @@ describe AMEE::Admin::ItemDefinition, "with an authenticated connection" do
     @data.modified.should == DateTime.new(2007,7,27,9,30,44)
     @data.name.should == "Bus Generic"
     @data.drill_downs.should == ["type"]
+    @data.full_path.should == '/definitions/itemDefinitions/BD88D30D1214'
   end
 
   it "should parse JSON correctly" do
@@ -50,6 +51,7 @@ describe AMEE::Admin::ItemDefinition, "with an authenticated connection" do
     @data.modified.should == DateTime.new(2007,7,27,9,30,44)
     @data.name.should == "Bus Generic"
     @data.drill_downs.should == ["type"]
+    @data.full_path.should == '/definitions/itemDefinitions/BD88D30D1214'
   end
 
   it "should be able to load an item value definition list" do

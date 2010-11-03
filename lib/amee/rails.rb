@@ -12,6 +12,13 @@ module AMEE
           if $AMEE_CONFIG['ssl'] == false
             options.merge! :ssl => false
           end
+          if $AMEE_CONFIG['cache'] == 'rails'
+            # Pass in the rails cache store
+            options[:cache_store] = ActionController::Base.cache_store
+          else
+            options[:cache] ||= $AMEE_CONFIG['cache'] if $AMEE_CONFIG['cache'].present?
+          end
+          options[:enable_debug]   ||= $AMEE_CONFIG['debug'] if $AMEE_CONFIG['debug'].present?
           @connection = self.connect($AMEE_CONFIG['server'], $AMEE_CONFIG['username'], $AMEE_CONFIG['password'], options)
           # Also store as $amee for backwards compatibility, though this is now deprecated
           $amee = @connection

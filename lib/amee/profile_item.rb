@@ -151,28 +151,32 @@ module AMEE
         raise AMEE::BadData.new("Couldn't load ProfileItem from XML data. Check that your URL is correct.\n#{xml}")
       end
 
+      def self.xmlpathpreamble
+        "/Resources/ProfileItemResource/"
+      end
+
       def self.from_v2_xml(xml)
         # Parse XML
-        doc = REXML::Document.new(xml)
+        @doc = load_xml_doc(xml)
         data = {}
-        data[:profile_uid] = REXML::XPath.first(doc, "/Resources/ProfileItemResource/Profile/@uid").to_s
-        data[:data_item_uid] = REXML::XPath.first(doc, "/Resources/ProfileItemResource/DataItem/@uid").to_s
-        data[:uid] = REXML::XPath.first(doc, "/Resources/ProfileItemResource/ProfileItem/@uid").to_s
-        data[:name] = REXML::XPath.first(doc, '/Resources/ProfileItemResource/ProfileItem/Name').text
-        data[:path] = REXML::XPath.first(doc, '/Resources/ProfileItemResource/Path').text || ""
-        data[:total_amount] = REXML::XPath.first(doc, '/Resources/ProfileItemResource/ProfileItem/Amount').text.to_f rescue nil
-        data[:total_amount_unit] = REXML::XPath.first(doc, '/Resources/ProfileItemResource/ProfileItem/Amount/@unit').to_s rescue nil
-        data[:start_date] = DateTime.parse(REXML::XPath.first(doc, "/Resources/ProfileItemResource/ProfileItem/StartDate").text)
-        data[:end_date] = DateTime.parse(REXML::XPath.first(doc, "/Resources/ProfileItemResource/ProfileItem/EndDate").text) rescue nil
+        data[:profile_uid] = x 'Profile/@uid'
+        data[:data_item_uid] = x 'DataItem/@uid'
+        data[:uid] = x 'ProfileItem/@uid'
+        data[:name] = x 'ProfileItem/Name'
+        data[:path] = x('Path') || ""
+        data[:total_amount] = x('ProfileItem/Amount').to_f rescue nil
+        data[:total_amount_unit] = x 'ProfileItem/Amount/@unit' rescue nil
+        data[:start_date] = DateTime.parse(x 'ProfileItem/StartDate')
+        data[:end_date] = DateTime.parse(x 'ProfileItem/EndDate') rescue nil
         data[:values] = []
-        REXML::XPath.each(doc, '/Resources/ProfileItemResource/ProfileItem/ItemValues/ItemValue') do |item|
+        @doc.xpath("#{xmlpathpreamble}ProfileItem/ItemValues/ItemValue").each do |item|
           value_data = {}
           item.elements.each do |element|
             key = element.name
             value = element.text
             case key
               when 'Name', 'Path', 'Value', 'Unit'
-                value_data[key.downcase.to_sym] = value
+                value_data[key.downcase.to_sym] = value.blank? ? nil : value
               when 'PerUnit'
                 value_data[:per_unit] = value
             end
@@ -180,7 +184,7 @@ module AMEE
           value_data[:uid] = item.attributes['uid'].to_s
           data[:values] << value_data
         end
-        data[:amounts] = REXML::XPath.each(doc, '/Resources/ProfileItemResource/ProfileItem/Amounts/Amount').map do |item|
+        data[:amounts] = @doc.xpath('/Resources/ProfileItemResource/ProfileItem/Amounts/Amount').map do |item|
           x = {
             :type => item.attribute('type').value,
             :value => item.text.to_f,
@@ -190,7 +194,7 @@ module AMEE
           x[:default] = (item.attribute('default').value == 'true') if item.attribute('default')
           x
         end
-        data[:notes] = REXML::XPath.each(doc, '/Resources/ProfileItemResource/ProfileItem/Amounts/Note').map do |item|
+        data[:notes] = @doc.xpath('/Resources/ProfileItemResource/ProfileItem/Amounts/Note').map do |item|
           {
             :type => item.attribute('type').value,
             :value => item.text,

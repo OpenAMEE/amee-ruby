@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/spec_helper.rb'
 describe AMEE::Data::DrillDown do
   
   before(:each) do
-    @drill = AMEE::Data::DrillDown.new
+    @drill = AMEE::Data::DrillDown.new :choice_name => 'choice'
   end
   
   it "should have common AMEE object properties" do
@@ -28,13 +28,13 @@ describe AMEE::Data::DrillDown do
 
   it "should initialize AMEE::Object data on creation" do
     uid = 'ABCD1234'
-    @drill = AMEE::Data::DrillDown.new(:uid => uid)
+    @drill = AMEE::Data::DrillDown.new(:uid => uid, :choice_name => 'choice')
     @drill.uid.should == uid
   end
 
   it "can be created with hash of data" do
     choices = ["one", "two"]
-    @drill = AMEE::Data::DrillDown.new(:choices => choices)
+    @drill = AMEE::Data::DrillDown.new(:choices => choices, :choice_name => 'choice')
     @drill.choices.should == choices
   end
  
@@ -44,7 +44,7 @@ describe AMEE::Data::DrillDown, "accessing AMEE V0" do
 
   it "loads drilldown resource" do
     connection = flexmock "connection"
-    connection.should_receive(:get).with("/data/transport/transport/drill?transportType=Car1").and_return(flexmock(:body => '<?xml version="1.0" encoding="UTF-8"?><Resources><DrillDownResource><DataCategory uid="CD13B9174A6A"/><ItemDefinition uid="7CD0FC1D3B36"/><Selections><Choice><name>transportType</name><value>Car1</value></Choice></Selections><Choices><name>transportStyle</name><Choice><name>-</name><value>-</value></Choice></Choices></DrillDownResource></Resources>'))
+    connection.should_receive(:get).with("/data/transport/transport/drill?transportType=Car1").and_return(flexmock(:body => fixture('v0_data_transport_transport_drill_transportType_Car1.xml')))
     drill = AMEE::Data::DrillDown.get(connection, "/data/transport/transport/drill?transportType=Car1")
     drill.choice_name.should == "transportStyle"
     drill.choices.size.should be(1)
@@ -70,7 +70,7 @@ describe AMEE::Data::DrillDown, "with an authenticated XML connection" do
 
   it "loads drilldown resource" do
     connection = flexmock "connection"
-    connection.should_receive(:get).with("/data/transport/car/generic/drill?fuel=diesel").and_return(flexmock(:body => '<?xml version="1.0" encoding="UTF-8"?><Resources><DrillDownResource><DataCategory uid="87E55DA88017"><Name>Generic</Name><Path>generic</Path></DataCategory><ItemDefinition uid="123C4A18B5D6"/><Selections><Choice><Name>fuel</Name><Value>diesel</Value></Choice></Selections><Choices><Name>size</Name><Choices><Choice><Name>large</Name><Value>large</Value></Choice><Choice><Name>medium</Name><Value>medium</Value></Choice><Choice><Name>small</Name><Value>small</Value></Choice></Choices></Choices></DrillDownResource></Resources>'))
+    connection.should_receive(:get).with("/data/transport/car/generic/drill?fuel=diesel").and_return(flexmock(:body => fixture('data_transport_car_generic_drill_fuel_diesel.xml')))
     drill = AMEE::Data::DrillDown.get(connection, "/data/transport/car/generic/drill?fuel=diesel")
     drill.choice_name.should == "size"
     drill.choices.size.should be(3)

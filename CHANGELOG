@@ -1,5 +1,16 @@
 = Changelog
 
+== 2.5.0
+ * Use ActiveSupport::Cache for caching
+ * Add ability to specify cache and debug options in amee.yml for Rails projects.
+ * Uses Nokogiri for some XML parsing for big speed improvements. More to come.
+
+== 2.4.0
+ * Collection objects support filter blocks.
+
+== 2.3.1
+ * Remove required environment UID in AMEE::Admin classes.
+
 == 2.3.0
  * Remove misleading ItemValueDefinition#type function. Use profile?, data? and
    drill? separately instead.

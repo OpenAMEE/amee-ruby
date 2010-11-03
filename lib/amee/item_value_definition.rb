@@ -229,6 +229,10 @@ module AMEE
         #        raise AMEE::BadData.new("Couldn't delete ItemValueDefinition. Check that your information is correct.")
       end
 
+      def full_path
+        "/definitions/itemDefinitions/#{itemdefuid}/itemValueDefinitions/#{uid}"
+      end
+
     end
 
   end

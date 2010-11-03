@@ -50,3 +50,7 @@ end
 def disconnected klass
  ActiveRecordUnitTestHelper.new(klass)
 end
+
+def fixture(filename)
+  File.read File.dirname(__FILE__)+'/fixtures/'+filename
+end

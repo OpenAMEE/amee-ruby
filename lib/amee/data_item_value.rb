@@ -69,24 +69,29 @@ module AMEE
         raise AMEE::BadData.new("Couldn't load DataItemValue from JSON. Check that your URL is correct.\n#{json}")
       end
 
+      def self.xmlpathpreamble
+        "descendant-or-self::ItemValue/"
+      end
+
       def self.from_xml(xml, path)
         # Read XML
-        doc = xml.is_a?(String) ? REXML::Document.new(xml) : xml
+        @doc = xml.is_a?(String) ? load_xml_doc(xml) : xml
         data = {}
-        if REXML::XPath.match(doc,"descendant-or-self::ItemValue").length>1
+        if @doc.xpath("descendant-or-self::ItemValue").length>1
           raise AMEE::BadData.new("Couldn't load DataItemValue from XML. This is an item value history.\n#{xml}")
         end
+        raise if @doc.xpath("descendant-or-self::ItemValue").length==0
         begin
-          data[:uid] = REXML::XPath.first(doc, "descendant-or-self::ItemValue/@uid").to_s
-          data[:created] = DateTime.parse(REXML::XPath.first(doc, "descendant-or-self::ItemValue/@Created").to_s) rescue nil
-          data[:modified] = DateTime.parse(REXML::XPath.first(doc, "descendant-or-self::ItemValue/@Modified").to_s) rescue nil
-          data[:name] = REXML::XPath.first(doc, 'descendant-or-self::ItemValue/Name').text
+          data[:uid] = x "@uid"
+          data[:created] = DateTime.parse(x "@Created") rescue nil
+          data[:modified] = DateTime.parse(x "@Modified") rescue nil
+          data[:name] = x 'Name'
           data[:path] = path.gsub(/^\/data/, '')
-          data[:value] = REXML::XPath.first(doc, 'descendant-or-self::ItemValue/Value').text
-          data[:type] = REXML::XPath.first(doc, 'descendant-or-self::ItemValue/ItemValueDefinition/ValueDefinition/ValueType').text
+          data[:value] = x 'Value'
+          data[:type] = x 'ItemValueDefinition/ValueDefinition/ValueType'
           data[:from_profile] =  false
           data[:from_data] = true
-          data[:start_date] = DateTime.parse(REXML::XPath.first(doc, "descendant-or-self::ItemValue/StartDate").text) rescue nil
+          data[:start_date] = DateTime.parse(x "StartDate") rescue nil
           # Create object
           ItemValue.new(data)
         rescue

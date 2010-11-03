@@ -1,4 +1,5 @@
 require 'rexml/document'
+require 'nokogiri'
 require 'active_support'
 require 'log4r'
 
