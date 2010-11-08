@@ -43,5 +43,30 @@ describe ParseHelper, 'using REXML' do
     end
   end
 
+end
+
+
+class NokogiriTestObject
+  include ParseHelper
+  def xmlpathpreamble
+    '/root/'
+  end
+  def initialize
+    @doc = load_xml_doc(fixture('parse_test.xml'))
+  end
+end
+
+describe ParseHelper, 'using Nokogiri' do
+
+  before :all do
+    @obj = NokogiriTestObject.new
+  end
+
+  test_set.each_pair do |xpath, res|
+    it "should parse #{xpath} to #{res}" do
+      @obj.send(:x, xpath).should eql res
+    end
+  end
+
 
 end
