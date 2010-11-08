@@ -11,7 +11,7 @@ module AMEE
     end
     def to_s
       if @last_err
-        [@msg, @last_err.message, @last_err.backtrace.first].join "\n"
+        ([@msg, @last_err.message]+@last_err.backtrace).join "\n"
       else
         super
       end
