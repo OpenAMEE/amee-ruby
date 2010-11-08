@@ -7,24 +7,29 @@ module ParseHelper
     else
       nodes=REXML::XPath.match(doc,"#{preamble}#{xpath}")
     end
+    if nodes.is_a? String
+      return nodes
+    end
     if nodes.length==1
-      if nodes.first.respond_to?(:text)
-        return nodes.first.text
-        elsif nodes.first.respond_to?(:to_s)
-          return nodes.first.to_s
-      end
+      return node_value(nodes.first)
+    elsif nodes.length>1
+      return nodes.map{|x| node_value(x)}
+    else
+      return nil
     end
-
-    if nodes.length>1
-      if nodes.first.respond_to?(:text)
-        return nodes.map{|x| x.text}
-        elsif nodes.first.respond_to?(:to_s)
-          return nodes.map{|x| x.to_s}
-      end
-    end
-    return nil
-    
   end
+  
+  def node_value(node)
+    if node.is_a?(Nokogiri::XML::Attr) || node.is_a?(REXML::Attribute)
+      # Attributes are allowed to be an empty string
+      return node.to_s
+    elsif node.is_a?(Nokogiri::XML::Element) || node.is_a?(REXML::Element)
+      return node.text == '' ? nil : node.text
+    else
+      return node.to_s
+    end
+  end
+
   def xmlpathpreamble
     ''
   end

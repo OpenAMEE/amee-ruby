@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <attrib_test attrib='attribute_value' empty_attrib=''/>
+    <content_test>content</content_test>
+    <whitespace_content_test>
+    </whitespace_content_test>
+    <empty_content_test></empty_content_test>
+    <self_closing_content_test/>
+    <multi_attrib_test>
+        <attrib_test attrib='attribute_value'/>
+        <attrib_test attrib='attribute_value_1'/>
+        <attrib_test attrib=''/>
+        <attrib_test/>        
+    </multi_attrib_test>
+    <multi_content_test>
+        <content>content</content>
+        <content>
+        </content>
+        <content></content>
+        <content/>
+    </multi_content_test>
+</root>
