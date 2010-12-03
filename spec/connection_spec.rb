@@ -170,7 +170,7 @@ describe AMEE::Connection, "with bad authentication information" do
 
 end
 
-describe AMEE::Connection, "with authentication" do
+describe AMEE::Connection, "with authentication , doing write-requests" do
 
   it "should be able to send post requests" do
     flexmock(Net::HTTP).new_instances do |mock|
