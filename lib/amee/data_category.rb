@@ -55,7 +55,7 @@ module AMEE
           end
           # Create object
           Category.new(data)
-        rescue
+        rescue AMEE::JSONParseError
           raise AMEE::BadData.new("Couldn't load DataCategory from JSON data. Check that your URL is correct.\n#{json}")
         end
       end
@@ -98,7 +98,7 @@ module AMEE
           end
           # Create object
           Category.new(data)
-        rescue
+        rescue AMEE::XMLParseError
           raise AMEE::BadData.new("Couldn't load DataCategory from XML data. Check that your URL is correct.\n#{xml}")
         end
       end

@@ -45,4 +45,27 @@ module AMEE
   class Deprecated < Exception
   end
   
+  # These are used to classify exceptions that can occur during parsing
+  
+  module XMLParseError
+  end
+  
+  module JSONParseError
+  end
+  
 end
+
+# Set up possible XML parse errors
+[
+  Exception
+].each do |m| 
+  m.send(:include, AMEE::XMLParseError)
+end
+
+# Set up possible JSON parse errors
+[
+  Exception
+].each do |m| 
+  m.send(:include, AMEE::JSONParseError)
+end
+
