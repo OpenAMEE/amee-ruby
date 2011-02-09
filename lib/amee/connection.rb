@@ -62,6 +62,7 @@ module AMEE
     attr_reader :server
     attr_reader :username
     attr_reader :password
+    attr_reader :retries
 
     def timeout
       @http.read_timeout
