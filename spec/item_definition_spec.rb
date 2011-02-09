@@ -88,166 +88,166 @@ describe AMEE::Admin::ItemDefinition, "with an authenticated connection" do
 end
 
 DefinitionsListResponse=<<HERE
-  <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-  <Resources>
-  <ItemDefinitionsResource>
-    <ItemDefinitions>
-      <ItemDefinition uid="2169991DE821">
-        <Name>AAA Car Generic</Name>
-        <DrillDown>fuel,size</DrillDown>
-      </ItemDefinition>
-      <ItemDefinition uid="18CB59F9EC2D">
-        <Name>AAA Units test</Name>
-        <DrillDown>type</DrillDown>
-      </ItemDefinition>
-      <ItemDefinition uid="76C56F7DF49A">
-        <Name>AAAA1234Test</Name>
-        <DrillDown/>
-      </ItemDefinition>
-      <ItemDefinition uid="CF344E20E9AC">
-        <Name>AAATipTest</Name>
-        <DrillDown>question</DrillDown>
-      </ItemDefinition>
-      <ItemDefinition uid="70BCD634D0A4">
-        <Name>ActOnCO2 Action</Name>
-        <DrillDown>type</DrillDown></ItemDefinition>
-      <ItemDefinition uid="62058B6FD778">
-        <Name>ActOnCO2 Metadata</Name>
-        <DrillDown>type</DrillDown>
-      </ItemDefinition>
-      <ItemDefinition uid="D3351CDC11C8">
-        <Name>ADigTest</Name>
-        <DrillDown/></ItemDefinition>
-      <ItemDefinition uid="A02807E44CA3">
-        <Name>Adipic Acid N2O emissions</Name>
-        <DrillDown>abatementTechnology</DrillDown>
-      </ItemDefinition>
-      <ItemDefinition uid="B910141B00DB">
-        <Name>AJC ID TEST</Name>
-        <DrillDown>type</DrillDown>
-      </ItemDefinition>
-      <ItemDefinition uid="4660BD4FCF97">
-        <Name>Aluminium Production: Alternative (no anode data)</Name>
-        <DrillDown>type</DrillDown>
-      </ItemDefinition></ItemDefinitions>
-      <Pager>
-          <Start>0</Start>
-          <From>1</From>
-          <To>10</To>
-          <Items>10</Items>
-          <CurrentPage>1</CurrentPage>
-          <RequestedPage>1</RequestedPage>
-          <NextPage>-1</NextPage>
-          <PreviousPage>-1</PreviousPage>
-          <LastPage>1</LastPage>
-          <ItemsPerPage>10</ItemsPerPage>
-          <ItemsFound>10</ItemsFound>
-      </Pager>
-   </ItemDefinitionsResource>
- </Resources>"
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Resources>
+<ItemDefinitionsResource>
+  <ItemDefinitions>
+    <ItemDefinition uid="2169991DE821">
+      <Name>AAA Car Generic</Name>
+      <DrillDown>fuel,size</DrillDown>
+    </ItemDefinition>
+    <ItemDefinition uid="18CB59F9EC2D">
+      <Name>AAA Units test</Name>
+      <DrillDown>type</DrillDown>
+    </ItemDefinition>
+    <ItemDefinition uid="76C56F7DF49A">
+      <Name>AAAA1234Test</Name>
+      <DrillDown/>
+    </ItemDefinition>
+    <ItemDefinition uid="CF344E20E9AC">
+      <Name>AAATipTest</Name>
+      <DrillDown>question</DrillDown>
+    </ItemDefinition>
+    <ItemDefinition uid="70BCD634D0A4">
+      <Name>ActOnCO2 Action</Name>
+      <DrillDown>type</DrillDown></ItemDefinition>
+    <ItemDefinition uid="62058B6FD778">
+      <Name>ActOnCO2 Metadata</Name>
+      <DrillDown>type</DrillDown>
+    </ItemDefinition>
+    <ItemDefinition uid="D3351CDC11C8">
+      <Name>ADigTest</Name>
+      <DrillDown/></ItemDefinition>
+    <ItemDefinition uid="A02807E44CA3">
+      <Name>Adipic Acid N2O emissions</Name>
+      <DrillDown>abatementTechnology</DrillDown>
+    </ItemDefinition>
+    <ItemDefinition uid="B910141B00DB">
+      <Name>AJC ID TEST</Name>
+      <DrillDown>type</DrillDown>
+    </ItemDefinition>
+    <ItemDefinition uid="4660BD4FCF97">
+      <Name>Aluminium Production: Alternative (no anode data)</Name>
+      <DrillDown>type</DrillDown>
+    </ItemDefinition></ItemDefinitions>
+    <Pager>
+        <Start>0</Start>
+        <From>1</From>
+        <To>10</To>
+        <Items>10</Items>
+        <CurrentPage>1</CurrentPage>
+        <RequestedPage>1</RequestedPage>
+        <NextPage>-1</NextPage>
+        <PreviousPage>-1</PreviousPage>
+        <LastPage>1</LastPage>
+        <ItemsPerPage>10</ItemsPerPage>
+        <ItemsFound>10</ItemsFound>
+    </Pager>
+  </ItemDefinitionsResource>
+</Resources>
 HERE
 
 DefinitionsListResponsePage1=<<HERE
-  <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-  <Resources>
-  <ItemDefinitionsResource>
-    <ItemDefinitions>
-      <ItemDefinition uid="2169991DE821">
-        <Name>AAA Car Generic</Name>
-        <DrillDown>fuel,size</DrillDown>
-      </ItemDefinition>
-      <ItemDefinition uid="18CB59F9EC2D">
-        <Name>AAA Units test</Name>
-        <DrillDown>type</DrillDown>
-      </ItemDefinition>
-      <ItemDefinition uid="76C56F7DF49A">
-        <Name>AAAA1234Test</Name>
-        <DrillDown/>
-      </ItemDefinition>
-      <ItemDefinition uid="CF344E20E9AC">
-        <Name>AAATipTest</Name>
-        <DrillDown>question</DrillDown>
-      </ItemDefinition></ItemDefinitions>
-      <Pager>
-          <Start>0</Start>
-          <From>1</From>
-          <To>4</To>
-          <Items>10</Items>
-          <CurrentPage>1</CurrentPage>
-          <RequestedPage>1</RequestedPage>
-          <NextPage>2</NextPage>
-          <PreviousPage>-1</PreviousPage>
-          <LastPage>3</LastPage>
-          <ItemsPerPage>4</ItemsPerPage>
-          <ItemsFound>4</ItemsFound>
-      </Pager>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Resources>
+<ItemDefinitionsResource>
+  <ItemDefinitions>
+    <ItemDefinition uid="2169991DE821">
+      <Name>AAA Car Generic</Name>
+      <DrillDown>fuel,size</DrillDown>
+    </ItemDefinition>
+    <ItemDefinition uid="18CB59F9EC2D">
+      <Name>AAA Units test</Name>
+      <DrillDown>type</DrillDown>
+    </ItemDefinition>
+    <ItemDefinition uid="76C56F7DF49A">
+      <Name>AAAA1234Test</Name>
+      <DrillDown/>
+    </ItemDefinition>
+    <ItemDefinition uid="CF344E20E9AC">
+      <Name>AAATipTest</Name>
+      <DrillDown>question</DrillDown>
+    </ItemDefinition></ItemDefinitions>
+    <Pager>
+        <Start>0</Start>
+        <From>1</From>
+        <To>4</To>
+        <Items>10</Items>
+        <CurrentPage>1</CurrentPage>
+        <RequestedPage>1</RequestedPage>
+        <NextPage>2</NextPage>
+        <PreviousPage>-1</PreviousPage>
+        <LastPage>3</LastPage>
+        <ItemsPerPage>4</ItemsPerPage>
+        <ItemsFound>4</ItemsFound>
+    </Pager>
   </ItemDefinitionsResource>
 </Resources>
 HERE
 DefinitionsListResponsePage2=<<HERE
-  <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-  <Resources>
-  <ItemDefinitionsResource>
-    <ItemDefinitions>
-      <ItemDefinition uid="70BCD634D0A4">
-        <Name>ActOnCO2 Action</Name>
-        <DrillDown>type</DrillDown></ItemDefinition>
-      <ItemDefinition uid="62058B6FD778">
-        <Name>ActOnCO2 Metadata</Name>
-        <DrillDown>type</DrillDown>
-      </ItemDefinition>
-      <ItemDefinition uid="D3351CDC11C8">
-        <Name>ADigTest</Name>
-        <DrillDown/></ItemDefinition>
-      <ItemDefinition uid="A02807E44CA3">
-        <Name>Adipic Acid N2O emissions</Name>
-        <DrillDown>abatementTechnology</DrillDown>
-      </ItemDefinition></ItemDefinitions>
-      <Pager>
-          <Start>4</Start>
-          <From>5</From>
-          <To>8</To>
-          <Items>10</Items>
-          <CurrentPage>2</CurrentPage>
-          <RequestedPage>2</RequestedPage>
-          <NextPage>3</NextPage>
-          <PreviousPage>1</PreviousPage>
-          <LastPage>3</LastPage>
-          <ItemsPerPage>4</ItemsPerPage>
-          <ItemsFound>4</ItemsFound>
-      </Pager>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Resources>
+<ItemDefinitionsResource>
+  <ItemDefinitions>
+    <ItemDefinition uid="70BCD634D0A4">
+      <Name>ActOnCO2 Action</Name>
+      <DrillDown>type</DrillDown></ItemDefinition>
+    <ItemDefinition uid="62058B6FD778">
+      <Name>ActOnCO2 Metadata</Name>
+      <DrillDown>type</DrillDown>
+    </ItemDefinition>
+    <ItemDefinition uid="D3351CDC11C8">
+      <Name>ADigTest</Name>
+      <DrillDown/></ItemDefinition>
+    <ItemDefinition uid="A02807E44CA3">
+      <Name>Adipic Acid N2O emissions</Name>
+      <DrillDown>abatementTechnology</DrillDown>
+    </ItemDefinition></ItemDefinitions>
+    <Pager>
+        <Start>4</Start>
+        <From>5</From>
+        <To>8</To>
+        <Items>10</Items>
+        <CurrentPage>2</CurrentPage>
+        <RequestedPage>2</RequestedPage>
+        <NextPage>3</NextPage>
+        <PreviousPage>1</PreviousPage>
+        <LastPage>3</LastPage>
+        <ItemsPerPage>4</ItemsPerPage>
+        <ItemsFound>4</ItemsFound>
+    </Pager>
   </ItemDefinitionsResource>
 </Resources>
 HERE
 DefinitionsListResponsePage3=<<HERE
-  <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-  <Resources>
-  <ItemDefinitionsResource>
-    <ItemDefinitions>
-      <ItemDefinition uid="B910141B00DB">
-        <Name>AJC ID TEST</Name>
-        <DrillDown>type</DrillDown>
-      </ItemDefinition>
-      <ItemDefinition uid="4660BD4FCF97">
-        <Name>Aluminium Production: Alternative (no anode data)</Name>
-        <DrillDown>type</DrillDown>
-      </ItemDefinition>
-      </ItemDefinitions>
-      <Pager>
-          <Start>8</Start>
-          <From>9</From>
-          <To>10</To>
-          <Items>10</Items>
-          <CurrentPage>3</CurrentPage>
-          <RequestedPage>3</RequestedPage>
-          <NextPage>-1</NextPage>
-          <PreviousPage>2</PreviousPage>
-          <LastPage>3</LastPage>
-          <ItemsPerPage>4</ItemsPerPage>
-          <ItemsFound>2</ItemsFound>
-      </Pager>
-   </ItemDefinitionsResource>
- </Resources>"
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Resources>
+<ItemDefinitionsResource>
+  <ItemDefinitions>
+    <ItemDefinition uid="B910141B00DB">
+      <Name>AJC ID TEST</Name>
+      <DrillDown>type</DrillDown>
+    </ItemDefinition>
+    <ItemDefinition uid="4660BD4FCF97">
+      <Name>Aluminium Production: Alternative (no anode data)</Name>
+      <DrillDown>type</DrillDown>
+    </ItemDefinition>
+    </ItemDefinitions>
+    <Pager>
+        <Start>8</Start>
+        <From>9</From>
+        <To>10</To>
+        <Items>10</Items>
+        <CurrentPage>3</CurrentPage>
+        <RequestedPage>3</RequestedPage>
+        <NextPage>-1</NextPage>
+        <PreviousPage>2</PreviousPage>
+        <LastPage>3</LastPage>
+        <ItemsPerPage>4</ItemsPerPage>
+        <ItemsFound>2</ItemsFound>
+    </Pager>
+  </ItemDefinitionsResource>
+</Resources>
 HERE
 
 describe AMEE::Admin::ItemDefinitionList do

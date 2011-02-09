@@ -34,10 +34,10 @@ module ParseHelper
     ''
   end
   def load_xml_doc(xml)
-    doc = Nokogiri.XML(xml)
+    doc = Nokogiri.XML(xml) { |config| config.strict }
     doc.remove_namespaces!
     doc
   end
   private :x
-
+  
 end
