@@ -53,7 +53,7 @@ module AMEE
           @http.verify_depth = 5
         end
       end
-      @http.read_timeout = 60
+      @http.read_timeout = options[:timeout] || 60
       @http.set_debug_output($stdout) if options[:enable_debug]
       @debug = options[:enable_debug]
     end

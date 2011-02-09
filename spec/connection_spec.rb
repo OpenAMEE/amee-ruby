@@ -28,6 +28,12 @@ describe AMEE::Connection do
     c.timeout.should be(30)
   end
 
+  it "can set timeout on creation" do
+    flexmock(Net::HTTP).new_instances.should_receive(:start => nil)
+    c = AMEE::Connection.new('server.example.com', 'username', 'password', :timeout => 30)
+    c.timeout.should be(30)
+  end
+
 end
 
 describe AMEE::Connection, "with authentication" do

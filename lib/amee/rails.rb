@@ -15,6 +15,9 @@ module AMEE
           if $AMEE_CONFIG['retries']
             options.merge! :retries => $AMEE_CONFIG['retries'].to_i
           end
+          if $AMEE_CONFIG['timeout']
+            options.merge! :timeout => $AMEE_CONFIG['timeout'].to_i
+          end
           if $AMEE_CONFIG['cache'] == 'rails'
             # Pass in the rails cache store
             options[:cache_store] = ActionController::Base.cache_store

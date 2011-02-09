@@ -107,12 +107,16 @@ To enable caching, pass ':cache => :memory_store' to AMEE::Connection.new, or ad
 same caching configuration as your Rails app, you can add 'cache: rails' to 
 amee.yml instead. Caching is disabled by default.
 
-== RETRIES
+== RETRY / TIMEOUT SUPPORT
 
 The AMEE::Connection object can now automatically retry if a request fails due to 
 network problems or connection failures. To enable this feature, pass ':retries => 3'
 to AMEE::Connection.new, or add 'retries: 3' to your amee.yml if using Rails. You can
 change the number of retry attempts, 3 is just used as an example above.
+
+The Connection object also allows a timeout to be set for requests. By default this is
+set to 60 seconds, but if you want to provide a different value (30 seconds for 
+instance), pass ':timeout => 30' to AMEE::Connection.new, or 'timeout: 30' in amee.yml.
 
 == UPGRADING TO VERSION > 2
 
