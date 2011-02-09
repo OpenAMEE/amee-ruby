@@ -2,3 +2,5 @@ nbproject
 coverage
 doc
 pkg
+*.tmproj
+.DS_Store
