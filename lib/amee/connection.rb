@@ -18,6 +18,7 @@ module AMEE
       @auth_token = nil
       @format = options[:format] || (defined?(JSON) ? :json : :xml)
       @amee_source = options[:amee_source]
+      @retries = options[:retries] || 0
       if !valid?
        raise "You must supply connection details - server, username and password are all required!"
       end
@@ -217,11 +218,10 @@ module AMEE
           if response.body.include? "would have resulted in a duplicate resource being created"
             raise AMEE::DuplicateResource.new("The specified resource already exists. This is most often caused by creating an item that overlaps another in time.\nRequest: #{request.method} #{request.path}\n#{request.body}\Response: #{response.body}")
           else
-            raise AMEE::UnknownError.new("An error occurred while talking to AMEE: HTTP response code #{response.code}.\nRequest: #{request.method} #{request.path}\n#{request.body}\Response: #{response.body}")
+            raise AMEE::BadRequest.new("Bad request. This is probably due to malformed input data.\nRequest: #{request.method} #{request.path}\n#{request.body}\Response: #{response.body}")
           end
-        else
-          raise AMEE::UnknownError.new("An error occurred while talking to AMEE: HTTP response code #{response.code}.\nRequest: #{request.method} #{request.path}\n#{request.body}\Response: #{response.body}")
       end
+      raise AMEE::UnknownError.new("An error occurred while talking to AMEE: HTTP response code #{response.code}.\nRequest: #{request.method} #{request.path}\n#{request.body}\Response: #{response.body}")
     end
 
     def do_request(request, format = @format)
@@ -251,7 +251,22 @@ module AMEE
       # Set AMEE source header if set
       request['X-AMEE-Source'] = @amee_source if @amee_source
       # Do the business
-      response = @http.request(request)
+      retries = [1] * @retries
+      begin
+        response = @http.request(request)
+        # 500-series errors fail early
+        if ['502', '503', '504'].include? response.code
+          raise AMEE::ConnectionFailed.new("A connection error occurred while talking to AMEE: HTTP response code #{response.code}.\nRequest: #{request.method} #{request.path}")
+        end
+      rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError,
+             Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError, AMEE::ConnectionFailed => e
+        if delay = retries.shift
+          sleep delay
+          retry
+        else
+          raise
+        end
+      end
       # Done
       response
     end

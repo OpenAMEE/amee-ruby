@@ -18,6 +18,9 @@ module AMEE
     end
   end
   
+  class BadRequest < Exception
+  end
+
   class AuthFailed < Exception  
   end
 

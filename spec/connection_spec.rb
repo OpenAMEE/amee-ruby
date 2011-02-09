@@ -142,6 +142,78 @@ Response: {}")
 
 end
 
+describe AMEE::Connection, "with retry enabled" do
+
+  [
+    Timeout::Error,
+    Errno::EINVAL, 
+    Errno::ECONNRESET, 
+    EOFError,
+    Net::HTTPBadResponse, 
+    Net::HTTPHeaderSyntaxError, 
+    Net::ProtocolError
+  ].each do |e|
+
+    it "should retry after #{e.name} the correct number of times" do
+      flexmock(Net::HTTP).new_instances do |mock|
+        mock.should_receive(:start => nil)
+        mock.should_receive(:request).and_raise(e.new).twice
+        mock.should_receive(:request).and_return(flexmock(:code => '200', :body => '{}')).once
+        mock.should_receive(:finish => nil)
+      end
+      amee = AMEE::Connection.new('server.example.com', 'username', 'password', :retries => 2)
+      lambda {
+        amee.get('/data')
+      }.should_not raise_error        
+    end
+
+    it "should retry #{e.name} the correct number of times and raise error on failure" do
+      flexmock(Net::HTTP).new_instances do |mock|
+        mock.should_receive(:start => nil)
+        mock.should_receive(:request).and_raise(e.new).times(3)
+        mock.should_receive(:finish => nil)
+      end
+      amee = AMEE::Connection.new('server.example.com', 'username', 'password', :retries => 2)
+      lambda {
+        amee.get('/data')
+      }.should raise_error(e)
+    end
+  end
+  
+  [
+    '502',
+    '503',
+    '504'
+  ].each do |e|
+
+    it "should retry after #{e} the correct number of times" do
+      flexmock(Net::HTTP).new_instances do |mock|
+        mock.should_receive(:start => nil)
+        mock.should_receive(:request).and_return(flexmock(:code => e, :body => '{}')).twice
+        mock.should_receive(:request).and_return(flexmock(:code => '200', :body => '{}')).once
+        mock.should_receive(:finish => nil)
+      end
+      amee = AMEE::Connection.new('server.example.com', 'username', 'password', :retries => 2)
+      lambda {
+        amee.get('/data')
+      }.should_not raise_error        
+    end
+
+    it "should retry #{e} the correct number of times and raise error on failure" do
+      flexmock(Net::HTTP).new_instances do |mock|
+        mock.should_receive(:start => nil)
+        mock.should_receive(:request).and_return(flexmock(:code => e, :body => '{}')).times(3)
+        mock.should_receive(:finish => nil)
+      end
+      amee = AMEE::Connection.new('server.example.com', 'username', 'password', :retries => 2)
+      lambda {
+        amee.get('/data')
+      }.should raise_error(AMEE::ConnectionFailed)
+    end
+  end  
+  
+end
+
 describe AMEE::Connection, "with incorrect server name" do
 
   it "should raise a useful error" do
