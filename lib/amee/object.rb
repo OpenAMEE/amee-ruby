@@ -21,6 +21,33 @@ module AMEE
     def expire_cache
       @connection.expire_matching(full_path+'.*')
     end
-
+    
+    # A nice shared get/parse handler that handles retry on parse errors
+    def self.get_and_parse(connection, path, options)
+      # Note that we don't check the number of times retry has been done lower down
+      # and count separately instead.
+      # Worst case could be retries squared given the right pattern of failure, but
+      # that seems unlikely. Would need, for instance, repeated 503 503 200->parse_fail
+      retries = [1] * connection.retries
+      begin
+        # Load data from path
+        response = connection.get(path, options).body
+        # Parse data from response
+        x = nil
+        if response.is_json?
+          from_json(response)
+        else
+          from_xml(response)
+        end
+      rescue JSON::ParserError, Nokogiri::XML::SyntaxError, REXML::ParseException => e
+        # Invalid JSON or XML received, try the GET again in case it got cut off mid-stream
+        if retries.shift
+          retry
+        else
+          raise
+        end
+      end
+    end
+    
   end
 end

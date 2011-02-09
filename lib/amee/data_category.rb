@@ -25,37 +25,39 @@ module AMEE
       def self.from_json(json)
         # Parse json
         doc = JSON.parse(json)
-        data = {}
-        data[:uid] = doc['dataCategory']['uid']
-        data[:created] = DateTime.parse(doc['dataCategory']['created'])
-        data[:modified] = DateTime.parse(doc['dataCategory']['modified'])
-        data[:name] = doc['dataCategory']['name']
-        data[:path] = doc['path']
-        data[:children] = []
-        data[:pager] = AMEE::Pager.from_json(doc['children']['pager'])
-        itemdef=doc['dataCategory']['itemDefinition']
-        data[:itemdef] = itemdef ? itemdef['uid'] : nil
-        doc['children']['dataCategories'].each do |child|
-          category_data = {}
-          category_data[:name] = child['name']
-          category_data[:path] = child['path']
-          category_data[:uid] = child['uid']
-          data[:children] << category_data
-        end
-        data[:items] = []
-        if doc['children']['dataItems']['rows']
-          doc['children']['dataItems']['rows'].each do |item|
-            item_data = {}
-            item.each_pair do |key, value|
-              item_data[key.to_sym] = value
-            end
-            data[:items] << item_data
+        begin
+          data = {}
+          data[:uid] = doc['dataCategory']['uid']
+          data[:created] = DateTime.parse(doc['dataCategory']['created'])
+          data[:modified] = DateTime.parse(doc['dataCategory']['modified'])
+          data[:name] = doc['dataCategory']['name']
+          data[:path] = doc['path']
+          data[:children] = []
+          data[:pager] = AMEE::Pager.from_json(doc['children']['pager'])
+          itemdef=doc['dataCategory']['itemDefinition']
+          data[:itemdef] = itemdef ? itemdef['uid'] : nil
+          doc['children']['dataCategories'].each do |child|
+            category_data = {}
+            category_data[:name] = child['name']
+            category_data[:path] = child['path']
+            category_data[:uid] = child['uid']
+            data[:children] << category_data
           end
+          data[:items] = []
+          if doc['children']['dataItems']['rows']
+            doc['children']['dataItems']['rows'].each do |item|
+              item_data = {}
+              item.each_pair do |key, value|
+                item_data[key.to_sym] = value
+              end
+              data[:items] << item_data
+            end
+          end
+          # Create object
+          Category.new(data)
+        rescue
+          raise AMEE::BadData.new("Couldn't load DataCategory from JSON data. Check that your URL is correct.\n#{json}")
         end
-        # Create object
-        Category.new(data)
-      rescue
-        raise AMEE::BadData.new("Couldn't load DataCategory from JSON data. Check that your URL is correct.\n#{json}")
       end
 
       def self.xmlpathpreamble
@@ -64,39 +66,41 @@ module AMEE
       def self.from_xml(xml)
         # Parse XML
         @doc = doc= REXML::Document.new(xml)
-        data = {}
-        data[:uid] = x '@uid'
-        data[:created] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataCategoryResource/DataCategory/@created").to_s)
-        data[:modified] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataCategoryResource/DataCategory/@modified").to_s)
-        data[:name] = (REXML::XPath.first(doc, '/Resources/DataCategoryResource/DataCategory/Name') || REXML::XPath.first(doc, '/Resources/DataCategoryResource/DataCategory/name')).text
-        data[:path] = (REXML::XPath.first(doc, '/Resources/DataCategoryResource/Path') || REXML::XPath.first(doc, '/Resources/DataCategoryResource/DataCategory/path')).text || ""
-        data[:pager] = AMEE::Pager.from_xml(REXML::XPath.first(doc, '//Pager'))
-        itemdefattrib=REXML::XPath.first(doc, '/Resources/DataCategoryResource//ItemDefinition/@uid')
-        data[:itemdef] = itemdefattrib ? itemdefattrib.to_s : nil
-        data[:children] = []
-        REXML::XPath.each(doc, '/Resources/DataCategoryResource//Children/DataCategories/DataCategory') do |child|
-          category_data = {}
-          category_data[:name] = (child.elements['Name'] || child.elements['name']).text
-          category_data[:path] = (child.elements['Path'] || child.elements['path']).text
-          category_data[:uid] = child.attributes['uid'].to_s
-          data[:children] << category_data
-        end
-        data[:items] = []
-        REXML::XPath.each(doc, '/Resources/DataCategoryResource//Children/DataItems/DataItem') do |item|
-          item_data = {}
-          item_data[:uid] = item.attributes['uid'].to_s
-          item.elements.each do |element|
-            item_data[element.name.to_sym] = element.text
+        begin
+          data = {}
+          data[:uid] = x '@uid'
+          data[:created] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataCategoryResource/DataCategory/@created").to_s)
+          data[:modified] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataCategoryResource/DataCategory/@modified").to_s)
+          data[:name] = (REXML::XPath.first(doc, '/Resources/DataCategoryResource/DataCategory/Name') || REXML::XPath.first(doc, '/Resources/DataCategoryResource/DataCategory/name')).text
+          data[:path] = (REXML::XPath.first(doc, '/Resources/DataCategoryResource/Path') || REXML::XPath.first(doc, '/Resources/DataCategoryResource/DataCategory/path')).text || ""
+          data[:pager] = AMEE::Pager.from_xml(REXML::XPath.first(doc, '//Pager'))
+          itemdefattrib=REXML::XPath.first(doc, '/Resources/DataCategoryResource//ItemDefinition/@uid')
+          data[:itemdef] = itemdefattrib ? itemdefattrib.to_s : nil
+          data[:children] = []
+          REXML::XPath.each(doc, '/Resources/DataCategoryResource//Children/DataCategories/DataCategory') do |child|
+            category_data = {}
+            category_data[:name] = (child.elements['Name'] || child.elements['name']).text
+            category_data[:path] = (child.elements['Path'] || child.elements['path']).text
+            category_data[:uid] = child.attributes['uid'].to_s
+            data[:children] << category_data
           end
-          if item_data[:path].nil?
-            item_data[:path] = item_data[:uid]
+          data[:items] = []
+          REXML::XPath.each(doc, '/Resources/DataCategoryResource//Children/DataItems/DataItem') do |item|
+            item_data = {}
+            item_data[:uid] = item.attributes['uid'].to_s
+            item.elements.each do |element|
+              item_data[element.name.to_sym] = element.text
+            end
+            if item_data[:path].nil?
+              item_data[:path] = item_data[:uid]
+            end
+            data[:items] << item_data
           end
-          data[:items] << item_data
+          # Create object
+          Category.new(data)
+        rescue
+          raise AMEE::BadData.new("Couldn't load DataCategory from XML data. Check that your URL is correct.\n#{xml}")
         end
-        # Create object
-        Category.new(data)
-      rescue
-        raise AMEE::BadData.new("Couldn't load DataCategory from XML data. Check that your URL is correct.\n#{xml}")
       end
 
       def self.get(connection, path, orig_options = {})
@@ -112,20 +116,12 @@ module AMEE
         end
 
         # Load data from path
-        response = connection.get(path, options).body
+        cat = get_and_parse(connection, path, options)
 
-        # Parse data from response
-        if response.is_json?
-          cat = Category.from_json(response)
-        else
-          cat = Category.from_xml(response)
-        end
         # Store connection in object for future use
         cat.connection = connection
         # Done
         return cat
-      rescue
-        raise AMEE::BadData.new("Couldn't load DataCategory. Check that your URL is correct.\n#{response}")
       end
 
       def self.root(connection)
