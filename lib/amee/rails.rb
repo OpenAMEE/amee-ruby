@@ -12,6 +12,9 @@ module AMEE
           if $AMEE_CONFIG['ssl'] == false
             options.merge! :ssl => false
           end
+          if $AMEE_CONFIG['retries']
+            options.merge! :retries => $AMEE_CONFIG['retries'].to_i
+          end
           if $AMEE_CONFIG['cache'] == 'rails'
             # Pass in the rails cache store
             options[:cache_store] = ActionController::Base.cache_store
