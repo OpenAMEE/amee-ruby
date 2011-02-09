@@ -107,6 +107,13 @@ To enable caching, pass ':cache => :memory_store' to AMEE::Connection.new, or ad
 same caching configuration as your Rails app, you can add 'cache: rails' to 
 amee.yml instead. Caching is disabled by default.
 
+== RETRIES
+
+The AMEE::Connection object can now automatically retry if a request fails due to 
+network problems or connection failures. To enable this feature, pass ':retries => 3'
+to AMEE::Connection.new, or add 'retries: 3' to your amee.yml if using Rails. You can
+change the number of retry attempts, 3 is just used as an example above.
+
 == UPGRADING TO VERSION > 2
 
 There are a few changes to the API exposed by this gem for version 2. The main
