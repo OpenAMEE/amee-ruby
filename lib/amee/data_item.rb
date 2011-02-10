@@ -34,102 +34,107 @@ module AMEE
       def self.from_json(json)
         # Read JSON
         doc = JSON.parse(json)
-        data = {}
-        data[:uid] = doc['dataItem']['uid']
-        data[:created] = DateTime.parse(doc['dataItem']['created'])
-        data[:modified] = DateTime.parse(doc['dataItem']['modified'])
-        data[:name] = doc['dataItem']['name']
-        data[:path] = doc['path']
-        data[:label] = doc['dataItem']['label']
-        data[:item_definition] = doc['dataItem']['itemDefinition']['uid']
-        data[:category_uid] = doc['dataItem']['dataCategory']['uid']
-        # Read v2 total
-        data[:total_amount] = doc['amount']['value'] rescue nil
-        data[:total_amount_unit] = doc['amount']['unit'] rescue nil
-        # Read v1 total
-        if data[:total_amount].nil?
-          data[:total_amount] = doc['amountPerMonth'] rescue nil
-          data[:total_amount_unit] = "kg/month"
+        begin
+          data = {}
+          data[:uid] = doc['dataItem']['uid']
+          data[:created] = DateTime.parse(doc['dataItem']['created'])
+          data[:modified] = DateTime.parse(doc['dataItem']['modified'])
+          data[:name] = doc['dataItem']['name']
+          data[:path] = doc['path']
+          data[:label] = doc['dataItem']['label']
+          data[:item_definition] = doc['dataItem']['itemDefinition']['uid']
+          data[:category_uid] = doc['dataItem']['dataCategory']['uid']
+          # Read v2 total
+          data[:total_amount] = doc['amount']['value'] rescue nil
+          data[:total_amount_unit] = doc['amount']['unit'] rescue nil
+          # Read v1 total
+          if data[:total_amount].nil?
+            data[:total_amount] = doc['amountPerMonth'] rescue nil
+            data[:total_amount_unit] = "kg/month"
+          end
+          # Get values
+          data[:values] = []
+          doc['dataItem']['itemValues'].each do |value|
+            value_data = {}
+            value_data[:name] = value['name']
+            value_data[:path] = value['path']
+            value_data[:value] = value['value']
+            value_data[:drill] = value['itemValueDefinition']['drillDown'] rescue nil
+            value_data[:uid] = value['uid']
+            data[:values] << value_data
+          end
+          # Get choices
+          data[:choices] = []
+          doc['userValueChoices']['choices'].each do |choice|
+            choice_data = {}
+            choice_data[:name] = choice['name']
+            choice_data[:value] = choice['value']
+            data[:choices] << choice_data
+          end
+          data[:start_date] = DateTime.parse(doc['dataItem']['startDate']) rescue nil
+          # Create object
+          Item.new(data)
+        rescue
+          raise AMEE::BadData.new("Couldn't load DataItem from JSON. Check that your URL is correct.\n#{json}")
         end
-        # Get values
-        data[:values] = []
-        doc['dataItem']['itemValues'].each do |value|
-          value_data = {}
-          value_data[:name] = value['name']
-          value_data[:path] = value['path']
-          value_data[:value] = value['value']
-          value_data[:drill] = value['itemValueDefinition']['drillDown'] rescue nil
-          value_data[:uid] = value['uid']
-          data[:values] << value_data
-        end
-        # Get choices
-        data[:choices] = []
-        doc['userValueChoices']['choices'].each do |choice|
-          choice_data = {}
-          choice_data[:name] = choice['name']
-          choice_data[:value] = choice['value']
-          data[:choices] << choice_data
-        end
-        data[:start_date] = DateTime.parse(doc['dataItem']['startDate']) rescue nil
-        # Create object
-        Item.new(data)
-      rescue
-        raise AMEE::BadData.new("Couldn't load DataItem from JSON. Check that your URL is correct.\n#{json}")
       end
 
       def self.from_xml(xml)
         # Parse data from response into hash
         doc = REXML::Document.new(xml)
-        data = {}
-        data[:uid] = REXML::XPath.first(doc, "/Resources/DataItemResource/DataItem/@uid").to_s
-        data[:created] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataItemResource/DataItem/@created").to_s)
-        data[:modified] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataItemResource/DataItem/@modified").to_s)
-        data[:name] = (REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/Name') || REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/name')).text
-        data[:path] = (REXML::XPath.first(doc, '/Resources/DataItemResource/Path') || REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/path')).text
-        data[:label] = (REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/Label') || REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/label')).text
-        data[:item_definition] = REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/ItemDefinition/@uid').to_s
-        data[:category_uid] = REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/DataCategory/@uid').to_s
-        # Read v2 total
-        data[:total_amount] = REXML::XPath.first(doc, '/Resources/DataItemResource/Amount').text.to_f rescue nil
-        data[:total_amount_unit] = REXML::XPath.first(doc, '/Resources/DataItemResource/Amount/@unit').to_s rescue nil
-        # Read v1 total
-        if data[:total_amount].nil?
-          data[:total_amount] = REXML::XPath.first(doc, '/Resources/DataItemResource/AmountPerMonth').text.to_f rescue nil
-          data[:total_amount_unit] = "kg/month"
+        begin
+          data = {}
+          data[:uid] = REXML::XPath.first(doc, "/Resources/DataItemResource/DataItem/@uid").to_s
+          data[:created] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataItemResource/DataItem/@created").to_s)
+          data[:modified] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataItemResource/DataItem/@modified").to_s)
+          data[:name] = (REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/Name') || REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/name')).text
+          data[:path] = (REXML::XPath.first(doc, '/Resources/DataItemResource/Path') || REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/path')).text
+          data[:label] = (REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/Label') || REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/label')).text
+          data[:item_definition] = REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/ItemDefinition/@uid').to_s
+          data[:category_uid] = REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/DataCategory/@uid').to_s
+          # Read v2 total
+          data[:total_amount] = REXML::XPath.first(doc, '/Resources/DataItemResource/Amount').text.to_f rescue nil
+          data[:total_amount_unit] = REXML::XPath.first(doc, '/Resources/DataItemResource/Amount/@unit').to_s rescue nil
+          # Read v1 total
+          if data[:total_amount].nil?
+            data[:total_amount] = REXML::XPath.first(doc, '/Resources/DataItemResource/AmountPerMonth').text.to_f rescue nil
+            data[:total_amount_unit] = "kg/month"
+          end
+          # Get values
+          data[:values] = []
+          REXML::XPath.each(doc, '/Resources/DataItemResource/DataItem/ItemValues/ItemValue') do |value|
+            value_data = {}
+            value_data[:name] = (value.elements['Name'] || value.elements['name']).text
+            value_data[:path] = (value.elements['Path'] || value.elements['path']).text
+            value_data[:value] = (value.elements['Value'] || value.elements['value']).text
+            value_data[:drill] = value.elements['ItemValueDefinition'].elements['DrillDown'].text == "false" ? false : true rescue nil
+            value_data[:uid] = value.attributes['uid'].to_s
+            data[:values] << value_data
+          end
+          # Get choices
+          data[:choices] = []
+          REXML::XPath.each(doc, '/Resources/DataItemResource/Choices/Choices/Choice') do |choice|
+            choice_data = {}
+            choice_data[:name] = (choice.elements['Name']).text
+            choice_data[:value] = (choice.elements['Value']).text || ""
+            data[:choices] << choice_data
+          end
+          data[:start_date] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataItemResource/DataItem/StartDate").text) rescue nil
+          # Create object
+          Item.new(data)
+        rescue
+          raise AMEE::BadData.new("Couldn't load DataItem from XML. Check that your URL is correct.\n#{xml}")
         end
-        # Get values
-        data[:values] = []
-        REXML::XPath.each(doc, '/Resources/DataItemResource/DataItem/ItemValues/ItemValue') do |value|
-          value_data = {}
-          value_data[:name] = (value.elements['Name'] || value.elements['name']).text
-          value_data[:path] = (value.elements['Path'] || value.elements['path']).text
-          value_data[:value] = (value.elements['Value'] || value.elements['value']).text
-          value_data[:drill] = value.elements['ItemValueDefinition'].elements['DrillDown'].text == "false" ? false : true rescue nil
-          value_data[:uid] = value.attributes['uid'].to_s
-          data[:values] << value_data
-        end
-        # Get choices
-        data[:choices] = []
-        REXML::XPath.each(doc, '/Resources/DataItemResource/Choices/Choices/Choice') do |choice|
-          choice_data = {}
-          choice_data[:name] = (choice.elements['Name']).text
-          choice_data[:value] = (choice.elements['Value']).text || ""
-          data[:choices] << choice_data
-        end
-        data[:start_date] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataItemResource/DataItem/StartDate").text) rescue nil
-        # Create object
-        Item.new(data)
-      rescue
-        raise AMEE::BadData.new("Couldn't load DataItem from XML. Check that your URL is correct.\n#{xml}")
       end
 
 
       def self.get(connection, path, options = {})
         # Load data from path
-        response = connection.get(path, options).body
-        AMEE::Data::Item.parse(connection, response)
-      rescue
-        raise AMEE::BadData.new("Couldn't load DataItem. Check that your URL is correct.\n#{response}")
+        item= get_and_parse(connection, path, options)
+        # Store connection in object for future use
+        item.connection = connection
+        # Done
+        return item
       end
 
       def self.parse(connection, response)
