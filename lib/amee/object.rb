@@ -33,7 +33,6 @@ module AMEE
         # Load data from path
         response = connection.get(path, options).body
         # Parse data from response
-        x = nil
         if response.is_json?
           from_json(response)
         else
