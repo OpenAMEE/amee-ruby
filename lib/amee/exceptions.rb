@@ -57,14 +57,15 @@ end
 
 # Set up possible XML parse errors
 [
-  Exception
+  ArgumentError, # thrown by Date.parse
 ].each do |m| 
   m.send(:include, AMEE::XMLParseError)
 end
 
 # Set up possible JSON parse errors
 [
-  Exception
+  ArgumentError, # thrown by Date.parse,
+  NoMethodError, # missing elements in JSON, thrown by nil[]
 ].each do |m| 
   m.send(:include, AMEE::JSONParseError)
 end
