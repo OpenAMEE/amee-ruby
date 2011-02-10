@@ -91,8 +91,8 @@ describe AMEE::Admin::ItemValueDefinitionList, "with an authenticated connection
   it "should fail gracefully on other errors" do
     connection = flexmock "connection"
     connection.should_receive(:retries).and_return(0).once
-    connection.should_receive(:get).with("/definitions/itemDefinitions/BD88D30D1214/itemValueDefinitions", {}).and_raise("unidentified error")
-    lambda{AMEE::Admin::ItemValueDefinitionList.new(connection, "BD88D30D1214")}.should raise_error(AMEE::BadData)
+    connection.should_receive(:get).with("/definitions/itemDefinitions/BD88D30D1214/itemValueDefinitions", {}).and_raise(Timeout::Error)
+    lambda{AMEE::Admin::ItemValueDefinitionList.new(connection, "BD88D30D1214")}.should raise_error(Timeout::Error)
   end
 end
 
