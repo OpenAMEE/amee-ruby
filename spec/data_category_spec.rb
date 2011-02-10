@@ -150,7 +150,7 @@ describe AMEE::Data::Category, "with an authenticated XML connection" do
   it "should fail gracefully with bad data in XML" do
     connection = flexmock "connection"
     connection.should_receive(:retries).and_return(0)
-    connection.should_receive(:get).with("/data", {:itemsPerPage => 10}).and_return(flexmock(:body => '<?xml version="1.0" encoding="UTF-8"?><Resources></Resources>'))
+    connection.should_receive(:get).with("/data", {:itemsPerPage => 10}).and_return(flexmock(:body => fixture('empty.xml')))
     lambda{AMEE::Data::Category.get(connection, "/data")}.should raise_error(AMEE::BadData)
   end
 
@@ -235,7 +235,7 @@ describe AMEE::Data::Category, "with an authenticated JSON connection" do
   it "should fail gracefully with bad data in json" do
     connection = flexmock "connection"
     connection.should_receive(:retries).and_return(0)
-    connection.should_receive(:get).with("/data", {:itemsPerPage => 10}).and_return(flexmock(:body => "{}"))
+    connection.should_receive(:get).with("/data", {:itemsPerPage => 10}).and_return(flexmock(:body => fixture('empty.json')))
     lambda{AMEE::Data::Category.get(connection, "/data")}.should raise_error(AMEE::BadData)
   end
 
