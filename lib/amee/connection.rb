@@ -228,10 +228,13 @@ module AMEE
     def do_request(request, format = @format)
       # Open HTTP connection
       @http.start
+      # Set auth token in cookie (and header just in case someone's stripping cookies)
+      request['Cookie'] = "authToken=#{@auth_token}"
+      request['authToken'] = @auth_token
       # Do request
       begin
         timethen=Time.now
-        response = send_request(request, format)
+        response = send_request(@http, request, format)
         Logger.log.debug("Requesting #{request.class} at #{request.path} with #{request.body} in format #{format}, taking #{(Time.now-timethen)*1000} miliseconds")
       end while !response_ok?(response, request)
       # Return response
@@ -243,10 +246,7 @@ module AMEE
       @http.finish if @http.started?
     end
 
-    def send_request(request, format = @format)
-      # Set auth token in cookie (and header just in case someone's stripping cookies)
-      request['Cookie'] = "authToken=#{@auth_token}"
-      request['authToken'] = @auth_token
+    def send_request(connection, request, format = @format)
       # Set accept header
       request['Accept'] = content_type(format)
       # Set AMEE source header if set
@@ -254,7 +254,7 @@ module AMEE
       # Do the business
       retries = [1] * @retries
       begin
-        response = @http.request(request)
+        response = connection.request(request)
         # 500-series errors fail early
         if ['502', '503', '504'].include? response.code
           raise AMEE::ConnectionFailed.new("A connection error occurred while talking to AMEE: HTTP response code #{response.code}.\nRequest: #{request.method} #{request.path}")
