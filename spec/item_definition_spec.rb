@@ -57,6 +57,7 @@ describe AMEE::Admin::ItemDefinition, "with an authenticated connection" do
   it "should be able to load an item value definition list" do
     connection = flexmock "connection"
     connection.should_receive(:get).with("/definitions/itemDefinitions/BD88D30D1214", {}).and_return(flexmock(:body => '<?xml version="1.0" encoding="UTF-8" standalone="no"?><Resources><ItemDefinitionResource><ItemDefinition created="2007-07-27 09:30:44.0" modified="2007-07-27 09:30:44.0" uid="BD88D30D1214"><Name>Bus Generic</Name><DrillDown>type</DrillDown><Environment uid="5F5887BCF726"/></ItemDefinition></ItemDefinitionResource></Resources>'))
+    connection.should_receive(:retries).and_return(0).once
     connection.should_receive(:get).with("/definitions/itemDefinitions/BD88D30D1214/itemValueDefinitions", {}).and_return(flexmock(:body => '<?xml version="1.0" encoding="UTF-8" standalone="no"?><Resources><ItemValueDefinitionsResource><Environment uid="5F5887BCF726"/><ItemDefinition uid="BD88D30D1214"/><ItemValueDefinitions><ItemValueDefinition uid="A8A212610A57"><Path>distancePerJourney</Path><Name>Distance per journey</Name><ValueDefinition created="2007-07-27 09:30:44.0" modified="2007-07-27 09:30:44.0" uid="45433E48B39F"><Name>amount</Name><ValueType>DECIMAL</ValueType><Description/><Environment uid="5F5887BCF726"/></ValueDefinition><Unit>km</Unit><FromProfile>true</FromProfile><FromData>false</FromData><DrillDown>false</DrillDown></ItemValueDefinition><ItemValueDefinition uid="D2AB505D2D91"><Path>type</Path><Name>Type</Name><ValueDefinition created="2007-07-27 09:30:44.0" modified="2007-07-27 09:30:44.0" uid="CCEB59CACE1B"><Name>text</Name><ValueType>TEXT</ValueType><Description/><Environment uid="5F5887BCF726"/></ValueDefinition><FromProfile>false</FromProfile><FromData>true</FromData><DrillDown>true</DrillDown></ItemValueDefinition><ItemValueDefinition uid="41EC337E5C79"><Path>numberOfJourneys</Path><Name>Number of journeys</Name><ValueDefinition created="2007-07-27 09:30:44.0" modified="2007-07-27 09:30:44.0" uid="45433E48B39F"><Name>amount</Name><ValueType>DECIMAL</ValueType><Description/><Environment uid="5F5887BCF726"/></ValueDefinition><FromProfile>true</FromProfile><FromData>false</FromData><DrillDown>false</DrillDown></ItemValueDefinition><ItemValueDefinition uid="9BAFC976044B"><Path>source</Path><Name>Source</Name><ValueDefinition created="2007-07-27 09:30:44.0" modified="2007-07-27 09:30:44.0" uid="CCEB59CACE1B"><Name>text</Name><ValueType>TEXT</ValueType><Description/><Environment uid="5F5887BCF726"/></ValueDefinition><FromProfile>false</FromProfile><FromData>true</FromData><DrillDown>false</DrillDown></ItemValueDefinition><ItemValueDefinition uid="9813267B616E"><Path>country</Path><Name>Country</Name><ValueDefinition created="2007-07-27 09:30:44.0" modified="2007-07-27 09:30:44.0" uid="CCEB59CACE1B"><Name>text</Name><ValueType>TEXT</ValueType><Description/><Environment uid="5F5887BCF726"/></ValueDefinition><FromProfile>true</FromProfile><FromData>false</FromData><DrillDown>false</DrillDown></ItemValueDefinition><ItemValueDefinition uid="263DE76AF8AA"><Path>kgCO2PerPassengerKmIE</Path><Name>kgCO2 Per Passenger Km IE</Name><ValueDefinition created="2007-07-27 09:30:44.0" modified="2007-07-27 09:30:44.0" uid="996AE5477B3F"><Name>kgCO2PerKm</Name><ValueType>DECIMAL</ValueType><Description/><Environment uid="5F5887BCF726"/></ValueDefinition><FromProfile>false</FromProfile><FromData>true</FromData><DrillDown>false</DrillDown></ItemValueDefinition><ItemValueDefinition uid="F5550D71085F"><Path>kgCO2PerKmPassenger</Path><Name>kgCO2 Per Passenger Km</Name><ValueDefinition created="2007-07-27 09:30:44.0" modified="2007-07-27 09:30:44.0" uid="996AE5477B3F"><Name>kgCO2PerKm</Name><ValueType>DECIMAL</ValueType><Description/><Environment uid="5F5887BCF726"/></ValueDefinition><FromProfile>false</FromProfile><FromData>true</FromData><DrillDown>false</DrillDown></ItemValueDefinition><ItemValueDefinition uid="FE166C7602BB"><Path>typicalJourneyDistance</Path><Name>Typical journey distance</Name><ValueDefinition created="2007-07-27 09:30:44.0" modified="2007-07-27 09:30:44.0" uid="45433E48B39F"><Name>amount</Name><ValueType>DECIMAL</ValueType><Description/><Environment uid="5F5887BCF726"/></ValueDefinition><FromProfile>false</FromProfile><FromData>true</FromData><DrillDown>false</DrillDown></ItemValueDefinition><ItemValueDefinition uid="2F76AB4E3C0F"><Path>journeyFrequency</Path><Name>Journey frequency</Name><ValueDefinition created="2007-07-27 09:30:44.0" modified="2007-07-27 09:30:44.0" uid="CCEB59CACE1B"><Name>text</Name><ValueType>TEXT</ValueType><Description/><Environment uid="5F5887BCF726"/></ValueDefinition><FromProfile>true</FromProfile><FromData>false</FromData><DrillDown>false</DrillDown></ItemValueDefinition><ItemValueDefinition uid="B0F02E544603"><Path>numberOfPassengers</Path><Name>Number of passengers</Name><ValueDefinition created="2007-07-27 09:30:44.0" modified="2007-07-27 09:30:44.0" uid="45433E48B39F"><Name>amount</Name><ValueType>DECIMAL</ValueType><Description/><Environment uid="5F5887BCF726"/></ValueDefinition><FromProfile>true</FromProfile><FromData>false</FromData><DrillDown>false</DrillDown></ItemValueDefinition><ItemValueDefinition uid="28D0B8C4F52A"><Path>useTypicalDistance</Path><Name>Use typical distance</Name><ValueDefinition created="2007-07-27 09:30:44.0" modified="2007-07-27 09:30:44.0" uid="CCEB59CACE1B"><Name>text</Name><ValueType>TEXT</ValueType><Description/><Environment uid="5F5887BCF726"/></ValueDefinition><FromProfile>true</FromProfile><FromData>false</FromData><DrillDown>false</DrillDown></ItemValueDefinition><ItemValueDefinition uid="6334117D28A0"><Path>distanceKmPerMonth</Path><Name>Distance Km Per Month</Name><ValueDefinition created="2007-07-27 09:30:44.0" modified="2007-07-27 09:30:44.0" uid="B691497F1CF2"><Name>kM</Name><ValueType>DECIMAL</ValueType><Description/><Environment uid="5F5887BCF726"/></ValueDefinition><Unit>km</Unit><PerUnit>month</PerUnit><FromProfile>true</FromProfile><FromData>false</FromData><DrillDown>false</DrillDown></ItemValueDefinition><ItemValueDefinition uid="98EA75911467"><Path>distancePerJourney</Path><Name>Distance per journey</Name><ValueDefinition created="2007-07-27 09:30:44.0" modified="2007-07-27 09:30:44.0" uid="45433E48B39F"><Name>amount</Name><ValueType>DECIMAL</ValueType><Description/><Environment uid="5F5887BCF726"/></ValueDefinition><Unit>km</Unit><FromProfile>true</FromProfile><FromData>false</FromData><DrillDown>false</DrillDown></ItemValueDefinition><ItemValueDefinition uid="584BEA802996"><Path>isReturn</Path><Name>Is return</Name><ValueDefinition created="2007-07-27 09:30:44.0" modified="2007-07-27 09:30:44.0" uid="CCEB59CACE1B"><Name>text</Name><ValueType>TEXT</ValueType><Description/><Environment uid="5F5887BCF726"/></ValueDefinition><FromProfile>true</FromProfile><FromData>false</FromData><DrillDown>false</DrillDown></ItemValueDefinition><ItemValueDefinition uid="6CBF739E12F0"><Path>distance</Path><Name>Distance</Name><ValueDefinition created="2007-07-27 09:30:44.0" modified="2007-07-27 09:30:44.0" uid="45433E48B39F"><Name>amount</Name><ValueType>DECIMAL</ValueType><Description/><Environment uid="5F5887BCF726"/></ValueDefinition><Unit>km</Unit><PerUnit>year</PerUnit><FromProfile>true</FromProfile><FromData>false</FromData><DrillDown>false</DrillDown></ItemValueDefinition></ItemValueDefinitions></ItemValueDefinitionsResource></Resources>')).once
     @data = AMEE::Admin::ItemDefinition.load(connection,"BD88D30D1214")
     @data.uid.should == "BD88D30D1214"
@@ -253,6 +254,7 @@ HERE
 describe AMEE::Admin::ItemDefinitionList do
   it "Should parse a single page" do
     connection = flexmock "connection"
+    connection.should_receive(:retries).and_return(0).once
     connection.should_receive(:get).with("/definitions/itemDefinitions",{}).once.
       and_return flexmock(:body =>DefinitionsListResponse)
     @list=AMEE::Admin::ItemDefinitionList.new(connection)
@@ -261,8 +263,33 @@ describe AMEE::Admin::ItemDefinitionList do
     @list.first.name.should == "AAA Car Generic"
     @list.size.should==10
   end
+
+  it "Should retry on parse failures" do
+    connection = flexmock "connection"
+    connection.should_receive(:retries).and_return(2).once
+    connection.should_receive(:get).with("/definitions/itemDefinitions",{}).twice.
+      and_return flexmock(:body =>DefinitionsListResponse.first(12))
+    connection.should_receive(:get).with("/definitions/itemDefinitions",{}).once.
+      and_return flexmock(:body =>DefinitionsListResponse)
+    @list=AMEE::Admin::ItemDefinitionList.new(connection)
+    @list.first.should be_a AMEE::Admin::ItemDefinition
+    @list.first.uid.should == "2169991DE821"
+    @list.first.name.should == "AAA Car Generic"
+    @list.size.should==10
+  end
+
+  it "Should retry on parse failures and bubble up failure if never successful" do
+    connection = flexmock "connection"
+    connection.should_receive(:retries).and_return(2).once
+    connection.should_receive(:get).with("/definitions/itemDefinitions",{}).times(3).
+      and_return flexmock(:body =>DefinitionsListResponse.first(12))
+    lambda {
+      AMEE::Admin::ItemDefinitionList.new(connection)
+    }.should raise_error(Nokogiri::XML::SyntaxError)
+  end
   it "Should parse multiple pages" do
     connection = flexmock "connection"
+    connection.should_receive(:retries).and_return(0).times(3)
     connection.should_receive(:get).with("/definitions/itemDefinitions",{}).
       once.
       and_return flexmock(:body =>DefinitionsListResponsePage1)

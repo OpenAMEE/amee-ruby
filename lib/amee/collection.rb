@@ -12,10 +12,10 @@ module AMEE
       each_page do
         parse_page
       end
-    rescue => err
-      #raise AMEE::BadData.new("Couldn't load #{self.class.name}.\n#{response} due to #{err}")
+    rescue JSONParseError, XMLParseError => err
       raise AMEE::BadData.new("Couldn't load #{self.class.name}.\n#{response}")
     end
+
     def parse_page
       if json
         jsoncollector.each do |p|
@@ -39,12 +39,22 @@ module AMEE
 
     def fetch
       @options.merge! @pager.options if @pager
-      @response= @connection.get(collectionpath, @options).body
-      if @response.is_json?
-        @json = true
-        @doc = JSON.parse(@response)
-      else
-        @doc = load_xml_doc(@response)
+      retries = [1] * connection.retries
+      begin
+        @response= @connection.get(collectionpath, @options).body
+        if @response.is_json?
+          @json = true
+          @doc = JSON.parse(@response)
+        else
+          @doc = load_xml_doc(@response)
+        end
+      rescue JSON::ParserError, Nokogiri::XML::SyntaxError
+        if delay = retries.shift
+          sleep delay
+          retry
+        else
+          raise
+        end
       end
     end
 
