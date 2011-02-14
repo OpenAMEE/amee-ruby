@@ -83,9 +83,15 @@ describe AMEE::Connection, "with authentication" do
   it "should be able to get private URLs" do
     flexmock(Net::HTTP).new_instances do |mock|
       mock.should_receive(:start => nil)
-      mock.should_receive(:request).and_return(flexmock(:code => '401', :body => ''),
-                                               flexmock(:code => '200', :body => '', :'[]' => 'dummy_auth_token_data'),
-                                               flexmock(:code => '200', :body => '<?xml version="1.0" encoding="UTF-8"?><Resources><DataCategoryResource><Path/><DataCategory created="2007-07-27 09:30:44.0" modified="2007-07-27 09:30:44.0" uid="CD310BEBAC52"><Name>Root</Name><Path/><Environment uid="5F5887BCF726"/></DataCategory><Children><DataCategories><DataCategory uid="BBA3AC3E795E"><Name>Home</Name><Path>home</Path></DataCategory><DataCategory uid="9E5362EAB0E7"><Name>Metadata</Name><Path>metadata</Path></DataCategory><DataCategory uid="6153F468BE05"><Name>Test</Name><Path>test</Path></DataCategory><DataCategory uid="263FC0186834"><Name>Transport</Name><Path>transport</Path></DataCategory><DataCategory uid="2957AE9B6E6B"><Name>User</Name><Path>user</Path></DataCategory></DataCategories></Children></DataCategoryResource></Resources>'))
+      mock.should_receive(:request).and_return(flexmock(:code => '401', :body => '')).once
+      mock.should_receive(:request).and_return(flexmock(:code => '200', :body => '', :'[]' => 'dummy_auth_token_data')).once
+      mock.should_receive(:request).and_return { |request|
+        if request['authToken'] == 'dummy_auth_token_data'
+          flexmock(:code => '200', :body => '<?xml version="1.0" encoding="UTF-8"?><Resources><DataCategoryResource><Path/><DataCategory created="2007-07-27 09:30:44.0" modified="2007-07-27 09:30:44.0" uid="CD310BEBAC52"><Name>Root</Name><Path/><Environment uid="5F5887BCF726"/></DataCategory><Children><DataCategories><DataCategory uid="BBA3AC3E795E"><Name>Home</Name><Path>home</Path></DataCategory><DataCategory uid="9E5362EAB0E7"><Name>Metadata</Name><Path>metadata</Path></DataCategory><DataCategory uid="6153F468BE05"><Name>Test</Name><Path>test</Path></DataCategory><DataCategory uid="263FC0186834"><Name>Transport</Name><Path>transport</Path></DataCategory><DataCategory uid="2957AE9B6E6B"><Name>User</Name><Path>user</Path></DataCategory></DataCategories></Children></DataCategoryResource></Resources>')        
+        else
+          flexmock(:code => '401', :body => '')
+        end
+      }.once
       mock.should_receive(:finish => nil)
     end
     amee = AMEE::Connection.new('server.example.com', 'username', 'password')

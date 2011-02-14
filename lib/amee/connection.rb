@@ -228,11 +228,11 @@ module AMEE
     def do_request(request, format = @format)
       # Open HTTP connection
       @http.start
-      # Set auth token in cookie (and header just in case someone's stripping cookies)
-      request['Cookie'] = "authToken=#{@auth_token}"
-      request['authToken'] = @auth_token
-      # Do request
       begin
+        # Set auth token in cookie (and header just in case someone's stripping cookies)
+        request['Cookie'] = "authToken=#{@auth_token}"
+        request['authToken'] = @auth_token
+        # Do request
         timethen=Time.now
         response = send_request(@http, request, format)
         Logger.log.debug("Requesting #{request.class} at #{request.path} with #{request.body} in format #{format}, taking #{(Time.now-timethen)*1000} miliseconds")
