@@ -143,6 +143,7 @@ describe AMEE::Data::Category, "with an authenticated XML connection" do
     connection = flexmock "connection"
     connection.should_receive(:retries).and_return(1)
     connection.should_receive(:get).with("/data", {:itemsPerPage => 10}).and_return(flexmock(:body => fixture('data.xml').first(12))).once
+    connection.should_receive(:expire).with("/data").once
     connection.should_receive(:get).with("/data", {:itemsPerPage => 10}).and_return(flexmock(:body => fixture('data.xml'))).once
     lambda{AMEE::Data::Category.get(connection, "/data")}.should_not raise_error
   end
@@ -228,6 +229,7 @@ describe AMEE::Data::Category, "with an authenticated JSON connection" do
     connection = flexmock "connection"
     connection.should_receive(:retries).and_return(1)
     connection.should_receive(:get).with("/data", {:itemsPerPage => 10}).and_return(flexmock(:body => "{")).once
+    connection.should_receive(:expire).with("/data").once
     connection.should_receive(:get).with("/data", {:itemsPerPage => 10}).and_return(flexmock(:body => fixture('data.json'))).once
     lambda{AMEE::Data::Category.get(connection, "/data")}.should_not raise_error
   end

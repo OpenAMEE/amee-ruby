@@ -269,6 +269,7 @@ describe AMEE::Admin::ItemDefinitionList do
     connection.should_receive(:retries).and_return(2).once
     connection.should_receive(:get).with("/definitions/itemDefinitions",{}).twice.
       and_return flexmock(:body =>DefinitionsListResponse.first(12))
+    connection.should_receive(:expire).with("/definitions/itemDefinitions").times(2)
     connection.should_receive(:get).with("/definitions/itemDefinitions",{}).once.
       and_return flexmock(:body =>DefinitionsListResponse)
     @list=AMEE::Admin::ItemDefinitionList.new(connection)
@@ -283,6 +284,7 @@ describe AMEE::Admin::ItemDefinitionList do
     connection.should_receive(:retries).and_return(2).once
     connection.should_receive(:get).with("/definitions/itemDefinitions",{}).times(3).
       and_return flexmock(:body =>DefinitionsListResponse.first(12))
+    connection.should_receive(:expire).with("/definitions/itemDefinitions").times(3)
     lambda {
       AMEE::Admin::ItemDefinitionList.new(connection)
     }.should raise_error(Nokogiri::XML::SyntaxError)

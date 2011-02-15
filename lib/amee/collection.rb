@@ -49,6 +49,7 @@ module AMEE
           @doc = load_xml_doc(@response)
         end
       rescue JSON::ParserError, Nokogiri::XML::SyntaxError
+        @connection.expire(collectionpath)
         if delay = retries.shift
           sleep delay
           retry
