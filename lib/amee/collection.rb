@@ -12,9 +12,12 @@ module AMEE
       each_page do
         parse_page
       end
-    rescue JSONParseError, XMLParseError, AMEE::BadData => err
+    rescue JSONParseError, XMLParseError
       @connection.expire(collectionpath)
       raise AMEE::BadData.new("Couldn't load #{self.class.name}.\n#{@response}")
+    rescue AMEE::BadData
+      @connection.expire(collectionpath)
+      raise
     end
 
     def parse_page
