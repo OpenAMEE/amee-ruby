@@ -12,8 +12,9 @@ module AMEE
       each_page do
         parse_page
       end
-    rescue JSONParseError, XMLParseError => err
-      raise AMEE::BadData.new("Couldn't load #{self.class.name}.\n#{response}")
+    rescue JSONParseError, XMLParseError, AMEE::BadData => err
+      @connection.expire(collectionpath)
+      raise AMEE::BadData.new("Couldn't load #{self.class.name}.\n#{@response}")
     end
 
     def parse_page
@@ -26,7 +27,7 @@ module AMEE
         end
       else
         doc.xpath(xmlcollectorpath.split('/')[1...-1].join('/')).first or
-          raise AMEE::BadData.new("Couldn't load #{self.class.name}. parp\n#{response}")
+          raise AMEE::BadData.new("Couldn't load #{self.class.name}. \n#{@response}")
         doc.xpath(xmlcollectorpath).each do |p|
           obj=klass.new(parse_xml(p))
           obj.connection = connection

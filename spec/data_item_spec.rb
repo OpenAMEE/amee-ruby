@@ -125,14 +125,15 @@ describe AMEE::Data::Item, "with an authenticated connection" do
     connection = flexmock "connection"
     connection.should_receive(:retries).and_return(0)
     connection.should_receive(:get).with("/data/transport/plane/generic/AD63A83B4D41", {}).and_return(flexmock(:body => fixture('AD63A83B4D41.xml').first(12)))
+    connection.should_receive(:expire).with("/data/transport/plane/generic/AD63A83B4D41").once
     lambda{AMEE::Data::Item.get(connection, "/data/transport/plane/generic/AD63A83B4D41")}.should raise_error(REXML::ParseException)
   end
 
   it "should retry if bad XML is received first time" do
     connection = flexmock "connection"
-    connection.should_receive(:retries).and_return(1)
-    connection.should_receive(:get).with("/data/transport/plane/generic/AD63A83B4D41", {}).and_return(flexmock(:body => fixture('AD63A83B4D41.xml').first(12))).once
-    connection.should_receive(:expire).with("/data/transport/plane/generic/AD63A83B4D41").once
+    connection.should_receive(:retries).and_return(2)
+    connection.should_receive(:get).with("/data/transport/plane/generic/AD63A83B4D41", {}).and_return(flexmock(:body => fixture('AD63A83B4D41.xml').first(12))).twice
+    connection.should_receive(:expire).with("/data/transport/plane/generic/AD63A83B4D41").twice
     connection.should_receive(:get).with("/data/transport/plane/generic/AD63A83B4D41", {}).and_return(flexmock(:body => fixture('AD63A83B4D41.xml'))).once
     lambda{AMEE::Data::Item.get(connection, "/data/transport/plane/generic/AD63A83B4D41")}.should_not raise_error
   end
@@ -141,6 +142,7 @@ describe AMEE::Data::Item, "with an authenticated connection" do
     connection = flexmock "connection"
     connection.should_receive(:retries).and_return(0)
     connection.should_receive(:get).with("/data/transport/plane/generic/AD63A83B4D41", {}).and_return(flexmock(:body => fixture('empty.xml')))
+    connection.should_receive(:expire).with("/data/transport/plane/generic/AD63A83B4D41").once
     lambda{AMEE::Data::Item.get(connection, "/data/transport/plane/generic/AD63A83B4D41")}.should raise_error(AMEE::BadData)
   end
 
@@ -148,14 +150,15 @@ describe AMEE::Data::Item, "with an authenticated connection" do
     connection = flexmock "connection"
     connection.should_receive(:retries).and_return(0)
     connection.should_receive(:get).with("/data/transport/plane/generic/AD63A83B4D41", {}).and_return(flexmock(:body => fixture('AD63A83B4D41.json').first(12)))
+    connection.should_receive(:expire).with("/data/transport/plane/generic/AD63A83B4D41").once
     lambda{AMEE::Data::Item.get(connection, "/data/transport/plane/generic/AD63A83B4D41")}.should raise_error(JSON::ParserError)
   end
 
   it "should retry if bad JSON is received first time" do
     connection = flexmock "connection"
-    connection.should_receive(:retries).and_return(1)
-    connection.should_receive(:get).with("/data/transport/plane/generic/AD63A83B4D41", {}).and_return(flexmock(:body => fixture('AD63A83B4D41.json').first(12))).once
-    connection.should_receive(:expire).with("/data/transport/plane/generic/AD63A83B4D41").once
+    connection.should_receive(:retries).and_return(2)
+    connection.should_receive(:get).with("/data/transport/plane/generic/AD63A83B4D41", {}).and_return(flexmock(:body => fixture('AD63A83B4D41.json').first(12))).twice
+    connection.should_receive(:expire).with("/data/transport/plane/generic/AD63A83B4D41").twice
     connection.should_receive(:get).with("/data/transport/plane/generic/AD63A83B4D41", {}).and_return(flexmock(:body => fixture('AD63A83B4D41.json'))).once
     lambda{AMEE::Data::Item.get(connection, "/data/transport/plane/generic/AD63A83B4D41")}.should_not raise_error
   end
@@ -164,6 +167,7 @@ describe AMEE::Data::Item, "with an authenticated connection" do
     connection = flexmock "connection"
     connection.should_receive(:retries).and_return(0)
     connection.should_receive(:get).with("/data/transport/plane/generic/AD63A83B4D41", {}).and_return(flexmock(:body => fixture('empty.json')))
+    connection.should_receive(:expire).with("/data/transport/plane/generic/AD63A83B4D41").once
     lambda{AMEE::Data::Item.get(connection, "/data/transport/plane/generic/AD63A83B4D41")}.should raise_error(AMEE::BadData)
   end
 

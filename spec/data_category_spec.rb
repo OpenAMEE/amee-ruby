@@ -136,14 +136,15 @@ describe AMEE::Data::Category, "with an authenticated XML connection" do
     connection = flexmock "connection"
     connection.should_receive(:retries).and_return(0)
     connection.should_receive(:get).with("/data", {:itemsPerPage => 10}).and_return(flexmock(:body => fixture('data.xml').first(12)))
+    connection.should_receive(:expire).with("/data").once
     lambda{AMEE::Data::Category.get(connection, "/data")}.should raise_error(REXML::ParseException)
   end
 
   it "should retry if bad XML is received first time" do
     connection = flexmock "connection"
-    connection.should_receive(:retries).and_return(1)
-    connection.should_receive(:get).with("/data", {:itemsPerPage => 10}).and_return(flexmock(:body => fixture('data.xml').first(12))).once
-    connection.should_receive(:expire).with("/data").once
+    connection.should_receive(:retries).and_return(2)
+    connection.should_receive(:get).with("/data", {:itemsPerPage => 10}).and_return(flexmock(:body => fixture('data.xml').first(12))).twice
+    connection.should_receive(:expire).with("/data").twice
     connection.should_receive(:get).with("/data", {:itemsPerPage => 10}).and_return(flexmock(:body => fixture('data.xml'))).once
     lambda{AMEE::Data::Category.get(connection, "/data")}.should_not raise_error
   end
@@ -152,6 +153,7 @@ describe AMEE::Data::Category, "with an authenticated XML connection" do
     connection = flexmock "connection"
     connection.should_receive(:retries).and_return(0)
     connection.should_receive(:get).with("/data", {:itemsPerPage => 10}).and_return(flexmock(:body => fixture('empty.xml')))
+    connection.should_receive(:expire).with("/data").once
     lambda{AMEE::Data::Category.get(connection, "/data")}.should raise_error(AMEE::BadData)
   end
 
@@ -222,14 +224,15 @@ describe AMEE::Data::Category, "with an authenticated JSON connection" do
     connection = flexmock "connection"
     connection.should_receive(:retries).and_return(0)
     connection.should_receive(:get).with("/data", {:itemsPerPage => 10}).and_return(flexmock(:body => "{"))
+    connection.should_receive(:expire).with("/data").once
     lambda{AMEE::Data::Category.get(connection, "/data")}.should raise_error(JSON::ParserError)
   end
 
   it "should retry if bad JSON is received first time" do
     connection = flexmock "connection"
-    connection.should_receive(:retries).and_return(1)
-    connection.should_receive(:get).with("/data", {:itemsPerPage => 10}).and_return(flexmock(:body => "{")).once
-    connection.should_receive(:expire).with("/data").once
+    connection.should_receive(:retries).and_return(2)
+    connection.should_receive(:get).with("/data", {:itemsPerPage => 10}).and_return(flexmock(:body => "{")).twice
+    connection.should_receive(:expire).with("/data").twice
     connection.should_receive(:get).with("/data", {:itemsPerPage => 10}).and_return(flexmock(:body => fixture('data.json'))).once
     lambda{AMEE::Data::Category.get(connection, "/data")}.should_not raise_error
   end
@@ -238,6 +241,7 @@ describe AMEE::Data::Category, "with an authenticated JSON connection" do
     connection = flexmock "connection"
     connection.should_receive(:retries).and_return(0)
     connection.should_receive(:get).with("/data", {:itemsPerPage => 10}).and_return(flexmock(:body => fixture('empty.json')))
+    connection.should_receive(:expire).with("/data").once
     lambda{AMEE::Data::Category.get(connection, "/data")}.should raise_error(AMEE::BadData)
   end
 

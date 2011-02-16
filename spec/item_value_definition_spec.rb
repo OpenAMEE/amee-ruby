@@ -77,6 +77,7 @@ describe AMEE::Admin::ItemValueDefinitionList, "with an authenticated connection
     connection.should_receive(:retries).and_return(0).once
     xml = '<?xml version="1.0" encoding="UTF-8"?><Resources></Resources>'
     connection.should_receive(:get).with("/definitions/itemDefinitions/BD88D30D1214/itemValueDefinitions", {}).and_return(flexmock(:body => xml))
+    connection.should_receive(:expire).with("/definitions/itemDefinitions/BD88D30D1214/itemValueDefinitions").once
     lambda{AMEE::Admin::ItemValueDefinitionList.new(connection, "BD88D30D1214")}.should raise_error(AMEE::BadData)
   end
 
@@ -85,6 +86,7 @@ describe AMEE::Admin::ItemValueDefinitionList, "with an authenticated connection
     connection.should_receive(:retries).and_return(0).once
     json = '{}'
     connection.should_receive(:get).with("/definitions/itemDefinitions/BD88D30D1214/itemValueDefinitions", {}).and_return(flexmock(:body => json))
+    connection.should_receive(:expire).with("/definitions/itemDefinitions/BD88D30D1214/itemValueDefinitions").once
     lambda{AMEE::Admin::ItemValueDefinitionList.new(connection, "BD88D30D1214")}.should raise_error(AMEE::BadData)
   end
 

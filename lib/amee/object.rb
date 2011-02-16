@@ -40,13 +40,16 @@ module AMEE
         end
       rescue JSON::ParserError, Nokogiri::XML::SyntaxError, REXML::ParseException => e
         # Invalid JSON or XML received, try the GET again in case it got cut off mid-stream
+        connection.expire(path)
         if delay = retries.shift
-          connection.expire(path)
           sleep delay
           retry
         else
           raise
         end
+      rescue AMEE::BadData
+        connection.expire(path)
+        raise
       end
     end
     
