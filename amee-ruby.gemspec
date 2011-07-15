@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
     "README",
     "Rakefile",
     "VERSION",
+    "amee-ruby.gemspec",
     "amee.example.yml",
     "bin/ameesh",
     "cacert.pem",
