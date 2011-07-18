@@ -4,4 +4,3 @@ doc
 pkg
 *.tmproj
 .DS_Store
-Gemfile.lock
