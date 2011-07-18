@@ -13,4 +13,6 @@ group :development do
   gem 'rspec', '1.3.0'
   gem 'rcov'
   gem 'rspec_spinner', '1.1.3'
+  gem 'activerecord', "~> 2.3.5" # To test Rails integration
+  gem 'flexmock'
 end
