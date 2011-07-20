@@ -307,18 +307,36 @@ module AMEE
         # Send data to path
         options.merge! :dataItemUid => data_item_uid
         response = connection.post(path, options)
+        category = Category.parse(connection, response.body, options)
         if response['Location']
           location = response['Location'].match("https??://.*?(/.*)")[1]
         else
-          category = Category.parse(connection, response.body, nil)
           location = category.full_path + "/" + category.items[0][:path]
         end
         if get_item == true
-          get_options = {}
-          get_options[:returnUnit] = options[:returnUnit] if options[:returnUnit]
-          get_options[:returnPerUnit] = options[:returnPerUnit] if options[:returnPerUnit]
-          get_options[:format] = format if format
-          return AMEE::Profile::Item.get(connection, location, get_options)
+          if options[:representation] == 'full'
+            item = category.items.first
+            item[:connection] = category.connection
+            item[:profile_uid] = category.profile_uid
+            item[:data_item_label] = item.delete(:dataItemLabel)
+            item[:data_item_uid] = item.delete(:dataItemUid)
+            item[:start_date] = item.delete(:startDate)
+            item[:end_date] = item.delete(:endDate)
+            item[:total_amount] = item.delete(:amount)
+            item[:total_amount_unit] = item.delete(:amount_unit)
+            values = []
+            item[:values].each do |k,v|
+              values << v.merge(:path => k.to_s)
+            end
+            item[:values] = values
+            return AMEE::Profile::Item.new(item)
+          else
+            get_options = {}
+            get_options[:returnUnit] = options[:returnUnit] if options[:returnUnit]
+            get_options[:returnPerUnit] = options[:returnPerUnit] if options[:returnPerUnit]
+            get_options[:format] = format if format
+            return AMEE::Profile::Item.get(connection, location, get_options)
+          end
         else
           return location
         end
