@@ -60,8 +60,8 @@ end
 
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
-  gem.name = "amee-ruby"
-  gem.homepage = "http://github.com/Floppy/amee-ruby"
+  gem.name = "amee"
+  gem.homepage = "http://github.com/AMEE/amee-ruby"
   gem.license = "MIT"
   gem.summary = %Q{Ruby interface to the AMEE carbon calculator}
   gem.email = "james@floppy.org.uk"
