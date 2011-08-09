@@ -95,7 +95,7 @@ Gem::Specification.new do |s|
     "spec/spec_helper.rb",
     "spec/user_spec.rb"
   ]
-  s.homepage = %q{http://github.com/Floppy/amee-ruby}
+  s.homepage = %q{http://github.com/AMEE/amee-ruby}
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.4.1}
