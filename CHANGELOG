@@ -1,5 +1,8 @@
 = Changelog
 
+== 2.7.0
+ * Make profile item creation more efficient by using fewer API calls.
+
 == 2.6.0
  * Add auto-retry for certain HTTP failures.
  * Add options to Connection.new for timeout and retry.
