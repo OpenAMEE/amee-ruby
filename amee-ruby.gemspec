@@ -19,8 +19,10 @@ Gem::Specification.new do |s|
   s.files = [
     "CHANGELOG",
     "COPYING",
+    "Gemfile",
     "README",
     "Rakefile",
+    "VERSION",
     "amee-ruby.gemspec",
     "amee.example.yml",
     "bin/ameesh",
@@ -68,6 +70,8 @@ Gem::Specification.new do |s|
     "spec/drill_down_spec.rb",
     "spec/fixtures/AD63A83B4D41.json",
     "spec/fixtures/AD63A83B4D41.xml",
+    "spec/fixtures/create_item.json",
+    "spec/fixtures/create_item.xml",
     "spec/fixtures/data.json",
     "spec/fixtures/data.xml",
     "spec/fixtures/data_home_energy_quantity.xml",
@@ -92,7 +96,7 @@ Gem::Specification.new do |s|
     "spec/spec_helper.rb",
     "spec/user_spec.rb"
   ]
-  s.homepage = %q{http://github.com/AMEE/amee-ruby}
+  s.homepage = %q{http://github.com/Floppy/amee-ruby}
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.6.2}
