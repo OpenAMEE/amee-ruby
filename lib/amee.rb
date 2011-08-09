@@ -29,7 +29,6 @@ class String
 end
 
 require 'amee/logger'
-require 'amee/version'
 require 'amee/exceptions'
 require 'amee/connection'
 require 'amee/parse_helper'
