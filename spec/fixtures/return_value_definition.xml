@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Representation>
+    <ReturnValueDefinition uid="C21026DD57C5">
+        <ItemDefinition uid="5648C049F599">
+            <Name>AMEEM Prexistent Test Itemdef</Name>
+        </ItemDefinition>
+        <ValueDefinition uid="45433E48B39F">
+            <Name>amount</Name>
+            <ValueType>DECIMAL</ValueType>
+        </ValueDefinition>
+        <Unit>kg</Unit>
+        <PerUnit>month</PerUnit>
+        <Type>CO2</Type>
+        <Default>false</Default>
+    </ReturnValueDefinition>
+    <Status>OK</Status>
+    <Version>3.1.0</Version>
+</Representation>

@@ -54,3 +54,6 @@ end
 def fixture(filename)
   File.read File.dirname(__FILE__)+'/fixtures/'+filename
 end
+
+XMLPreamble='<?xml version="1.0" encoding="UTF-8"?>'
+

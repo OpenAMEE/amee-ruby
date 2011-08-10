@@ -49,6 +49,7 @@ require 'amee/pager'
 require 'amee/item_definition'
 require 'amee/item_value_definition'
 require 'amee/user'
+require 'amee/v3'
 
 class Date
   def amee1_date
