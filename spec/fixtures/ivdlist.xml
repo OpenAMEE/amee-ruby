@@ -1,0 +1,605 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Representation>
+    <ItemValueDefinitions>
+        <ItemValueDefinition created="2009-08-31T12:41:21Z" modified="2009-08-31T12:41:21Z" status="ACTIVE" uid="C531CA64DD72">
+            <Name>Past carbon intensity</Name>
+            <Path>pastIntensity</Path>
+            <Value>42</Value>
+            <WikiDoc>wikidoc</WikiDoc>
+            <ItemDefinition uid="472D78F6584E">
+                <Name>Power Stations And Stuff</Name>
+            </ItemDefinition>
+            <ValueDefinition uid="4594CFEC6A20">
+                <Name>amount</Name>
+                <ValueType>DECIMAL</ValueType>
+            </ValueDefinition>
+            <Usages>
+                <Usage>
+                    <Name>usageOne</Name>
+                    <Type>COMPULSORY</Type>
+                </Usage>
+                <Usage>
+                    <Name>usageTwo</Name>
+                    <Type>FORBIDDEN</Type>
+                </Usage>
+            </Usages>
+            <Choices>foo,bar</Choices>
+            <Unit>kg</Unit>
+            <PerUnit>MWh</PerUnit>
+            <DrillDown>false</DrillDown>
+            <FromData>true</FromData>
+            <FromProfile>false</FromProfile>
+            <Versions>
+                <Version>
+                    <Version>1.0</Version>
+                </Version>
+                <Version>
+                    <Version>2.0</Version>
+                </Version>
+            </Versions>
+        </ItemValueDefinition>
+        <ItemValueDefinition created="2009-08-31T12:41:22Z" modified="2009-08-31T12:41:22Z" status="ACTIVE" uid="0A52DE26089C">
+            <Name>State ID</Name>
+            <Path>stateId</Path>
+            <Value/>
+            <WikiDoc/>
+            <ItemDefinition uid="472D78F6584E">
+                <Name>Power Stations And Stuff</Name>
+            </ItemDefinition>
+            <ValueDefinition uid="4594CFEC6A20">
+                <Name>amount</Name>
+                <ValueType>DECIMAL</ValueType>
+            </ValueDefinition>
+            <Usages>
+                <Usage>
+                    <Name>usageOne</Name>
+                    <Type>OPTIONAL</Type>
+                </Usage>
+                <Usage>
+                    <Name>usageTwo</Name>
+                    <Type>IGNORED</Type>
+                </Usage>
+            </Usages>
+           <Choices/>
+            <DrillDown>false</DrillDown>
+            <FromData>true</FromData>
+            <FromProfile>false</FromProfile>
+            <Versions>
+                <Version>
+                    <Version>2.0</Version>
+                </Version>
+            </Versions>
+        </ItemValueDefinition>
+        <ItemValueDefinition created="2009-08-31T12:41:23Z" modified="2009-08-31T12:41:23Z" status="ACTIVE" uid="A067819072A2">
+            <Name>Congressional district representative</Name>
+            <Path>congRep</Path>
+            <Value/>
+            <WikiDoc/>
+            <ItemDefinition uid="472D78F6584E">
+                <Name>Power Stations And Stuff</Name>
+            </ItemDefinition>
+            <Usages/>
+            <Choices/>
+            <DrillDown>false</DrillDown>
+            <FromData>true</FromData>
+            <FromProfile>false</FromProfile>
+            <Versions>
+                <Version>
+                    <Version>2.0</Version>
+                </Version>
+            </Versions>
+        </ItemValueDefinition>
+        <ItemValueDefinition created="2009-08-31T12:41:22Z" modified="2009-08-31T12:41:22Z" status="ACTIVE" uid="6DF4A6DDE7C1">
+            <Name>Continent</Name>
+            <Path>continent</Path>
+            <Value/>
+            <WikiDoc/>
+            <ItemDefinition uid="472D78F6584E">
+                <Name>Power Stations And Stuff</Name>
+            </ItemDefinition>
+            <Usages/>
+            <Choices/>
+            <DrillDown>false</DrillDown>
+            <FromData>true</FromData>
+            <FromProfile>false</FromProfile>
+            <Versions>
+                <Version>
+                    <Version>2.0</Version>
+                </Version>
+            </Versions>
+        </ItemValueDefinition>
+        <ItemValueDefinition created="2009-08-31T12:41:20Z" modified="2009-08-31T12:41:20Z" status="ACTIVE" uid="EEA2DF15EEDC">
+            <Name>Plant name</Name>
+            <Path>plantName</Path>
+            <Value/>
+            <WikiDoc/>
+            <ItemDefinition uid="472D78F6584E">
+                <Name>Power Stations And Stuff</Name>
+            </ItemDefinition>
+            <Usages/>
+            <Choices/>
+            <DrillDown>true</DrillDown>
+            <FromData>true</FromData>
+            <FromProfile>false</FromProfile>
+            <Versions>
+                <Version>
+                    <Version>2.0</Version>
+                </Version>
+            </Versions>
+        </ItemValueDefinition>
+        <ItemValueDefinition created="2009-08-31T12:41:23Z" modified="2009-08-31T12:41:23Z" status="ACTIVE" uid="C77AC802AFE2">
+            <Name>Source</Name>
+            <Path>source</Path>
+            <Value/>
+            <WikiDoc/>
+            <ItemDefinition uid="472D78F6584E">
+                <Name>Power Stations And Stuff</Name>
+            </ItemDefinition>
+            <Usages/>
+            <Choices/>
+            <DrillDown>false</DrillDown>
+            <FromData>true</FromData>
+            <FromProfile>false</FromProfile>
+            <Versions>
+                <Version>
+                    <Version>2.0</Version>
+                </Version>
+            </Versions>
+        </ItemValueDefinition>
+        <ItemValueDefinition created="2009-08-31T12:41:19Z" modified="2010-08-13T14:54:30Z" status="ACTIVE" uid="F04F3AFB8078">
+            <Name>County</Name>
+            <Path>county</Path>
+            <Value/>
+            <WikiDoc/>
+            <ItemDefinition uid="472D78F6584E">
+                <Name>Power Stations And Stuff</Name>
+            </ItemDefinition>
+            <Usages/>
+            <Choices/>
+            <DrillDown>true</DrillDown>
+            <FromData>true</FromData>
+            <FromProfile>false</FromProfile>
+            <Versions>
+                <Version>
+                    <Version>2.0</Version>
+                </Version>
+            </Versions>
+        </ItemValueDefinition>
+        <ItemValueDefinition created="2009-08-31T12:41:23Z" modified="2009-08-31T12:41:23Z" status="ACTIVE" uid="9F6D7E3CF5D7">
+            <Name>City ID</Name>
+            <Path>cityId</Path>
+            <Value/>
+            <WikiDoc/>
+            <ItemDefinition uid="472D78F6584E">
+                <Name>Power Stations And Stuff</Name>
+            </ItemDefinition>
+            <Usages/>
+            <Choices/>
+            <DrillDown>false</DrillDown>
+            <FromData>true</FromData>
+            <FromProfile>false</FromProfile>
+            <Versions>
+                <Version>
+                    <Version>2.0</Version>
+                </Version>
+            </Versions>
+        </ItemValueDefinition>
+        <ItemValueDefinition created="2009-08-31T12:41:20Z" modified="2009-08-31T12:41:20Z" status="ACTIVE" uid="DCB9711657E8">
+            <Name>Zip code</Name>
+            <Path>zipCode</Path>
+            <Value/>
+            <WikiDoc/>
+            <ItemDefinition uid="472D78F6584E">
+                <Name>Power Stations And Stuff</Name>
+            </ItemDefinition>
+            <Usages/>
+            <Choices/>
+            <DrillDown>true</DrillDown>
+            <FromData>true</FromData>
+            <FromProfile>false</FromProfile>
+            <Versions>
+                <Version>
+                    <Version>2.0</Version>
+                </Version>
+            </Versions>
+        </ItemValueDefinition>
+        <ItemValueDefinition created="2009-08-31T12:41:22Z" modified="2009-08-31T12:41:22Z" status="ACTIVE" uid="84A642E6BAD4">
+            <Name>Future carbon intensity</Name>
+            <Path>futureIntensity</Path>
+            <Value/>
+            <WikiDoc/>
+            <ItemDefinition uid="472D78F6584E">
+                <Name>Power Stations And Stuff</Name>
+            </ItemDefinition>
+            <Usages/>
+            <Choices/>
+            <Unit>kg</Unit>
+            <PerUnit>MWh</PerUnit>
+            <DrillDown>false</DrillDown>
+            <FromData>true</FromData>
+            <FromProfile>false</FromProfile>
+            <Versions>
+                <Version>
+                    <Version>2.0</Version>
+                </Version>
+            </Versions>
+        </ItemValueDefinition>
+        <ItemValueDefinition created="2009-08-31T12:41:22Z" modified="2009-08-31T12:41:22Z" status="ACTIVE" uid="7ADB7AF0581D">
+            <Name>Longitude</Name>
+            <Path>longitude</Path>
+            <Value/>
+            <WikiDoc/>
+            <ItemDefinition uid="472D78F6584E">
+                <Name>Power Stations And Stuff</Name>
+            </ItemDefinition>
+            <Usages/>
+            <Choices/>
+            <DrillDown>false</DrillDown>
+            <FromData>true</FromData>
+            <FromProfile>false</FromProfile>
+            <Versions>
+                <Version>
+                    <Version>2.0</Version>
+                </Version>
+            </Versions>
+        </ItemValueDefinition>
+        <ItemValueDefinition created="2009-08-31T12:41:21Z" modified="2009-08-31T12:41:21Z" status="ACTIVE" uid="C364C5EAA05C">
+            <Name>Future carbon emissions</Name>
+            <Path>futureCarbon</Path>
+            <Value/>
+            <WikiDoc/>
+            <ItemDefinition uid="472D78F6584E">
+                <Name>Power Stations And Stuff</Name>
+            </ItemDefinition>
+            <Usages/>
+            <Choices/>
+            <Unit>t</Unit>
+            <PerUnit>year</PerUnit>
+            <DrillDown>false</DrillDown>
+            <FromData>true</FromData>
+            <FromProfile>false</FromProfile>
+            <Versions>
+                <Version>
+                    <Version>2.0</Version>
+                </Version>
+            </Versions>
+        </ItemValueDefinition>
+        <ItemValueDefinition created="2009-08-31T12:41:22Z" modified="2009-08-31T12:41:22Z" status="ACTIVE" uid="A7D3C2000820">
+            <Name>Country</Name>
+            <Path>country</Path>
+            <Value/>
+            <WikiDoc/>
+            <ItemDefinition uid="472D78F6584E">
+                <Name>Power Stations And Stuff</Name>
+            </ItemDefinition>
+            <Usages/>
+            <Choices/>
+            <DrillDown>false</DrillDown>
+            <FromData>true</FromData>
+            <FromProfile>false</FromProfile>
+            <Versions>
+                <Version>
+                    <Version>2.0</Version>
+                </Version>
+            </Versions>
+        </ItemValueDefinition>
+        <ItemValueDefinition created="2009-08-31T12:41:23Z" modified="2009-08-31T12:41:23Z" status="ACTIVE" uid="DEDB159A517A">
+            <Name>County ID</Name>
+            <Path>countyId</Path>
+            <Value/>
+            <WikiDoc/>
+            <ItemDefinition uid="472D78F6584E">
+                <Name>Power Stations And Stuff</Name>
+            </ItemDefinition>
+            <Usages/>
+            <Choices/>
+            <DrillDown>false</DrillDown>
+            <FromData>true</FromData>
+            <FromProfile>false</FromProfile>
+            <Versions>
+                <Version>
+                    <Version>2.0</Version>
+                </Version>
+            </Versions>
+        </ItemValueDefinition>
+        <ItemValueDefinition created="2009-08-31T12:41:21Z" modified="2009-08-31T12:41:21Z" status="ACTIVE" uid="D0752FBDBF15">
+            <Name>Past carbon emissions</Name>
+            <Path>pastCarbon</Path>
+            <Value/>
+            <WikiDoc/>
+            <ItemDefinition uid="472D78F6584E">
+                <Name>Power Stations And Stuff</Name>
+            </ItemDefinition>
+            <Usages/>
+            <Choices/>
+            <Unit>t</Unit>
+            <PerUnit>year</PerUnit>
+            <DrillDown>false</DrillDown>
+            <FromData>true</FromData>
+            <FromProfile>false</FromProfile>
+            <Versions>
+                <Version>
+                    <Version>2.0</Version>
+                </Version>
+            </Versions>
+        </ItemValueDefinition>
+        <ItemValueDefinition created="2009-08-31T12:41:23Z" modified="2009-08-31T12:41:23Z" status="ACTIVE" uid="94819D871D39">
+            <Name>Congressional district ID</Name>
+            <Path>congDistId</Path>
+            <Value/>
+            <WikiDoc/>
+            <ItemDefinition uid="472D78F6584E">
+                <Name>Power Stations And Stuff</Name>
+            </ItemDefinition>
+            <Usages/>
+            <Choices/>
+            <DrillDown>false</DrillDown>
+            <FromData>true</FromData>
+            <FromProfile>false</FromProfile>
+            <Versions>
+                <Version>
+                    <Version>2.0</Version>
+                </Version>
+            </Versions>
+        </ItemValueDefinition>
+        <ItemValueDefinition created="2009-08-31T12:41:20Z" modified="2009-08-31T12:41:20Z" status="ACTIVE" uid="229C05C66C68">
+            <Name>Plant ID code</Name>
+            <Path>plantId</Path>
+            <Value/>
+            <WikiDoc/>
+            <ItemDefinition uid="472D78F6584E">
+                <Name>Power Stations And Stuff</Name>
+            </ItemDefinition>
+            <Usages/>
+            <Choices/>
+            <DrillDown>false</DrillDown>
+            <FromData>true</FromData>
+            <FromProfile>false</FromProfile>
+            <Versions>
+                <Version>
+                    <Version>2.0</Version>
+                </Version>
+            </Versions>
+        </ItemValueDefinition>
+        <ItemValueDefinition created="2009-08-31T12:41:21Z" modified="2009-08-31T12:41:21Z" status="ACTIVE" uid="0098218C36A3">
+            <Name>Present energy output</Name>
+            <Path>presentEnergy</Path>
+            <Value/>
+            <WikiDoc/>
+            <ItemDefinition uid="472D78F6584E">
+                <Name>Power Stations And Stuff</Name>
+            </ItemDefinition>
+            <Usages/>
+            <Choices/>
+            <Unit>MWh</Unit>
+            <PerUnit>year</PerUnit>
+            <DrillDown>false</DrillDown>
+            <FromData>true</FromData>
+            <FromProfile>false</FromProfile>
+            <Versions>
+                <Version>
+                    <Version>2.0</Version>
+                </Version>
+            </Versions>
+        </ItemValueDefinition>
+        <ItemValueDefinition created="2009-08-31T12:41:22Z" modified="2009-08-31T12:41:22Z" status="ACTIVE" uid="F3C9FB602D55">
+            <Name>Latitude</Name>
+            <Path>latitude</Path>
+            <Value/>
+            <WikiDoc/>
+            <ItemDefinition uid="472D78F6584E">
+                <Name>Power Stations And Stuff</Name>
+            </ItemDefinition>
+            <Usages/>
+            <Choices/>
+            <DrillDown>false</DrillDown>
+            <FromData>true</FromData>
+            <FromProfile>false</FromProfile>
+            <Versions>
+                <Version>
+                    <Version>2.0</Version>
+                </Version>
+            </Versions>
+        </ItemValueDefinition>
+        <ItemValueDefinition created="2009-08-31T12:41:21Z" modified="2009-08-31T12:41:21Z" status="ACTIVE" uid="11866CFC5BA2">
+            <Name>Present carbon intensity</Name>
+            <Path>presentIntensity</Path>
+            <Value/>
+            <WikiDoc/>
+            <ItemDefinition uid="472D78F6584E">
+                <Name>Power Stations And Stuff</Name>
+            </ItemDefinition>
+            <Usages/>
+            <Choices/>
+            <Unit>kg</Unit>
+            <PerUnit>MWh</PerUnit>
+            <DrillDown>false</DrillDown>
+            <FromData>true</FromData>
+            <FromProfile>false</FromProfile>
+            <Versions>
+                <Version>
+                    <Version>2.0</Version>
+                </Version>
+            </Versions>
+        </ItemValueDefinition>
+        <ItemValueDefinition created="2009-08-31T12:41:21Z" modified="2009-08-31T12:41:21Z" status="ACTIVE" uid="40E4D4E62A37">
+            <Name>Present carbon emissions</Name>
+            <Path>presentCarbon</Path>
+            <Value/>
+            <WikiDoc/>
+            <ItemDefinition uid="472D78F6584E">
+                <Name>Power Stations And Stuff</Name>
+            </ItemDefinition>
+            <Usages/>
+            <Choices/>
+            <Unit>t</Unit>
+            <PerUnit>year</PerUnit>
+            <DrillDown>false</DrillDown>
+            <FromData>true</FromData>
+            <FromProfile>false</FromProfile>
+            <Versions>
+                <Version>
+                    <Version>2.0</Version>
+                </Version>
+            </Versions>
+        </ItemValueDefinition>
+        <ItemValueDefinition created="2009-08-31T12:41:21Z" modified="2009-08-31T12:41:21Z" status="ACTIVE" uid="E45DD1341CBD">
+            <Name>Past energy output</Name>
+            <Path>pastEnergy</Path>
+            <Value/>
+            <WikiDoc/>
+            <ItemDefinition uid="472D78F6584E">
+                <Name>Power Stations And Stuff</Name>
+            </ItemDefinition>
+            <Usages/>
+            <Choices/>
+            <Unit>MWh</Unit>
+            <PerUnit>year</PerUnit>
+            <DrillDown>false</DrillDown>
+            <FromData>true</FromData>
+            <FromProfile>false</FromProfile>
+            <Versions>
+                <Version>
+                    <Version>2.0</Version>
+                </Version>
+            </Versions>
+        </ItemValueDefinition>
+        <ItemValueDefinition created="2009-08-31T12:41:23Z" modified="2009-08-31T12:41:23Z" status="ACTIVE" uid="71A7714A7AE5">
+            <Name>Metropolitan area ID</Name>
+            <Path>metroAreaId</Path>
+            <Value/>
+            <WikiDoc/>
+            <ItemDefinition uid="472D78F6584E">
+                <Name>Power Stations And Stuff</Name>
+            </ItemDefinition>
+            <Usages/>
+            <Choices/>
+            <DrillDown>false</DrillDown>
+            <FromData>true</FromData>
+            <FromProfile>false</FromProfile>
+            <Versions>
+                <Version>
+                    <Version>2.0</Version>
+                </Version>
+            </Versions>
+        </ItemValueDefinition>
+        <ItemValueDefinition created="2009-08-31T12:41:21Z" modified="2009-08-31T12:41:21Z" status="ACTIVE" uid="E810C395DF4C">
+            <Name>Future energy output</Name>
+            <Path>futureEnergy</Path>
+            <Value/>
+            <WikiDoc/>
+            <ItemDefinition uid="472D78F6584E">
+                <Name>Power Stations And Stuff</Name>
+            </ItemDefinition>
+            <Usages/>
+            <Choices/>
+            <Unit>MWh</Unit>
+            <PerUnit>year</PerUnit>
+            <DrillDown>false</DrillDown>
+            <FromData>true</FromData>
+            <FromProfile>false</FromProfile>
+            <Versions>
+                <Version>
+                    <Version>2.0</Version>
+                </Version>
+            </Versions>
+        </ItemValueDefinition>
+        <ItemValueDefinition created="2009-08-31T12:41:20Z" modified="2009-08-31T12:41:20Z" status="ACTIVE" uid="BCF4F7691811">
+            <Name>City</Name>
+            <Path>city</Path>
+            <Value/>
+            <WikiDoc/>
+            <ItemDefinition uid="472D78F6584E">
+                <Name>Power Stations And Stuff</Name>
+            </ItemDefinition>
+            <Usages/>
+            <Choices/>
+            <DrillDown>true</DrillDown>
+            <FromData>true</FromData>
+            <FromProfile>false</FromProfile>
+            <Versions>
+                <Version>
+                    <Version>2.0</Version>
+                </Version>
+            </Versions>
+        </ItemValueDefinition>
+        <ItemValueDefinition created="2009-08-31T12:41:22Z" modified="2009-08-31T12:41:22Z" status="ACTIVE" uid="1B4360D5F318">
+            <Name>Continent ID</Name>
+            <Path>continentId</Path>
+            <Value/>
+            <WikiDoc/>
+            <ItemDefinition uid="472D78F6584E">
+                <Name>Power Stations And Stuff</Name>
+            </ItemDefinition>
+            <Usages/>
+            <Choices/>
+            <DrillDown>false</DrillDown>
+            <FromData>true</FromData>
+            <FromProfile>false</FromProfile>
+            <Versions>
+                <Version>
+                    <Version>2.0</Version>
+                </Version>
+            </Versions>
+        </ItemValueDefinition>
+        <ItemValueDefinition created="2009-08-31T12:41:20Z" modified="2009-08-31T12:41:20Z" status="ACTIVE" uid="83A00192FE09">
+            <Name>Metropolitan area</Name>
+            <Path>metroArea</Path>
+            <Value/>
+            <WikiDoc/>
+            <ItemDefinition uid="472D78F6584E">
+                <Name>Power Stations And Stuff</Name>
+            </ItemDefinition>
+            <Usages/>
+            <Choices/>
+            <DrillDown>true</DrillDown>
+            <FromData>true</FromData>
+            <FromProfile>false</FromProfile>
+            <Versions>
+                <Version>
+                    <Version>2.0</Version>
+                </Version>
+            </Versions>
+        </ItemValueDefinition>
+        <ItemValueDefinition created="2009-08-31T12:41:22Z" modified="2009-08-31T12:41:22Z" status="ACTIVE" uid="3FFA0A9C34D0">
+            <Name>Country ID</Name>
+            <Path>countryId</Path>
+            <Value/>
+            <WikiDoc/>
+            <ItemDefinition uid="472D78F6584E">
+                <Name>Power Stations And Stuff</Name>
+            </ItemDefinition>
+            <Usages/>
+            <Choices/>
+            <DrillDown>false</DrillDown>
+            <FromData>true</FromData>
+            <FromProfile>false</FromProfile>
+            <Versions>
+                <Version>
+                    <Version>2.0</Version>
+                </Version>
+            </Versions>
+        </ItemValueDefinition>
+        <ItemValueDefinition created="2009-08-31T12:41:19Z" modified="2009-08-31T12:41:19Z" status="ACTIVE" uid="2B0A0E540D4C">
+            <Name>State</Name>
+            <Path>state</Path>
+            <Value/>
+            <WikiDoc/>
+            <ItemDefinition uid="472D78F6584E">
+                <Name>Power Stations And Stuff</Name>
+            </ItemDefinition>
+            <Usages/>
+            <Choices/>
+            <DrillDown>true</DrillDown>
+            <FromData>true</FromData>
+            <FromProfile>false</FromProfile>
+            <Versions>
+                <Version>
+                    <Version>2.0</Version>
+                </Version>
+            </Versions>
+        </ItemValueDefinition>
+    </ItemValueDefinitions>
+    <Status>OK</Status>
+    <Version>3.1.0</Version>
+</Representation>

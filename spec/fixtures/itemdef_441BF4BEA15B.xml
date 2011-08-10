@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Representation>
+    <ItemDefinition created="2007-07-27T07:30:44Z" modified="2010-08-24T17:17:01Z" status="ACTIVE" uid="441BF4BEA15B">
+        <Name>Plane Generic</Name>
+        <DrillDown>type,size</DrillDown>
+        <Usages>
+            <Usage present="true">
+                <Name>default</Name>
+            </Usage>
+        </Usages>
+    </ItemDefinition>
+    <Status>OK</Status>
+    <Version>3.1.0</Version>
+</Representation>
