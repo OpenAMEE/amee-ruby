@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Representation>
+    <ItemDefinition created="2009-08-31T12:41:18Z" modified="2010-08-13T14:54:33Z" status="ACTIVE" uid="472D78F6584E">
+        <Name>Power Stations And Stuff</Name>
+        <DrillDown>state,county,metroArea,city,zipCode,plantName,powWowWow</DrillDown>
+        <Usages></Usages>
+    </ItemDefinition>
+    <Status>OK</Status>
+    <Version>3.1.0</Version>
+</Representation>

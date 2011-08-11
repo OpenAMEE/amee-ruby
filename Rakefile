@@ -62,10 +62,10 @@ Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "amee"
   gem.homepage = "http://github.com/AMEE/amee-ruby"
-  gem.license = "MIT"
+  gem.license = "BSD 3-Clause"
   gem.summary = %Q{Ruby interface to the AMEE carbon calculator}
   gem.email = "james@floppy.org.uk"
-  gem.authors = ["James Smith"]
+  gem.authors = ["James Smith", "James Hetherington", "Andrew Hill", "Andrew Berkeley"]
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new

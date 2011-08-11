@@ -1,6 +1,10 @@
+# Copyright (C) 2008-2011 AMEE UK Ltd. - http://www.amee.com
+# Released as Open Source Software under the BSD 3-Clause license. See LICENSE.txt for details.
+
 require 'rubygems'
 require 'spec'
 require 'rspec_spinner'
+require 'activesupport'
 
 $:.unshift(File.dirname(__FILE__) + '/../lib')
 require 'amee'
@@ -54,3 +58,6 @@ end
 def fixture(filename)
   File.read File.dirname(__FILE__)+'/fixtures/'+filename
 end
+
+XMLPreamble='<?xml version="1.0" encoding="UTF-8"?>'
+
