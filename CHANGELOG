@@ -1,5 +1,12 @@
 = Changelog
 
+== 3.0.0
+ * Add some pre-release functionality for AMEEconnect v3 in order to support 
+   AMEEappkit gems.
+ * This should be completely transparent to existing code. Major version bump is
+   mainly to show that things have changed significantly underneath. Public API
+   is unaffected.
+
 == 2.7.0
  * Make profile item creation more efficient by using fewer API calls.
 
