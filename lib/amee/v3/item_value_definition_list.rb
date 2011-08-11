@@ -3,9 +3,9 @@ module AMEE
 
     class ItemValueDefinitionList < AMEE::Collection
 
-      def initialize_with_v3(connection,uid,options={})
+      def initialize_with_v3(connection,uid,options={}, &block)
         @use_v3_connection = true
-        initialize_without_v3(connection, uid, options)
+        initialize_without_v3(connection, uid, options, &block)
       end
       alias_method_chain :initialize, :v3
 
