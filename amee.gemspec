@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{amee}
-  s.version = "3.0.0"
+  s.version = "3.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["James Smith", "James Hetherington", "Andrew Hill", "Andrew Berkeley"]
@@ -13,9 +13,16 @@ Gem::Specification.new do |s|
   s.default_executable = %q{ameesh}
   s.email = %q{james@floppy.org.uk}
   s.executables = ["ameesh"]
+  s.extra_rdoc_files = [
+    "LICENSE.txt",
+    "README.txt"
+  ]
   s.files = [
+    "CHANGELOG.txt",
     "Gemfile",
     "Gemfile.lock",
+    "LICENSE.txt",
+    "README.txt",
     "Rakefile",
     "VERSION",
     "amee-ruby.gemspec",
@@ -54,6 +61,14 @@ Gem::Specification.new do |s|
     "lib/amee/rails.rb",
     "lib/amee/shell.rb",
     "lib/amee/user.rb",
+    "lib/amee/v3.rb",
+    "lib/amee/v3/collection.rb",
+    "lib/amee/v3/connection.rb",
+    "lib/amee/v3/item_definition.rb",
+    "lib/amee/v3/item_value_definition.rb",
+    "lib/amee/v3/item_value_definition_list.rb",
+    "lib/amee/v3/meta_helper.rb",
+    "lib/amee/v3/return_value_definition.rb",
     "rails/init.rb",
     "spec/amee_spec.rb",
     "spec/cache_spec.rb",
@@ -66,6 +81,7 @@ Gem::Specification.new do |s|
     "spec/drill_down_spec.rb",
     "spec/fixtures/AD63A83B4D41.json",
     "spec/fixtures/AD63A83B4D41.xml",
+    "spec/fixtures/BD88D30D1214.xml",
     "spec/fixtures/create_item.json",
     "spec/fixtures/create_item.xml",
     "spec/fixtures/data.json",
@@ -75,7 +91,16 @@ Gem::Specification.new do |s|
     "spec/fixtures/data_transport_car_generic_drill_fuel_diesel.xml",
     "spec/fixtures/empty.json",
     "spec/fixtures/empty.xml",
+    "spec/fixtures/empty_return_value_definition_list.xml",
+    "spec/fixtures/itemdef.xml",
+    "spec/fixtures/itemdef_441BF4BEA15B.xml",
+    "spec/fixtures/itemdef_no_usages.xml",
+    "spec/fixtures/itemdef_one_usage.xml",
+    "spec/fixtures/ivdlist.xml",
+    "spec/fixtures/ivdlist_BD88D30D1214.xml",
     "spec/fixtures/parse_test.xml",
+    "spec/fixtures/return_value_definition.xml",
+    "spec/fixtures/return_value_definition_list.xml",
     "spec/fixtures/v0_data_transport_transport_drill_transportType_Car1.xml",
     "spec/item_definition_spec.rb",
     "spec/item_value_definition_spec.rb",
@@ -90,7 +115,11 @@ Gem::Specification.new do |s|
     "spec/rails_spec.rb",
     "spec/spec.opts",
     "spec/spec_helper.rb",
-    "spec/user_spec.rb"
+    "spec/user_spec.rb",
+    "spec/v3/connection_spec.rb",
+    "spec/v3/item_definition_spec.rb",
+    "spec/v3/item_value_definition_spec.rb",
+    "spec/v3/return_value_definition_spec.rb"
   ]
   s.homepage = %q{http://github.com/AMEE/amee-ruby}
   s.licenses = ["BSD 3-Clause"]
