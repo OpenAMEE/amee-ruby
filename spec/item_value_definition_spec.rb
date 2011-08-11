@@ -32,9 +32,27 @@ describe AMEE::Admin::ItemValueDefinitionList, "with an authenticated connection
    it "should parse XML correctly" do
     connection = flexmock "connection"
     connection.should_receive(:retries).and_return(0).once
-    connection.should_receive(:v3_get).with("/3.3/definitions/BD88D30D1214/values;full", {:resultStart=>0, :resultLimit=>10}).and_return(flexmock(:body => fixture('ivdlist_BD88D30D1214.xml'))).once
+    connection.should_receive(:v3_get).with("/3.3/definitions/BD88D30D1214/values;full", {:resultStart=>0, :resultLimit=>10}).and_return(fixture('ivdlist_BD88D30D1214.xml')).once
     @data = AMEE::Admin::ItemValueDefinitionList.new(connection,"BD88D30D1214")
     @data.length.should==15
+    @data.first.uid.should=='9813267B616E'
+    @data.first.name.should == "Country"
+    @data.first.path.should == "country"
+    @data.first.unit.should == nil
+    @data.first.perunit.should == nil
+    @data.first.profile?.should == true
+    @data.first.drill?.should == false
+    @data.first.data?.should == false
+  end
+
+   it "should apply block filter correctly" do
+    connection = flexmock "connection"
+    connection.should_receive(:retries).and_return(0).once
+    connection.should_receive(:v3_get).with("/3.3/definitions/BD88D30D1214/values;full", {:resultStart=>0, :resultLimit=>10}).and_return(fixture('ivdlist_BD88D30D1214.xml')).once
+    @data = AMEE::Admin::ItemValueDefinitionList.new(connection,"BD88D30D1214") do |x|
+      x.uid == 'A8A212610A57' ? x : nil
+    end
+    #@data.length.should==1
     @data.first.uid.should=='A8A212610A57'
     @data.first.name.should == "Distance per journey"
     @data.first.path.should == "distancePerJourney"
@@ -45,27 +63,16 @@ describe AMEE::Admin::ItemValueDefinitionList, "with an authenticated connection
     @data.first.data?.should == false
   end
 
-   it "should apply block filter correctly" do
-    connection = flexmock "connection"
-    connection.should_receive(:retries).and_return(0).once
-    connection.should_receive(:v3_get).with("/3.3/definitions/BD88D30D1214/values;full", {:resultStart=>0, :resultLimit=>10}).and_return(flexmock(:body => fixture('ivdlist_BD88D30D1214.xml'))).once
-    @data = AMEE::Admin::ItemValueDefinitionList.new(connection,"BD88D30D1214") do |x|
-      x.uid == 'A8A212610A57' ? x.uid : nil
-    end
-    @data.length.should==1
-    @data.first.should=='A8A212610A57'
-  end
-
   it "should parse JSON correctly" do
     connection = flexmock "connection"
     connection.should_receive(:retries).and_return(0).once
-    connection.should_receive(:v3_get).with("/3.3/definitions/BD88D30D1214/values;full", {:resultStart=>0, :resultLimit=>10}).and_return(flexmock(:body => fixture('ivdlist_BD88D30D1214.xml'))).once
+    connection.should_receive(:v3_get).with("/3.3/definitions/BD88D30D1214/values;full", {:resultStart=>0, :resultLimit=>10}).and_return(fixture('ivdlist_BD88D30D1214.xml')).once
     @data = AMEE::Admin::ItemValueDefinitionList.new(connection,"BD88D30D1214")
     @data.length.should==15
-    @data.first.uid.should=='A8A212610A57'
-    @data.first.name.should == "Distance per journey"
-    @data.first.path.should == "distancePerJourney"
-    @data.first.unit.should == "km"
+    @data.first.uid.should=='9813267B616E'
+    @data.first.name.should == "Country"
+    @data.first.path.should == "country"
+    @data.first.unit.should == nil
     @data.first.perunit.should == nil
     @data.first.profile?.should == true
     @data.first.drill?.should == false
@@ -76,7 +83,7 @@ describe AMEE::Admin::ItemValueDefinitionList, "with an authenticated connection
     connection = flexmock "connection"
     connection.should_receive(:retries).and_return(0).once
     xml = '<?xml version="1.0" encoding="UTF-8"?><Resources></Resources>'
-    connection.should_receive(:v3_get).with("/3.3/definitions/BD88D30D1214/values;full", {:resultStart=>0, :resultLimit=>10}).and_return(flexmock(:body => xml))
+    connection.should_receive(:v3_get).with("/3.3/definitions/BD88D30D1214/values;full", {:resultStart=>0, :resultLimit=>10}).and_return(xml)
     connection.should_receive(:expire).with("/3.3/definitions/BD88D30D1214/values;full").once
     lambda{AMEE::Admin::ItemValueDefinitionList.new(connection, "BD88D30D1214")}.should raise_error(AMEE::BadData)
   end
@@ -85,7 +92,7 @@ describe AMEE::Admin::ItemValueDefinitionList, "with an authenticated connection
     connection = flexmock "connection"
     connection.should_receive(:retries).and_return(0).once
     json = '{}'
-    connection.should_receive(:v3_get).with("/3.3/definitions/BD88D30D1214/values;full", {:resultStart=>0, :resultLimit=>10}).and_return(flexmock(:body => json))
+    connection.should_receive(:v3_get).with("/3.3/definitions/BD88D30D1214/values;full", {:resultStart=>0, :resultLimit=>10}).and_return(json)
     connection.should_receive(:expire).with("/3.3/definitions/BD88D30D1214/values;full").once
     lambda{AMEE::Admin::ItemValueDefinitionList.new(connection, "BD88D30D1214")}.should raise_error(AMEE::BadData)
   end
