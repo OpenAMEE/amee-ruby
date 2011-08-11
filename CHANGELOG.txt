@@ -6,6 +6,7 @@
  * This should be completely transparent to existing code. Major version bump is
    mainly to show that things have changed significantly underneath. Public API
    is unaffected.
+ * Updated license to BSD 3-Clause.
 
 == 2.7.0
  * Make profile item creation more efficient by using fewer API calls.
