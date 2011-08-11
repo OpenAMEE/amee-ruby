@@ -1,14 +1,16 @@
 == AMEE-Ruby
 
-A gem to provide a Ruby interface to the AMEE carbon calculator (http://amee.cc)
+A gem to provide a Ruby interface to AMEEconnect (http://www.amee.com)
 
-Licensed under the MIT license (See COPYING file for details)
+Licensed under the BSD 3-Clause license (See LICENSE.txt for details)
 
-Author: James Smith (james@floppy.org.uk / http://www.floppy.org.uk)
+Author: James Smith, James Hetherington, Andrew Hill, Andrew Berkeley
+
+Copyright: Copyright (c) 2008-2011 AMEE UK Ltd
 
 Homepage: http://github.com/AMEE/amee-ruby
 
-Documentation: http://docs.github.com/AMEE/amee-ruby
+Documentation: http://rubydoc.info/gems/amee/frames
 
 == INSTALLATION
 
