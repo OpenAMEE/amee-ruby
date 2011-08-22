@@ -19,7 +19,7 @@ Spec::Rake::SpecTask.new do |t|
   t.spec_opts = ['--options', "spec/spec.opts"]
   t.spec_files = FileList['spec/**/*_spec.rb']
   t.rcov = true
-  t.rcov_opts = ['--exclude', 'spec,/*ruby*,']
+  t.rcov_opts = ['--exclude', 'spec,/*ruby*,/*gems*']
 end
 
 require 'jeweler'
