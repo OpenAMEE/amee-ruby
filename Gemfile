@@ -1,18 +1,17 @@
 source "http://rubygems.org"
 
-gem "activesupport", "~> 2.3.5"
+gem "activesupport", "~> 3.0.10"
 gem "json"
 gem "log4r"
 gem "nokogiri", "~> 1.4.3.1"
 
-# Add dependencies to develop your gem here.
-# Include everything needed to run rake, tests, features, etc.
 group :development do
   gem "bundler", "~> 1.0.0"
   gem "jeweler", "~> 1.6.4"
-  gem 'rspec', '1.3.0'
+  gem 'rspec', '2.6.0'
+  gem 'flexmock', '> 0.8.6'
+  gem 'memcache-client'
   gem 'rcov'
-  gem 'rspec_spinner', '1.1.3'
-  gem 'activerecord', "~> 2.3.5" # To test Rails integration
-  gem 'flexmock'
+  gem 'rdoc'
+  gem 'activerecord', "~> 3.0.10" # To test Rails integration
 end

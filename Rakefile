@@ -10,16 +10,14 @@ rescue Bundler::BundlerError => e
   exit e.status_code
 end
 require 'rake'
-require 'spec'
-require 'spec/rake/spectask'
+require 'rspec'
+require 'rspec/core/rake_task'
 
 task :default => [:spec]
 
-Spec::Rake::SpecTask.new do |t|
-  t.spec_opts = ['--options', "spec/spec.opts"]
-  t.spec_files = FileList['spec/**/*_spec.rb']
-  t.rcov = true
-  t.rcov_opts = ['--exclude', 'spec,/*ruby*,/*gems*']
+desc "Run specs"
+RSpec::Core::RakeTask.new do |t|
+  # Put spec opts in a file named .rspec in root
 end
 
 require 'jeweler'
@@ -70,29 +68,17 @@ Jeweler::Tasks.new do |gem|
 end
 Jeweler::RubygemsDotOrgTasks.new
 
-require 'rake/testtask'
-Rake::TestTask.new(:test) do |test|
-  test.libs << 'lib' << 'test'
-  test.pattern = 'test/**/test_*.rb'
-  test.verbose = true
-end
-
 require 'rcov/rcovtask'
-Rcov::RcovTask.new do |test|
-  test.libs << 'test'
-  test.pattern = 'test/**/test_*.rb'
-  test.verbose = true
-  test.rcov_opts << '--exclude "gems/*"'
+desc "Generate code coverage"
+RSpec::Core::RakeTask.new(:coverage) do |t|
+  t.rcov = true
+  t.rcov_opts = ['--exclude', 'spec']
 end
 
-task :default => :test
-
-require 'rake/rdoctask'
-Rake::RDocTask.new do |rdoc|
-  version = File.exist?('VERSION') ? File.read('VERSION') : ""
-
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "amee-ruby #{version}"
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
+require 'rdoc/task'
+RDoc::Task.new do |rd|
+  rd.title = "AMEE Ruby"
+  rd.rdoc_dir = 'doc'
+  rd.main = "README"
+  rd.rdoc_files.include("README", "lib/**/*.rb")
 end

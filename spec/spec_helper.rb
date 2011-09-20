@@ -2,14 +2,13 @@
 # Released as Open Source Software under the BSD 3-Clause license. See LICENSE.txt for details.
 
 require 'rubygems'
-require 'spec'
-require 'rspec_spinner'
-require 'activesupport'
+require 'rspec'
+require 'logger'
 
 $:.unshift(File.dirname(__FILE__) + '/../lib')
 require 'amee'
 
-Spec::Runner.configure do |config|
+RSpec.configure do |config|
   config.mock_with :flexmock
 end
 

@@ -4,6 +4,7 @@
 require 'rexml/document'
 require 'nokogiri'
 require 'active_support'
+require 'active_support/time'
 require 'log4r'
 
 # We don't NEED the JSON gem, but if it's available, use it.
@@ -53,6 +54,16 @@ require 'amee/item_definition'
 require 'amee/item_value_definition'
 require 'amee/user'
 require 'amee/v3'
+
+if defined?(Rails)
+  require 'amee/rails'
+  ActiveRecord::Base.send :include, AMEE::Rails
+  
+  amee_config = "config/amee.yml"
+  if File.exist?(amee_config)
+    $AMEE_CONFIG = YAML.load_file(amee_config)[Rails.env]
+  end
+end
 
 class Date
   def amee1_date

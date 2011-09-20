@@ -33,7 +33,6 @@ module AMEE
         end
       end
     end
-    alias_method_chain :fetch, :v3
 
     def each_page_with_v3
       @pager=AMEE::Limiter.new(@options) if v3
@@ -54,8 +53,5 @@ module AMEE
       end while @pager && @pager.next! #pager is nil if no pager in response,
       # pager.next! is false if @pager said current=last.
     end
-    alias_method_chain :each_page, :v3
-
   end
 end
-

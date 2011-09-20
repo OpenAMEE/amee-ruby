@@ -1,7 +1,7 @@
 # Copyright (C) 2008-2011 AMEE UK Ltd. - http://www.amee.com
 # Released as Open Source Software under the BSD 3-Clause license. See LICENSE.txt for details.
 
-require File.dirname(__FILE__) + '/../spec_helper.rb'
+require 'spec_helper.rb'
 
 describe AMEE::Admin::ItemDefinition do
 
@@ -282,7 +282,7 @@ describe AMEE::Admin::ItemDefinitionList do
     connection = flexmock "connection"
     connection.should_receive(:retries).and_return(2).once
     connection.should_receive(:get).with("/definitions/itemDefinitions",{}).twice.
-      and_return flexmock(:body =>DefinitionsListResponse.first(12))
+      and_return flexmock(:body =>DefinitionsListResponse[0,12])
     connection.should_receive(:expire).with("/definitions/itemDefinitions").twice
     connection.should_receive(:get).with("/definitions/itemDefinitions",{}).once.
       and_return flexmock(:body =>DefinitionsListResponse)
@@ -297,7 +297,7 @@ describe AMEE::Admin::ItemDefinitionList do
     connection = flexmock "connection"
     connection.should_receive(:retries).and_return(2).once
     connection.should_receive(:get).with("/definitions/itemDefinitions",{}).times(3).
-      and_return flexmock(:body =>DefinitionsListResponse.first(12))
+      and_return flexmock(:body =>DefinitionsListResponse[0,12])
     connection.should_receive(:expire).with("/definitions/itemDefinitions").times(3)
     lambda {
       AMEE::Admin::ItemDefinitionList.new(connection)

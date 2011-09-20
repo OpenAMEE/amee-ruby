@@ -7,11 +7,11 @@ module AMEE
 
       include ParseHelper
 
-      def initialize_with_v3(data = {})
+      alias_method :initialize_without_v3, :initialize
+      def initialize(data = {})
         @usages = data[:usages] || []
         initialize_without_v3(data)
       end
-      alias_method_chain :initialize, :v3
 
       attr_accessor :usages
 
@@ -34,7 +34,10 @@ module AMEE
         raise AMEE::BadData.new("Couldn't load ItemDefinition. Check that your URL is correct.\n#{$!}\n#{response}")
       end
 
-      def self.from_xml_with_v3(xml, is_list = true)
+      class << self
+        alias_method :from_xml_without_v3, :from_xml
+      end
+      def self.from_xml(xml, is_list = true)
         return self.from_xml_without_v3(xml, is_list) if xml.include?('<Resources>')
         # Parse data from response into hash
         doc = load_xml_doc(xml)
@@ -50,9 +53,6 @@ module AMEE
       rescue
         raise AMEE::BadData.new("Couldn't load ItemDefinition from XML. Check that your URL is correct.\n#{$!}\n#{xml}")
       end
-      class << self
-        alias_method_chain :from_xml, :v3
-      end
 
       def save!
         save_options = {
@@ -62,12 +62,11 @@ module AMEE
         @connection.v3_put("/#{AMEE_API_VERSION}/definitions/#{@uid}",save_options)
       end
 
-      def expire_cache_with_v3
+      alias_method :expire_cache_without_v3, :expire_cache
+      def expire_cache
         @connection.expire_matching("/#{AMEE_API_VERSION}/definitions/#{@uid}.*")
         expire_cache_without_v3
       end
-      alias_method_chain :expire_cache, :v3
-
     end
   end
 end
