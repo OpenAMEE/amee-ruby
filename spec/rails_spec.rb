@@ -33,11 +33,6 @@ describe AMEE::Rails do
       @test.klass.method_defined?(:amee_create).should be_true
     end
 
-    it "should have save_with_amee and save_without_amee functions" do
-      @test.klass.method_defined?(:save_with_amee).should be_true
-      @test.klass.method_defined?(:save_without_amee).should be_true
-    end
-
     it "should have an amee_save function" do
       @test.klass.method_defined?(:amee_save).should be_true
     end
