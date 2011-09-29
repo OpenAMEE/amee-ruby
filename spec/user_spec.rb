@@ -1,7 +1,7 @@
 # Copyright (C) 2008-2011 AMEE UK Ltd. - http://www.amee.com
 # Released as Open Source Software under the BSD 3-Clause license. See LICENSE.txt for details.
 
-require File.dirname(__FILE__) + '/spec_helper.rb'
+require 'spec_helper.rb'
 
 describe AMEE::Admin::User do
 
@@ -89,7 +89,7 @@ describe AMEE::Admin::User, "with an authenticated connection with environment" 
     @data.username.should == @options[:username]
     @data.name.should == @options[:name]
     @data.email.should == @options[:email]
-    @data.api_version.should be_close(@options[:apiVersion], 1e-9)
+    @data.api_version.should be_within(1.0e-09).of(@options[:apiVersion])
     @data.status.should == "ACTIVE"
   end
 
@@ -103,7 +103,7 @@ describe AMEE::Admin::User, "with an authenticated connection with environment" 
     @data.username.should == @options[:username]
     @data.name.should == @options[:name]
     @data.email.should == @options[:email]
-    @data.api_version.should be_close(@options[:apiVersion], 1e-9)
+    @data.api_version.should be_within(1.0e-09).of(@options[:apiVersion])
     @data.status.should == "ACTIVE"
   end
 
@@ -138,7 +138,7 @@ describe AMEE::Admin::User, "with an authenticated connection with environment" 
     @new_data.username.should == @new_options[:username]
     @new_data.name.should == @new_options[:name]
     @new_data.email.should == @new_options[:email]
-    @new_data.api_version.should be_close(@new_options[:APIVersion],1e-9)
+    @new_data.api_version.should be_within(1.0e-09).of(@new_options[:APIVersion])
   end
 
   it "can delete an existing user" do
@@ -189,7 +189,7 @@ describe AMEE::Admin::User, "with an authenticated connection without environmen
     @data.username.should == @options[:username]
     @data.name.should == @options[:name]
     @data.email.should == @options[:email]
-    @data.api_version.should be_close(@options[:apiVersion], 1e-9)
+    @data.api_version.should be_within(1.0e-09).of(@options[:apiVersion])
     @data.status.should == "ACTIVE"
   end
 
@@ -203,7 +203,7 @@ describe AMEE::Admin::User, "with an authenticated connection without environmen
     @data.username.should == @options[:username]
     @data.name.should == @options[:name]
     @data.email.should == @options[:email]
-    @data.api_version.should be_close(@options[:apiVersion], 1e-9)
+    @data.api_version.should be_within(1.0e-09).of(@options[:apiVersion])
     @data.status.should == "ACTIVE"
   end
 
@@ -238,7 +238,7 @@ describe AMEE::Admin::User, "with an authenticated connection without environmen
     @new_data.username.should == @new_options[:username]
     @new_data.name.should == @new_options[:name]
     @new_data.email.should == @new_options[:email]
-    @new_data.api_version.should be_close(@new_options[:APIVersion],1e-9)
+    @new_data.api_version.should be_within(1.0e-09).of(@new_options[:APIVersion])
   end
 
   it "can delete an existing user" do

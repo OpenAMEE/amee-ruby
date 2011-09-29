@@ -8,7 +8,8 @@ module AMEE
       collectionpath=~/^\/3/
     end
 
-    def fetch_with_v3
+    alias_method :fetch_without_v3, :fetch
+    def fetch
       @options.merge! @pager.options if @pager
       retries = [1] * connection.retries
       begin
@@ -33,9 +34,9 @@ module AMEE
         end
       end
     end
-    alias_method_chain :fetch, :v3
 
-    def each_page_with_v3
+    alias_method :each_page_without_v3, :each_page
+    def each_page
       @pager=AMEE::Limiter.new(@options) if v3
       # in v3 need to specify limit to start with, not in v2
       begin           
@@ -54,8 +55,5 @@ module AMEE
       end while @pager && @pager.next! #pager is nil if no pager in response,
       # pager.next! is false if @pager said current=last.
     end
-    alias_method_chain :each_page, :v3
-
   end
 end
-

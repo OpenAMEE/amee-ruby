@@ -4,6 +4,7 @@
 require 'rexml/document'
 require 'nokogiri'
 require 'active_support'
+require 'active_support/time'
 require 'log4r'
 
 # We don't NEED the JSON gem, but if it's available, use it.
@@ -30,7 +31,7 @@ class String
     is_xml? && (include?('<feed ') || include?('<entry ')) && include?('xmlns:amee="http://schemas.amee.cc/2.0"')
   end
 end
-
+require 'amee/core-extensions/hash'
 require 'amee/logger'
 require 'amee/exceptions'
 require 'amee/connection'
@@ -53,6 +54,19 @@ require 'amee/item_definition'
 require 'amee/item_value_definition'
 require 'amee/user'
 require 'amee/v3'
+require 'amee/config'
+
+if defined?(Rails)
+  require 'amee/rails'
+  ActiveRecord::Base.send :include, AMEE::Rails
+
+
+  if File.exist? amee_config
+    $AMEE_CONFIG = AMEE::Config.setup(amee_config, Rails.env)
+  else  
+    $AMEE_CONFIG = AMEE::Config.setup
+  end
+end
 
 class Date
   def amee1_date

@@ -6,11 +6,11 @@ module AMEE
     class ItemValueDefinition
       include MetaHelper
 
-      def initialize_with_v3(data = {})
+      alias_method :initialize_without_v3, :initialize
+      def initialize(data = {})
         storemeta(data[:meta]) if data[:meta]
         initialize_without_v3(data)
       end
-      alias_method_chain :initialize, :v3
 
       def metapath
         "/#{AMEE_API_VERSION}/definitions/#{itemdefuid}/values/#{uid};wikiDoc;usages"
@@ -88,12 +88,11 @@ EOF
         end
       end
 
-      def expire_cache_with_v3
-        @connection.expire_matching("/#{AMEE_API_VERSION}/definitions/#{itemdefuid}/values/#{uid}.*")
+      alias_method :expire_cache_without_v3, :expire_cache
+      def expire_cache
+          @connection.expire_matching("/#{AMEE_API_VERSION}/definitions/#{itemdefuid}/values/#{uid}.*")
         expire_cache_without_v3
       end
-      alias_method_chain :expire_cache, :v3
-
     end
   end
 end

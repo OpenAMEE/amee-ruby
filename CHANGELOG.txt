@@ -1,5 +1,12 @@
 = Changelog
 
+== 4.1.0
+ * Add option to set connection details using environment variables, for
+   instance in Heroku deployments.
+
+== 4.0.0
+ * Rails 3 support. Rails 2 apps will not work with this version.
+
 == 3.0.0
  * Add some pre-release functionality for AMEEconnect v3 in order to support 
    AMEEappkit gems.

@@ -6,11 +6,11 @@ module AMEE
 
     class ItemValueDefinitionList < AMEE::Collection
 
-      def initialize_with_v3(connection,uid,options={}, &block)
+      alias_method :initialize_without_v3, :initialize
+      def initialize(connection,uid,options={}, &block)
         @use_v3_connection = true
         initialize_without_v3(connection, uid, options, &block)
       end
-      alias_method_chain :initialize, :v3
 
       def collectionpath
         "/#{AMEE_API_VERSION}/definitions/#{@uid}/values;full"

@@ -1,7 +1,7 @@
 # Copyright (C) 2008-2011 AMEE UK Ltd. - http://www.amee.com
 # Released as Open Source Software under the BSD 3-Clause license. See LICENSE.txt for details.
 
-require File.dirname(__FILE__) + '/spec_helper.rb'
+require 'spec_helper.rb'
 
 describe AMEE::Data::Category do
 
@@ -138,7 +138,7 @@ describe AMEE::Data::Category, "with an authenticated XML connection" do
   it "should fail gracefully with bad XML" do
     connection = flexmock "connection"
     connection.should_receive(:retries).and_return(0)
-    connection.should_receive(:get).with("/data", {:itemsPerPage => 10}).and_return(flexmock(:body => fixture('data.xml').first(12)))
+    connection.should_receive(:get).with("/data", {:itemsPerPage => 10}).and_return(flexmock(:body => fixture('data.xml')[0,12]))
     connection.should_receive(:expire).with("/data").once
     lambda{AMEE::Data::Category.get(connection, "/data")}.should raise_error(REXML::ParseException)
   end
@@ -146,7 +146,7 @@ describe AMEE::Data::Category, "with an authenticated XML connection" do
   it "should retry if bad XML is received first time" do
     connection = flexmock "connection"
     connection.should_receive(:retries).and_return(2)
-    connection.should_receive(:get).with("/data", {:itemsPerPage => 10}).and_return(flexmock(:body => fixture('data.xml').first(12))).twice
+    connection.should_receive(:get).with("/data", {:itemsPerPage => 10}).and_return(flexmock(:body => fixture('data.xml')[0,12])).twice
     connection.should_receive(:expire).with("/data").twice
     connection.should_receive(:get).with("/data", {:itemsPerPage => 10}).and_return(flexmock(:body => fixture('data.xml'))).once
     lambda{AMEE::Data::Category.get(connection, "/data")}.should_not raise_error

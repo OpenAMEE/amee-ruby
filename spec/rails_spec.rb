@@ -1,7 +1,7 @@
 # Copyright (C) 2008-2011 AMEE UK Ltd. - http://www.amee.com
 # Released as Open Source Software under the BSD 3-Clause license. See LICENSE.txt for details.
 
-require File.dirname(__FILE__) + '/spec_helper.rb'
+require 'spec_helper.rb'
 require 'amee/rails'
 require 'active_record'
 
@@ -31,11 +31,6 @@ describe AMEE::Rails do
 
     it "should have an amee_create function" do
       @test.klass.method_defined?(:amee_create).should be_true
-    end
-
-    it "should have save_with_amee and save_without_amee functions" do
-      @test.klass.method_defined?(:save_with_amee).should be_true
-      @test.klass.method_defined?(:save_without_amee).should be_true
     end
 
     it "should have an amee_save function" do

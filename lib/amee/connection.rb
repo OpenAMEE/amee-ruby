@@ -32,7 +32,7 @@ module AMEE
       end
       # Create cache store
       if options[:cache] &&
-        (options[:cache_store].is_a?(ActiveSupport::Cache::MemCacheStore) ||
+        (options[:cache_store].class.name == "ActiveSupport::Cache::MemCacheStore" ||
          options[:cache].to_sym == :mem_cache_store)         
         raise 'ActiveSupport::Cache::MemCacheStore is not supported, as it doesn\'t allow regexp expiry'
       end

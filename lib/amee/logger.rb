@@ -7,15 +7,20 @@
 # AMEE::Log.to logtothis
 
 module AMEE
-  module Logger
-    @@log=Log4r::Logger.new('AMEERuby')
-    @@log.outputters=[Log4r::StderrOutputter.new('AMEERubyStdout')]
-    @@log.level=Log4r::WARN
+  class Logger
     def self.log
-      @@log
+      @@log ||= setup_logger
     end
     def self.to(log)
       @@log=log
+    end
+    
+    private
+    def self.setup_logger
+      log = Log4r::Logger.new('AMEERuby')
+      log.outputters = [Log4r::StderrOutputter.new('AMEERubyStdout')]
+      log.level=Log4r::WARN
+      log
     end
   end
 end
