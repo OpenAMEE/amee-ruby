@@ -12,23 +12,23 @@ module AMEE
       def self.global(options = {})
         unless @connection
           $AMEE_CONFIG ||= {} # Make default values nil
-          if $AMEE_CONFIG['ssl'] == false
+          if $AMEE_CONFIG[:ssl] == false
             options.merge! :ssl => false
           end
-          if $AMEE_CONFIG['retries']
-            options.merge! :retries => $AMEE_CONFIG['retries'].to_i
+          if $AMEE_CONFIG[:retries]
+            options.merge! :retries => $AMEE_CONFIG[:retries].to_i
           end
-          if $AMEE_CONFIG['timeout']
-            options.merge! :timeout => $AMEE_CONFIG['timeout'].to_i
+          if $AMEE_CONFIG[:timeout]
+            options.merge! :timeout => $AMEE_CONFIG[:timeout].to_i
           end
-          if $AMEE_CONFIG['cache'] == 'rails'
+          if $AMEE_CONFIG[:cache] == 'rails'
             # Pass in the rails cache store
             options[:cache_store] = ActionController::Base.cache_store
           else
-            options[:cache] ||= $AMEE_CONFIG['cache'] if $AMEE_CONFIG['cache'].present?
+            options[:cache] ||= $AMEE_CONFIG[:cache] if $AMEE_CONFIG[:cache].present?
           end
-          options[:enable_debug]   ||= $AMEE_CONFIG['debug'] if $AMEE_CONFIG['debug'].present?
-          @connection = self.connect($AMEE_CONFIG['server'], $AMEE_CONFIG['username'], $AMEE_CONFIG['password'], options)
+          options[:enable_debug]   ||= $AMEE_CONFIG[:debug] if $AMEE_CONFIG[:debug].present?
+          @connection = self.connect($AMEE_CONFIG[:server], $AMEE_CONFIG[:username], $AMEE_CONFIG[:password], options)
           # Also store as $amee for backwards compatibility, though this is now deprecated
           $amee = @connection
         end
