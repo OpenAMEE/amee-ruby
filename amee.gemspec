@@ -4,14 +4,13 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{amee}
-  s.version = "4.0.0"
+  s.name = "amee"
+  s.version = "4.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["James Smith", "James Hetherington", "Andrew Hill", "Andrew Berkeley"]
-  s.date = %q{2011-09-28}
-  s.default_executable = %q{ameesh}
-  s.email = %q{james@floppy.org.uk}
+  s.date = "2011-09-29"
+  s.email = "james@floppy.org.uk"
   s.executables = ["ameesh"]
   s.extra_rdoc_files = [
     "LICENSE.txt",
@@ -38,7 +37,9 @@ Gem::Specification.new do |s|
     "examples/view_profile_item.rb",
     "lib/amee.rb",
     "lib/amee/collection.rb",
+    "lib/amee/config.rb",
     "lib/amee/connection.rb",
+    "lib/amee/core-extensions/hash.rb",
     "lib/amee/data_category.rb",
     "lib/amee/data_item.rb",
     "lib/amee/data_item_value.rb",
@@ -68,6 +69,7 @@ Gem::Specification.new do |s|
     "lib/amee/v3/item_value_definition_list.rb",
     "lib/amee/v3/meta_helper.rb",
     "lib/amee/v3/return_value_definition.rb",
+    "spec/amee_config_spec.rb",
     "spec/amee_spec.rb",
     "spec/cache_spec.rb",
     "spec/connection_spec.rb",
@@ -97,6 +99,7 @@ Gem::Specification.new do |s|
     "spec/fixtures/ivdlist.xml",
     "spec/fixtures/ivdlist_BD88D30D1214.xml",
     "spec/fixtures/parse_test.xml",
+    "spec/fixtures/rails_config.yml",
     "spec/fixtures/return_value_definition.xml",
     "spec/fixtures/return_value_definition_list.xml",
     "spec/fixtures/v0_data_transport_transport_drill_transportType_Car1.xml",
@@ -119,11 +122,11 @@ Gem::Specification.new do |s|
     "spec/v3/item_value_definition_spec.rb",
     "spec/v3/return_value_definition_spec.rb"
   ]
-  s.homepage = %q{http://github.com/AMEE/amee-ruby}
+  s.homepage = "http://github.com/AMEE/amee-ruby"
   s.licenses = ["BSD 3-Clause"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.4.2}
-  s.summary = %q{Ruby interface to the AMEE carbon calculator}
+  s.rubygems_version = "1.8.10"
+  s.summary = "Ruby interface to the AMEE carbon calculator"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
