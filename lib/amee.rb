@@ -54,14 +54,15 @@ require 'amee/item_definition'
 require 'amee/item_value_definition'
 require 'amee/user'
 require 'amee/v3'
+require 'amee/config'
 
 if defined?(Rails)
   require 'amee/rails'
   ActiveRecord::Base.send :include, AMEE::Rails
-  
+
   amee_config = "config/amee.yml"
   if File.exist?(amee_config)
-    $AMEE_CONFIG = YAML.load_file(amee_config)[Rails.env]
+    $AMEE_CONFIG = AMEE::Config.setup(amee_config, Rails.env)
   end
 end
 
