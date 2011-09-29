@@ -2,13 +2,16 @@
 # Released as Open Source Software under the BSD 3-Clause license. See LICENSE.txt for details.
 
 require 'amee'
+require 'amee/config'
+require 'amee/core-extensions/hash'
 require 'amee/rails'
 
 # Load config/amee.yml
-amee_config = "#{RAILS_ROOT}/config/amee.yml"
-if File.exist?(amee_config)
-  # Load config
-  $AMEE_CONFIG = YAML.load_file(amee_config)[RAILS_ENV]
+amee_config = "config/amee.yml"
+if File.exist? amee_config
+  $AMEE_CONFIG = AMEE::Config.setup(amee_config, Rails.env)
+else
+  $AMEE_CONFIG = AMEE::Config.setup
 end
 
 # Add AMEE extensions into ActiveRecord::Base

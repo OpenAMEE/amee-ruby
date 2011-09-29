@@ -1,5 +1,10 @@
 = Changelog
 
+== 3.1.0
+ * Back-ported the update in amee-ruby 4.1.0 to add an option to set connection
+   details using environment variables, for instance in Heroku deployments, to
+   create a Rails 2.3 compatible version of the gem with this feature.
+
 == 3.0.0
  * Add some pre-release functionality for AMEEconnect v3 in order to support 
    AMEEappkit gems.
