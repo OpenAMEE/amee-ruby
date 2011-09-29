@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{amee}
-  s.version = "3.0.1"
+  s.version = "3.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["James Smith", "James Hetherington", "Andrew Hill", "Andrew Berkeley"]
-  s.date = %q{2011-08-11}
+  s.date = %q{2011-09-29}
   s.default_executable = %q{ameesh}
   s.email = %q{james@floppy.org.uk}
   s.executables = ["ameesh"]
@@ -39,7 +39,9 @@ Gem::Specification.new do |s|
     "init.rb",
     "lib/amee.rb",
     "lib/amee/collection.rb",
+    "lib/amee/config.rb",
     "lib/amee/connection.rb",
+    "lib/amee/core-extensions/hash.rb",
     "lib/amee/data_category.rb",
     "lib/amee/data_item.rb",
     "lib/amee/data_item_value.rb",
@@ -99,6 +101,7 @@ Gem::Specification.new do |s|
     "spec/fixtures/ivdlist.xml",
     "spec/fixtures/ivdlist_BD88D30D1214.xml",
     "spec/fixtures/parse_test.xml",
+    "spec/fixtures/rails_config.yml",
     "spec/fixtures/return_value_definition.xml",
     "spec/fixtures/return_value_definition_list.xml",
     "spec/fixtures/v0_data_transport_transport_drill_transportType_Car1.xml",
@@ -114,6 +117,7 @@ Gem::Specification.new do |s|
     "spec/profile_spec.rb",
     "spec/rails_spec.rb",
     "spec/spec.opts",
+    "spec/spec_amee_config.rb",
     "spec/spec_helper.rb",
     "spec/user_spec.rb",
     "spec/v3/connection_spec.rb",
