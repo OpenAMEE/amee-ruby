@@ -31,7 +31,7 @@ class String
     is_xml? && (include?('<feed ') || include?('<entry ')) && include?('xmlns:amee="http://schemas.amee.cc/2.0"')
   end
 end
-
+require 'amee/core-extensions/hash'
 require 'amee/logger'
 require 'amee/exceptions'
 require 'amee/connection'
@@ -60,9 +60,11 @@ if defined?(Rails)
   require 'amee/rails'
   ActiveRecord::Base.send :include, AMEE::Rails
 
-  amee_config = "config/amee.yml"
-  if File.exist?(amee_config)
+
+  if File.exist? amee_config
     $AMEE_CONFIG = AMEE::Config.setup(amee_config, Rails.env)
+  else  
+    $AMEE_CONFIG = AMEE::Config.setup
   end
 end
 

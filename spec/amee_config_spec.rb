@@ -1,6 +1,7 @@
 # Copyright (C) 2008-2011 AMEE UK Ltd. - http://www.amee.com
 # Released as Open Source Software under the BSD 3-Clause license. See LICENSE.txt for details.
 require 'spec_helper.rb'
+require 'pry'
 
 describe AMEE::Config do
 
@@ -24,6 +25,7 @@ describe AMEE::Config do
     amee_config[:username].should eq "joe_shmoe"
     amee_config[:server].should eq "stage.amee.com"
     amee_config[:password].should eq "top_sekrit123"
+
   end
 
   context "loading config details from a yaml file" do
@@ -35,8 +37,8 @@ describe AMEE::Config do
       amee_config = AMEE::Config.setup(config_path, 'test')
       
       amee_config[:username].should eq "joe_shmoe"
-      amee_config[:server].should eq "top_sekrit123"
-      amee_config[:password].should eq "stage.amee.com"
+      amee_config[:server].should eq "stage.amee.com"
+      amee_config[:password].should eq "top_sekrit123"
       
     end
   end

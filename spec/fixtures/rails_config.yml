@@ -1,6 +1,6 @@
 defaults: &defaults
   server: stage.amee.com
-  username: joe_schmoe
+  username: joe_shmoe
   password: top_sekrit123
 
 development:

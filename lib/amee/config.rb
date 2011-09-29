@@ -9,18 +9,26 @@ module AMEE
     # Tries to load defaults from a yaml file, then if there are environment variables
     # present (i.e. if we're using a service like heroku for determine them, or we want to
     # manually override them), uses those values instead
-    def self.setup(config = nil, environment = 'test')
+    def self.setup(amee_config_file = nil, environment = 'test')
 
-      # first try loading the yaml file
-      test_config = YAML.load_file(config)[environment] if config
+      if amee_config_file
+        # first try loading the yaml file
+        yaml_config = YAML.load_file(amee_config_file)
+        config = yaml_config[environment]
 
-      # then either override, or load in config deets from heroku
-      config = {
-        :username => ENV['AMEE_USERNAME'],
-        :server   => ENV['AMEE_SERVER'],
-        :password => ENV['AMEE_PASSWORD']
-      }
-      config
+        # make config[:username] possible instead of just config['username']
+        config.recursive_symbolize_keys!
+      else
+        config = {}
+      end
+      
+        # then either override, or load in config deets from heroku
+      config[:username] = ENV['AMEE_USERNAME'] if ENV['AMEE_USERNAME']
+      config[:server]   = ENV['AMEE_SERVER'] if ENV['AMEE_SERVER']
+      config[:password] = ENV['AMEE_PASSWORD'] if ENV['AMEE_PASSWORD']
+
+      return config
+
     end
 
   end
