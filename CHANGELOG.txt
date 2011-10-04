@@ -1,6 +1,15 @@
 = Changelog
 
-== 4.1.0
+== 4.1.3 (also 3.1.2 for Rails 2)
+* Documentation update
+
+== 4.1.2 (also 3.1.1 for Rails 2)
+* Fix bug in initialisation of AMEE::Rails#connection from configuration.
+
+== 4.1.1
+ * Configuration bugfix
+
+== 4.1.0 (also 3.1.0 for Rails 2)
  * Add option to set connection details using environment variables, for
    instance in Heroku deployments.
 
