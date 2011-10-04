@@ -19,21 +19,13 @@ Documentation: http://rubydoc.info/gems/amee/frames
 
 == REQUIREMENTS
 
+If you are using Rails, note that version 4.x of this gem supports Rails 3 apps 
+only. If you are using Rails 2, you should stay with version 3.x. See the 'Rails'
+section below for more details.
+
 'Nokogiri' is used for XML parsing, and requires libxml2. See
 http://nokogiri.org/tutorials/installing_nokogiri.html for instructions if you
 have problems installing.
-
-== IMPORTANT CHANGES when upgrading to 2.2.0 and above
-
-SSL connections are now supported, and are used BY DEFAULT.If you do not want to
-use SSL, you can disable it using the ":ssl => false" option to Connection.new, or
-by adding "ssl: false" to your amee.yml if you are using Rails.
-
-== IMPORTANT CHANGES when upgrading beyond 2.0.25
-
-If you are using the $amee connection in your Rails apps, this is now deprecated
-and will be removed in future releases. See the "Rails" section below for details 
-of what you should use instead.
 
 == USAGE
 
@@ -66,11 +58,13 @@ this interface yet.
 
 == RAILS
 
-This gem can also be used as a Rails plugin. You can either extract it into
-vendor/plugins, or use the new-style config.gem command in environment.rb. For
-example:
+This gem can also be used as a Rails plugin.
 
-    config.gem "amee", :version => '~> 2.2.0'
+Rails 2: add the following to environment.rb:
+    config.gem "amee", :version => '~> 3.1'
+
+Rails 3: add the following to your Gemfile:
+    gem "amee", '~> 4.1'
 
 If you copy amee.example.yml from the gem source directory to amee.yml in your
 app's config directory, a persistent AMEE connection will be available from 
@@ -81,6 +75,10 @@ also use the global_amee_connection function to access the same global connectio
 
 If you do not use this facility, you will have to create your own connection
 objects and manage them yourself, which you can do using AMEE::Connection#new
+
+Instead of using an amee.yml file, you can set ENV['AMEE_USERNAME'], ENV['AMEE_PASSWORD']
+and ENV['AMEE_SERVER'] to achieve the same effect. This is useful for deploying
+to environments like Heroku, for instance.
 
 There is a helper for ActiveRecord models which should be linked to an AMEE profile.
 By adding:
@@ -119,19 +117,3 @@ change the number of retry attempts, 3 is just used as an example above.
 The Connection object also allows a timeout to be set for requests. By default this is
 set to 60 seconds, but if you want to provide a different value (30 seconds for 
 instance), pass ':timeout => 30' to AMEE::Connection.new, or 'timeout: 30' in amee.yml.
-
-== UPGRADING TO VERSION > 2
-
-There are a few changes to the API exposed by this gem for version 2. The main
-ones are:
-
-1) AMEE::Connection#new takes a hash of options instead of an explicit parameter list.
-   Whereas before you would have used new(server, username, password, use_json, enable_cache, enable_debug)
-   you would now use new(server, username, password, :format => :json, :enable_caching => true, :enable_debug => true)
-
-2) Many get functions take a hash of options instead of explicit date and itemsPerPage parameters.
-   get(... , :start_date => {your_date}, :itemsPerPage => 20)
-
-3) total_amount_per_month functions have been replaced with total_amount. There are also
-   total_amount_unit and total_amount_per_unit functions which give the units that the total
-   amount is in.
