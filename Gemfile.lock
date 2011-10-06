@@ -24,7 +24,7 @@ GEM
     json (1.5.4)
     log4r (1.1.9)
     memcache-client (1.8.5)
-    nokogiri (1.4.3.1)
+    nokogiri (1.4.7)
     rake (0.9.2)
     rcov (0.9.10)
     rdoc (3.9.4)
@@ -50,7 +50,7 @@ DEPENDENCIES
   json
   log4r
   memcache-client
-  nokogiri (~> 1.4.3.1)
+  nokogiri (~> 1.4.4)
   rcov
   rdoc
   rspec (= 2.6.0)
