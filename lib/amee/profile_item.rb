@@ -390,6 +390,7 @@ module AMEE
         if options[:duration] && connection.version >= 2
           options[:duration] = "PT#{options[:duration] * 86400}S"
         end
+        options.merge!(:representation => 'full') if (connection.version >= 2) && (get_item == true)
         # Go
         response = connection.put(path, options)
         if get_item
