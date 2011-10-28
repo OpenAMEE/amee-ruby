@@ -71,7 +71,7 @@ module AMEE
         data[:choices] = [x('Choices/Choices/Choice/Value') || x('Choices/Choice/value')].flatten
         names = x('Selections/Choice/Name') || x('Selections/Choice/name')
         values = x('Selections/Choice/Value') || x('Selections/Choice/value')
-        data[:selections] = names && values ? Hash[*(names.zip(values)).flatten] : {}
+        data[:selections] = names && values ? Hash[*([names].flatten.zip([values].flatten)).flatten] : {}
         # Create object
         DrillDown.new(data)
       rescue Exception
