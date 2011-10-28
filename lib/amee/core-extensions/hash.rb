@@ -16,17 +16,6 @@ class Hash
     new_hash
   end
 
-  # Modify <tt>self</tt> in place, transforming all keys - including those of
-  # sub-hashes - in to symbols
-  #
-  def recursive_symbolize_keys!
-    self.each_pair do |k,v|
-      value = delete(k)
-      self[k.to_sym] = value_or_symbolize_value(value)
-    end
-    self
-  end
-
   private
 
   # Symbolize any hash key or sub-hash key containing within <tt>value</tt>.

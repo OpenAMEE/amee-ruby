@@ -1,6 +1,8 @@
 # Copyright (C) 2008-2011 AMEE UK Ltd. - http://www.amee.com
 # Released as Open Source Software under the BSD 3-Clause license. See LICENSE.txt for details.
 
+require 'yaml'
+
 module AMEE
 
   class Config
@@ -17,7 +19,7 @@ module AMEE
         config = yaml_config[environment]
 
         # make config[:username] possible instead of just config['username']
-        config.recursive_symbolize_keys!
+        config = config.recursive_symbolize_keys
       else
         config = {}
       end
