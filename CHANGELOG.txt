@@ -1,5 +1,8 @@
 = Changelog
 
+== 4.1.6
+* Compatibility with Rails 3.1 (dependency specs only)
+
 == 4.1.3 (also 3.1.2 for Rails 2)
 * Documentation update
 
