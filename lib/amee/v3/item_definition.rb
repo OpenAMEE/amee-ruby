@@ -47,8 +47,8 @@ module AMEE
         data[:drillDown] = x('DrillDown', :doc => doc, :meta => true).split(",") rescue nil
         data[:usages] = [(x 'Usages/Usage/Name', :doc => doc, :meta => true)].flatten.delete_if{|x| x.nil?}
         data[:algorithms] = begin
-          names = [(x 'Algorithms/Algorithm/Name', :doc => doc, :meta => true)].flatten
-          uids = [(x 'Algorithms/Algorithm/@uid', :doc => doc, :meta => true)].flatten
+          names = [(x 'Algorithms/Algorithm/Name', :doc => doc, :meta => true)].flatten.delete_if{|x| x.nil?}
+          uids = [(x 'Algorithms/Algorithm/@uid', :doc => doc, :meta => true)].flatten.delete_if{|x| x.nil?}
           Hash[names.zip(uids)]
         end
         # Create object

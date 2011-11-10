@@ -30,11 +30,12 @@ describe AMEE::Admin::ItemDefinition, "with an authenticated v3 connection" do
     @data.algorithms['default'].should eql "D4E4779CA7AB"
   end
 
-  it "should parse XML correctly if there are no usages" do
+  it "should parse XML correctly if there are no usages or algorithms" do
     connection = flexmock "connection"
     connection.should_receive(:v3_get).with("/#{AMEE_API_VERSION}/definitions/472D78F6584E;full", {}).and_return(fixture('itemdef_no_usages.xml'))
     @data = AMEE::Admin::ItemDefinition.load(connection,"472D78F6584E")
     @data.usages.should == []
+    @data.algorithms.should == {}
   end
 
   it "should parse XML correctly if there is just one usage" do
