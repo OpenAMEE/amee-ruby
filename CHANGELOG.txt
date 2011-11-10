@@ -1,5 +1,8 @@
 = Changelog
 
+== 4.2.0 (also 3.2.0 for Rails 2)
+* Add algorithm details to ItemDefinitions
+
 == 4.1.7
 * Compatibility with Ruby 1.9.2
 
