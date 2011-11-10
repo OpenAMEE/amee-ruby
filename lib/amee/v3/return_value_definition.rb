@@ -15,7 +15,7 @@ module AMEE
         ReturnValueDefinition
       end
       def collectionpath
-        "/#{AMEE_API_VERSION}/definitions/#{@uid}/returnvalues;full"
+        "/#{AMEE::Connection.api_version}/definitions/#{@uid}/returnvalues;full"
       end
 
       def jsoncollector
@@ -138,7 +138,7 @@ module AMEE
  
 
       def self.load(connection,itemdefuid,ivduid,options={})
-        ReturnValueDefinition.get(connection,"/#{AMEE_API_VERSION}/definitions/#{itemdefuid}/returnvalues/#{ivduid};full",options)
+        ReturnValueDefinition.get(connection,"/#{AMEE::Connection.api_version}/definitions/#{itemdefuid}/returnvalues/#{ivduid};full",options)
       end
 
       def reload(connection)
@@ -178,7 +178,7 @@ module AMEE
         end
         
         options.merge!(:returnobj=>true)
-        response = connection.v3_post("/#{AMEE_API_VERSION}/definitions/#{itemdefuid}/returnvalues", options)
+        response = connection.v3_post("/#{AMEE::Connection.api_version}/definitions/#{itemdefuid}/returnvalues", options)
         return ReturnValueDefinition.load(connection,itemdefuid , response['Location'].split('/')[7])
       rescue
         raise AMEE::BadData.new("Couldn't create ReturnValueDefinition. Check that your information is correct.\n#{response}")
@@ -189,7 +189,7 @@ module AMEE
         # Deleting takes a while... up the timeout to 120 seconds temporarily
         t = connection.timeout
         connection.timeout = 120
-        connection.v3_delete("/#{AMEE_API_VERSION}/definitions/#{itemdefuid}/returnvalues/" + return_value_definition.uid)
+        connection.v3_delete("/#{AMEE::Connection.api_version}/definitions/#{itemdefuid}/returnvalues/" + return_value_definition.uid)
         connection.timeout = t
       rescue
         raise AMEE::BadData.new("Couldn't delete ReturnValueDefinition. Check that your information is correct.")

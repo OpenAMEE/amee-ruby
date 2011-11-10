@@ -35,7 +35,7 @@ describe AMEE::Admin::ItemDefinition, "with an authenticated connection" do
 
   it "should parse XML correctly" do
     connection = flexmock "connection"
-    connection.should_receive(:v3_get).with("/#{AMEE_API_VERSION}/definitions/BD88D30D1214;full", {}).and_return(fixture('BD88D30D1214.xml'))
+    connection.should_receive(:v3_get).with("/#{AMEE::Connection.api_version}/definitions/BD88D30D1214;full", {}).and_return(fixture('BD88D30D1214.xml'))
     @data = AMEE::Admin::ItemDefinition.load(connection,"BD88D30D1214")
     @data.uid.should == "BD88D30D1214"
     @data.created.should == DateTime.new(2007,7,27,7,30,44)
@@ -47,7 +47,7 @@ describe AMEE::Admin::ItemDefinition, "with an authenticated connection" do
 
   it "should parse JSON correctly" do
     connection = flexmock "connection"
-    connection.should_receive(:v3_get).with("/#{AMEE_API_VERSION}/definitions/BD88D30D1214;full", {}).and_return(fixture('BD88D30D1214.xml'))
+    connection.should_receive(:v3_get).with("/#{AMEE::Connection.api_version}/definitions/BD88D30D1214;full", {}).and_return(fixture('BD88D30D1214.xml'))
     @data = AMEE::Admin::ItemDefinition.load(connection,"BD88D30D1214")
     @data.uid.should == "BD88D30D1214"
     @data.created.should == DateTime.new(2007,7,27,7,30,44)
@@ -59,9 +59,9 @@ describe AMEE::Admin::ItemDefinition, "with an authenticated connection" do
 
   it "should be able to load an item value definition list" do
     connection = flexmock "connection"
-    connection.should_receive(:v3_get).with("/#{AMEE_API_VERSION}/definitions/BD88D30D1214;full", {}).and_return(fixture('BD88D30D1214.xml'))
+    connection.should_receive(:v3_get).with("/#{AMEE::Connection.api_version}/definitions/BD88D30D1214;full", {}).and_return(fixture('BD88D30D1214.xml'))
     connection.should_receive(:retries).and_return(0).once
-    connection.should_receive(:v3_get).with("/#{AMEE_API_VERSION}/definitions/BD88D30D1214/values;full", {:resultStart=>0, :resultLimit=>10}).and_return(fixture('ivdlist_BD88D30D1214.xml')).once
+    connection.should_receive(:v3_get).with("/#{AMEE::Connection.api_version}/definitions/BD88D30D1214/values;full", {:resultStart=>0, :resultLimit=>10}).and_return(fixture('ivdlist_BD88D30D1214.xml')).once
     @data = AMEE::Admin::ItemDefinition.load(connection,"BD88D30D1214")
     @data.uid.should == "BD88D30D1214"
     @list=@data.item_value_definition_list

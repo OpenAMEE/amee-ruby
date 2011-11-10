@@ -26,7 +26,7 @@ module AMEE
 
       def self.v3_get(connection, uid, options={})
         # Load data from path
-        response = connection.v3_get("/#{AMEE_API_VERSION}/definitions/#{uid};full", options)
+        response = connection.v3_get("/#{AMEE::Connection.api_version}/definitions/#{uid};full", options)
         # Parse response
         item_definition = ItemDefinition.parse(connection, response, false)
         # Done
@@ -65,12 +65,12 @@ module AMEE
           :usages => @usages.join(','),
           :name => @name
         }
-        @connection.v3_put("/#{AMEE_API_VERSION}/definitions/#{@uid}",save_options)
+        @connection.v3_put("/#{AMEE::Connection.api_version}/definitions/#{@uid}",save_options)
       end
 
       alias_method :expire_cache_without_v3, :expire_cache
       def expire_cache
-        @connection.expire_matching("/#{AMEE_API_VERSION}/definitions/#{@uid}.*")
+        @connection.expire_matching("/#{AMEE::Connection.api_version}/definitions/#{@uid}.*")
         expire_cache_without_v3
       end
     end

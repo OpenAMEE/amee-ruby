@@ -19,7 +19,7 @@ describe AMEE::Admin::ItemDefinition, "with an authenticated v3 connection" do
 
   it "should parse XML correctly" do
     connection = flexmock "connection"
-    connection.should_receive(:v3_get).with("/#{AMEE_API_VERSION}/definitions/472D78F6584E;full", {}).and_return(fixture('itemdef.xml'))
+    connection.should_receive(:v3_get).with("/#{AMEE::Connection.api_version}/definitions/472D78F6584E;full", {}).and_return(fixture('itemdef.xml'))
     @data = AMEE::Admin::ItemDefinition.load(connection,"472D78F6584E")
     @data.uid.should == "472D78F6584E"
     @data.created.should == DateTime.new(2009,8,31,12,41,18)
@@ -32,7 +32,7 @@ describe AMEE::Admin::ItemDefinition, "with an authenticated v3 connection" do
 
   it "should parse XML correctly if there are no usages or algorithms" do
     connection = flexmock "connection"
-    connection.should_receive(:v3_get).with("/#{AMEE_API_VERSION}/definitions/472D78F6584E;full", {}).and_return(fixture('itemdef_no_usages.xml'))
+    connection.should_receive(:v3_get).with("/#{AMEE::Connection.api_version}/definitions/472D78F6584E;full", {}).and_return(fixture('itemdef_no_usages.xml'))
     @data = AMEE::Admin::ItemDefinition.load(connection,"472D78F6584E")
     @data.usages.should == []
     @data.algorithms.should == {}
@@ -40,16 +40,16 @@ describe AMEE::Admin::ItemDefinition, "with an authenticated v3 connection" do
 
   it "should parse XML correctly if there is just one usage" do
     connection = flexmock "connection"
-    connection.should_receive(:v3_get).with("/#{AMEE_API_VERSION}/definitions/472D78F6584E;full", {}).and_return(fixture('itemdef_one_usage.xml'))
+    connection.should_receive(:v3_get).with("/#{AMEE::Connection.api_version}/definitions/472D78F6584E;full", {}).and_return(fixture('itemdef_one_usage.xml'))
     @data = AMEE::Admin::ItemDefinition.load(connection,"472D78F6584E")
     @data.usages.should == ['usageOne']
   end
 
   it "should be able to load an item value definition list" do
     connection = flexmock "connection"
-    connection.should_receive(:v3_get).with("/#{AMEE_API_VERSION}/definitions/472D78F6584E;full", {}).and_return(fixture('itemdef.xml')).once
+    connection.should_receive(:v3_get).with("/#{AMEE::Connection.api_version}/definitions/472D78F6584E;full", {}).and_return(fixture('itemdef.xml')).once
     connection.should_receive(:retries).and_return(0).once
-    connection.should_receive(:v3_get).with("/#{AMEE_API_VERSION}/definitions/472D78F6584E/values;full", {:resultStart => 0, :resultLimit => 10}).and_return(fixture('ivdlist.xml')).once
+    connection.should_receive(:v3_get).with("/#{AMEE::Connection.api_version}/definitions/472D78F6584E/values;full", {:resultStart => 0, :resultLimit => 10}).and_return(fixture('ivdlist.xml')).once
     @data = AMEE::Admin::ItemDefinition.load(connection,"472D78F6584E")
     @data.uid.should == "472D78F6584E"
     @list=@data.item_value_definition_list
@@ -79,20 +79,20 @@ describe AMEE::Admin::ItemDefinition, "with an authenticated v3 connection" do
   it "should fail gracefully with incorrect data" do
     connection = flexmock "connection"
     xml = '<?xml version="1.0" encoding="UTF-8"?><Resources>'
-    connection.should_receive(:v3_get).with("/#{AMEE_API_VERSION}/definitions/472D78F6584E;full", {}).and_return(xml)
+    connection.should_receive(:v3_get).with("/#{AMEE::Connection.api_version}/definitions/472D78F6584E;full", {}).and_return(xml)
     lambda{AMEE::Admin::ItemDefinition.load(connection, "472D78F6584E")}.should raise_error(AMEE::BadData)
   end
 
   it "should fail gracefully on other errors" do
     connection = flexmock "connection"
-    connection.should_receive(:v3_get).with("/#{AMEE_API_VERSION}/definitions/472D78F6584E;full", {}).and_raise("unidentified error")
+    connection.should_receive(:v3_get).with("/#{AMEE::Connection.api_version}/definitions/472D78F6584E;full", {}).and_raise("unidentified error")
     lambda{AMEE::Admin::ItemDefinition.load(connection, "472D78F6584E")}.should raise_error(AMEE::BadData)
   end
 
   it "should support updating" do
     connection = flexmock "connection"
-    connection.should_receive(:v3_get).with("/#{AMEE_API_VERSION}/definitions/472D78F6584E;full", {}).and_return('<?xml version="1.0" encoding="UTF-8" standalone="no"?><Representation><ItemDefinition created="2009-08-31T12:41:18Z" modified="2010-08-13T14:54:33Z" status="ACTIVE" uid="472D78F6584E"><Name>Power Stations And Stuff</Name><DrillDown>state,county,metroArea,city,zipCode,plantName,powWowWow</DrillDown><Usages><Usage present="true"><Name>usageOne</Name></Usage><Usage present="true"><Name>usageThree</Name></Usage><Usage present="false"><Name>usageOther</Name></Usage></Usages></ItemDefinition><Status>OK</Status><Version>#{AMEE_API_VERSION}.0</Version></Representation>').once
-    connection.should_receive(:v3_put).with("/#{AMEE_API_VERSION}/definitions/472D78F6584E", :usages => 'usageOther,usageThree,usageOne', :name => 'Power Stations And Stuff').once
+    connection.should_receive(:v3_get).with("/#{AMEE::Connection.api_version}/definitions/472D78F6584E;full", {}).and_return('<?xml version="1.0" encoding="UTF-8" standalone="no"?><Representation><ItemDefinition created="2009-08-31T12:41:18Z" modified="2010-08-13T14:54:33Z" status="ACTIVE" uid="472D78F6584E"><Name>Power Stations And Stuff</Name><DrillDown>state,county,metroArea,city,zipCode,plantName,powWowWow</DrillDown><Usages><Usage present="true"><Name>usageOne</Name></Usage><Usage present="true"><Name>usageThree</Name></Usage><Usage present="false"><Name>usageOther</Name></Usage></Usages></ItemDefinition><Status>OK</Status><Version>#{AMEE::Connection.api_version}.0</Version></Representation>').once
+    connection.should_receive(:v3_put).with("/#{AMEE::Connection.api_version}/definitions/472D78F6584E", :usages => 'usageOther,usageThree,usageOne', :name => 'Power Stations And Stuff').once
     @data = AMEE::Admin::ItemDefinition.load(connection,"472D78F6584E")
     @data.usages.should == ['usageOne', 'usageThree', 'usageOther']
     @data.usages.reverse!

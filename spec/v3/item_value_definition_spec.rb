@@ -12,14 +12,14 @@ describe AMEE::Admin::ItemValueDefinition, "with an authenticated XML connection
   end
 
   it "should set metadata" do
-    @connection.should_receive(:v3_get).with("/#{AMEE_API_VERSION}/definitions/PQR/values/ABC;wikiDoc;usages").
+    @connection.should_receive(:v3_get).with("/#{AMEE::Connection.api_version}/definitions/PQR/values/ABC;wikiDoc;usages").
       and_return(<<HERE
 #{XMLPreamble}
 <Representation>
 </Representation>
 HERE
       ).once
-    @connection.should_receive(:v3_put).with("/#{AMEE_API_VERSION}/definitions/PQR/values/ABC;wikiDoc;usages",
+    @connection.should_receive(:v3_put).with("/#{AMEE::Connection.api_version}/definitions/PQR/values/ABC;wikiDoc;usages",
       :body => <<EOF
 #{XMLPreamble}
 <ItemValueDefinition>
@@ -37,7 +37,7 @@ HERE
 </ItemValueDefinition>
 EOF
 ).once
-    @connection.should_receive(:v3_get).with("/#{AMEE_API_VERSION}/definitions/PQR/values/ABC;wikiDoc;usages").
+    @connection.should_receive(:v3_get).with("/#{AMEE::Connection.api_version}/definitions/PQR/values/ABC;wikiDoc;usages").
       and_return(<<HERE
 #{XMLPreamble}
 <Representation>
@@ -51,7 +51,7 @@ HERE
   end
 
   it "should get metadata" do
-    @connection.should_receive(:v3_get).with("/#{AMEE_API_VERSION}/definitions/PQR/values/ABC;wikiDoc;usages").
+    @connection.should_receive(:v3_get).with("/#{AMEE::Connection.api_version}/definitions/PQR/values/ABC;wikiDoc;usages").
       and_return(<<HERE
 #{XMLPreamble}
 <Representation>
@@ -87,7 +87,7 @@ HERE
     <FromProfile>false</FromProfile>
   </ItemValueDefinition>
   <Status>OK</Status>
-  <Version>#{AMEE_API_VERSION}.0</Version>
+  <Version>#{AMEE::Connection.api_version}.0</Version>
 </Representation>
 HERE
     ).once
