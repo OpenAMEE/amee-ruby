@@ -14,7 +14,12 @@
                 <Name>usageOther</Name>
             </Usage>
         </Usages>
+        <Algorithms>
+            <Algorithm uid="D4E4779CA7AB">
+                <Name>default</Name>
+            </Algorithm>
+        </Algorithms>
     </ItemDefinition>
     <Status>OK</Status>
-    <Version>3.1.0</Version>
+    <Version>3.6.0</Version>
 </Representation>

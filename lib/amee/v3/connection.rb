@@ -3,6 +3,11 @@
 
 module AMEE
   class Connection
+
+    def self.api_version
+      '3'
+    end
+      
     def v3_connection
       @v3_http ||= begin
         @v3_http = Net::HTTP.new(v3_hostname, @port)

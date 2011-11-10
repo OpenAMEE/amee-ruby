@@ -13,7 +13,7 @@ module AMEE
       alias_method_chain :initialize, :v3
 
       def metapath
-        "/#{AMEE_API_VERSION}/definitions/#{itemdefuid}/values/#{uid};wikiDoc;usages"
+        "/#{AMEE::Connection.api_version}/definitions/#{itemdefuid}/values/#{uid};wikiDoc;usages"
       end
       def metaxmlpathpreamble
         '/Representation/ItemValueDefinition/'
@@ -89,7 +89,7 @@ EOF
       end
 
       def expire_cache_with_v3
-        @connection.expire_matching("/#{AMEE_API_VERSION}/definitions/#{itemdefuid}/values/#{uid}.*")
+        @connection.expire_matching("/#{AMEE::Connection.api_version}/definitions/#{itemdefuid}/values/#{uid}.*")
         expire_cache_without_v3
       end
       alias_method_chain :expire_cache, :v3
