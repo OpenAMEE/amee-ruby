@@ -9,11 +9,12 @@ module AMEE
 
       def initialize_with_v3(data = {})
         @usages = data[:usages] || []
+        @algorithms = data[:algorithms] || {}
         initialize_without_v3(data)
       end
       alias_method_chain :initialize, :v3
 
-      attr_accessor :usages
+      attr_accessor :usages, :algorithms
 
       def self.metaxmlpathpreamble
         '/Representation/ItemDefinition/'
@@ -45,6 +46,11 @@ module AMEE
         data[:name] = x 'Name', :doc => doc, :meta => true
         data[:drillDown] = x('DrillDown', :doc => doc, :meta => true).split(",") rescue nil
         data[:usages] = [(x 'Usages/Usage/Name', :doc => doc, :meta => true)].flatten.delete_if{|x| x.nil?}
+        data[:algorithms] = begin
+          names = [(x 'Algorithms/Algorithm/Name', :doc => doc, :meta => true)].flatten
+          uids = [(x 'Algorithms/Algorithm/@uid', :doc => doc, :meta => true)].flatten
+          Hash[names.zip(uids)]
+        end
         # Create object
         ItemDefinition.new(data)
       rescue

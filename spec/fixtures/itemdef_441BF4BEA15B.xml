@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Representation>
-    <ItemDefinition created="2007-07-27T07:30:44Z" modified="2010-08-24T17:17:01Z" status="ACTIVE" uid="441BF4BEA15B">
-        <Name>Plane Generic</Name>
-        <DrillDown>type,size</DrillDown>
-        <Usages>
-            <Usage present="true">
-                <Name>default</Name>
-            </Usage>
-        </Usages>
-    </ItemDefinition>
-    <Status>OK</Status>
-    <Version>3.1.0</Version>
+  <ItemDefinition created="2007-07-27T07:30:44Z" modified="2011-08-17T08:09:06Z" status="ACTIVE" uid="441BF4BEA15B">
+    <Name>Plane Generic</Name>
+    <DrillDown>type,size</DrillDown>
+    <Usages>
+      <Usage present="true">
+        <Name>default</Name>
+      </Usage>
+    </Usages>
+    <Algorithms>
+      <Algorithm uid="EC4B78451B43">
+        <Name>default</Name>
+      </Algorithm>
+      <Algorithm uid="595AF9E4E1E5">
+        <Name>perMonth</Name>
+      </Algorithm>
+    </Algorithms>
+  </ItemDefinition>
+  <Status>OK</Status>
+  <Version>3.6.0</Version>
 </Representation>

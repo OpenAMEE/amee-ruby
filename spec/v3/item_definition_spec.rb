@@ -27,6 +27,7 @@ describe AMEE::Admin::ItemDefinition, "with an authenticated v3 connection" do
     @data.name.should == "Power Stations And Stuff"
     @data.drill_downs.should == %w{state county metroArea city zipCode plantName powWowWow}
     @data.usages.should == ['usageOne', 'usageThree', 'usageOther']
+    @data.algorithms['default'].should eql "D4E4779CA7AB"
   end
 
   it "should parse XML correctly if there are no usages" do
