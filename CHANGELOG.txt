@@ -1,5 +1,9 @@
 = Changelog
 
+== 3.2.1
+* Add algorithm details to ItemDefinitions
+* Bugfix when using AMEE::Rails.connection from locations other than Rails.root
+
 == 3.2.0
 * Add algorithm details to ItemDefinitions
 
