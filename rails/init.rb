@@ -7,7 +7,7 @@ require 'amee/core-extensions/hash'
 require 'amee/rails'
 
 # Load config/amee.yml
-amee_config = "config/amee.yml"
+amee_config = "#{Rails.root}/config/amee.yml"
 if File.exist? amee_config
   $AMEE_CONFIG = AMEE::Config.setup(amee_config, Rails.env)
 else
