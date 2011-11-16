@@ -1,7 +1,8 @@
 = Changelog
 
-== 4.2.0 (also 3.2.0 for Rails 2)
+== 4.2.0 (also 3.2.0/3.2.1 for Rails 2)
 * Add algorithm details to ItemDefinitions
+* Bugfix when using AMEE::Rails.connection from locations other than Rails.root
 
 == 4.1.7
 * Compatibility with Ruby 1.9.2
