@@ -32,7 +32,7 @@ describe AMEE::Admin::ReturnValueDefinition, "with an authenticated XML connecti
     connection = flexmock "connection"
     connection.should_receive(:retries).and_return(0).once
     connection.should_receive(:v3_get).
-      with("/#{AMEE_API_VERSION}/definitions/#{Testcativduid}/returnvalues;full", {:resultLimit=>10, :resultStart=>0}).
+      with("/#{AMEE::Connection.api_version}/definitions/#{Testcativduid}/returnvalues;full", {:resultLimit=>10, :resultStart=>0}).
       and_return(fixture('return_value_definition_list.xml')).once
     list=AMEE::Admin::ReturnValueDefinitionList.new(connection,Testcativduid)
     list.should have(3).items
@@ -41,7 +41,7 @@ describe AMEE::Admin::ReturnValueDefinition, "with an authenticated XML connecti
     connection = flexmock "connection"
     connection.should_receive(:retries).and_return(0).once
     connection.should_receive(:v3_get).
-      with("/#{AMEE_API_VERSION}/definitions/#{Testcativduid}/returnvalues;full", {:resultLimit=>10, :resultStart=>0}).
+      with("/#{AMEE::Connection.api_version}/definitions/#{Testcativduid}/returnvalues;full", {:resultLimit=>10, :resultStart=>0}).
       and_return(fixture('empty_return_value_definition_list.xml')).once
     list=AMEE::Admin::ReturnValueDefinitionList.new(connection,Testcativduid)
     list.should have(0).items
@@ -49,13 +49,13 @@ describe AMEE::Admin::ReturnValueDefinition, "with an authenticated XML connecti
   it "should create a return value definition" do
     connection = flexmock "connection"
     connection.should_receive(:v3_get).
-      with("/#{AMEE_API_VERSION}/definitions/#{Testcativduid}/returnvalues/#{Testrvduid};full", {}).
+      with("/#{AMEE::Connection.api_version}/definitions/#{Testcativduid}/returnvalues/#{Testrvduid};full", {}).
       and_return(fixture('return_value_definition.xml')).once
     connection.should_receive(:v3_post).
-      with("/#{AMEE_API_VERSION}/definitions/#{Testcativduid}/returnvalues",  
+      with("/#{AMEE::Connection.api_version}/definitions/#{Testcativduid}/returnvalues",  
       {:type=>"CO2", :valueDefinition=>"45433E48B39F",
         :returnobj=>true, :unit=>"kg", :perUnit=>"month"}).
-      and_return({'Location'=>"///#{AMEE_API_VERSION}/definitions/#{Testcativduid}/returnvalues/#{Testrvduid}"}).once
+      and_return({'Location'=>"///#{AMEE::Connection.api_version}/definitions/#{Testcativduid}/returnvalues/#{Testrvduid}"}).once
     rvd=AMEE::Admin::ReturnValueDefinition.create(connection,Testcativduid,
       :type=>'CO2',:unit=>'kg',:perUnit=>'month')
     
@@ -67,7 +67,7 @@ describe AMEE::Admin::ReturnValueDefinition, "with an authenticated XML connecti
   it "should read a return value definition" do
     connection = flexmock "connection"
     connection.should_receive(:v3_get).
-      with("/#{AMEE_API_VERSION}/definitions/#{Testcativduid}/returnvalues/#{Testrvduid};full", {}).
+      with("/#{AMEE::Connection.api_version}/definitions/#{Testcativduid}/returnvalues/#{Testrvduid};full", {}).
       and_return(fixture('return_value_definition.xml')).once
     rvd=AMEE::Admin::ReturnValueDefinition.load(connection,Testcativduid,Testrvduid)
    
@@ -79,10 +79,10 @@ describe AMEE::Admin::ReturnValueDefinition, "with an authenticated XML connecti
   it "should delete a return value definition" do
     connection = flexmock "connection"
     connection.should_receive(:v3_get).
-      with("/#{AMEE_API_VERSION}/definitions/#{Testcativduid}/returnvalues/#{Testrvduid};full", {}).
+      with("/#{AMEE::Connection.api_version}/definitions/#{Testcativduid}/returnvalues/#{Testrvduid};full", {}).
       and_return(fixture('return_value_definition.xml')).once
     connection.should_receive(:v3_delete).
-      with("/#{AMEE_API_VERSION}/definitions/#{Testcativduid}/returnvalues/#{Testrvduid}").once
+      with("/#{AMEE::Connection.api_version}/definitions/#{Testcativduid}/returnvalues/#{Testrvduid}").once
     connection.should_receive(:timeout=)
      connection.should_receive(:timeout)
     rvd=AMEE::Admin::ReturnValueDefinition.load(connection,Testcativduid,Testrvduid)

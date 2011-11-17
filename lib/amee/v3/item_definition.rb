@@ -10,10 +10,11 @@ module AMEE
       alias_method :initialize_without_v3, :initialize
       def initialize(data = {})
         @usages = data[:usages] || []
+        @algorithms = data[:algorithms] || {}
         initialize_without_v3(data)
       end
 
-      attr_accessor :usages
+      attr_accessor :usages, :algorithms
 
       def self.metaxmlpathpreamble
         '/Representation/ItemDefinition/'
@@ -25,7 +26,7 @@ module AMEE
 
       def self.v3_get(connection, uid, options={})
         # Load data from path
-        response = connection.v3_get("/#{AMEE_API_VERSION}/definitions/#{uid};full", options)
+        response = connection.v3_get("/#{AMEE::Connection.api_version}/definitions/#{uid};full", options)
         # Parse response
         item_definition = ItemDefinition.parse(connection, response, false)
         # Done
@@ -48,6 +49,11 @@ module AMEE
         data[:name] = x 'Name', :doc => doc, :meta => true
         data[:drillDown] = x('DrillDown', :doc => doc, :meta => true).split(",") rescue nil
         data[:usages] = [(x 'Usages/Usage/Name', :doc => doc, :meta => true)].flatten.delete_if{|x| x.nil?}
+        data[:algorithms] = begin
+          names = [(x 'Algorithms/Algorithm/Name', :doc => doc, :meta => true)].flatten.delete_if{|x| x.nil?}
+          uids = [(x 'Algorithms/Algorithm/@uid', :doc => doc, :meta => true)].flatten.delete_if{|x| x.nil?}
+          Hash[names.zip(uids)]
+        end
         # Create object
         ItemDefinition.new(data)
       rescue
@@ -59,12 +65,12 @@ module AMEE
           :usages => @usages.join(','),
           :name => @name
         }
-        @connection.v3_put("/#{AMEE_API_VERSION}/definitions/#{@uid}",save_options)
+        @connection.v3_put("/#{AMEE::Connection.api_version}/definitions/#{@uid}",save_options)
       end
 
       alias_method :expire_cache_without_v3, :expire_cache
       def expire_cache
-        @connection.expire_matching("/#{AMEE_API_VERSION}/definitions/#{@uid}.*")
+        @connection.expire_matching("/#{AMEE::Connection.api_version}/definitions/#{@uid}.*")
         expire_cache_without_v3
       end
     end

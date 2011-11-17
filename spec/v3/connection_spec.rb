@@ -26,7 +26,7 @@ describe AMEE::Connection do
       mock.should_receive(:finish => nil)
       mock
     }
-    @c.v3_get("/#{AMEE_API_VERSION}/categories/SomeCategory").should == "OK"
+    @c.v3_get("/#{AMEE::Connection.api_version}/categories/SomeCategory").should == "OK"
   end
 
   it "should be able to get from meta server" do
@@ -35,7 +35,7 @@ describe AMEE::Connection do
       mock.should_receive(:request).and_return(flexmock(:code => '200', :body => "OK"))
       mock.should_receive(:finish => nil)
     end
-    @c.v3_get("/#{AMEE_API_VERSION}/categories/SomeCategory").should == "OK"
+    @c.v3_get("/#{AMEE::Connection.api_version}/categories/SomeCategory").should == "OK"
   end
 
   it "should be able to handle failed gets from meta server" do
@@ -45,8 +45,8 @@ describe AMEE::Connection do
       mock.should_receive(:finish => nil)
     end
     lambda {
-      @c.v3_get("/#{AMEE_API_VERSION}/categories/SomeCategory").should == nil
-    }.should raise_error(AMEE::NotFound, "The URL was not found on the server.\nRequest: GET /#{AMEE_API_VERSION}/categories/SomeCategory")
+      @c.v3_get("/#{AMEE::Connection.api_version}/categories/SomeCategory").should == nil
+    }.should raise_error(AMEE::NotFound, "The URL was not found on the server.\nRequest: GET /#{AMEE::Connection.api_version}/categories/SomeCategory")
   end
 
   it "should be able to post to meta server" do
@@ -55,7 +55,7 @@ describe AMEE::Connection do
       mock.should_receive(:request).and_return(flexmock(:code => '200', :body => "OK"))
       mock.should_receive(:finish => nil)
     end
-    @c.v3_put("/#{AMEE_API_VERSION}/categories/SomeCategory", {:arg => "test"}).should == "OK"
+    @c.v3_put("/#{AMEE::Connection.api_version}/categories/SomeCategory", {:arg => "test"}).should == "OK"
   end
 
   it "should be able to handle failed gets from meta server" do
@@ -65,7 +65,7 @@ describe AMEE::Connection do
       mock.should_receive(:finish => nil)
     end
     lambda {
-      @c.v3_put("/#{AMEE_API_VERSION}/categories/SomeCategory", {:arg => "test"}).should == "OK"
+      @c.v3_put("/#{AMEE::Connection.api_version}/categories/SomeCategory", {:arg => "test"}).should == "OK"
     }.should raise_error
   end
 
@@ -120,7 +120,7 @@ describe AMEE::Connection, "with retry enabled" do
         mock.should_receive(:finish => nil)
       end
       lambda {
-        @c.v3_get("/#{AMEE_API_VERSION}/categories/SomeCategory")
+        @c.v3_get("/#{AMEE::Connection.api_version}/categories/SomeCategory")
       }.should_not raise_error        
     end
 
@@ -131,7 +131,7 @@ describe AMEE::Connection, "with retry enabled" do
         mock.should_receive(:finish => nil)
       end
       lambda {
-        @c.v3_get("/#{AMEE_API_VERSION}/categories/SomeCategory")
+        @c.v3_get("/#{AMEE::Connection.api_version}/categories/SomeCategory")
       }.should raise_error(e)
     end
   end
@@ -150,7 +150,7 @@ describe AMEE::Connection, "with retry enabled" do
         mock.should_receive(:finish => nil)
       end
       lambda {
-        @c.v3_get("/#{AMEE_API_VERSION}/categories/SomeCategory")
+        @c.v3_get("/#{AMEE::Connection.api_version}/categories/SomeCategory")
       }.should_not raise_error        
     end
 
@@ -161,7 +161,7 @@ describe AMEE::Connection, "with retry enabled" do
         mock.should_receive(:finish => nil)
       end
       lambda {
-        @c.v3_get("/#{AMEE_API_VERSION}/categories/SomeCategory")
+        @c.v3_get("/#{AMEE::Connection.api_version}/categories/SomeCategory")
       }.should raise_error(AMEE::ConnectionFailed)
     end
   end  

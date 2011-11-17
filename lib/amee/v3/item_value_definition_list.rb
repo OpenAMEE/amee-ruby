@@ -13,7 +13,7 @@ module AMEE
       end
 
       def collectionpath
-        "/#{AMEE_API_VERSION}/definitions/#{@uid}/values;full"
+        "/#{AMEE::Connection.api_version}/definitions/#{@uid}/values;full"
       end
 
       def xmlcollectorpath
