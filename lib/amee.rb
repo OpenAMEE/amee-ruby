@@ -4,7 +4,12 @@
 require 'rexml/document'
 require 'nokogiri'
 require 'active_support'
-require 'active_support/time'
+begin
+  require 'active_support/time'
+  require 'active_support/array'
+rescue LoadError
+  nil
+end
 require 'log4r'
 
 # We don't NEED the JSON gem, but if it's available, use it.
