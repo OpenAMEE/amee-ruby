@@ -42,14 +42,14 @@ GEM
     rspec-expectations (2.6.0)
       diff-lcs (~> 1.1.2)
     rspec-mocks (2.6.0)
-    tzinfo (0.3.30)
+    tzinfo (0.3.31)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord (>= 2.3.11)
-  activesupport (>= 2.3.11)
+  activerecord (~> 3.1.0)
+  activesupport (~> 3.1.0)
   appraisal
   bundler (~> 1.0.0)
   flexmock (> 0.8.6)
