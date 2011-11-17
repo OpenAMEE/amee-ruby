@@ -56,7 +56,7 @@ module AMEE
         after_save :amee_save
         before_destroy :amee_destroy
         # Check that this object has an AMEE profile UID when saving
-        validates_presence_of :amee_profile
+        validates :amee_profile, :presence => true
       end
     end
 
