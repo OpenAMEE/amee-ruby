@@ -25,11 +25,4 @@ describe "AMEE module" do
     }.should_not raise_error
   end
   
-  it "has an intentional bug in Rails 2.3 to test appraisal builds" do
-    # This should fail in 
-    lambda {
-      [].uniq_by
-    }.should_not raise_error
-  end
-  
 end
