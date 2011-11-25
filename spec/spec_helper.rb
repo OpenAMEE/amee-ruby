@@ -4,12 +4,37 @@
 require 'rubygems'
 require 'rspec'
 require 'logger'
+require 'vcr'
+require 'pry'
+require 'webmock/rspec'
 
 $:.unshift(File.dirname(__FILE__) + '/../lib')
 require 'amee'
 
+def test_credentials(filename)
+  test_creds = File.read File.dirname(__FILE__)+'/../'+filename
+  YAML.load(test_creds)
+end
+
+AMEE_V1_API_KEY  = test_credentials('amee_test_credentials.yml')['v1']['api_key']
+AMEE_V1_PASSWORD = test_credentials('amee_test_credentials.yml')['v1']['password']
+AMEE_V2_API_KEY  = test_credentials('amee_test_credentials.yml')['v2']['api_key']
+AMEE_V2_PASSWORD = test_credentials('amee_test_credentials.yml')['v2']['password']
+
+
+VCR.config do |c|
+  c.stub_with :webmock
+  c.default_cassette_options = { :record => :once }
+  c.cassette_library_dir = 'cassettes'
+  c.filter_sensitive_data('<AMEE_V1_API_KEY>') { AMEE_V1_API_KEY}
+  c.filter_sensitive_data('<AMEE_V1_PASSWORD>') { AMEE_V1_PASSWORD}
+  c.filter_sensitive_data('<AMEE_V2_API_KEY>') { AMEE_V2_API_KEY}
+  c.filter_sensitive_data('<AMEE_V2_PASSWORD>') { AMEE_V2_PASSWORD}
+end
+
 RSpec.configure do |config|
   config.mock_with :flexmock
+  config.extend VCR::RSpec::Macros
 end
 
 # Stub activerecord for rails tests

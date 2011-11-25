@@ -1,0 +1,56 @@
+--- 
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: :get
+    uri: https://stage.amee.com:443/data
+    body: 
+    headers: 
+      accept: 
+      - application/json
+      cookie: 
+      - authToken=
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 401
+      message: Unauthorized
+    headers: 
+      via: 
+      - 1.1 stage.amee.com
+      content-type: 
+      - application/json; charset=UTF-8
+      server: 
+      - Noelios-Restlet-Engine/1.1.10
+      date: 
+      - Wed, 23 Nov 2011 10:29:09 GMT
+      content-length: 
+      - "175"
+    body: "{\"status\":{\"description\":\"The request requires user authentication\",\"name\":\"Unauthorized\",\"code\":401,\"uri\":\"http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.2\"}}"
+    http_version: "1.1"
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: :post
+    uri: https://stage.amee.com:443/auth/signIn
+    body: username=wrong&password=details
+    headers: 
+      accept: 
+      - application/xml
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 200
+      message: OK
+    headers: 
+      content-type: 
+      - text/plain
+      via: 
+      - 1.1 stage.amee.com
+      server: 
+      - Noelios-Restlet-Engine/1.1.10
+      date: 
+      - Wed, 23 Nov 2011 10:29:09 GMT
+      content-length: 
+      - "0"
+      set-cookie: 
+      - authToken=; Path=/; Expires=Wednesday, 23-Nov-11 10:29:09 GMT
+      - authToken=; Path=/; Expires=Wednesday, 23-Nov-11 10:29:09 GMT
+    body: 
+    http_version: "1.1"

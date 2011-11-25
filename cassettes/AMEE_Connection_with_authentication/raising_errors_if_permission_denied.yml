@@ -1,0 +1,98 @@
+--- 
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: :get
+    uri: https://stage.amee.com:443/data/lca/ecoinvent
+    body: 
+    headers: 
+      accept: 
+      - application/json
+      cookie: 
+      - authToken=
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 401
+      message: Unauthorized
+    headers: 
+      via: 
+      - 1.1 stage.amee.com
+      content-type: 
+      - application/json; charset=UTF-8
+      server: 
+      - Noelios-Restlet-Engine/1.1.10
+      date: 
+      - Wed, 23 Nov 2011 10:28:28 GMT
+      content-length: 
+      - "175"
+    body: "{\"status\":{\"description\":\"The request requires user authentication\",\"name\":\"Unauthorized\",\"code\":401,\"uri\":\"http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.2\"}}"
+    http_version: "1.1"
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: :post
+    uri: https://stage.amee.com:443/auth/signIn
+    body: username=<AMEE_V2_API_KEY>&password=<AMEE_V2_PASSWORD>
+    headers: 
+      accept: 
+      - application/xml
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 200
+      message: OK
+    headers: 
+      last-modified: 
+      - Wed, 23 Nov 2011 10:28:29 GMT
+      expires: 
+      - Tue, 22 Nov 2011 10:28:29 GMT
+      via: 
+      - 1.1 stage.amee.com
+      content-type: 
+      - application/xml; charset=UTF-8
+      server: 
+      - Noelios-Restlet-Engine/1.1.10
+      date: 
+      - Wed, 23 Nov 2011 10:28:29 GMT
+      set-cookie: 
+      - authToken=5o7xNfwD7LmfT3jSK0T1LOakYU1P5OXnZclw/a/g5JfKkwbnVgcxcxHfNs2XauLc2WvCRxXjfHgjxpDuQGMkTQ24kdCb72sha4tYetGoGNA=; Path=/
+      authtoken: 
+      - 5o7xNfwD7LmfT3jSK0T1LOakYU1P5OXnZclw/a/g5JfKkwbnVgcxcxHfNs2XauLc2WvCRxXjfHgjxpDuQGMkTQ24kdCb72sha4tYetGoGNA=
+      vary: 
+      - Accept-Charset,Accept-Encoding,Accept-Language,Accept
+      transfer-encoding: 
+      - chunked
+    body: <?xml version="1.0" encoding="UTF-8" standalone="no"?><Resources><SignInResource><Next>/auth</Next><User uid="58F26PHHLFEB"><Status>ACTIVE</Status><Type>STANDARD</Type><ApiVersion>2.0</ApiVersion><Locale>en_GB</Locale><TimeZone>UTC</TimeZone></User></SignInResource></Resources>
+    http_version: "1.1"
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: :get
+    uri: https://stage.amee.com:443/data/lca/ecoinvent
+    body: 
+    headers: 
+      accept: 
+      - application/json
+      cookie: 
+      - authToken=5o7xNfwD7LmfT3jSK0T1LOakYU1P5OXnZclw/a/g5JfKkwbnVgcxcxHfNs2XauLc2WvCRxXjfHgjxpDuQGMkTQ24kdCb72sha4tYetGoGNA=
+      authtoken: 
+      - 5o7xNfwD7LmfT3jSK0T1LOakYU1P5OXnZclw/a/g5JfKkwbnVgcxcxHfNs2XauLc2WvCRxXjfHgjxpDuQGMkTQ24kdCb72sha4tYetGoGNA=
+      host: 
+      - stage.amee.com
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 403
+      message: Forbidden
+    headers: 
+      via: 
+      - 1.1 stage.amee.com
+      content-type: 
+      - application/json; charset=UTF-8
+      server: 
+      - Noelios-Restlet-Engine/1.1.10
+      date: 
+      - Wed, 23 Nov 2011 10:28:29 GMT
+      content-length: 
+      - "132"
+      set-cookie: 
+      - authToken=5o7xNfwD7LmfT3jSK0T1LOakYU1P5OXnZclw/a/g5JfKkwbnVgcxcxHfNs2XauLc2WvCRxXjfHgjxpDuQGMkTQ24kdCb72sha4tYetGoGNA=; Path=/
+      authtoken: 
+      - 5o7xNfwD7LmfT3jSK0T1LOakYU1P5OXnZclw/a/g5JfKkwbnVgcxcxHfNs2XauLc2WvCRxXjfHgjxpDuQGMkTQ24kdCb72sha4tYetGoGNA=
+    body: "{\"status\":{\"description\":\"\",\"name\":\"Forbidden\",\"code\":403,\"uri\":\"http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.4\"}}"
+    http_version: "1.1"

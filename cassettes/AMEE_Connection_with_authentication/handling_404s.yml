@@ -1,0 +1,30 @@
+--- 
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: :get
+    uri: https://stage.amee.com:443/missing_url
+    body: 
+    headers: 
+      accept: 
+      - application/json
+      cookie: 
+      - authToken=
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 404
+      message: Not Found
+    headers: 
+      via: 
+      - 1.1 stage.amee.com
+      content-type: 
+      - application/json; charset=UTF-8
+      server: 
+      - Noelios-Restlet-Engine/1.1.10
+      date: 
+      - Wed, 23 Nov 2011 10:28:28 GMT
+      content-length: 
+      - "190"
+      set-cookie: 
+      - authToken=; Path=/; Expires=Wednesday, 23-Nov-11 10:28:28 GMT
+    body: "{\"status\":{\"description\":\"The server has not found anything matching the request URI\",\"name\":\"Not Found\",\"code\":404,\"uri\":\"http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5\"}}"
+    http_version: "1.1"

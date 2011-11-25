@@ -1,0 +1,108 @@
+--- 
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: :post
+    uri: https://stage.amee.com:443/profiles
+    body: profile=true
+    headers: 
+      accept: 
+      - application/json
+      cookie: 
+      - authToken=
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 401
+      message: Unauthorized
+    headers: 
+      via: 
+      - 1.1 stage.amee.com
+      content-type: 
+      - application/json; charset=UTF-8
+      server: 
+      - Noelios-Restlet-Engine/1.1.10
+      date: 
+      - Wed, 23 Nov 2011 10:29:10 GMT
+      content-length: 
+      - "175"
+    body: "{\"status\":{\"description\":\"The request requires user authentication\",\"name\":\"Unauthorized\",\"code\":401,\"uri\":\"http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.2\"}}"
+    http_version: "1.1"
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: :post
+    uri: https://stage.amee.com:443/auth/signIn
+    body: username=<AMEE_V2_API_KEY>&password=<AMEE_V2_PASSWORD>
+    headers: 
+      accept: 
+      - application/xml
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 200
+      message: OK
+    headers: 
+      last-modified: 
+      - Wed, 23 Nov 2011 10:29:10 GMT
+      expires: 
+      - Tue, 22 Nov 2011 10:29:10 GMT
+      via: 
+      - 1.1 stage.amee.com
+      content-type: 
+      - application/xml; charset=UTF-8
+      server: 
+      - Noelios-Restlet-Engine/1.1.10
+      date: 
+      - Wed, 23 Nov 2011 10:29:10 GMT
+      set-cookie: 
+      - authToken=6BguyLXHMma6WCR90RzkeFEgcV/aSYyv4zebpxPFJa6xMz36CyH/qx8Iv3XismQ957+0iKruRwkKa1/CGpQbL3YUJpbFqJj+A0pJ68Xv8RQ=; Path=/
+      authtoken: 
+      - 6BguyLXHMma6WCR90RzkeFEgcV/aSYyv4zebpxPFJa6xMz36CyH/qx8Iv3XismQ957+0iKruRwkKa1/CGpQbL3YUJpbFqJj+A0pJ68Xv8RQ=
+      vary: 
+      - Accept-Charset,Accept-Encoding,Accept-Language,Accept
+      transfer-encoding: 
+      - chunked
+    body: <?xml version="1.0" encoding="UTF-8" standalone="no"?><Resources><SignInResource><Next>/auth</Next><User uid="58F26PHHLFEB"><Status>ACTIVE</Status><Type>STANDARD</Type><ApiVersion>2.0</ApiVersion><Locale>en_GB</Locale><TimeZone>UTC</TimeZone></User></SignInResource></Resources>
+    http_version: "1.1"
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: :post
+    uri: https://stage.amee.com:443/profiles
+    body: profile=true
+    headers: 
+      accept: 
+      - application/json
+      content-type: 
+      - application/x-www-form-urlencoded
+      content-length: 
+      - "12"
+      cookie: 
+      - authToken=6BguyLXHMma6WCR90RzkeFEgcV/aSYyv4zebpxPFJa6xMz36CyH/qx8Iv3XismQ957+0iKruRwkKa1/CGpQbL3YUJpbFqJj+A0pJ68Xv8RQ=
+      authtoken: 
+      - 6BguyLXHMma6WCR90RzkeFEgcV/aSYyv4zebpxPFJa6xMz36CyH/qx8Iv3XismQ957+0iKruRwkKa1/CGpQbL3YUJpbFqJj+A0pJ68Xv8RQ=
+      host: 
+      - stage.amee.com
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 200
+      message: OK
+    headers: 
+      last-modified: 
+      - Wed, 23 Nov 2011 10:29:10 GMT
+      expires: 
+      - Tue, 22 Nov 2011 10:29:10 GMT
+      via: 
+      - 1.1 stage.amee.com
+      content-type: 
+      - application/json; charset=UTF-8
+      server: 
+      - Noelios-Restlet-Engine/1.1.10
+      date: 
+      - Wed, 23 Nov 2011 10:29:10 GMT
+      content-length: 
+      - "277"
+      set-cookie: 
+      - authToken=6BguyLXHMma6WCR90RzkeFEgcV/aSYyv4zebpxPFJa6xMz36CyH/qx8Iv3XismQ957+0iKruRwkKa1/CGpQbL3YUJpbFqJj+A0pJ68Xv8RQ=; Path=/
+      authtoken: 
+      - 6BguyLXHMma6WCR90RzkeFEgcV/aSYyv4zebpxPFJa6xMz36CyH/qx8Iv3XismQ957+0iKruRwkKa1/CGpQbL3YUJpbFqJj+A0pJ68Xv8RQ=
+      vary: 
+      - Accept-Charset,Accept-Encoding,Accept-Language,Accept
+    body: "{\"apiVersion\":\"2.0\",\"profile\":{\"uid\":\"1EJFXLOM3ASM\",\"environment\":{\"uid\":\"5F5887BCF726\"},\"created\":\"Wed Nov 23 10:29:10 UTC 2011\",\"name\":\"1EJFXLOM3ASM\",\"path\":\"1EJFXLOM3ASM\",\"user\":{\"uid\":\"58F26PHHLFEB\",\"username\":\"<AMEE_V2_API_KEY>\"},\"modified\":\"Wed Nov 23 10:29:10 UTC 2011\"}}"
+    http_version: "1.1"
