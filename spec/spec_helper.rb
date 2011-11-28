@@ -20,6 +20,8 @@ AMEE_V1_API_KEY  = test_credentials('amee_test_credentials.yml')['v1']['api_key'
 AMEE_V1_PASSWORD = test_credentials('amee_test_credentials.yml')['v1']['password']
 AMEE_V2_API_KEY  = test_credentials('amee_test_credentials.yml')['v2']['api_key']
 AMEE_V2_PASSWORD = test_credentials('amee_test_credentials.yml')['v2']['password']
+AMEE_V3_API_KEY  = test_credentials('amee_test_credentials.yml')['v3']['api_key']
+AMEE_V3_PASSWORD = test_credentials('amee_test_credentials.yml')['v3']['password']
 
 
 VCR.config do |c|
@@ -30,6 +32,8 @@ VCR.config do |c|
   c.filter_sensitive_data('<AMEE_V1_PASSWORD>') { AMEE_V1_PASSWORD}
   c.filter_sensitive_data('<AMEE_V2_API_KEY>') { AMEE_V2_API_KEY}
   c.filter_sensitive_data('<AMEE_V2_PASSWORD>') { AMEE_V2_PASSWORD}
+  c.filter_sensitive_data('<AMEE_V3_API_KEY>') { AMEE_V3_API_KEY }
+  c.filter_sensitive_data('<AMEE_V3_PASSWORD>') { AMEE_V3_PASSWORD }
 end
 
 RSpec.configure do |config|

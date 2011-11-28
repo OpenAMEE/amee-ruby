@@ -106,20 +106,25 @@ describe AMEE::Connection, "with authentication" do
       }.should raise_error(AMEE::PermissionDenied)
     end
   end
+
   describe "raising unhandled errors" do
     it "should raise error if unhandled errors occur in connection" do
-      pending # not sure how best to fake breaking this
-      # flexmock(Net::HTTP).new_instances do |mock|
-      #   mock.should_receive(:start => nil)
-      #   mock.should_receive(:request).and_return(flexmock(:code => '500', :body => '{}'))
-      #   mock.should_receive(:finish => nil)
-      # end
-      amee = AMEE::Connection.new('stage.amee.com', 'wrong', 'wrong')
+
+      @error_response = {
+        :status => 500,
+        :body => ""
+      }
+
+      amee = AMEE::Connection.new('stage.amee.com', AMEE_V2_API_KEY, AMEE_V2_PASSWORD)
+
+      VCR.use_cassette("AMEE_Connection/v2/raising unhandled errors") do
+        amee.authenticate
+      end
+      stub_request(:any, "http://stage.amee.com/data").to_return(@error_response)
+
       lambda {
-        amee.get('/something_that_will_cause_a_500')
-      }.should raise_error(AMEE::UnknownError,"An error occurred while talking to AMEE: HTTP response code 500.
-  Request: GET /data
-  Response: {}")
+        amee.get('/data')
+      }.should raise_error(AMEE::UnknownError)
     end
   end
 
@@ -128,80 +133,85 @@ end
 describe AMEE::Connection, "with retry enabled" do
   use_vcr_cassette
   [
-    Timeout::Error,
-    Errno::EINVAL,
-    Errno::ECONNRESET,
-    EOFError,
+    AMEE::TimeOut,
   ].each do |e|
 
-    it "should retry after #{e.name} the correct number of times" do
-      pending
-      # binding.pry
-      # Webmock.stub_request(:any, 'stage.amee.com').to_timeout.then.
-      # to_timeout.then
-      # to_return({:code => '200', :body => '{}'})
-      flexmock(Typhoeus::Response).new_instances do |mock|
+    before(:each) do
 
-        # queue it on
-        # call run
-        # mock the request.response after calling run, to return the timeout
-        # make sure we mock out the authenticated method on the connection object
+      @amee = AMEE::Connection.new('stage.amee.com', AMEE_V2_API_KEY, AMEE_V2_PASSWORD, :retries => 2)
 
-        mock.should_receive(:code).and_raise(e.new).twice
-        mock.should_receive(:request).and_return(flexmock(:code => '200', :body => '{}')).once
-        mock.should_receive(:finish => nil)
+      VCR.use_cassette("AMEE_Connection/v2/raising unhandled errors") do
+        @amee.authenticate
       end
-      amee = AMEE::Connection.new('stage.amee.com', AMEE_V2_API_KEY, AMEE_V2_PASSWORD, :retries => 2)
+
+    end
+
+    it "should retry after #{e.name} the correct number of times" do
+
+      @error_response = {
+        :status => 408,
+        :body => ""
+      }
+      
+
+      stub_request(:any, "http://stage.amee.com/data").to_return(@error_response).times(2).
+      then.to_return(:status => 200, :body => {})
+
       lambda {
-        amee.get('/data')
+        @amee.get('/data')
       }.should_not raise_error
     end
 
     it "should retry #{e.name} the correct number of times and raise error on failure" do
-      pending
-      flexmock(Net::HTTP).new_instances do |mock|
-        mock.should_receive(:start => nil)
-        mock.should_receive(:request).and_raise(e.new).times(3)
-        mock.should_receive(:finish => nil)
-      end
-      amee = AMEE::Connection.new('stage.amee.com', AMEE_V2_API_KEY, AMEE_V2_PASSWORD, :retries => 2)
+
+      @error_response = {
+        :status => 408,
+        :body => ""
+      }
+      stub_request(:any, "http://stage.amee.com/data").to_return(@error_response).times(3)
+
       lambda {
-        amee.get('/data')
+        @amee.get('/data')
       }.should raise_error(e)
     end
   end
 
   [
-    '502',
-    '503',
-    '504'
+    502,
+    503,
+    504
   ].each do |e|
 
+    # binding.pry
+
+    before(:each) do
+      VCR.use_cassette("AMEE_Connection/v2/raising unhandled errors") do
+        @amee.authenticate
+      end  
+
+      @error_response = {
+        :status => e,
+        :body => {}
+      }
+      @amee = AMEE::Connection.new('stage.amee.com', AMEE_V2_API_KEY, AMEE_V2_PASSWORD, :retries => 2)
+
+    end
+
     it "should retry after #{e} the correct number of times" do
-      pending
-      flexmock(Net::HTTP).new_instances do |mock|
-        mock.should_receive(:start => nil)
-        mock.should_receive(:request).and_return(flexmock(:code => e, :body => '{}')).twice
-        # 
-        mock.should_receive(:request).and_return(flexmock(:code => '200', :body => '{}')).once
-        mock.should_receive(:finish => nil)
-      end
-      amee = AMEE::Connection.new('stage.amee.com', AMEE_V2_API_KEY, AMEE_V2_PASSWORD, :retries => 2)
+
+      stub_request(:any, "http://stage.amee.com/data").to_return(:status => e, :body => {}).times(2).
+      then.to_return(:status => 200, :body => {})
+
       lambda {
-        amee.get('/data')
+        @amee.get('/data')
       }.should_not raise_error
     end
 
     it "should retry #{e} the correct number of times and raise error on failure" do
-      pending # these look like they might need to be mocked out anyway
-      flexmock(Net::HTTP).new_instances do |mock|
-        mock.should_receive(:start => nil)
-        mock.should_receive(:request).and_return(flexmock(:code => e, :body => '{}')).times(3)
-        mock.should_receive(:finish => nil)
-      end
-      amee = AMEE::Connection.new('stage.amee.com', AMEE_V2_API_KEY, AMEE_V2_PASSWORD, :retries => 2)
+
+      stub_request(:any, "http://stage.amee.com/data").to_return(@error_response)
       lambda {
-        amee.get('/data')
+        @amee.get('/data')
       }.should raise_error(AMEE::ConnectionFailed)
     end
   end

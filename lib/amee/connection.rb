@@ -1,10 +1,11 @@
 # Copyright (C) 2008-2011 AMEE UK Ltd. - http://www.amee.com
 # Released as Open Source Software under the BSD 3-Clause license. See LICENSE.txt for details.
 
-
 require 'typhoeus'
 require 'json'
 require 'log_buddy'
+
+
 
 # LogBuddy.init :log_to_stdout => false
 LogBuddy.init :disabled => true
@@ -33,6 +34,9 @@ module AMEE
       if !valid?
        raise "You must supply connection details - server, username and password are all required!"
       end
+
+      # Working with caching
+
       # Handle old option
       if options[:enable_caching]
         Kernel.warn '[DEPRECATED] :enable_caching => true is deprecated. Use :cache => :memory_store instead'
@@ -41,7 +45,7 @@ module AMEE
       # Create cache store
       if options[:cache] &&
         (options[:cache_store].class.name == "ActiveSupport::Cache::MemCacheStore" ||
-         options[:cache].to_sym == :mem_cache_store)         
+         options[:cache].to_sym == :mem_cache_store)
         raise 'ActiveSupport::Cache::MemCacheStore is not supported, as it doesn\'t allow regexp expiry'
       end
       if options[:cache_store].is_a?(ActiveSupport::Cache::Store)
@@ -292,8 +296,10 @@ module AMEE
 
       when 502, 503, 504
           raise AMEE::ConnectionFailed.new("A connection error occurred while talking to AMEE: HTTP response code #{response.code}.\nRequest: #{request.method.upcase} #{request.url.gsub(request.host, '')}")
+      when 500
+        raise AMEE::UnknownError.new("An error occurred while talking to AMEE: HTTP response code #{response.code}.\nRequest: #{request.method.upcase} #{request.url}\n#{request.body}\Response: #{response.body}")
       when 408
-        raise AMEE::Timeout.new("Request timed out.")
+        raise AMEE::TimeOut.new("Request timed out.")
         # new, weird error
       when 406
         raise AMEE::UnknownError.new("An error occurred while talking to AMEE: HTTP response code #{response.code}.\nRequest: #{request.method.upcase} #{request.url}\n#{request.body}\Response: #{response.body}")
@@ -340,6 +346,7 @@ module AMEE
         d "Queuing the request for #{request.url}"
         hydra.queue request
         hydra.run
+
         return response_ok?(request.response, request)
       rescue AMEE::ConnectionFailed, AMEE::TimeOut => e
         if delay = retries.shift

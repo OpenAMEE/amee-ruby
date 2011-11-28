@@ -1,0 +1,79 @@
+--- 
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: get
+    uri: http://stage.amee.com:80/data/home/energy/quantity/878854C275BC
+    body: 
+    headers: 
+      accept: 
+      - application/json
+      cookie: 
+      - AuthToken=7xaj94uNzpKDnVswdfe+cvbyfFn3yqTA9TWYjLkP2okAGu96iA48Y+5uCBBTmsGaCmMFmQk5UY3TtpDSdWzCOsLS2qs1hzx6dNT4+rIr42I=
+      authtoken: 
+      - 7xaj94uNzpKDnVswdfe+cvbyfFn3yqTA9TWYjLkP2okAGu96iA48Y+5uCBBTmsGaCmMFmQk5UY3TtpDSdWzCOsLS2qs1hzx6dNT4+rIr42I=
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 200
+      message: OK
+    headers: 
+      expires: 
+      - Sun, 27 Nov 2011 00:50:38 GMT
+      last-modified: 
+      - Mon, 28 Nov 2011 00:50:38 GMT
+      content-type: 
+      - application/json; charset=UTF-8
+      via: 
+      - 1.1 stage.amee.com
+      server: 
+      - Noelios-Restlet-Engine/1.1.10
+      date: 
+      - Mon, 28 Nov 2011 00:50:38 GMT
+      content-length: 
+      - "4140"
+      set-cookie: 
+      - authToken=/GtLagog4PlDX3b2A4Hn4o5danNq168DLVLJpYM3+i5gyUWNO0eW9IRXPY02HuxqaGx9wJ+fd61ZPXeoEaZhCJDg8Xf959zqYHiHR2AntIo=; Path=/
+      authtoken: 
+      - /GtLagog4PlDX3b2A4Hn4o5danNq168DLVLJpYM3+i5gyUWNO0eW9IRXPY02HuxqaGx9wJ+fd61ZPXeoEaZhCJDg8Xf959zqYHiHR2AntIo=
+      vary: 
+      - Accept-Charset,Accept-Encoding,Accept-Language,Accept
+    body: "{\"apiVersion\":\"2.0\",\"amount\":{\"unit\":\"kg/year\",\"value\":0},\"amounts\":{\"amount\":[{\"perUnit\":\"year\",\"unit\":\"kg\",\"default\":\"true\",\"value\":0,\"type\":\"CO2\"}]},\"path\":\"/home/energy/quantity/878854C275BC\",\"userValueChoices\":{\"choices\":[{\"name\":\"currentReading\",\"value\":\"0\"},{\"name\":\"energyConsumption\",\"value\":\"0\"},{\"name\":\"greenTariff\",\"value\":\"\"},{\"name\":\"includesHeating\",\"value\":\"false\"},{\"name\":\"lastReading\",\"value\":\"0\"},{\"name\":\"massPerTime\",\"value\":\"0\"},{\"name\":\"deliveries\",\"value\":\"\"},{\"name\":\"paymentFrequency\",\"value\":\"\"},{\"name\":\"season\",\"value\":\"\"},{\"name\":\"volumePerTime\",\"value\":\"0\"}],\"name\":\"userValueChoices\"},\"dataItem\":{\"uid\":\"878854C275BC\",\"startDate\":\"1970-01-01T00:00:00Z\",\"dataCategory\":{\"uid\":\"A92693A99BAD\",\"deprecated\":false,\"name\":\"Quantity\",\"path\":\"quantity\"},\"itemValues\":[{\"itemValueDefinition\":{\"uid\":\"B5AC731EF1D5\",\"name\":\"kgCO2 Per Kg\",\"fromData\":true,\"path\":\"kgCO2PerKg\",\"fromProfile\":false,\"valueDefinition\":{\"uid\":\"F066E097D76D\",\"environment\":{\"uid\":\"5F5887BCF726\"},\"created\":\"2007-07-27 07:30:44.0\",\"description\":\"\",\"name\":\"kgCO2PerKg\",\"valueType\":\"DECIMAL\",\"modified\":\"2007-07-27 07:30:44.0\"},\"drillDown\":false},\"perUnit\":\"\",\"uid\":\"7071F0E96196\",\"startDate\":\"1970-01-01T00:00:00Z\",\"unit\":\"\",\"name\":\"kgCO2 Per Kg\",\"value\":\"\",\"path\":\"kgCO2PerKg\",\"displayPath\":\"kgCO2PerKg\",\"displayName\":\"kgCO2 Per Kg\"},{\"itemValueDefinition\":{\"uid\":\"469C1AE4B79A\",\"name\":\"kgCO2 Per KWh\",\"fromData\":true,\"path\":\"kgCO2PerKWh\",\"fromProfile\":false,\"valueDefinition\":{\"uid\":\"3EA39C552E81\",\"environment\":{\"uid\":\"5F5887BCF726\"},\"created\":\"2007-07-27 07:30:44.0\",\"description\":\"\",\"name\":\"kgCO2PerKWh\",\"valueType\":\"DECIMAL\",\"modified\":\"2007-07-27 07:30:44.0\"},\"drillDown\":false},\"perUnit\":\"\",\"uid\":\"1DFEF8E6D7E5\",\"startDate\":\"1970-01-01T00:00:00Z\",\"unit\":\"\",\"name\":\"kgCO2 Per KWh\",\"value\":\"\",\"path\":\"kgCO2PerKWh\",\"displayPath\":\"kgCO2PerKWh\",\"displayName\":\"kgCO2 Per KWh\"},{\"itemValueDefinition\":{\"uid\":\"75DE0251B056\",\"name\":\"Source\",\"fromData\":true,\"path\":\"source\",\"fromProfile\":false,\"valueDefinition\":{\"uid\":\"CCEB59CACE1B\",\"environment\":{\"uid\":\"5F5887BCF726\"},\"created\":\"2007-07-27 07:30:44.0\",\"description\":\"\",\"name\":\"text\",\"valueType\":\"TEXT\",\"modified\":\"2007-07-27 07:30:44.0\"},\"drillDown\":false},\"perUnit\":\"\",\"uid\":\"015D3ACF02BD\",\"startDate\":\"1970-01-01T00:00:00Z\",\"unit\":\"\",\"name\":\"Source\",\"value\":\"net CV RME-type Wells to wheels/European Commission/JRC 2006 http://ies.jrc.ec.europa.eu/our-activities/support-to-eu-policies/well-to-wheels-analysis/WTW.html\",\"path\":\"source\",\"displayPath\":\"source\",\"displayName\":\"Source\"},{\"itemValueDefinition\":{\"uid\":\"EAFBD1CA93E8\",\"name\":\"kgCO2 Per Litre\",\"fromData\":true,\"path\":\"kgCO2PerLitre\",\"fromProfile\":false,\"valueDefinition\":{\"uid\":\"C809A0FE1918\",\"environment\":{\"uid\":\"5F5887BCF726\"},\"created\":\"2007-07-27 07:30:44.0\",\"description\":\"\",\"name\":\"kgCO2PerLitre\",\"valueType\":\"DECIMAL\",\"modified\":\"2007-07-27 07:30:44.0\"},\"drillDown\":false},\"perUnit\":\"\",\"uid\":\"219EE9D836E0\",\"startDate\":\"1970-01-01T00:00:00Z\",\"unit\":\"\",\"name\":\"kgCO2 Per Litre\",\"value\":\"2.5\",\"path\":\"kgCO2PerLitre\",\"displayPath\":\"kgCO2PerLitre\",\"displayName\":\"kgCO2 Per Litre\"},{\"itemValueDefinition\":{\"uid\":\"5DF1F01B2106\",\"name\":\"Type\",\"fromData\":true,\"path\":\"type\",\"fromProfile\":false,\"valueDefinition\":{\"uid\":\"CCEB59CACE1B\",\"environment\":{\"uid\":\"5F5887BCF726\"},\"created\":\"2007-07-27 07:30:44.0\",\"description\":\"\",\"name\":\"text\",\"valueType\":\"TEXT\",\"modified\":\"2007-07-27 07:30:44.0\"},\"drillDown\":true},\"perUnit\":\"\",\"uid\":\"5A46861E475C\",\"startDate\":\"1970-01-01T00:00:00Z\",\"unit\":\"\",\"name\":\"Type\",\"value\":\"biodiesel\",\"path\":\"type\",\"displayPath\":\"type\",\"displayName\":\"Type\"}],\"environment\":{\"uid\":\"5F5887BCF726\",\"itemsPerFeed\":10,\"created\":\"Fri Jul 27 08:30:44 UTC 2007\",\"description\":\"\",\"name\":\"AMEE\",\"owner\":\"\",\"path\":\"\",\"itemsPerPage\":10,\"modified\":\"Fri Jul 27 08:30:44 UTC 2007\"},\"created\":\"2007-07-27 09:49:32.0\",\"name\":\"878854C275BC\",\"path\":\"\",\"itemDefinition\":{\"uid\":\"212C818D8F16\",\"environment\":{\"uid\":\"5F5887BCF726\"},\"created\":\"2007-07-27 07:30:44.0\",\"name\":\"Energy Quantity\",\"drillDown\":\"type\",\"modified\":\"2011-02-16 08:00:50.0\"},\"endDate\":\"\",\"label\":\"biodiesel\",\"modified\":\"2009-09-10 10:08:00.0\"},\"amountPerMonth\":0}"
+    http_version: "1.1"
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: get
+    uri: http://stage.amee.com:80/data/home/energy/quantity/878854C275BC
+    body: 
+    headers: 
+      accept: 
+      - application/json
+      cookie: 
+      - AuthToken=7xaj94uNzpKDnVswdfe+cvbyfFn3yqTA9TWYjLkP2okAGu96iA48Y+5uCBBTmsGaCmMFmQk5UY3TtpDSdWzCOsLS2qs1hzx6dNT4+rIr42I=
+      authtoken: 
+      - 7xaj94uNzpKDnVswdfe+cvbyfFn3yqTA9TWYjLkP2okAGu96iA48Y+5uCBBTmsGaCmMFmQk5UY3TtpDSdWzCOsLS2qs1hzx6dNT4+rIr42I=
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 200
+      message: OK
+    headers: 
+      expires: 
+      - Sun, 27 Nov 2011 00:50:39 GMT
+      last-modified: 
+      - Mon, 28 Nov 2011 00:50:39 GMT
+      content-type: 
+      - application/json; charset=UTF-8
+      via: 
+      - 1.1 stage.amee.com
+      server: 
+      - Noelios-Restlet-Engine/1.1.10
+      date: 
+      - Mon, 28 Nov 2011 00:50:39 GMT
+      content-length: 
+      - "4140"
+      set-cookie: 
+      - authToken=/GtLagog4PlDX3b2A4Hn4o5danNq168DLVLJpYM3+i7MfFEA71I6TSUEqWo4RXzu7SRClW5j2RuTISstOP2pU4NqI9k8Y7Qf8xlNIsj2fas=; Path=/
+      authtoken: 
+      - /GtLagog4PlDX3b2A4Hn4o5danNq168DLVLJpYM3+i7MfFEA71I6TSUEqWo4RXzu7SRClW5j2RuTISstOP2pU4NqI9k8Y7Qf8xlNIsj2fas=
+      vary: 
+      - Accept-Charset,Accept-Encoding,Accept-Language,Accept
+    body: "{\"apiVersion\":\"2.0\",\"amount\":{\"unit\":\"kg/year\",\"value\":0},\"amounts\":{\"amount\":[{\"perUnit\":\"year\",\"unit\":\"kg\",\"default\":\"true\",\"value\":0,\"type\":\"CO2\"}]},\"path\":\"/home/energy/quantity/878854C275BC\",\"userValueChoices\":{\"choices\":[{\"name\":\"currentReading\",\"value\":\"0\"},{\"name\":\"energyConsumption\",\"value\":\"0\"},{\"name\":\"greenTariff\",\"value\":\"\"},{\"name\":\"includesHeating\",\"value\":\"false\"},{\"name\":\"lastReading\",\"value\":\"0\"},{\"name\":\"massPerTime\",\"value\":\"0\"},{\"name\":\"deliveries\",\"value\":\"\"},{\"name\":\"paymentFrequency\",\"value\":\"\"},{\"name\":\"season\",\"value\":\"\"},{\"name\":\"volumePerTime\",\"value\":\"0\"}],\"name\":\"userValueChoices\"},\"dataItem\":{\"uid\":\"878854C275BC\",\"startDate\":\"1970-01-01T00:00:00Z\",\"dataCategory\":{\"uid\":\"A92693A99BAD\",\"deprecated\":false,\"name\":\"Quantity\",\"path\":\"quantity\"},\"itemValues\":[{\"itemValueDefinition\":{\"uid\":\"B5AC731EF1D5\",\"name\":\"kgCO2 Per Kg\",\"fromData\":true,\"path\":\"kgCO2PerKg\",\"fromProfile\":false,\"valueDefinition\":{\"uid\":\"F066E097D76D\",\"environment\":{\"uid\":\"5F5887BCF726\"},\"created\":\"2007-07-27 07:30:44.0\",\"description\":\"\",\"name\":\"kgCO2PerKg\",\"valueType\":\"DECIMAL\",\"modified\":\"2007-07-27 07:30:44.0\"},\"drillDown\":false},\"perUnit\":\"\",\"uid\":\"7071F0E96196\",\"startDate\":\"1970-01-01T00:00:00Z\",\"unit\":\"\",\"name\":\"kgCO2 Per Kg\",\"value\":\"\",\"path\":\"kgCO2PerKg\",\"displayPath\":\"kgCO2PerKg\",\"displayName\":\"kgCO2 Per Kg\"},{\"itemValueDefinition\":{\"uid\":\"469C1AE4B79A\",\"name\":\"kgCO2 Per KWh\",\"fromData\":true,\"path\":\"kgCO2PerKWh\",\"fromProfile\":false,\"valueDefinition\":{\"uid\":\"3EA39C552E81\",\"environment\":{\"uid\":\"5F5887BCF726\"},\"created\":\"2007-07-27 07:30:44.0\",\"description\":\"\",\"name\":\"kgCO2PerKWh\",\"valueType\":\"DECIMAL\",\"modified\":\"2007-07-27 07:30:44.0\"},\"drillDown\":false},\"perUnit\":\"\",\"uid\":\"1DFEF8E6D7E5\",\"startDate\":\"1970-01-01T00:00:00Z\",\"unit\":\"\",\"name\":\"kgCO2 Per KWh\",\"value\":\"\",\"path\":\"kgCO2PerKWh\",\"displayPath\":\"kgCO2PerKWh\",\"displayName\":\"kgCO2 Per KWh\"},{\"itemValueDefinition\":{\"uid\":\"75DE0251B056\",\"name\":\"Source\",\"fromData\":true,\"path\":\"source\",\"fromProfile\":false,\"valueDefinition\":{\"uid\":\"CCEB59CACE1B\",\"environment\":{\"uid\":\"5F5887BCF726\"},\"created\":\"2007-07-27 07:30:44.0\",\"description\":\"\",\"name\":\"text\",\"valueType\":\"TEXT\",\"modified\":\"2007-07-27 07:30:44.0\"},\"drillDown\":false},\"perUnit\":\"\",\"uid\":\"015D3ACF02BD\",\"startDate\":\"1970-01-01T00:00:00Z\",\"unit\":\"\",\"name\":\"Source\",\"value\":\"net CV RME-type Wells to wheels/European Commission/JRC 2006 http://ies.jrc.ec.europa.eu/our-activities/support-to-eu-policies/well-to-wheels-analysis/WTW.html\",\"path\":\"source\",\"displayPath\":\"source\",\"displayName\":\"Source\"},{\"itemValueDefinition\":{\"uid\":\"EAFBD1CA93E8\",\"name\":\"kgCO2 Per Litre\",\"fromData\":true,\"path\":\"kgCO2PerLitre\",\"fromProfile\":false,\"valueDefinition\":{\"uid\":\"C809A0FE1918\",\"environment\":{\"uid\":\"5F5887BCF726\"},\"created\":\"2007-07-27 07:30:44.0\",\"description\":\"\",\"name\":\"kgCO2PerLitre\",\"valueType\":\"DECIMAL\",\"modified\":\"2007-07-27 07:30:44.0\"},\"drillDown\":false},\"perUnit\":\"\",\"uid\":\"219EE9D836E0\",\"startDate\":\"1970-01-01T00:00:00Z\",\"unit\":\"\",\"name\":\"kgCO2 Per Litre\",\"value\":\"2.5\",\"path\":\"kgCO2PerLitre\",\"displayPath\":\"kgCO2PerLitre\",\"displayName\":\"kgCO2 Per Litre\"},{\"itemValueDefinition\":{\"uid\":\"5DF1F01B2106\",\"name\":\"Type\",\"fromData\":true,\"path\":\"type\",\"fromProfile\":false,\"valueDefinition\":{\"uid\":\"CCEB59CACE1B\",\"environment\":{\"uid\":\"5F5887BCF726\"},\"created\":\"2007-07-27 07:30:44.0\",\"description\":\"\",\"name\":\"text\",\"valueType\":\"TEXT\",\"modified\":\"2007-07-27 07:30:44.0\"},\"drillDown\":true},\"perUnit\":\"\",\"uid\":\"5A46861E475C\",\"startDate\":\"1970-01-01T00:00:00Z\",\"unit\":\"\",\"name\":\"Type\",\"value\":\"biodiesel\",\"path\":\"type\",\"displayPath\":\"type\",\"displayName\":\"Type\"}],\"environment\":{\"uid\":\"5F5887BCF726\",\"itemsPerFeed\":10,\"created\":\"Fri Jul 27 08:30:44 UTC 2007\",\"description\":\"\",\"name\":\"AMEE\",\"owner\":\"\",\"path\":\"\",\"itemsPerPage\":10,\"modified\":\"Fri Jul 27 08:30:44 UTC 2007\"},\"created\":\"2007-07-27 09:49:32.0\",\"name\":\"878854C275BC\",\"path\":\"\",\"itemDefinition\":{\"uid\":\"212C818D8F16\",\"environment\":{\"uid\":\"5F5887BCF726\"},\"created\":\"2007-07-27 07:30:44.0\",\"name\":\"Energy Quantity\",\"drillDown\":\"type\",\"modified\":\"2011-02-16 08:00:50.0\"},\"endDate\":\"\",\"label\":\"biodiesel\",\"modified\":\"2009-09-10 10:08:00.0\"},\"amountPerMonth\":0}"
+    http_version: "1.1"

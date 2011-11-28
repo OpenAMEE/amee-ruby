@@ -1,0 +1,36 @@
+--- 
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: post
+    uri: http://stage.amee.com:80/auth/signIn
+    body: username=<AMEE_V1_API_KEY>&password=<AMEE_V1_PASSWORD>
+    headers: 
+      accept: 
+      - application/xml
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 200
+      message: OK
+    headers: 
+      expires: 
+      - Sun, 27 Nov 2011 01:09:43 GMT
+      last-modified: 
+      - Mon, 28 Nov 2011 01:09:43 GMT
+      content-type: 
+      - application/xml; charset=UTF-8
+      via: 
+      - 1.1 stage.amee.com
+      server: 
+      - Noelios-Restlet-Engine/1.1.10
+      date: 
+      - Mon, 28 Nov 2011 01:09:43 GMT
+      set-cookie: 
+      - authToken=P64d2f4ShBeIqRrN7uVptSD7jHB2qUPVWxJv4DEuc8oKeYSO3MklQepEbB1TZYE38hHM5XhWOyOsP7ogMsz1z2DyJeIXAUJdLXYcar4Cdbc=; Path=/
+      authtoken: 
+      - P64d2f4ShBeIqRrN7uVptSD7jHB2qUPVWxJv4DEuc8oKeYSO3MklQepEbB1TZYE38hHM5XhWOyOsP7ogMsz1z2DyJeIXAUJdLXYcar4Cdbc=
+      vary: 
+      - Accept-Charset,Accept-Encoding,Accept-Language,Accept
+      transfer-encoding: 
+      - chunked
+    body: <?xml version="1.0" encoding="UTF-8" standalone="no"?><Resources><SignInResource><Next>/auth</Next><User uid="ZMNP71Y06QFH"><Status>ACTIVE</Status><Type>STANDARD</Type><ApiVersion>1.0</ApiVersion><Locale>en_GB</Locale><TimeZone>UTC</TimeZone></User></SignInResource></Resources>
+    http_version: "1.1"

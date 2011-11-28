@@ -1,35 +1,8 @@
 --- 
 - !ruby/struct:VCR::HTTPInteraction 
   request: !ruby/struct:VCR::Request 
-    method: :get
-    uri: https://stage.amee.com:443/data
-    body: 
-    headers: 
-      accept: 
-      - application/json
-      cookie: 
-      - authToken=
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
-      code: 401
-      message: Unauthorized
-    headers: 
-      via: 
-      - 1.1 stage.amee.com
-      content-type: 
-      - application/json; charset=UTF-8
-      server: 
-      - Noelios-Restlet-Engine/1.1.10
-      date: 
-      - Wed, 23 Nov 2011 10:28:28 GMT
-      content-length: 
-      - "175"
-    body: "{\"status\":{\"description\":\"The request requires user authentication\",\"name\":\"Unauthorized\",\"code\":401,\"uri\":\"http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.2\"}}"
-    http_version: "1.1"
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
-    method: :post
-    uri: https://stage.amee.com:443/auth/signIn
+    method: post
+    uri: http://stage.amee.com:80/auth/signIn
     body: username=<AMEE_V2_API_KEY>&password=<AMEE_V2_PASSWORD>
     headers: 
       accept: 
@@ -39,22 +12,22 @@
       code: 200
       message: OK
     headers: 
-      last-modified: 
-      - Wed, 23 Nov 2011 10:28:28 GMT
       expires: 
-      - Tue, 22 Nov 2011 10:28:28 GMT
-      via: 
-      - 1.1 stage.amee.com
+      - Sun, 27 Nov 2011 01:14:29 GMT
+      last-modified: 
+      - Mon, 28 Nov 2011 01:14:29 GMT
       content-type: 
       - application/xml; charset=UTF-8
+      via: 
+      - 1.1 stage.amee.com
       server: 
       - Noelios-Restlet-Engine/1.1.10
       date: 
-      - Wed, 23 Nov 2011 10:28:28 GMT
+      - Mon, 28 Nov 2011 01:14:29 GMT
       set-cookie: 
-      - authToken=xQrp8iVwmp6k1cNz816NOoqY7c3eHsR6KvQx4Wd7gqZ9MkecLSiqHgTeW2RXtwhF9IlBK/XY5Wd0hRylKqcy9vn0wGKV9Vh+cAdKVTNkYXM=; Path=/
+      - authToken=m9EfzlSsx+o9gnGiWrXmGSOTaiL3GZ9Wz/1/16s8yPximcInyKmBfnNK3v+E7VYvqq1lcePG7xf91awEbH+QcPEmpEYhG+cLl1vyBT+BwXs=; Path=/
       authtoken: 
-      - xQrp8iVwmp6k1cNz816NOoqY7c3eHsR6KvQx4Wd7gqZ9MkecLSiqHgTeW2RXtwhF9IlBK/XY5Wd0hRylKqcy9vn0wGKV9Vh+cAdKVTNkYXM=
+      - m9EfzlSsx+o9gnGiWrXmGSOTaiL3GZ9Wz/1/16s8yPximcInyKmBfnNK3v+E7VYvqq1lcePG7xf91awEbH+QcPEmpEYhG+cLl1vyBT+BwXs=
       vary: 
       - Accept-Charset,Accept-Encoding,Accept-Language,Accept
       transfer-encoding: 
@@ -63,41 +36,39 @@
     http_version: "1.1"
 - !ruby/struct:VCR::HTTPInteraction 
   request: !ruby/struct:VCR::Request 
-    method: :get
-    uri: https://stage.amee.com:443/data
+    method: get
+    uri: http://stage.amee.com:80/data
     body: 
     headers: 
       accept: 
       - application/json
       cookie: 
-      - authToken=xQrp8iVwmp6k1cNz816NOoqY7c3eHsR6KvQx4Wd7gqZ9MkecLSiqHgTeW2RXtwhF9IlBK/XY5Wd0hRylKqcy9vn0wGKV9Vh+cAdKVTNkYXM=
+      - AuthToken=m9EfzlSsx+o9gnGiWrXmGSOTaiL3GZ9Wz/1/16s8yPximcInyKmBfnNK3v+E7VYvqq1lcePG7xf91awEbH+QcPEmpEYhG+cLl1vyBT+BwXs=
       authtoken: 
-      - xQrp8iVwmp6k1cNz816NOoqY7c3eHsR6KvQx4Wd7gqZ9MkecLSiqHgTeW2RXtwhF9IlBK/XY5Wd0hRylKqcy9vn0wGKV9Vh+cAdKVTNkYXM=
-      host: 
-      - stage.amee.com
+      - m9EfzlSsx+o9gnGiWrXmGSOTaiL3GZ9Wz/1/16s8yPximcInyKmBfnNK3v+E7VYvqq1lcePG7xf91awEbH+QcPEmpEYhG+cLl1vyBT+BwXs=
   response: !ruby/struct:VCR::Response 
     status: !ruby/struct:VCR::ResponseStatus 
       code: 200
       message: OK
     headers: 
-      last-modified: 
-      - Wed, 23 Nov 2011 10:28:28 GMT
       expires: 
-      - Tue, 22 Nov 2011 10:28:28 GMT
-      via: 
-      - 1.1 stage.amee.com
+      - Sun, 27 Nov 2011 01:14:29 GMT
+      last-modified: 
+      - Mon, 28 Nov 2011 01:14:29 GMT
       content-type: 
       - application/json; charset=UTF-8
+      via: 
+      - 1.1 stage.amee.com
       server: 
       - Noelios-Restlet-Engine/1.1.10
       date: 
-      - Wed, 23 Nov 2011 10:28:28 GMT
+      - Mon, 28 Nov 2011 01:14:29 GMT
       content-length: 
       - "1041"
       set-cookie: 
-      - authToken=xQrp8iVwmp6k1cNz816NOoqY7c3eHsR6KvQx4Wd7gqZ9MkecLSiqHgTeW2RXtwhF9IlBK/XY5Wd0hRylKqcy9vn0wGKV9Vh+cAdKVTNkYXM=; Path=/
+      - authToken=m9EfzlSsx+o9gnGiWrXmGSOTaiL3GZ9Wz/1/16s8yPximcInyKmBfnNK3v+E7VYvqq1lcePG7xf91awEbH+QcPEmpEYhG+cLl1vyBT+BwXs=; Path=/
       authtoken: 
-      - xQrp8iVwmp6k1cNz816NOoqY7c3eHsR6KvQx4Wd7gqZ9MkecLSiqHgTeW2RXtwhF9IlBK/XY5Wd0hRylKqcy9vn0wGKV9Vh+cAdKVTNkYXM=
+      - m9EfzlSsx+o9gnGiWrXmGSOTaiL3GZ9Wz/1/16s8yPximcInyKmBfnNK3v+E7VYvqq1lcePG7xf91awEbH+QcPEmpEYhG+cLl1vyBT+BwXs=
       vary: 
       - Accept-Charset,Accept-Encoding,Accept-Language,Accept
     body: "{\"apiVersion\":\"2.0\",\"dataCategory\":{\"uid\":\"CD310BEBAC52\",\"deprecated\":false,\"environment\":{\"uid\":\"5F5887BCF726\",\"itemsPerFeed\":10,\"description\":\"\",\"name\":\"AMEE\",\"owner\":\"\",\"path\":\"\",\"itemsPerPage\":10},\"created\":\"2007-07-27 07:30:44.0\",\"name\":\"Root\",\"path\":\"\",\"modified\":\"2007-07-27 07:30:44.0\"},\"path\":\"\",\"children\":{\"pager\":{},\"dataItems\":{},\"dataCategories\":[{\"uid\":\"99B121BB416C\",\"name\":\"Business\",\"path\":\"business\"},{\"uid\":\"Q9G5P7ZIZXYX\",\"name\":\"Documentation\",\"path\":\"documentation\"},{\"uid\":\"15AC6CF74915\",\"name\":\"Embodied\",\"path\":\"embodied\"},{\"uid\":\"BBA3AC3E795E\",\"name\":\"Home\",\"path\":\"home\"},{\"uid\":\"85A9172C31AF\",\"name\":\"Import\",\"path\":\"import\"},{\"uid\":\"U1X3EBU9QQ2K\",\"name\":\"LCA\",\"path\":\"lca\"},{\"uid\":\"9E5362EAB0E7\",\"name\":\"Metadata\",\"path\":\"metadata\"},{\"uid\":\"A0CF90F6C0B9\",\"name\":\"Personal\",\"path\":\"personal\"},{\"uid\":\"6FF29F7DACDA\",\"name\":\"Planet\",\"path\":\"planet\"},{\"uid\":\"6153F468BE05\",\"name\":\"Test\",\"path\":\"test\"},{\"uid\":\"263FC0186834\",\"name\":\"Transport\",\"path\":\"transport\"},{\"uid\":\"2957AE9B6E6B\",\"name\":\"User\",\"path\":\"user\"}]}}"
