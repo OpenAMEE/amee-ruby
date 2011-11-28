@@ -40,7 +40,7 @@ end
 describe AMEE::Connection, "with authentication" do
 
   describe "using a version 1 api key" do
-    use_vcr_cassette "using a v1 key", :record => :new_episodes
+    use_vcr_cassette "AMEE_Connection_with_authentication/using a v1 key", :record => :new_episodes
     it "detects the API version (1)" do
       amee = AMEE::Connection.new('stage.amee.com', AMEE_V1_API_KEY, AMEE_V1_PASSWORD)
       amee.authenticate
@@ -50,26 +50,28 @@ describe AMEE::Connection, "with authentication" do
   end
 
   describe "using a version 2 api key" do
-
-  use_vcr_cassette
+    
   it "should start out unauthenticated" do
     amee = AMEE::Connection.new('stage.amee.com', AMEE_V2_API_KEY, AMEE_V2_PASSWORD)
     amee.authenticated?.should be_false
   end
 
-
   it "detects the API version (2 - XML) normally" do
-    amee = AMEE::Connection.new('stage.amee.com', AMEE_V2_API_KEY, AMEE_V2_PASSWORD)
-    amee.authenticate
-    amee.authenticated?.should be_true
-    amee.version.should == 2.0
+    VCR.use_cassette('AMEE_Connection_with_authentication/using_a_v2_key/detects the API version for XML') do
+      amee = AMEE::Connection.new('stage.amee.com', AMEE_V2_API_KEY, AMEE_V2_PASSWORD)
+      amee.authenticate
+      amee.authenticated?.should be_true
+      amee.version.should == 2.0
+    end
   end
 
   it "detects the API version (2 - JSON)" do
-    amee = AMEE::Connection.new('stage.amee.com', AMEE_V2_API_KEY, AMEE_V2_PASSWORD)
-    amee.authenticate
-    amee.authenticated?.should be_true
-    amee.version.should == 2.0
+    VCR.use_cassette('AMEE_Connection_with_authentication/using_a_v2_key/detects the API version for JSON') do
+      amee = AMEE::Connection.new('stage.amee.com', AMEE_V2_API_KEY, AMEE_V2_PASSWORD)
+      amee.authenticate
+      amee.authenticated?.should be_true
+      amee.version.should == 2.0
+    end
   end
 
   end
@@ -237,7 +239,6 @@ describe AMEE::Connection, "with bad authentication information" do
     use_vcr_cassette
     it "should not be capable of making requests for public URLs" do
       amee = AMEE::Connection.new('stage.amee.com', 'wrong', 'details')
-      # binding.pry
       lambda{
         amee.get('/')
       }.should raise_error
