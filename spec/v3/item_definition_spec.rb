@@ -69,11 +69,24 @@ describe AMEE::Admin::ItemDefinition, "with an authenticated v3 connection" do
     @list.first.drill?.should be_false
     @list.first.data?.should be_true
     @list.first.versions.should == ['1.0', '2.0']
-    @list.second.versions.should == ['2.0']
-    @list.second.optional?('usageOne').should be_true
-    @list.second.ignored?('usageTwo').should be_true
-    @list.second.default.should be_nil
+    @list[1].versions.should == ['2.0']
+    @list[1].optional?('usageOne').should be_true
+    @list[1].ignored?('usageTwo').should be_true
+    @list[1].default.should be_nil
     @list.last.uid.should=='2B0A0E540D4C'
+  end
+  
+  
+  it "should be able to load an item value definition list with only one usage" do
+    connection = flexmock "connection"
+    connection.should_receive(:v3_get).with("/#{AMEE::Connection.api_version}/definitions/B4DA9E4AD5F2;full", {}).and_return(fixture('itemdef_B4DA9E4AD5F2.xml')).once
+    connection.should_receive(:retries).and_return(0).once
+    connection.should_receive(:v3_get).with("/#{AMEE::Connection.api_version}/definitions/B4DA9E4AD5F2/values;full", {:resultStart => 0, :resultLimit => 10}).and_return(fixture('ivdlist_one_usage.xml')).once
+    @data = AMEE::Admin::ItemDefinition.load(connection,"B4DA9E4AD5F2")
+    @data.uid.should == "B4DA9E4AD5F2"
+    @list=@data.item_value_definition_list
+    @list.first.ignored?('default').should be_true
+    @list.first.compulsory?('default').should be_false
   end
 
   it "should fail gracefully with incorrect data" do

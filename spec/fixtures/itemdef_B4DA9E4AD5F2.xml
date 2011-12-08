@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Representation>
+  <ItemDefinition created="2009-04-14T12:32:50Z" modified="2011-01-26T12:28:45Z" status="ACTIVE" uid="B4DA9E4AD5F2">
+    <Name>Televisions Generic Ranges</Name>
+    <DrillDown>type,size</DrillDown>
+    <Usages>
+      <Usage present="true">
+        <Name>default</Name>
+      </Usage>
+    </Usages>
+    <Algorithms>
+      <Algorithm uid="7D9CA64B95CE">
+        <Name>default</Name>
+      </Algorithm>
+    </Algorithms>
+  </ItemDefinition>
+  <Status>OK</Status>
+  <Version>3.6.0</Version>
+</Representation>
