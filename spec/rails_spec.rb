@@ -5,6 +5,18 @@ require 'spec_helper.rb'
 require 'amee/rails'
 require 'active_record'
 
+class Rails
+  def self.env
+    'test'
+  end
+  def self.root
+    File.join(File.dirname(__FILE__),'fixtures')
+  end
+  def self.logger
+    nil
+  end
+end
+
 describe AMEE::Rails do
 
   class AMEETest < ActiveRecord::Base
@@ -39,6 +51,17 @@ describe AMEE::Rails do
 
     it "should have an amee_destroy function" do
       @test.klass.method_defined?(:amee_destroy).should be_true
+    end
+
+  end
+
+  describe "loads configuration file correctly" do
+    
+    it "should autoload config file when AMEE::Rails.connection is accessed" do
+      x = AMEE::Rails.connection(:authenticate => false)
+      x.server.should eql 'stage.amee.com'
+      x.username.should eql 'username'
+      x.password.should eql 'password'
     end
 
   end

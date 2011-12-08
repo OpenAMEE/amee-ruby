@@ -1,0 +1,4 @@
+test:
+    server: stage.amee.com
+    username: username
+    password: password
