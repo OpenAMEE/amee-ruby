@@ -26,12 +26,12 @@ HERE
   <WikiDoc>Mass of carbon per distance</WikiDoc>
   <Usages>
     <Usage>
-      <Name>usageTwo</Name>
-      <Type>IGNORED</Type>
-    </Usage>
-    <Usage>
       <Name>usageOne</Name>
       <Type>FORBIDDEN</Type>
+    </Usage>
+    <Usage>
+      <Name>usageTwo</Name>
+      <Type>IGNORED</Type>
     </Usage>
   </Usages>
 </ItemValueDefinition>
