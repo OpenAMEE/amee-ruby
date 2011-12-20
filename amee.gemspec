@@ -25,7 +25,6 @@ Gem::Specification.new do |s|
     "README.txt",
     "Rakefile",
     "VERSION",
-    "amee-ruby.gemspec",
     "amee.example.yml",
     "amee.gemspec",
     "bin/ameesh",
