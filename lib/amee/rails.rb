@@ -10,6 +10,14 @@ module AMEE
 
     class Connection
       def self.global(options = {})
+        unless defined?($AMEE_CONFIG)
+          amee_config = "#{::Rails.root}/config/amee.yml"
+          if File.exist? amee_config
+            $AMEE_CONFIG = AMEE::Config.setup(amee_config, ::Rails.env)
+          else
+            $AMEE_CONFIG = AMEE::Config.setup
+          end
+        end
         unless @connection
           $AMEE_CONFIG ||= {} # Make default values nil
           if $AMEE_CONFIG[:ssl] == false
@@ -37,7 +45,7 @@ module AMEE
       protected
       def self.connect(server, username, password, options)
         connection = AMEE::Connection.new(server, username, password, options)
-        connection.authenticate
+        connection.authenticate unless options[:authenticate] == false
         return connection
       end
     end
@@ -56,7 +64,7 @@ module AMEE
         after_save :amee_save
         before_destroy :amee_destroy
         # Check that this object has an AMEE profile UID when saving
-        validates :amee_profile, :presence => true
+        validates_presence_of :amee_profile
       end
     end
 

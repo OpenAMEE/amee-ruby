@@ -41,7 +41,7 @@ module AMEE
         data[:meta][:wikidoc]=x 'WikiDoc', :doc => p
         names = x('Usages/Usage/Name', :doc => p)
         types = x('Usages/Usage/Type', :doc => p)
-        data[:meta][:usages] = names && types ? Hash[*(names.zip(types.map{|x| x.downcase.to_sym})).flatten] : {}
+        data[:meta][:usages] = names && types ? Hash[*([names].flatten.zip([types].flatten.map{|x| x.downcase.to_sym})).flatten] : {}
         data[:drill]=(x('DrillDown',:doc => p)=='true')
         data[:from_profile]=(x('FromProfile',:doc => p)=='true')
         data[:from_data]=(x('FromData',:doc => p)=='true')

@@ -1,7 +1,9 @@
 # encoding: utf-8
 
 require 'rubygems'
-require 'bundler'
+require 'bundler/setup'
+require 'appraisal'
+
 begin
   Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e
@@ -72,7 +74,7 @@ require 'rcov/rcovtask'
 desc "Generate code coverage"
 RSpec::Core::RakeTask.new(:coverage) do |t|
   t.rcov = true
-  t.rcov_opts = ['--exclude', 'spec']
+  t.rcov_opts = ['--exclude', 'spec,/*ruby*,/*gems*']
 end
 
 require 'rdoc/task'

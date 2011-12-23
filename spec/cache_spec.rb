@@ -75,6 +75,11 @@ describe AMEE::Connection do
       c.expire_cache
       i = c.item :label => 'biodiesel'
     end
+    
+    it "removes special characters from cache keys" do
+      setup_connection
+      @connection.send(:cache_key, "/%cache/$4/%20test").should eql 'server.example.com/cache/4/20test'
+    end
 
     describe 'and automatic invalidation' do
 
