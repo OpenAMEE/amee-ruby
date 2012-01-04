@@ -89,8 +89,6 @@ describe AMEE::Connection do
       while (test_str.length < 300)
         key = @connection.send(:cache_key, test_str)
         key.starts_with?(@connection.server).should be_true
-        puts key
-        puts key.length
         key.length.should <= 250
         # next
         test_str += step
