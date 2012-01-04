@@ -76,10 +76,27 @@ describe AMEE::Connection do
       i = c.item :label => 'biodiesel'
     end
     
-    it "removes special characters from cache keys" do
+    it "removes special characters from cache keys, include slashes" do
       setup_connection
-      @connection.send(:cache_key, "/%cache/$4/%20test").should eql 'server.example.com/cache/4/20test'
+      @connection.send(:cache_key, "/%cache/$4/%20test").should eql 'server.example.com_cache_4_20test'
     end
+    
+    it "trims cache keys to correct length for filenames, allowing for lock extension" do
+      setup_connection
+      step = '/123456789'
+      test_str = step
+      # test lots of string lengths
+      while (test_str.length < 300)
+        key = @connection.send(:cache_key, test_str)
+        key.starts_with?(@connection.server).should be_true
+        puts key
+        puts key.length
+        key.length.should <= 250
+        # next
+        test_str += step
+      end
+    end
+
 
     describe 'and automatic invalidation' do
 
