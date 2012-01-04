@@ -1,5 +1,11 @@
 = Changelog
 
+== 4.3.1
+* Bugfix to make caching Rails 3 compatible
+
+== 4.3.0
+* Numerous fixes for compatibility with Ruby 1.9.2 and Rails 3.1
+
 == 4.2.0 (also 3.2.0/3.2.1 for Rails 2)
 * Add algorithm details to ItemDefinitions
 * Bugfix when using AMEE::Rails.connection from locations other than Rails.root
