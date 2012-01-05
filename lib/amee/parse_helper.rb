@@ -2,6 +2,7 @@
 # Released as Open Source Software under the BSD 3-Clause license. See LICENSE.txt for details.
 
 module ParseHelper
+  
   def x(xpath,options = {})
     doc = options[:doc] || @doc
     preamble = options[:meta] == true ? metaxmlpathpreamble : xmlpathpreamble
@@ -36,6 +37,7 @@ module ParseHelper
   def xmlpathpreamble
     ''
   end
+  
   def load_xml_doc(xml)
     doc = Nokogiri.XML(xml) { |config| config.strict }
     doc.remove_namespaces!

@@ -63,6 +63,12 @@ describe AMEE::Data::Item, "with an authenticated connection" do
     @data.values[0][:path].should == "kgCO2PerPassengerJourney"
     @data.values[0][:value].should == "0"
     @data.values[0][:uid].should == "127612FA4921"
+    @data.amounts[0][:type].should == "CO2"
+    @data.amounts[0][:value].should == 20.0
+    @data.amounts[0][:unit].should == "kg"
+    @data.amounts[1][:type].should == "N2O"
+    @data.amounts[1][:value].should == 2.0
+    @data.amounts[1][:unit].should == "kg"
   end
 
   it "should parse choices correctly from XML" do
@@ -102,6 +108,12 @@ describe AMEE::Data::Item, "with an authenticated connection" do
     @data.values[0][:path].should == "kgCO2PerPassengerJourney"
     @data.values[0][:value].should == "0"
     @data.values[0][:uid].should == "127612FA4921"
+    @data.amounts[0][:type].should == "CO2"
+    @data.amounts[0][:value].should == 20.0
+    @data.amounts[0][:unit].should == "kg"
+    @data.amounts[1][:type].should == "N2O"
+    @data.amounts[1][:value].should == 2.0
+    @data.amounts[1][:unit].should == "kg"
   end
 
   it "should parse choices correctly from JSON" do

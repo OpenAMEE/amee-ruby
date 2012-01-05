@@ -1,0 +1,608 @@
+1325695063
+AMEE	/home/spatchcock/code/projects/amee-ruby/lib/amee/collection.rb	module AMEE
+AMEE	/home/spatchcock/code/projects/amee-ruby/lib/amee/config.rb	module AMEE
+AMEE	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	module AMEE
+AMEE	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_category.rb	module AMEE
+AMEE	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item.rb	module AMEE
+AMEE	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value.rb	module AMEE
+AMEE	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	module AMEE
+AMEE	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_object.rb	module AMEE
+AMEE	/home/spatchcock/code/projects/amee-ruby/lib/amee/drill_down.rb	module AMEE
+AMEE	/home/spatchcock/code/projects/amee-ruby/lib/amee/exceptions.rb	module AMEE
+AMEE	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_definition.rb	module AMEE
+AMEE	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	module AMEE
+AMEE	/home/spatchcock/code/projects/amee-ruby/lib/amee/logger.rb	module AMEE
+AMEE	/home/spatchcock/code/projects/amee-ruby/lib/amee/object.rb	module AMEE
+AMEE	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	module AMEE
+AMEE	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile.rb	module AMEE
+AMEE	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	module AMEE
+AMEE	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	module AMEE
+AMEE	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item_value.rb	module AMEE
+AMEE	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_object.rb	module AMEE
+AMEE	/home/spatchcock/code/projects/amee-ruby/lib/amee/rails.rb	module AMEE
+AMEE	/home/spatchcock/code/projects/amee-ruby/lib/amee/shell.rb	module AMEE
+AMEE	/home/spatchcock/code/projects/amee-ruby/lib/amee/user.rb	module AMEE
+AMEE	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/collection.rb	module AMEE
+AMEE	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/connection.rb	module AMEE
+AMEE	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_definition.rb	module AMEE
+AMEE	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_value_definition.rb	module AMEE
+AMEE	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_value_definition_list.rb	module AMEE
+AMEE	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/return_value_definition.rb	module AMEE
+AMEETest	/home/spatchcock/code/projects/amee-ruby/spec/rails_spec.rb	  class AMEETest 
+ActiveRecordUnitTestHelper	/home/spatchcock/code/projects/amee-ruby/spec/spec_helper.rb	class ActiveRecordUnitTestHelper
+Admin	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_definition.rb	  module Admin
+Admin	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	  module Admin
+Admin	/home/spatchcock/code/projects/amee-ruby/lib/amee/user.rb	  module Admin
+Admin	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_definition.rb	  module Admin
+Admin	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_value_definition.rb	  module Admin
+Admin	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_value_definition_list.rb	  module Admin
+Admin	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/return_value_definition.rb	  module Admin
+ArgumentError	/home/spatchcock/code/projects/amee-ruby/lib/amee/exceptions.rb	  class ArgumentError 
+AuthFailed	/home/spatchcock/code/projects/amee-ruby/lib/amee/exceptions.rb	  class AuthFailed 
+BadData	/home/spatchcock/code/projects/amee-ruby/lib/amee/exceptions.rb	  class BadData 
+BadRequest	/home/spatchcock/code/projects/amee-ruby/lib/amee/exceptions.rb	  class BadRequest 
+Base	/home/spatchcock/code/projects/amee-ruby/lib/amee/rails.rb	  class ActionController::Base
+Category	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_category.rb	    class Category 
+Category	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	    class Category 
+ClassMethods	/home/spatchcock/code/projects/amee-ruby/lib/amee/rails.rb	    module ClassMethods
+Collection	/home/spatchcock/code/projects/amee-ruby/lib/amee/collection.rb	  class Collection 
+Collection	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/collection.rb	  class Collection 
+Config	/home/spatchcock/code/projects/amee-ruby/lib/amee/config.rb	  class Config
+Connection	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	  class Connection
+Connection	/home/spatchcock/code/projects/amee-ruby/lib/amee/rails.rb	    class Connection
+Connection	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/connection.rb	  class Connection
+ConnectionFailed	/home/spatchcock/code/projects/amee-ruby/lib/amee/exceptions.rb	  class ConnectionFailed 
+Data	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_category.rb	  module Data
+Data	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item.rb	  module Data
+Data	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value.rb	  module Data
+Data	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	  module Data
+Data	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_object.rb	  module Data
+Data	/home/spatchcock/code/projects/amee-ruby/lib/amee/drill_down.rb	  module Data
+Date	/home/spatchcock/code/projects/amee-ruby/lib/amee.rb	class Date
+DefinitionsListResponse	/home/spatchcock/code/projects/amee-ruby/spec/item_definition_spec.rb	DefinitionsListResponse=
+DefinitionsListResponse	/home/spatchcock/code/projects/amee-ruby/spec/v3/item_definition_spec.rb	DefinitionsListResponse=
+DefinitionsListResponsePage1	/home/spatchcock/code/projects/amee-ruby/spec/item_definition_spec.rb	DefinitionsListResponsePage1=
+DefinitionsListResponsePage1	/home/spatchcock/code/projects/amee-ruby/spec/v3/item_definition_spec.rb	DefinitionsListResponsePage1=
+DefinitionsListResponsePage2	/home/spatchcock/code/projects/amee-ruby/spec/item_definition_spec.rb	DefinitionsListResponsePage2=
+DefinitionsListResponsePage2	/home/spatchcock/code/projects/amee-ruby/spec/v3/item_definition_spec.rb	DefinitionsListResponsePage2=
+DefinitionsListResponsePage3	/home/spatchcock/code/projects/amee-ruby/spec/item_definition_spec.rb	DefinitionsListResponsePage3=
+DefinitionsListResponsePage3	/home/spatchcock/code/projects/amee-ruby/spec/v3/item_definition_spec.rb	DefinitionsListResponsePage3=
+Deprecated	/home/spatchcock/code/projects/amee-ruby/lib/amee/exceptions.rb	  class Deprecated 
+DrillDown	/home/spatchcock/code/projects/amee-ruby/lib/amee/drill_down.rb	    class DrillDown 
+DuplicateResource	/home/spatchcock/code/projects/amee-ruby/lib/amee/exceptions.rb	  class DuplicateResource 
+Epoch	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value.rb	  Epoch=
+HasProfileTest	/home/spatchcock/code/projects/amee-ruby/spec/rails_spec.rb	    class HasProfileTest 
+Hash	/home/spatchcock/code/projects/amee-ruby/lib/amee/core-extensions/hash.rb	class Hash
+IV	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	      attr_accessor :path # the IV path corresponding to the series, without the /data
+InstanceMethods	/home/spatchcock/code/projects/amee-ruby/lib/amee/rails.rb	    module InstanceMethods
+Item	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item.rb	    class Item 
+Item	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	    class Item 
+ItemDefinition	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_definition.rb	    class ItemDefinition 
+ItemDefinition	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_definition.rb	    class ItemDefinition 
+ItemDefinitionList	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_definition.rb	    class ItemDefinitionList 
+ItemValue	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value.rb	    class ItemValue 
+ItemValue	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item_value.rb	    class ItemValue 
+ItemValueDefinition	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	    class ItemValueDefinition 
+ItemValueDefinition	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_value_definition.rb	    class ItemValueDefinition
+ItemValueDefinitionList	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	    class ItemValueDefinitionList 
+ItemValueDefinitionList	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_value_definition_list.rb	    class ItemValueDefinitionList 
+ItemValueHistory	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	    class ItemValueHistory
+JSONParseError	/home/spatchcock/code/projects/amee-ruby/lib/amee/exceptions.rb	  module JSONParseError
+Kernel	/home/spatchcock/code/projects/amee-ruby/spec/amee_spec.rb	    module Kernel
+Limiter	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	  class Limiter
+Logger	/home/spatchcock/code/projects/amee-ruby/lib/amee/logger.rb	  class Logger
+MetaHelper	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/meta_helper.rb	module MetaHelper
+MockDataItemPath	/home/spatchcock/code/projects/amee-ruby/spec/data_item_value_history_spec.rb	MockDataItemPath=
+MockResourceDataItemPath	/home/spatchcock/code/projects/amee-ruby/spec/data_item_value_spec.rb	MockResourceDataItemPath=
+MockResourceDataItemShortPath	/home/spatchcock/code/projects/amee-ruby/spec/data_item_value_spec.rb	MockResourceDataItemShortPath=
+MockResourceJSON	/home/spatchcock/code/projects/amee-ruby/spec/data_item_value_history_spec.rb	MockResourceJSON=
+MockResourceJSONSingle	/home/spatchcock/code/projects/amee-ruby/spec/data_item_value_history_spec.rb	MockResourceJSONSingle=
+MockResourceJSONTwo	/home/spatchcock/code/projects/amee-ruby/spec/data_item_value_history_spec.rb	MockResourceJSONTwo=
+MockResourcePath	/home/spatchcock/code/projects/amee-ruby/spec/data_item_value_history_spec.rb	MockResourcePath=
+MockResourcePath	/home/spatchcock/code/projects/amee-ruby/spec/data_item_value_spec.rb	MockResourcePath=
+MockResourceShortPath	/home/spatchcock/code/projects/amee-ruby/spec/data_item_value_spec.rb	MockResourceShortPath=
+MockResourceShortUIDPath	/home/spatchcock/code/projects/amee-ruby/spec/data_item_value_spec.rb	MockResourceShortUIDPath=
+MockResourceUIDPath	/home/spatchcock/code/projects/amee-ruby/spec/data_item_value_spec.rb	MockResourceUIDPath=
+MockResourceXML	/home/spatchcock/code/projects/amee-ruby/spec/data_item_value_history_spec.rb	MockResourceXML=
+MockResourceXMLSingle	/home/spatchcock/code/projects/amee-ruby/spec/data_item_value_history_spec.rb	MockResourceXMLSingle=
+MockResourceXMLTwo	/home/spatchcock/code/projects/amee-ruby/spec/data_item_value_history_spec.rb	MockResourceXMLTwo=
+NokogiriTestObject	/home/spatchcock/code/projects/amee-ruby/spec/parse_helper_spec.rb	class NokogiriTestObject
+NotFound	/home/spatchcock/code/projects/amee-ruby/lib/amee/exceptions.rb	  class NotFound 
+NotSupported	/home/spatchcock/code/projects/amee-ruby/lib/amee/exceptions.rb	  class NotSupported 
+Object	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_object.rb	    class Object 
+Object	/home/spatchcock/code/projects/amee-ruby/lib/amee/object.rb	  class Object
+Object	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_object.rb	    class Object 
+Pager	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	  class Pager
+ParseHelper	/home/spatchcock/code/projects/amee-ruby/lib/amee/parse_helper.rb	module ParseHelper
+PermissionDenied	/home/spatchcock/code/projects/amee-ruby/lib/amee/exceptions.rb	  class PermissionDenied 
+Profile	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile.rb	    class Profile 
+Profile	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile.rb	  module Profile
+Profile	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	  module Profile
+Profile	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	  module Profile
+Profile	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item_value.rb	  module Profile
+Profile	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_object.rb	  module Profile
+ProfileList	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile.rb	    class ProfileList 
+REXMLTestObject	/home/spatchcock/code/projects/amee-ruby/spec/parse_helper_spec.rb	class REXMLTestObject
+Rails	/home/spatchcock/code/projects/amee-ruby/lib/amee/rails.rb	  module Rails
+Rails	/home/spatchcock/code/projects/amee-ruby/spec/rails_spec.rb	class Rails
+ReturnValueDefinition	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/return_value_definition.rb	    class ReturnValueDefinition 
+ReturnValueDefinitionList	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/return_value_definition.rb	    class ReturnValueDefinitionList 
+RootCA	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    RootCA =
+Shell	/home/spatchcock/code/projects/amee-ruby/lib/amee/shell.rb	  module Shell
+String	/home/spatchcock/code/projects/amee-ruby/lib/amee.rb	class String
+TestSeriesOne	/home/spatchcock/code/projects/amee-ruby/spec/data_item_value_history_spec.rb	TestSeriesOne=
+TestSeriesTwo	/home/spatchcock/code/projects/amee-ruby/spec/data_item_value_history_spec.rb	TestSeriesTwo=
+Testcativduid	/home/spatchcock/code/projects/amee-ruby/spec/v3/return_value_definition_spec.rb	Testcativduid=
+Testrvduid	/home/spatchcock/code/projects/amee-ruby/spec/v3/return_value_definition_spec.rb	Testrvduid=
+Time	/home/spatchcock/code/projects/amee-ruby/lib/amee.rb	class Time
+UnknownError	/home/spatchcock/code/projects/amee-ruby/lib/amee/exceptions.rb	  class UnknownError 
+User	/home/spatchcock/code/projects/amee-ruby/lib/amee/user.rb	    class User 
+XMLParseError	/home/spatchcock/code/projects/amee-ruby/lib/amee/exceptions.rb	  module XMLParseError
+XMLPreamble	/home/spatchcock/code/projects/amee-ruby/spec/spec_helper.rb	XMLPreamble=
+active_record_type	/home/spatchcock/code/projects/amee-ruby/spec/spec_helper.rb	 def self.active_record_type 
+algorithms	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_definition.rb	      attr_accessor :usages, :algorithms
+amee1_date	/home/spatchcock/code/projects/amee-ruby/lib/amee.rb	  def amee1_date
+amee1_date	/home/spatchcock/code/projects/amee-ruby/lib/amee.rb	  def amee1_date
+amee1_month	/home/spatchcock/code/projects/amee-ruby/lib/amee.rb	  def amee1_month
+amee1_month	/home/spatchcock/code/projects/amee-ruby/lib/amee.rb	  def amee1_month
+amee_connection	/home/spatchcock/code/projects/amee-ruby/lib/amee/rails.rb	      def amee_connection
+amee_create	/home/spatchcock/code/projects/amee-ruby/lib/amee/rails.rb	      def amee_create
+amee_destroy	/home/spatchcock/code/projects/amee-ruby/lib/amee/rails.rb	      def amee_destroy
+amee_help	/home/spatchcock/code/projects/amee-ruby/lib/amee/shell.rb	    def amee_help
+amee_save	/home/spatchcock/code/projects/amee-ruby/lib/amee/rails.rb	      def amee_save
+amounts	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item.rb	      attr_reader :amounts
+amounts	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	      attr_reader :amounts
+amounts	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	      attr_reader :amounts
+api_version	/home/spatchcock/code/projects/amee-ruby/lib/amee/user.rb	      attr_reader :api_version
+api_version	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/connection.rb	    def self.api_version
+authenticate	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    def authenticate
+authenticated?	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    def authenticated?
+cache	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    def cache(path, &block)
+cache_key	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    def cache_key(path)
+cat	/home/spatchcock/code/projects/amee-ruby/lib/amee/shell.rb	    def cat(name)
+category_uid	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item.rb	      attr_reader :category_uid
+cd	/home/spatchcock/code/projects/amee-ruby/lib/amee/shell.rb	    def cd(path)
+child	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_category.rb	      def child(child_path)
+child	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	      def child(child_path)
+children	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_category.rb	      attr_reader :children
+children	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	      attr_reader :children
+choice_name	/home/spatchcock/code/projects/amee-ruby/lib/amee/drill_down.rb	      attr_reader :choice_name
+choices	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item.rb	      attr_reader :choices
+choices	/home/spatchcock/code/projects/amee-ruby/lib/amee/drill_down.rb	      attr_reader :choices
+choices	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      attr_reader :name,:uid,:path,:itemdefuid, :type, :valuetype, :unit, :perunit, :default, :choices, :versions
+choose	/home/spatchcock/code/projects/amee-ruby/lib/amee/drill_down.rb	      def choose(choice)
+clear_usages!	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_value_definition.rb	      def clear_usages!
+collectionpath	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_definition.rb	      def collectionpath
+collectionpath	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      def collectionpath
+collectionpath	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_value_definition_list.rb	      def collectionpath
+collectionpath	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/return_value_definition.rb	      def collectionpath
+column	/home/spatchcock/code/projects/amee-ruby/spec/spec_helper.rb	 def column 
+columns	/home/spatchcock/code/projects/amee-ruby/spec/spec_helper.rb	 def columns 
+compare	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	      def compare(origin)
+compulsory?	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_value_definition.rb	      def compulsory?(usage)
+connect	/home/spatchcock/code/projects/amee-ruby/lib/amee/rails.rb	      def self.connect(server, username, password, options)
+connection	/home/spatchcock/code/projects/amee-ruby/lib/amee/collection.rb	    attr_reader :pager,:connection,:doc,:json,:response
+connection	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	      attr_reader :connection
+connection	/home/spatchcock/code/projects/amee-ruby/lib/amee/object.rb	    attr_accessor :connection
+connection	/home/spatchcock/code/projects/amee-ruby/lib/amee/rails.rb	    def self.connection(options = {})
+connection=	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	      def connection=(con)
+content_type	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    def content_type(format = @format)
+corresponding	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	      attr_accessor :path # the IV path corresponding to the series, without the /data
+create	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_category.rb	      def self.create(category, options = {})
+create	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item.rb	      def self.create(category, options = {})
+create	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value.rb	      def self.create(data_item, options = {})
+create	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_definition.rb	      def self.create(connection, options = {})
+create	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      def self.create(connection,itemdefuid, options = {})
+create	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile.rb	      def self.create(connection)
+create	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	      def self.create(category, data_item_uid, options = {})
+create	/home/spatchcock/code/projects/amee-ruby/lib/amee/user.rb	      def self.create(connection, environment_uid, options = {})
+create	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/return_value_definition.rb	      def self.create(connection,itemdefuid, options = {})
+create!	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value.rb	      def create!
+create!	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	      def create!
+create_batch	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	      def self.create_batch(category, items, options = {})
+create_batch_without_category	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item.rb	      def self.create_batch_without_category(connection, category_path, items, options = {})
+create_batch_without_category	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	      def self.create_batch_without_category(connection, category_path, items, options = {})
+create_without_category	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item.rb	      def self.create_without_category(connection, path, options = {})
+create_without_category	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	      def self.create_without_category(connection, path, data_item_uid, options = {})
+created	/home/spatchcock/code/projects/amee-ruby/lib/amee/object.rb	    attr_reader :created
+current_page	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	    attr_reader :current_page
+data	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	      attr_accessor :path # the IV path corresponding to the series, without the /data
+data?	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      def data?
+data_item_uid	/home/spatchcock/code/projects/amee-ruby/lib/amee/drill_down.rb	      def data_item_uid
+data_item_uid	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	      attr_reader :data_item_uid
+default	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      attr_reader :name,:uid,:path,:itemdefuid, :type, :valuetype, :unit, :perunit, :default, :choices, :versions
+default	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_value_definition.rb	      def default
+delete	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    def delete(path)
+delete	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_category.rb	     def self.delete(connection, path)
+delete	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item.rb	      def self.delete(connection, path)
+delete	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value.rb	      def self.delete(connection, path)
+delete	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_definition.rb	      def self.delete(connection, item_definition)
+delete	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      def self.delete(connection, itemdefuid,item_value_definition)
+delete	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile.rb	      def self.delete(connection, uid)
+delete	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	      def self.delete(connection, path)
+delete	/home/spatchcock/code/projects/amee-ruby/lib/amee/user.rb	      def delete
+delete	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/return_value_definition.rb	      def self.delete(connection, itemdefuid,return_value_definition)
+delete!	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value.rb	      def delete!
+delete!	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	      def delete!
+disconnected	/home/spatchcock/code/projects/amee-ruby/spec/spec_helper.rb	def disconnected 
+do_request	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    def do_request(request, format = @format)
+doc	/home/spatchcock/code/projects/amee-ruby/lib/amee/collection.rb	    attr_reader :pager,:connection,:doc,:json,:response
+drill	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_category.rb	      def drill
+drill?	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      def drill?
+drill_downs	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_definition.rb	      attr_reader :name, :drill_downs
+duration	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	      def duration
+each_page	/home/spatchcock/code/projects/amee-ruby/lib/amee/collection.rb	    def each_page
+each_page	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/collection.rb	    def each_page
+each_page_without_v3	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/collection.rb	    alias_method :each_page_without_v3
+email	/home/spatchcock/code/projects/amee-ruby/lib/amee/user.rb	      attr_reader :email
+end	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	      def end
+end_date	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	      def end_date
+end_date	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	      attr_reader :end_date
+env	/home/spatchcock/code/projects/amee-ruby/spec/rails_spec.rb	  def self.env
+expire	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    def expire(path, options = nil)
+expire_all	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    def expire_all
+expire_cache	/home/spatchcock/code/projects/amee-ruby/lib/amee/object.rb	    def expire_cache
+expire_cache	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_definition.rb	      def expire_cache
+expire_cache	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_value_definition.rb	      def expire_cache
+expire_cache_without_v3	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_definition.rb	      alias_method :expire_cache_without_v3
+expire_cache_without_v3	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_value_definition.rb	      alias_method :expire_cache_without_v3
+expire_matching	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    def expire_matching(matcher, options = nil)
+fetch	/home/spatchcock/code/projects/amee-ruby/lib/amee/collection.rb	    def fetch
+fetch	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/collection.rb	    def fetch
+fetch_without_v3	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/collection.rb	    alias_method :fetch_without_v3
+fixture	/home/spatchcock/code/projects/amee-ruby/spec/spec_helper.rb	def fixture(filename)
+forbidden?	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_value_definition.rb	      def forbidden?(usage)
+format	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    attr_reader :format
+from	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	    attr_reader :from
+from_data?	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value.rb	      def from_data?
+from_data?	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item_value.rb	      def from_data?
+from_json	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_category.rb	      def self.from_json(json)
+from_json	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item.rb	      def self.from_json(json)
+from_json	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value.rb	      def self.from_json(json, path)
+from_json	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	      def self.from_json(json, path)
+from_json	/home/spatchcock/code/projects/amee-ruby/lib/amee/drill_down.rb	      def self.from_json(json)
+from_json	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_definition.rb	      def self.from_json(json)
+from_json	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      def self.from_json(json)
+from_json	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	    def self.from_json(doc,options={})
+from_json	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	    def self.from_json(node)
+from_json	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	      def self.from_json(json, options)
+from_json	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	      def self.from_json(json)
+from_json	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item_value.rb	      def self.from_json(json, path)
+from_json	/home/spatchcock/code/projects/amee-ruby/lib/amee/user.rb	      def self.from_json(json)
+from_json	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/return_value_definition.rb	      def self.from_json(json)
+from_profile?	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value.rb	      def from_profile?
+from_profile?	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item_value.rb	      def from_profile?
+from_v2_atom	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	      def self.from_v2_atom(response, options)
+from_v2_atom	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	      def self.from_v2_atom(response)
+from_v2_batch_json	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	      def self.from_v2_batch_json(json)
+from_v2_batch_xml	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	      def self.from_v2_batch_xml(xml)
+from_v2_json	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	      def self.from_v2_json(json, options)
+from_v2_json	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	      def self.from_v2_json(json)
+from_v2_xml	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	      def self.from_v2_xml(xml, options)
+from_v2_xml	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	      def self.from_v2_xml(xml)
+from_xml	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_category.rb	      def self.from_xml(xml)
+from_xml	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item.rb	      def self.from_xml(xml)
+from_xml	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value.rb	      def self.from_xml(xml, path)
+from_xml	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	      def self.from_xml(xml, path)
+from_xml	/home/spatchcock/code/projects/amee-ruby/lib/amee/drill_down.rb	      def self.from_xml(xml)
+from_xml	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_definition.rb	      def self.from_xml(xml, is_list = true)
+from_xml	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      def self.from_xml(xml, is_list = true)
+from_xml	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	    def self.from_xml(node)
+from_xml	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	    def self.from_xml(node,options={})
+from_xml	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	      def self.from_xml(xml, options)
+from_xml	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	      def self.from_xml(xml)
+from_xml	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item_value.rb	      def self.from_xml(xml, path)
+from_xml	/home/spatchcock/code/projects/amee-ruby/lib/amee/user.rb	      def self.from_xml(xml)
+from_xml	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_definition.rb	      def self.from_xml(xml, is_list = true)
+from_xml	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/return_value_definition.rb	      def self.from_xml(xml)
+from_xml_without_v3	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_definition.rb	        alias_method :from_xml_without_v3
+full_path	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	      def full_path
+full_path	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_object.rb	      def full_path
+full_path	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_definition.rb	      def full_path
+full_path	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      def full_path
+full_path	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_object.rb	      def full_path
+full_path	/home/spatchcock/code/projects/amee-ruby/lib/amee/user.rb	      def full_path
+full_uid_path	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value.rb	      def full_uid_path
+get	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    def get(path, data = {})
+get	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_category.rb	      def self.get(connection, path, orig_options = {})
+get	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item.rb	      def self.get(connection, path, options = {})
+get	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value.rb	      def self.get(connection, path)
+get	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	      def self.get(connection, path)
+get	/home/spatchcock/code/projects/amee-ruby/lib/amee/drill_down.rb	      def self.get(connection, path)
+get	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_definition.rb	      def self.get(connection, path, options = {})
+get	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      def self.get(connection, path, options = {})
+get	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	      def self.get(connection, path, orig_options = {})
+get	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	     def self.get(connection, path, options = {})
+get	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item_value.rb	      def self.get(connection, path)
+get	/home/spatchcock/code/projects/amee-ruby/lib/amee/user.rb	      def self.get(connection, path, options = {})
+get	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/return_value_definition.rb	      def self.get(connection, path, options = {})
+get_and_parse	/home/spatchcock/code/projects/amee-ruby/lib/amee/object.rb	    def self.get_and_parse(connection, path, options)
+get_history	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	      def self.get_history(connection, path, num_months, end_date = Date.today, items_per_page = 10)
+global	/home/spatchcock/code/projects/amee-ruby/lib/amee/rails.rb	      def self.global(options = {})
+global_amee_connection	/home/spatchcock/code/projects/amee-ruby/lib/amee/rails.rb	    def global_amee_connection(options={})
+has_amee_profile	/home/spatchcock/code/projects/amee-ruby/lib/amee/rails.rb	      def has_amee_profile(options = {})
+ignored?	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_value_definition.rb	      def ignored?(usage)
+included	/home/spatchcock/code/projects/amee-ruby/lib/amee/rails.rb	    def self.included(base)
+initialize	/home/spatchcock/code/projects/amee-ruby/lib/amee/collection.rb	    def initialize(connection, options = {}, &block)
+initialize	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    def initialize(server, username, password, options = {})
+initialize	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_category.rb	      def initialize(data = {})
+initialize	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item.rb	      def initialize(data = {})
+initialize	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value.rb	      def initialize(data = {})
+initialize	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	      def initialize(data = {})
+initialize	/home/spatchcock/code/projects/amee-ruby/lib/amee/drill_down.rb	      def initialize(data = {})
+initialize	/home/spatchcock/code/projects/amee-ruby/lib/amee/exceptions.rb	    def initialize(msg = nil)
+initialize	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_definition.rb	      def initialize(data = {})
+initialize	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      def initialize(connection,uid,options={})
+initialize	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      def initialize(data = {})
+initialize	/home/spatchcock/code/projects/amee-ruby/lib/amee/object.rb	    def initialize(data = nil)
+initialize	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	    def initialize(data)
+initialize	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	    def initialize(data)
+initialize	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile.rb	      def initialize(connection, options = {})
+initialize	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	      def initialize(data = {})
+initialize	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	      def initialize(data = {})
+initialize	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item_value.rb	      def initialize(data = {})
+initialize	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_object.rb	      def initialize(options = {})
+initialize	/home/spatchcock/code/projects/amee-ruby/lib/amee/user.rb	      def initialize(data = {})
+initialize	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_definition.rb	      def initialize(data = {})
+initialize	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_value_definition.rb	      def initialize(data = {})
+initialize	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_value_definition_list.rb	      def initialize(connection,uid,options={}, &block)
+initialize	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/return_value_definition.rb	      def initialize(connection,uid,options={})
+initialize	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/return_value_definition.rb	      def initialize(data = {})
+initialize	/home/spatchcock/code/projects/amee-ruby/spec/parse_helper_spec.rb	  def initialize
+initialize	/home/spatchcock/code/projects/amee-ruby/spec/parse_helper_spec.rb	  def initialize
+initialize	/home/spatchcock/code/projects/amee-ruby/spec/spec_helper.rb	 def initialize 
+initialize_without_v3	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_definition.rb	      alias_method :initialize_without_v3
+initialize_without_v3	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_value_definition.rb	      alias_method :initialize_without_v3
+initialize_without_v3	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_value_definition_list.rb	      alias_method :initialize_without_v3
+is_json?	/home/spatchcock/code/projects/amee-ruby/lib/amee.rb	  def is_json?
+is_v2_atom?	/home/spatchcock/code/projects/amee-ruby/lib/amee.rb	  def is_v2_atom?
+is_v2_json?	/home/spatchcock/code/projects/amee-ruby/lib/amee.rb	  def is_v2_json?
+is_v2_xml?	/home/spatchcock/code/projects/amee-ruby/lib/amee.rb	  def is_v2_xml?
+is_xml?	/home/spatchcock/code/projects/amee-ruby/lib/amee.rb	  def is_xml?
+item	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_category.rb	      def item(options)
+item	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	      def item(options)
+item_definition	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_category.rb	      def item_definition
+item_definition	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item.rb	      def item_definition
+item_definition_uid	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item.rb	      attr_reader :item_definition_uid
+item_value_definition_list	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_definition.rb	      def item_value_definition_list
+itemdef	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_category.rb	      attr_reader :itemdef
+itemdefuid	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      attr_reader :name,:uid,:path,:itemdefuid, :type, :valuetype, :unit, :perunit, :default, :choices, :versions
+itemdefuid	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/return_value_definition.rb	      attr_reader :name,:uid,:itemdefuid, :type, :valuetype, :unit, :perunit
+items	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_category.rb	      attr_reader :items
+items	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	    attr_reader :items
+items	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	      attr_reader :items
+items_found	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	    attr_reader :items_found
+items_per_page	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	    attr_reader :items_per_page
+json	/home/spatchcock/code/projects/amee-ruby/lib/amee/collection.rb	    attr_reader :pager,:connection,:doc,:json,:response
+jsoncollector	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_definition.rb	      def jsoncollector
+jsoncollector	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      def jsoncollector
+jsoncollector	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/return_value_definition.rb	      def jsoncollector
+klass	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_definition.rb	      def klass
+klass	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      def klass
+klass	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/return_value_definition.rb	      def klass
+klass	/home/spatchcock/code/projects/amee-ruby/spec/spec_helper.rb	 attr_accessor :klass
+label	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item.rb	      attr_reader :label
+last_page	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	    attr_reader :last_page
+limit	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	    attr_reader :offset,:limit,:truncated
+list	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_definition.rb	      def self.list(connection)
+list	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      def self.list(connection)
+list	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile.rb	      def self.list(connection)
+list	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/return_value_definition.rb	      def self.list(connection)
+load	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_definition.rb	      def self.load(connection,uid,options={})
+load	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      def self.load(connection,itemdefuid,ivduid,options={})
+load	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_definition.rb	      def self.load(connection,uid,options={})
+load	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/return_value_definition.rb	      def self.load(connection,itemdefuid,ivduid,options={})
+load_xml_doc	/home/spatchcock/code/projects/amee-ruby/lib/amee/parse_helper.rb	  def load_xml_doc(xml)
+loadmeta	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/meta_helper.rb	  def loadmeta
+log	/home/spatchcock/code/projects/amee-ruby/lib/amee/logger.rb	    def self.log
+logger	/home/spatchcock/code/projects/amee-ruby/spec/rails_spec.rb	  def self.logger
+ls	/home/spatchcock/code/projects/amee-ruby/lib/amee/shell.rb	    def ls
+meta	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/meta_helper.rb	  def meta
+metapath	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_value_definition.rb	      def metapath
+metaxmlpathpreamble	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_definition.rb	      def self.metaxmlpathpreamble
+metaxmlpathpreamble	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_value_definition.rb	      def metaxmlpathpreamble
+modified	/home/spatchcock/code/projects/amee-ruby/lib/amee/object.rb	    attr_reader :modified
+more?	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	    def more?
+more?	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	    def more?
+name	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_definition.rb	      attr_reader :name, :drill_downs
+name	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      attr_reader :name,:uid,:path,:itemdefuid, :type, :valuetype, :unit, :perunit, :default, :choices, :versions
+name	/home/spatchcock/code/projects/amee-ruby/lib/amee/object.rb	    attr_reader :name
+name	/home/spatchcock/code/projects/amee-ruby/lib/amee/user.rb	      attr_reader :name
+name	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/return_value_definition.rb	      attr_reader :name,:uid,:itemdefuid, :type, :valuetype, :unit, :perunit
+next!	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	    def next!
+next!	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	    def next!
+next_page	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	    attr_reader :next_page
+node_value	/home/spatchcock/code/projects/amee-ruby/lib/amee/parse_helper.rb	  def node_value(node)
+notes	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	      attr_reader :notes
+notes	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	      attr_reader :notes
+offset	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	    attr_reader :offset,:limit,:truncated
+optional?	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_value_definition.rb	      def optional?(usage)
+options	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	    def options
+options	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	    def options
+page_fragment	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	    def page_fragment
+page_fragment	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	    def page_fragment
+pager	/home/spatchcock/code/projects/amee-ruby/lib/amee/collection.rb	    attr_reader :pager,:connection,:doc,:json,:response
+pager	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_category.rb	      attr_reader :pager
+pager	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile.rb	      attr_reader :pager
+pager	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	      attr_reader :pager
+parent_path	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    def parent_path(path)
+parse	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item.rb	      def self.parse(connection, response)
+parse	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value.rb	      def self.parse(connection, response, path)
+parse	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	      def self.parse(connection, response, path) 
+parse	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_definition.rb	      def self.parse(connection, response, is_list = true)
+parse	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      def self.parse(connection, response, is_list = true)
+parse	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	      def self.parse(connection, response, options)
+parse	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	      def self.parse(connection, response)
+parse	/home/spatchcock/code/projects/amee-ruby/lib/amee/user.rb	      def self.parse(connection, response)
+parse	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/return_value_definition.rb	      def self.parse(connection, response)
+parse_batch	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	      def self.parse_batch(connection, response)
+parse_json	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_definition.rb	      def parse_json(p)
+parse_json	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      def parse_json(p)
+parse_json	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_value_definition_list.rb	      def parse_json(p)
+parse_json	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/return_value_definition.rb	      def parse_json(p)
+parse_json_profile_category	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	      def self.parse_json_profile_category(category)
+parse_json_profile_item	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	      def self.parse_json_profile_item(item)
+parse_page	/home/spatchcock/code/projects/amee-ruby/lib/amee/collection.rb	    def parse_page
+parse_v2_xml_profile_item	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	      def self.parse_v2_xml_profile_item(item)
+parse_xml	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_definition.rb	      def parse_xml(p)
+parse_xml	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      def parse_xml(p)
+parse_xml	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_value_definition_list.rb	      def parse_xml(p)
+parse_xml	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/return_value_definition.rb	      def parse_xml(p)
+parse_xml_profile_category	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	      def self.parse_xml_profile_category(category)
+parse_xml_profile_item	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	      def self.parse_xml_profile_item(item)
+parsemeta	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_value_definition.rb	      def parsemeta
+password	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    attr_reader :password
+path	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	      attr_accessor :path # the IV path corresponding to the series, without the /data
+path	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	      attr_accessor :path # the IV path corresponding to the series, without the /data
+path	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_object.rb	      attr_accessor :path
+path	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      attr_reader :name,:uid,:path,:itemdefuid, :type, :valuetype, :unit, :perunit, :default, :choices, :versions
+path	/home/spatchcock/code/projects/amee-ruby/lib/amee/object.rb	    attr_reader :path
+path=	/home/spatchcock/code/projects/amee-ruby/lib/amee/drill_down.rb	      def path=(path)
+per_unit	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item_value.rb	      attr_accessor :per_unit
+perunit	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      attr_reader :name,:uid,:path,:itemdefuid, :type, :valuetype, :unit, :perunit, :default, :choices, :versions
+perunit	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/return_value_definition.rb	      attr_reader :name,:uid,:itemdefuid, :type, :valuetype, :unit, :perunit
+post	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    def post(path, data = {})
+previous_page	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	    attr_reader :previous_page
+profile?	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      def profile?
+profile_date	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_object.rb	      attr_reader :profile_date
+profile_uid	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_object.rb	      attr_reader :profile_uid
+put	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    def put(path, data = {})
+putmeta	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/meta_helper.rb	  def putmeta(args = {})
+putmeta_args	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_value_definition.rb	      def putmeta_args
+puttags	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/meta_helper.rb	  def puttags(tags)
+pwd	/home/spatchcock/code/projects/amee-ruby/lib/amee/shell.rb	    def pwd
+raw_path	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    def raw_path(path)
+raw_post	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    def raw_post(path, body, options = {})
+raw_put	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    def raw_put(path, body, options = {})
+recursive_symbolize_keys	/home/spatchcock/code/projects/amee-ruby/lib/amee/core-extensions/hash.rb	  def recursive_symbolize_keys
+redirect?	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    def redirect?(response)
+reload	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      def reload(connection)
+reload	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/return_value_definition.rb	      def reload(connection)
+requested_page	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	    attr_reader :requested_page
+require	/home/spatchcock/code/projects/amee-ruby/spec/amee_spec.rb	      alias_method :require
+require_with_mock	/home/spatchcock/code/projects/amee-ruby/spec/amee_spec.rb	      def require_with_mock(string)
+require_without_mock	/home/spatchcock/code/projects/amee-ruby/spec/amee_spec.rb	      alias_method :require_without_mock
+response	/home/spatchcock/code/projects/amee-ruby/lib/amee/collection.rb	    attr_reader :pager,:connection,:doc,:json,:response
+response_ok?	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    def response_ok?(response, request)
+retries	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    attr_reader :retries
+root	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_category.rb	      def self.root(connection)
+root	/home/spatchcock/code/projects/amee-ruby/spec/rails_spec.rb	  def self.root
+save!	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value.rb	      def save!
+save!	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	      def save!
+save!	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item_value.rb	      def save!
+save!	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_definition.rb	      def save!
+selections	/home/spatchcock/code/projects/amee-ruby/lib/amee/drill_down.rb	      attr_reader :selections
+send_request	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    def send_request(connection, request, format = @format)
+series	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	      attr_accessor :path # the IV path corresponding to the series, without the /data
+series	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	      def series
+series=	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	      def series=(newseries)
+server	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    attr_reader :server
+set_usage_type	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_value_definition.rb	      def set_usage_type(usage, type)
+set_value	/home/spatchcock/code/projects/amee-ruby/lib/amee/shell.rb	    def set_value(item, name, value)
+setup	/home/spatchcock/code/projects/amee-ruby/lib/amee/config.rb	    def self.setup(amee_config_file = nil, environment = 'test')
+setup_connection	/home/spatchcock/code/projects/amee-ruby/spec/cache_spec.rb	    def setup_connection
+setup_logger	/home/spatchcock/code/projects/amee-ruby/lib/amee/logger.rb	    def self.setup_logger
+start	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	    attr_reader :start
+start_date	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item.rb	      attr_reader :start_date
+start_date	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value.rb	      attr_accessor :start_date
+start_date	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	      def start_date
+start_date	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	      attr_reader :start_date
+status	/home/spatchcock/code/projects/amee-ruby/lib/amee/user.rb	      attr_reader :status
+storemeta	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_value_definition.rb	      def storemeta(options)
+test_invalidation_sequence	/home/spatchcock/code/projects/amee-ruby/spec/cache_spec.rb	      def test_invalidation_sequence(interactions)
+the	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	      attr_accessor :path # the IV path corresponding to the series, without the /data
+the	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	      attr_accessor :path # the IV path corresponding to the series, without the /data
+the	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	      attr_accessor :path # the IV path corresponding to the series, without the /data
+timeout	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    def timeout
+timeout=	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    def timeout=(t)
+times	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	      def times
+to	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	      attr_accessor :path # the IV path corresponding to the series, without the /data
+to	/home/spatchcock/code/projects/amee-ruby/lib/amee/logger.rb	    def self.to(log)
+to	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	    attr_reader :to
+to_s	/home/spatchcock/code/projects/amee-ruby/lib/amee/exceptions.rb	    def to_s
+total_amount	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item.rb	      attr_reader :total_amount
+total_amount	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	      attr_reader :total_amount
+total_amount	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	      attr_reader :total_amount
+total_amount_unit	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item.rb	      attr_reader :total_amount_unit
+total_amount_unit	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_category.rb	      attr_reader :total_amount_unit
+total_amount_unit	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	      attr_reader :total_amount_unit
+truncated	/home/spatchcock/code/projects/amee-ruby/lib/amee/pager.rb	    attr_reader :offset,:limit,:truncated
+type	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value.rb	      attr_reader :type
+type	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	      attr_reader :type
+type	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      attr_reader :name,:uid,:path,:itemdefuid, :type, :valuetype, :unit, :perunit, :default, :choices, :versions
+type	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      def type
+type	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item_value.rb	      attr_reader :type
+type	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/return_value_definition.rb	      attr_reader :name,:uid,:itemdefuid, :type, :valuetype, :unit, :perunit
+uid	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value.rb	      attr_accessor :uid
+uid	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      attr_reader :name,:uid,:path,:itemdefuid, :type, :valuetype, :unit, :perunit, :default, :choices, :versions
+uid	/home/spatchcock/code/projects/amee-ruby/lib/amee/object.rb	    attr_reader :uid
+uid	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/return_value_definition.rb	      attr_reader :name,:uid,:itemdefuid, :type, :valuetype, :unit, :perunit
+uid_path	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value.rb	      def uid_path
+unit	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      attr_reader :name,:uid,:path,:itemdefuid, :type, :valuetype, :unit, :perunit, :default, :choices, :versions
+unit	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item_value.rb	      attr_accessor :unit
+unit	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/return_value_definition.rb	      attr_reader :name,:uid,:itemdefuid, :type, :valuetype, :unit, :perunit
+update	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_category.rb	     def self.update(connection, path, options = {})
+update	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item.rb	      def self.update(connection, path, options = {})
+update	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item.rb	      def update(options = {})
+update	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value.rb	      def self.update(connection, path, options = {})
+update	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value.rb	      def update(options = {})
+update	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_definition.rb	      def self.update(connection, path, options = {})
+update	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      def self.update(connection, path, options = {})
+update	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	      def self.update(connection, path, options = {})
+update	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	      def update(options = {})
+update	/home/spatchcock/code/projects/amee-ruby/lib/amee/user.rb	      def update(options = {})
+update	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/return_value_definition.rb	      def self.update(connection, path, options = {})
+update_batch	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	      def self.update_batch(category, items)
+update_batch_without_category	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	      def self.update_batch_without_category(connection, category_path, items)
+usage_type	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_value_definition.rb	      def usage_type(usage)
+usages	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_definition.rb	      attr_accessor :usages, :algorithms
+usages	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_value_definition.rb	      def usages
+username	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    attr_reader :username
+username	/home/spatchcock/code/projects/amee-ruby/lib/amee/user.rb	      attr_reader :username
+v3	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/collection.rb	    def v3
+v3_auth	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/connection.rb	    def v3_auth
+v3_connection	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/connection.rb	    def v3_connection
+v3_delete	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/connection.rb	     def v3_delete(path, options = {})
+v3_get	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/connection.rb	    def v3_get(path, options = {})
+v3_get	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_definition.rb	      def self.v3_get(connection, uid, options={})
+v3_hostname	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/connection.rb	    def v3_hostname
+v3_post	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/connection.rb	    def v3_post(path, options = {})
+v3_put	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/connection.rb	    def v3_put(path, options = {})
+v3_request	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/connection.rb	    def v3_request(req,returnobj=false)
+v3_response_ok?	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/connection.rb	    def v3_response_ok?(response, request)
+valid?	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    def valid?
+valid_from	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	      def valid_from
+value	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item.rb	      def value(name_or_path_or_uid)
+value	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value.rb	      def value
+value	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	      def value(name_or_path)
+value	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item_value.rb	      def value
+value=	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value.rb	      def value=(val)
+value=	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item_value.rb	      def value=(val)
+value_at	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	      def value_at(time)
+value_or_symbolize_value	/home/spatchcock/code/projects/amee-ruby/lib/amee/core-extensions/hash.rb	  def value_or_symbolize_value(value)
+values	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item.rb	      attr_reader :values
+values	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	      attr_accessor :values
+values	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	      attr_reader :values
+values_at	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	      def values_at(times)
+valuetype	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      attr_reader :name,:uid,:path,:itemdefuid, :type, :valuetype, :unit, :perunit, :default, :choices, :versions
+valuetype	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/return_value_definition.rb	      attr_reader :name,:uid,:itemdefuid, :type, :valuetype, :unit, :perunit
+version	/home/spatchcock/code/projects/amee-ruby/lib/amee/connection.rb	    def version
+versions	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      attr_reader :name,:uid,:path,:itemdefuid, :type, :valuetype, :unit, :perunit, :default, :choices, :versions
+where	/home/spatchcock/code/projects/amee-ruby/spec/spec_helper.rb	 def where 
+which	/home/spatchcock/code/projects/amee-ruby/spec/rails_spec.rb	  it "should add the has_amee_profile method to a class which 
+without	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value_history.rb	      attr_accessor :path # the IV path corresponding to the series, without the /data
+x	/home/spatchcock/code/projects/amee-ruby/lib/amee/parse_helper.rb	  def x(xpath,options = {})
+xmlcollectorpath	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_definition.rb	      def xmlcollectorpath
+xmlcollectorpath	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      def xmlcollectorpath
+xmlcollectorpath	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/item_value_definition_list.rb	      def xmlcollectorpath
+xmlcollectorpath	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/return_value_definition.rb	      def xmlcollectorpath
+xmlpathpreamble	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_category.rb	      def self.xmlpathpreamble
+xmlpathpreamble	/home/spatchcock/code/projects/amee-ruby/lib/amee/data_item_value.rb	      def self.xmlpathpreamble
+xmlpathpreamble	/home/spatchcock/code/projects/amee-ruby/lib/amee/drill_down.rb	      def self.xmlpathpreamble
+xmlpathpreamble	/home/spatchcock/code/projects/amee-ruby/lib/amee/item_value_definition.rb	      def self.xmlpathpreamble
+xmlpathpreamble	/home/spatchcock/code/projects/amee-ruby/lib/amee/parse_helper.rb	  def xmlpathpreamble
+xmlpathpreamble	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile.rb	      def self.xmlpathpreamble
+xmlpathpreamble	/home/spatchcock/code/projects/amee-ruby/lib/amee/profile_item.rb	      def self.xmlpathpreamble
+xmlpathpreamble	/home/spatchcock/code/projects/amee-ruby/lib/amee/v3/return_value_definition.rb	      def self.xmlpathpreamble
+xmlpathpreamble	/home/spatchcock/code/projects/amee-ruby/spec/parse_helper_spec.rb	  def xmlpathpreamble
+xmlpathpreamble	/home/spatchcock/code/projects/amee-ruby/spec/parse_helper_spec.rb	  def xmlpathpreamble

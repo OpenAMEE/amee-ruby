@@ -14,6 +14,7 @@ module AMEE
         @item_definition_uid = data[:item_definition]
         @total_amount = data[:total_amount]
         @total_amount_unit = data[:total_amount_unit]
+        @amounts = data[:amounts] || []
         @start_date = data[:start_date]
         @category_uid = data[:category_uid]
         super
@@ -24,6 +25,7 @@ module AMEE
       attr_reader :label
       attr_reader :total_amount
       attr_reader :total_amount_unit
+      attr_reader :amounts
       attr_reader :start_date
       attr_reader :category_uid
       attr_reader :item_definition_uid
@@ -54,6 +56,28 @@ module AMEE
           if data[:total_amount].nil?
             data[:total_amount] = doc['amountPerMonth'] rescue nil
             data[:total_amount_unit] = "kg/month"
+          end
+          # Read amounts
+          if doc['amounts']
+            if doc['amounts']['amount']
+              data[:amounts] = doc['amounts']['amount'].map do |item|
+                {
+                  :type => item['type'],
+                  :value => item['value'].to_f,
+                  :unit => item['unit'],
+                  :per_unit => item['perUnit'],
+                  :default => (item['default'] == 'true'),
+                }
+              end
+            end
+            if doc['amounts']['note']
+              data[:notes] = doc['amounts']['note'].map do |item|
+                {
+                  :type => item['type'],
+                  :value => item['value'],
+                }
+              end
+            end
           end
           # Get values
           data[:values] = []
@@ -102,6 +126,23 @@ module AMEE
           if data[:total_amount].nil?
             data[:total_amount] = REXML::XPath.first(doc, '/Resources/DataItemResource/AmountPerMonth').text.to_f rescue nil
             data[:total_amount_unit] = "kg/month"
+          end
+          data[:amounts] = []
+          REXML::XPath.each(doc,'/Resources/DataItemResource/Amounts/Amount') do |amount|
+            amount_data = {}
+            amount_data[:type] = amount.attribute('type').value
+            amount_data[:value] = amount.text.to_f
+            amount_data[:unit] = amount.attribute('unit').value
+            amount_data[:per_unit] = amount.attribute('perUnit').value if amount.attribute('perUnit')
+            amount_data[:default] = (amount.attribute('default').value == 'true') if amount.attribute('default')
+            data[:amounts] << amount_data
+          end
+          data[:notes] = []
+          REXML::XPath.each(doc,'/Resources/DataItemResource/Amounts/Note') do |note|
+            note_data = {}
+            note_data[:type] = note.attribute('type').value
+            note_data[:value] = note.text
+            data[:notes] << note_data
           end
           # Get values
           data[:values] = []
