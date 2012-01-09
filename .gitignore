@@ -4,3 +4,4 @@ doc
 pkg
 *.tmproj
 .DS_Store
+amee_test_credentials.yml
