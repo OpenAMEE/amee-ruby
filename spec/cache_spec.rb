@@ -9,14 +9,35 @@ describe AMEE::Connection do
   describe 'without caching' do
 
     it "doesn't cache GET requests" do
-      flexmock(Net::HTTP).new_instances do |mock|
-        mock.should_receive(:start => nil)
-        mock.should_receive(:request).twice.and_return(flexmock(:code => '200', :body => fixture('data_home_energy_quantity.xml')))
-        mock.should_receive(:finish => nil)
+      VCR.use_cassette("AMEE_Connection_Caching_Off/logging_in") do
+        @connection = AMEE::Connection.new("stage.amee.com", "amee_ruby_vcr_v2", "8nkj8rm7")
       end
-      @connection = AMEE::Connection.new("server.example.com", "username", "password")
-      c = AMEE::Data::Category.get(@connection, '/data/home/energy/quantity')
-      c = AMEE::Data::Category.get(@connection, '/data/home/energy/quantity')
+
+      VCR.use_cassette("AMEE_Connection_Caching_Off/authenticating") do
+        @connection.authenticate
+      end
+      
+      VCR.use_cassette("AMEE_Connection_Caching_Off/first_request") do
+        @first_response = AMEE::Data::Category.get(@connection, '/data/home/energy/quantity')
+      end
+
+      VCR.use_cassette("AMEE_Connection_Caching_Off/second_request") do
+        @second_response = AMEE::Data::Category.get(@connection, '/data/home/energy/quantity')
+      end
+    
+      # We're checking to see if we actually have a returned object.
+      # If there's no response in the VCR cassette, then we can't build the object
+      # to check if it responds to the methods below
+      @first_response.should respond_to(:uid)
+      @first_response.should respond_to(:name)
+
+      # Likewise with the second response. There needs to be a yaml file to read from to
+      # build the object. 
+      File.exists?('cassettes/AMEE_Connection_Caching_Off/second_request.yml').should be true
+      # Then we check for the same content to see we can build the object needed.
+      @second_response.should respond_to(:uid)
+      @second_response.should respond_to(:name)
+
     end
 
   end
@@ -24,61 +45,86 @@ describe AMEE::Connection do
   describe 'with caching' do
 
     def setup_connection
-      @connection = AMEE::Connection.new("server.example.com", "username", "password", :cache => :memory_store)
+      VCR.use_cassette("AMEE_Connection_Caching_On/logging_in") do
+        @connection = AMEE::Connection.new("stage.amee.com", "amee_ruby_vcr_v2", "8nkj8rm7", :cache => :memory_store)
+      end
+
+      VCR.use_cassette("AMEE_Connection_Caching_On/authenticating") do
+        @connection.authenticate
+      end
+      
+      VCR.use_cassette("AMEE_Connection_Caching_On/first_request") do
+        @first_response = AMEE::Data::Category.get(@connection, '/data/home/energy/quantity')
+      end
     end
 
     it "caches GET requests" do
-      flexmock(Net::HTTP).new_instances do |mock|
-        mock.should_receive(:start => nil)
-        mock.should_receive(:request).once.and_return(OpenStruct.new(:code => '200', :body => fixture('data_home_energy_quantity.xml')))
-        mock.should_receive(:finish => nil)
-      end
+
       setup_connection
-      c = AMEE::Data::Category.get(@connection, '/data/home/energy/quantity')
-      c = AMEE::Data::Category.get(@connection, '/data/home/energy/quantity')
+
+      VCR.use_cassette("AMEE_Connection_Caching_On/second_request") do
+        @second_response = AMEE::Data::Category.get(@connection, '/data/home/energy/quantity')
+      end
+
+      # We're checking to see if we actually have a returned object.
+      # If there's no response in the VCR cassette, then we can't build the object
+      # to check if it responds to the methods below
+      @first_response.should respond_to(:uid)
+      @first_response.should respond_to(:name)
+
+      # Likewise with the second response. When caching is on, we don't want to see a second 
+      # request being recorded, but we still want to see the object being built
+      File.exists?('cassettes/AMEE_Connection_Caching_On/second_request.yml').should be false
+      # Then we check for the same content to see we can build the object needed.
+      @second_response.should respond_to(:uid)
+      @second_response.should respond_to(:name)
     end
 
     it "allows complete cache clear" do
-      flexmock(Net::HTTP).new_instances do |mock|
-        mock.should_receive(:start => nil)
-        mock.should_receive(:request).twice.and_return(OpenStruct.new(:code => '200', :body => fixture('data_home_energy_quantity.xml')))
-        mock.should_receive(:finish => nil)
-      end
+
       setup_connection
-      c = AMEE::Data::Category.get(@connection, '/data/home/energy/quantity')
       @connection.expire_all
-      c = AMEE::Data::Category.get(@connection, '/data/home/energy/quantity')
+
+      VCR.use_cassette("AMEE_Connection_Caching_clear_all/second_request") do
+        @second_response = AMEE::Data::Category.get(@connection, '/data/home/energy/quantity')
+      end
+
+      File.exists?('cassettes/AMEE_Connection_Caching_clear_all/second_request.yml').should be true      
+      @second_response.should respond_to(:uid)
+      @second_response.should respond_to(:name)
     end
 
     it "allows manual cache expiry for objects" do
-      flexmock(Net::HTTP).new_instances do |mock|
-        mock.should_receive(:start => nil)
-        mock.should_receive(:request).twice.and_return(OpenStruct.new(:code => '200', :body => fixture('data_home_energy_quantity.xml')))
-        mock.should_receive(:finish => nil)
-      end
       setup_connection
-      c = AMEE::Data::Category.get(@connection, '/data/home/energy/quantity')
-      c.expire_cache
-      c = AMEE::Data::Category.get(@connection, '/data/home/energy/quantity')
+      @first_response.expire_cache
+
+      VCR.use_cassette("AMEE_Connection_Caching_clear_manually/second_request") do
+        @second_response = AMEE::Data::Category.get(@connection, '/data/home/energy/quantity')
+      end
+
+      File.exists?('cassettes/AMEE_Connection_Caching_clear_manually/second_request.yml').should be true      
+      @second_response.should respond_to(:uid)
+      @second_response.should respond_to(:name)
     end
 
-    it "object expiry invalidates objectes further down the tree" do
-      flexmock(Net::HTTP).new_instances do |mock|
-        mock.should_receive(:start => nil)
-        mock.should_receive(:request).once.and_return(OpenStruct.new(:code => '200', :body => fixture('data_home_energy_quantity.xml')))
-        mock.should_receive(:request).twice.and_return(OpenStruct.new(:code => '200', :body => fixture('data_home_energy_quantity_biodiesel.xml')))
-        mock.should_receive(:finish => nil)
-      end
+    it "object expiry invalidates objects further down the tree" do
       setup_connection
-      c = AMEE::Data::Category.get(@connection, '/data/home/energy/quantity')
-      i = c.item :label => 'biodiesel'
-      c.expire_cache
-      i = c.item :label => 'biodiesel'
+      
+      VCR.use_cassette("AMEE_Connection_Caching_further_down_tree/second_request") do
+        @second_response = @first_response.item :label => 'biodiesel'
+        @first_response.expire_cache
+        @third_response = @first_response.item :label => 'biodiesel'
+      end
+
+      File.exists?('cassettes/AMEE_Connection_Caching_further_down_tree/second_request.yml').should be true      
+      @second_response.label.should == "biodiesel"
+      @third_response.label.should == "biodiesel"
+
     end
     
     it "removes special characters from cache keys, include slashes" do
       setup_connection
-      @connection.send(:cache_key, "/%cache/$4/%20test").should eql 'server.example.com_cache_4_20test'
+      @connection.send(:cache_key, "/%cache/$4/%20test").should eql 'stage.amee.com_cache_4_20test'
     end
     
     it "trims cache keys to correct length for filenames, allowing for lock extension" do
@@ -99,14 +145,12 @@ describe AMEE::Connection do
     describe 'and automatic invalidation' do
 
       def test_invalidation_sequence(interactions)
-        flexmock(Net::HTTP).new_instances do |mock|
-          mock.should_receive(:start => nil)
-          interactions.each do |path, action, result|
-            mock.should_receive(:request).once.and_return(OpenStruct.new(:code => '200', :body => path)) if result
-          end
-          mock.should_receive(:finish => nil)
-        end
         setup_connection
+        flexmock(@connection) do |mock|
+          interactions.each do |path, action, result|
+            mock.should_receive(:do_request).once.and_return(OpenStruct.new(:code => '200', :body => path)) if result
+          end
+        end
         interactions.each do |path, action, result|
           if action
             @connection.send(action, path).body.should == path
@@ -115,14 +159,18 @@ describe AMEE::Connection do
       end
 
       it "handles PUT requests" do
+        VCR.use_cassette("AMEE_Connection_Caching/automatic_invalidation_for_put") do
         test_invalidation_sequence([
+          # Fill the cache
           ["/parent/object", :get, true],
           ["/parent", :get, true],
           ["/parent/object/child", :get, true],
           ["/parent/sibling", :get, true],
           ["/uncle/cousin", :get, true],
           ["/uncle", :get, true],
+          # Do a PUT
           ["/parent/object", :put, true],
+          # Check that cache is cleared in the right places
           ["/parent/object", :get, true],
           ["/parent", :get, true],
           ["/parent/object/child", :get, true],
@@ -130,17 +178,22 @@ describe AMEE::Connection do
           ["/uncle/cousin", :get, false],
           ["/uncle", :get, false],
         ])
+        end
       end
 
       it "handles POST requests" do
+        VCR.use_cassette("AMEE_Connection_Caching/automatic_invalidation_for_post") do
         test_invalidation_sequence([
+          # Fill the cache
           ["/parent/object", :get, true],
           ["/parent", :get, true],
           ["/parent/object/child", :get, true],
           ["/parent/sibling", :get, true],
           ["/uncle/cousin", :get, true],
           ["/uncle", :get, true],
+          # Do a POST
           ["/parent/object", :post, true],
+          # Check that cache is cleared in the right places
           ["/parent/object", :get, true],
           ["/parent", :get, false],
           ["/parent/object/child", :get, true],
@@ -149,16 +202,21 @@ describe AMEE::Connection do
           ["/uncle", :get, false],
         ])
       end
+      end
 
       it "handles DELETE requests" do
+        VCR.use_cassette("AMEE_Connection_Caching/automatic_invalidation_for_delete") do
         test_invalidation_sequence([
+          # Fill the cache
           ["/parent/object", :get, true],
           ["/parent", :get, true],
           ["/parent/object/child", :get, true],
           ["/parent/sibling", :get, true],
           ["/uncle/cousin", :get, true],
           ["/uncle", :get, true],
+          # Do a DELETE
           ["/parent/object", :delete, true],
+          # Check that cache is cleared in the right places
           ["/parent/object", :get, true],
           ["/parent", :get, true],
           ["/parent/object/child", :get, true],
@@ -166,6 +224,7 @@ describe AMEE::Connection do
           ["/uncle/cousin", :get, false],
           ["/uncle", :get, false],
         ])
+      end
       end
 
     end

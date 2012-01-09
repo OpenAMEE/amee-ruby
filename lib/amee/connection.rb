@@ -1,8 +1,16 @@
 # Copyright (C) 2008-2011 AMEE UK Ltd. - http://www.amee.com
 # Released as Open Source Software under the BSD 3-Clause license. See LICENSE.txt for details.
 
-require 'net/http'
-require 'net/https'
+require 'typhoeus'
+require 'json'
+require 'log_buddy'
+
+
+
+# LogBuddy.init :log_to_stdout => false
+LogBuddy.init :disabled => true
+# Set this to true to output curl debug messages in development
+DEBUG = false
 
 module AMEE
   class Connection
@@ -13,6 +21,7 @@ module AMEE
       unless options.is_a?(Hash)
         raise AMEE::ArgumentError.new("Fourth argument must be a hash of options!")
       end
+      
       @server = server
       @username = username
       @password = password
@@ -25,6 +34,9 @@ module AMEE
       if !valid?
        raise "You must supply connection details - server, username and password are all required!"
       end
+
+      # Working with caching
+
       # Handle old option
       if options[:enable_caching]
         Kernel.warn '[DEPRECATED] :enable_caching => true is deprecated. Use :cache => :memory_store instead'
@@ -33,7 +45,7 @@ module AMEE
       # Create cache store
       if options[:cache] &&
         (options[:cache_store].class.name == "ActiveSupport::Cache::MemCacheStore" ||
-         options[:cache].to_sym == :mem_cache_store)         
+         options[:cache].to_sym == :mem_cache_store)
         raise 'ActiveSupport::Cache::MemCacheStore is not supported, as it doesn\'t allow regexp expiry'
       end
       if options[:cache_store].is_a?(ActiveSupport::Cache::Store)
@@ -46,18 +58,22 @@ module AMEE
           @cache = ActiveSupport::Cache.lookup_store(options[:cache].to_sym)
         end
       end
-      # Make connection to server
-      @http = Net::HTTP.new(@server, @port)
+
+      # set up hash to pass to builder block
+      @params = {
+        :ssl => @ssl,
+        :params => {},
+        :headers => {}
+      }
+
       if @ssl == true
-        @http.use_ssl = true
+        @params[:ssl] = true
         if File.exists? RootCA
-          @http.ca_file = RootCA
-          @http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-          @http.verify_depth = 5
+          @params[:ca_file] = RootCA
         end
       end
+      
       self.timeout = options[:timeout] || 60
-      @http.set_debug_output($stdout) if options[:enable_debug]
       @debug = options[:enable_debug]
     end
 
@@ -68,11 +84,11 @@ module AMEE
     attr_reader :retries
 
     def timeout
-      @http.read_timeout
+      @params[:timeout]
     end
 
     def timeout=(t)
-      @http.open_timeout = @http.read_timeout = t
+      @params[:open_timeout] = @params[:timeout] = t
     end
 
     def version
@@ -84,10 +100,12 @@ module AMEE
       @username && @password && @server
     end
 
+    # check if we have a valid authentication token
     def authenticated?
-      !@auth_token.nil?
+      @auth_token =~ /^.*$/
     end
 
+    # GET data from the API, passing in a hash of parameters
     def get(path, data = {})
       # Allow format override
       format = data.delete(:format) || @format
@@ -99,64 +117,89 @@ module AMEE
       if params.size > 0
         path += "?#{params.join('&')}"
       end
-      # Send request      
-      cache(path) { do_request(Net::HTTP::Get.new(path), format) }
+      
+      get = Typhoeus::Request.new("#{@server}#{path}", 
+        :method => "get", 
+        :verbose => DEBUG
+      )
+      # Send request
+      cache(path) { do_request(get, format) }
     end
 
+    # POST to the AMEE API, passing in a hash of values
     def post(path, data = {})
       # Allow format override
       format = data.delete(:format) || @format
       # Clear cache
       expire_matching "#{raw_path(path)}.*"
-      # Create POST request
-      post = Net::HTTP::Post.new(path)
       body = []
         data.each_pair do |key, value|
         body << "#{CGI::escape(key.to_s)}=#{CGI::escape(value.to_s)}"
       end
-      post.body = body.join '&'
+
+      # Create POST request
+      post = Typhoeus::Request.new("#{@server}#{path}", 
+        :verbose => DEBUG,
+        :method => "post",
+        :body => body.join('&')
+      )
       # Send request
       do_request(post, format)
+      
     end
 
+    # POST to the AMEE API, passing in a string of data
     def raw_post(path, body, options = {})
       # Allow format override
       format = options.delete(:format) || @format
       # Clear cache
       expire_matching "#{raw_path(path)}.*"
       # Create POST request
-      post = Net::HTTP::Post.new(path)
-      post['Content-type'] = options[:content_type] || content_type(format)
-      post.body = body
+      post = Typhoeus::Request.new("#{@server}#{path}", 
+        :verbose => DEBUG,
+        :method => "post",
+        :body => body,
+        :headers => { :'Content-type' => options[:content_type] || content_type(format)  }
+      )
+
       # Send request
       do_request(post, format)
     end
 
+    # PUT to the AMEE API, passing in a hash of data
     def put(path, data = {})
       # Allow format override
       format = data.delete(:format) || @format
       # Clear cache
       expire_matching "#{parent_path(path)}.*"
       # Create PUT request
-      put = Net::HTTP::Put.new(path)
       body = []
         data.each_pair do |key, value|
         body << "#{CGI::escape(key.to_s)}=#{CGI::escape(value.to_s)}"
       end
-      put.body = body.join '&'
-      # Send request
+      put = Typhoeus::Request.new("#{@server}#{path}", 
+        :verbose => DEBUG,
+        :method => "put",
+        :body => body.join('&')
+      )
+       # Send request
       do_request(put, format)
     end
 
+    # PUT to the AMEE API, passing in a string of data
     def raw_put(path, body, options = {})
       # Allow format override
       format = options.delete(:format) || @format
       # Clear cache
       expire_matching "#{parent_path(path)}.*"
       # Create PUT request
-      put = Net::HTTP::Put.new(path)
-      put['Content-type'] = options[:content_type] || content_type(format)
-      put.body = body
+      put = Typhoeus::Request.new("#{@server}#{path}", 
+        :verbose => DEBUG,
+        :method => "put",
+        :body => body,
+        :headers => { :'Content-type' => options[:content_type] || content_type(format)  }
+      )
+
       # Send request
       do_request(put, format)
     end
@@ -164,19 +207,40 @@ module AMEE
     def delete(path)
       expire_matching "#{parent_path(path)}.*"
       # Create DELETE request
-      delete = Net::HTTP::Delete.new(path)
-      # Send request
+      # delete = Net::HTTP::Delete.new(path)
+
+      delete = Typhoeus::Request.new("#{@server}#{path}", 
+        :verbose => DEBUG,
+        :method => "delete"
+      )
+     # Send request
       do_request(delete)
     end
 
+    # Post to the sign in resource on the API, so that all future 
+    # requests are signed
     def authenticate
-      response = nil
-      post = Net::HTTP::Post.new("/auth/signIn")
-      post.body = "username=#{@username}&password=#{@password}"
-      post['Accept'] = content_type(:xml)
-      post['X-AMEE-Source'] = @amee_source if @amee_source
-      response = @http.request(post)
-      @auth_token = response['authToken']
+      # :x_amee_source = "X-AMEE-Source".to_sym
+      request = Typhoeus::Request.new("#{@server}/auth/signIn", 
+        :method => "post",
+        :verbose => DEBUG,
+        :headers => {
+          :Accept => content_type(:xml),
+        },
+        :body => "username=#{@username}&password=#{@password}"
+      )
+
+      hydra.queue(request)
+      hydra.run
+      response = request.response
+
+      @auth_token = response.headers_hash['AuthToken']
+      d {request.url}
+      d {response.code}
+      d {@auth_token}
+
+      connection_failed if response.code == 0
+
       unless authenticated?
         raise AMEE::AuthFailed.new("Authentication failed. Please check your username and password. (tried #{@username},#{@password})")
       end
@@ -192,6 +256,11 @@ module AMEE
 
     protected
 
+    ## set up the hydra for running http requests. Increase concurrency as needed
+    def hydra
+      @hydra ||= Typhoeus::Hydra.new(:max_concurrency => 1)
+    end
+
     def content_type(format = @format)
       case format
       when :xml
@@ -204,66 +273,82 @@ module AMEE
     end
 
     def redirect?(response)
-      response.code == '301' || response.code == '302'
+      response.code == 301 || response.code == 302
     end
-
-    def response_ok?(response, request)
-      case response.code
-        when '200', '201'
-          return true
-        when '404'
-          raise AMEE::NotFound.new("The URL was not found on the server.\nRequest: #{request.method} #{request.path}")
-        when '403'
-          raise AMEE::PermissionDenied.new("You do not have permission to perform the requested operation.\nRequest: #{request.method} #{request.path}\n#{request.body}\Response: #{response.body}")
-        when '401'
-          authenticate
-          return false
-        when '400'
-          if response.body.include? "would have resulted in a duplicate resource being created"
-            raise AMEE::DuplicateResource.new("The specified resource already exists. This is most often caused by creating an item that overlaps another in time.\nRequest: #{request.method} #{request.path}\n#{request.body}\Response: #{response.body}")
-          else
-            raise AMEE::BadRequest.new("Bad request. This is probably due to malformed input data.\nRequest: #{request.method} #{request.path}\n#{request.body}\Response: #{response.body}")
-          end
-      end
-      raise AMEE::UnknownError.new("An error occurred while talking to AMEE: HTTP response code #{response.code}.\nRequest: #{request.method} #{request.path}\n#{request.body}\Response: #{response.body}")
-    end
-
-    def do_request(request, format = @format)
-      # Open HTTP connection
-      @http.start
-      begin
-        # Set auth token in cookie (and header just in case someone's stripping cookies)
-        request['Cookie'] = "authToken=#{@auth_token}"
-        request['authToken'] = @auth_token
-        # Do request
-        timethen=Time.now
-        response = send_request(@http, request, format)
-        Logger.log.debug("Requesting #{request.class} at #{request.path} with #{request.body} in format #{format}, taking #{(Time.now-timethen)*1000} miliseconds")
-      end while !response_ok?(response, request)
-      # Return response
-      return response
-    rescue SocketError
+    
+    def connection_failed
       raise AMEE::ConnectionFailed.new("Connection failed. Check server name or network connection.")
-    ensure
-      # Close HTTP connection
-      @http.finish if @http.started?
+    end
+    
+    # run each request through some basic error checking, and 
+    # if needed log requests
+    def response_ok?(response, request)
+      
+      # first allow for debugging
+      d {request.object_id}
+      d {request}
+      d {response.object_id}
+      d {response.code}
+      d {response.headers_hash}
+      d {response.body}
+
+      case response.code
+
+      when 502, 503, 504
+          raise AMEE::ConnectionFailed.new("A connection error occurred while talking to AMEE: HTTP response code #{response.code}.\nRequest: #{request.method.upcase} #{request.url.gsub(request.host, '')}")
+      when 500
+        raise AMEE::UnknownError.new("An error occurred while talking to AMEE: HTTP response code #{response.code}.\nRequest: #{request.method.upcase} #{request.url}\n#{request.body}\Response: #{response.body}")
+      when 408
+        raise AMEE::TimeOut.new("Request timed out.")
+        # new, weird error
+      when 406
+        raise AMEE::UnknownError.new("An error occurred while talking to AMEE: HTTP response code #{response.code}.\nRequest: #{request.method.upcase} #{request.url}\n#{request.body}\Response: #{response.body}")
+      when 404
+        raise AMEE::NotFound.new(
+        "The URL was not found on the server.\nRequest: #{request.method.upcase} #{request.url.gsub(request.host, '')}")
+      when 403
+        raise AMEE::PermissionDenied.new("You do not have permission to perform the requested operation.\nRequest: #{request.method.upcase} #{request.url.gsub(request.host, '')}\n#{request.body}\Response: #{response.body}")
+      when 401
+        raise AMEE::UnknownError.new("Requests are no longer authenticated.")          
+      when 400
+        if response.body.include? "would have resulted in a duplicate resource being created"
+          raise AMEE::DuplicateResource.new("The specified resource already exists. This is most often caused by creating an item that overlaps another in time.\nRequest: #{request.method.upcase} #{request.url.gsub(request.host, '')}\n#{request.body}\Response: #{response.body}")
+        else
+          raise AMEE::BadRequest.new("Bad request. This is probably due to malformed input data.\nRequest: #{request.method.upcase} #{request.url.gsub(request.host, '')}\n#{request.body}\Response: #{response.body}")
+        end
+      when 200, 201
+        return response
+      when 0
+        connection_failed
+      end
     end
 
-    def send_request(connection, request, format = @format)
-      # Set accept header
-      request['Accept'] = content_type(format)
+    # Wrapper for sending requests through to the API.
+    # Takes care of making sure requests authenticated, and 
+    # if set, attempts to retry a number of times set when
+    # initialising the class
+    def do_request(request, format = @format)
+
+      # make sure we have our auth token before we start
+      # any requests
+      if !@auth_token
+        d "Authenticating first before we hit #{request.url}"
+        authenticate 
+      end
+
+      request.headers['Accept'] = content_type(format)
       # Set AMEE source header if set
-      request['X-AMEE-Source'] = @amee_source if @amee_source
-      # Do the business
+      request.headers['X-AMEE-Source'] = @amee_source if @amee_source
+      add_authentication_to(request) if @auth_token
+
       retries = [1] * @retries
-      begin
-        response = connection.request(request)
-        # 500-series errors fail early
-        if ['502', '503', '504'].include? response.code
-          raise AMEE::ConnectionFailed.new("A connection error occurred while talking to AMEE: HTTP response code #{response.code}.\nRequest: #{request.method} #{request.path}")
-        end
-      rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError,
-             Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError, AMEE::ConnectionFailed => e
+      begin 
+        d "Queuing the request for #{request.url}"
+        hydra.queue request
+        hydra.run
+
+        return response_ok?(request.response, request)
+      rescue AMEE::ConnectionFailed, AMEE::TimeOut => e
         if delay = retries.shift
           sleep delay
           retry
@@ -271,17 +356,30 @@ module AMEE
           raise
         end
       end
-      # Done
-      response
+
+      raise AMEE::UnknownError.new("An error occurred while talking to AMEE: HTTP response code #{response.code}.\nRequest: #{request.method.upcase} #{request.url}\n#{request.body}\Response: #{response.body}")
+  
+    end
+    
+    # Take an existing request, and add authentication
+    # may no longer be needed now that we authenticate before 
+    # making a request anyway
+    def add_authentication_to(request=nil)
+      if @auth_token
+        request.headers['Cookie'] = "AuthToken=#{@auth_token}"
+        request.headers['AuthToken'] = @auth_token
+      else
+        raise "The connection can't authenticate. Check if the auth_token is being set by the server"
+      end
     end
 
     def cache(path, &block)
       key = cache_key(path)
       if @cache && @cache.exist?(key)
-        puts "CACHE HIT on #{key}" if @debug
+        d "CACHE HIT on #{key}" if @debug
         return @cache.read(key)
       end
-      puts "CACHE MISS on #{key}" if @debug
+      d "CACHE MISS on #{key}" if @debug
       data = block.call
       @cache.write(key, data) if @cache
       return data

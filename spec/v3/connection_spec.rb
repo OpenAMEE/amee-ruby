@@ -6,64 +6,44 @@ require 'spec_helper.rb'
 describe AMEE::Connection do
 
   before :each do
-    @c = AMEE::Connection.new('server.example.com', 'username', 'password', :ssl => false)
+    @c = AMEE::Connection.new('stage.amee.com', AMEE_V3_API_KEY, AMEE_V3_PASSWORD, :ssl => false)
   end
 
   it "should have a connection to meta server" do
-    flexmock(Net::HTTP).new_instances.should_receive(:start => nil)
-    @c.v3_connection.should_not be_nil
+      VCR.use_cassette("AMEE_Connection/v3/should have a connection to meta server") do
+      @c.authenticate.should_not be_nil
+      end
   end
 
   it "should login and know the path to the server" do
-    flexmock(Net::HTTP::Get).new_instances do |mock|
-      mock.should_receive(:basic_auth).with('username','password').once
+    VCR.use_cassette("AMEE_Connection/v3/should login and know the path to the server") do
+      @c.authenticate.should_not be_nil
     end
-    flexmock(Net::HTTP).should_receive(:new).with('platform-api-server.example.com', 80).once.and_return {
-      mock=flexmock
-      mock.should_receive(:start => nil)
-      mock.should_receive(:started? => true)
-      mock.should_receive(:request).and_return(flexmock(:code => '200', :body => "OK"))
-      mock.should_receive(:finish => nil)
-      mock
-    }
-    @c.v3_get("/#{AMEE::Connection.api_version}/categories/SomeCategory").should == "OK"
   end
 
   it "should be able to get from meta server" do
-    flexmock(Net::HTTP).new_instances do |mock|
-      mock.should_receive(:start => nil)
-      mock.should_receive(:request).and_return(flexmock(:code => '200', :body => "OK"))
-      mock.should_receive(:finish => nil)
+    VCR.use_cassette("AMEE_Connection/v3/should be able to get from meta server") do
+      @get_request = @c.v3_get("/#{AMEE::Connection.api_version}/categories/Api_test")
+      JSON.parse(@get_request.body)['status'].should == "OK"
     end
-    @c.v3_get("/#{AMEE::Connection.api_version}/categories/SomeCategory").should == "OK"
   end
 
   it "should be able to handle failed gets from meta server" do
-    flexmock(Net::HTTP).new_instances do |mock|
-      mock.should_receive(:start => nil)
-      mock.should_receive(:request).and_return(flexmock(:code => '404'))
-      mock.should_receive(:finish => nil)
-    end
+    VCR.use_cassette("AMEE_Connection/v3/should be able to handle failed gets from meta server") do
     lambda {
       @c.v3_get("/#{AMEE::Connection.api_version}/categories/SomeCategory").should == nil
     }.should raise_error(AMEE::NotFound, "The URL was not found on the server.\nRequest: GET /#{AMEE::Connection.api_version}/categories/SomeCategory")
   end
-
-  it "should be able to post to meta server" do
-    flexmock(Net::HTTP).new_instances do |mock|
-      mock.should_receive(:start => nil)
-      mock.should_receive(:request).and_return(flexmock(:code => '200', :body => "OK"))
-      mock.should_receive(:finish => nil)
-    end
-    @c.v3_put("/#{AMEE::Connection.api_version}/categories/SomeCategory", {:arg => "test"}).should == "OK"
   end
 
-  it "should be able to handle failed gets from meta server" do
-    flexmock(Net::HTTP).new_instances do |mock|
-      mock.should_receive(:start => nil)
-      mock.should_receive(:request).and_return(flexmock(:code => '404'))
-      mock.should_receive(:finish => nil)
+  it "should be able to post to meta server" do
+    VCR.use_cassette("AMEE_Connection/v3/should be able to post to meta server") do
+      @post_request = @c.v3_post("/#{AMEE::Connection.api_version}/categories/039DCB9BA67D/items", {:'values.question' => Time.now.to_i})
+      @post_request.code.should == 201 || 200 
     end
+  end
+
+  it "should be able to handle failed puts to meta server" do
     lambda {
       @c.v3_put("/#{AMEE::Connection.api_version}/categories/SomeCategory", {:arg => "test"}).should == "OK"
     }.should raise_error
@@ -99,39 +79,50 @@ end
 describe AMEE::Connection, "with retry enabled" do
 
   before :each do
-    @c = AMEE::Connection.new('server.example.com', 'username', 'password', :ssl => false, :retries => 2)
+    @c = AMEE::Connection.new('stage.amee.com', AMEE_V3_API_KEY, AMEE_V3_PASSWORD, :ssl => false, :retries => 2)
+
+    @timeout_response = {
+      :status => 408,
+      :body => "",
+      :time => 30
+    }
+    @successful_response = {
+      :status => 200,
+      :body => "",
+      :time => 30
+    }
+
   end
 
   [
-    Timeout::Error,
-    Errno::EINVAL, 
-    Errno::ECONNRESET, 
-    EOFError,
-    Net::HTTPBadResponse, 
-    Net::HTTPHeaderSyntaxError, 
-    Net::ProtocolError
+    AMEE::TimeOut
   ].each do |e|
 
     it "should retry after #{e.name} the correct number of times" do
-      flexmock(Net::HTTP).new_instances do |mock|
-        mock.should_receive(:start => nil)
-        mock.should_receive(:request).and_raise(e.new).twice
-        mock.should_receive(:request).and_return(flexmock(:code => '200', :body => '{}')).once
-        mock.should_receive(:finish => nil)
+      
+      VCR.use_cassette("AMEE_Connection/v3/retries/#{e.name}") do
+        @c.authenticate
       end
+
+      stub_request(:any, /.*#{AMEE::Connection.api_version}\/categories\/Api_test.*/).
+            to_return(@timeout_response).times(2).
+            then.to_return(@successful_response)
       lambda {
-        @c.v3_get("/#{AMEE::Connection.api_version}/categories/SomeCategory")
+        @c.v3_get("/#{AMEE::Connection.api_version}/categories/Api_test")
       }.should_not raise_error        
     end
 
     it "should retry #{e.name} the correct number of times and raise error on failure" do
-      flexmock(Net::HTTP).new_instances do |mock|
-        mock.should_receive(:start => nil)
-        mock.should_receive(:request).and_raise(e.new).times(3)
-        mock.should_receive(:finish => nil)
+
+      VCR.use_cassette("AMEE_Connection/v3/retries/#{e.name}") do
+        @c.authenticate
       end
+      
+      stub_request(:any, /.*#{AMEE::Connection.api_version}\/categories\/Api_test.*/).
+            to_return(@timeout_response).times(3)
+
       lambda {
-        @c.v3_get("/#{AMEE::Connection.api_version}/categories/SomeCategory")
+        @c.v3_get("/#{AMEE::Connection.api_version}/categories/Api_test")
       }.should raise_error(e)
     end
   end
@@ -143,25 +134,46 @@ describe AMEE::Connection, "with retry enabled" do
   ].each do |e|
 
     it "should retry after #{e} the correct number of times" do
-      flexmock(Net::HTTP).new_instances do |mock|
-        mock.should_receive(:start => nil)
-        mock.should_receive(:request).and_return(flexmock(:code => e, :body => '{}')).twice
-        mock.should_receive(:request).and_return(flexmock(:code => '200', :body => '{}')).once
-        mock.should_receive(:finish => nil)
+
+      @successful_response = {
+        :status => 200,
+        :body => "",
+        :time => 30
+      }
+      
+      @error_response = {
+        :status => e.to_i,
+        :body => "",
+      }
+
+      VCR.use_cassette("AMEE_Connection/v3/retries/#{e}") do
+        @c.authenticate
       end
+      
+      stub_request(:any, /.*#{AMEE::Connection.api_version}\/categories\/Api_test.*/).
+            to_return(@error_response).times(2).
+            then.to_return(@successful_response)
       lambda {
-        @c.v3_get("/#{AMEE::Connection.api_version}/categories/SomeCategory")
+        @c.v3_get("/#{AMEE::Connection.api_version}/categories/Api_test")
       }.should_not raise_error        
     end
 
     it "should retry #{e} the correct number of times and raise error on failure" do
-      flexmock(Net::HTTP).new_instances do |mock|
-        mock.should_receive(:start => nil)
-        mock.should_receive(:request).and_return(flexmock(:code => e, :body => '{}')).times(3)
-        mock.should_receive(:finish => nil)
+
+      @error_response = {
+        :status => e.to_i,
+        :body => "",
+      }
+
+      VCR.use_cassette("AMEE_Connection/v3/retries/#{e}") do
+        @c.authenticate
       end
+      
+      stub_request(:any, /.*#{AMEE::Connection.api_version}\/categories\/Api_test.*/).
+            to_return(@error_response).times(3)
+
       lambda {
-        @c.v3_get("/#{AMEE::Connection.api_version}/categories/SomeCategory")
+        @c.v3_get("/#{AMEE::Connection.api_version}/categories/Api_test")
       }.should raise_error(AMEE::ConnectionFailed)
     end
   end  

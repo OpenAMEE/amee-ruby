@@ -20,7 +20,7 @@ module AMEE
       end
     end
   end
-  
+
   class BadRequest < Exception
   end
 
@@ -32,7 +32,10 @@ module AMEE
 
   class ConnectionFailed < Exception
   end
-  
+
+  class TimeOut < Exception
+  end
+    
   class NotFound < Exception
   end
   

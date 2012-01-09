@@ -1,0 +1,29 @@
+--- 
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: post
+    uri: http://stage.amee.com:80/auth/signIn
+    body: username=wrong&password=details
+    headers: 
+      accept: 
+      - application/xml
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 200
+      message: OK
+    headers: 
+      content-type: 
+      - text/plain
+      via: 
+      - 1.1 stage.amee.com
+      server: 
+      - Noelios-Restlet-Engine/1.1.10
+      date: 
+      - Mon, 28 Nov 2011 01:25:47 GMT
+      content-length: 
+      - "0"
+      set-cookie: 
+      - authToken=; Path=/; Expires=Monday, 28-Nov-11 01:25:47 GMT
+      - authToken=; Path=/; Expires=Monday, 28-Nov-11 01:25:47 GMT
+    body: 
+    http_version: "1.1"

@@ -1,0 +1,32 @@
+--- 
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: :get
+    uri: http://httpstat.us:80/408
+    body: 
+    headers: 
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 408
+      message: Request Time-out
+    headers: 
+      x-varnish: 
+      - "2345353555"
+      connection: 
+      - keep-alive
+      content-type: 
+      - text/plain
+      via: 
+      - 1.1 varnish
+      access-control-allow-origin: 
+      - "*"
+      server: 
+      - nginx/0.7.67
+      date: 
+      - Sun, 27 Nov 2011 22:35:07 GMT
+      content-length: 
+      - "19"
+      age: 
+      - "0"
+    body: 408 Request Timeout
+    http_version: "1.1"

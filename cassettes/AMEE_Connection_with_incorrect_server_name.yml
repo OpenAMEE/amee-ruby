@@ -1,0 +1,16 @@
+--- 
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: post
+    uri: http://badservername.example.com:80/auth/signIn
+    body: username=<AMEE_V2_API_KEY>&password=<AMEE_V2_PASSWORD>
+    headers: 
+      accept: 
+      - application/xml
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 0
+      message: 
+    headers: 
+    body: 
+    http_version: "1.1"

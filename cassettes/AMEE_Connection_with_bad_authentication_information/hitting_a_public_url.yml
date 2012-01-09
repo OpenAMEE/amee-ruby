@@ -1,0 +1,32 @@
+--- 
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: :get
+    uri: https://stage.amee.com:443/
+    body: 
+    headers: 
+      accept: 
+      - application/json
+      cookie: 
+      - authToken=
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 406
+      message: Not Acceptable
+    headers: 
+      via: 
+      - 1.1 stage.amee.com
+      content-type: 
+      - application/json; charset=UTF-8
+      server: 
+      - Noelios-Restlet-Engine/1.1.10
+      date: 
+      - Wed, 23 Nov 2011 10:29:09 GMT
+      content-length: 
+      - "325"
+      set-cookie: 
+      - authToken=; Path=/; Expires=Wednesday, 23-Nov-11 10:29:09 GMT
+      vary: 
+      - Accept-Charset,Accept-Encoding,Accept-Language,Accept
+    body: "{\"status\":{\"description\":\"The resource identified by the request is only capable of generating response entities which have content characteristics not acceptable according to the accept headers sent in the request\",\"name\":\"Not Acceptable\",\"code\":406,\"uri\":\"http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.7\"}}"
+    http_version: "1.1"

@@ -9,98 +9,141 @@ module AMEE
     def self.api_version
       '3'
     end
-      
-    def v3_connection
-      @v3_http ||= begin
-        @v3_http = Net::HTTP.new(v3_hostname, @port)
-        if @ssl == true
-          @v3_http.use_ssl = true
-          if File.exists? RootCA
-            @v3_http.ca_file = RootCA
-            @v3_http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-            @v3_http.verify_depth = 5
-          end
-        end
-        @v3_http.set_debug_output($stdout) if @debug
-        @v3_http
-      end
-    end    
+
+    def v3_defaults
+      {
+        :verbose => DEBUG,
+        :follow_location => true,
+        :username => @username,
+        :password => @password        
+      }
+    end
+
     def v3_get(path, options = {})
       # Create URL parameters
       unless options.empty?
         path += "?" + options.map { |x| "#{CGI::escape(x[0].to_s)}=#{CGI::escape(x[1].to_s)}" }.join('&')
       end
-      cache(path) { v3_request(Net::HTTP::Get.new(path)) }
+
+      get_params = {:method => "get"}
+      params = v3_defaults.merge(get_params)
+
+      get = Typhoeus::Request.new("https://#{v3_hostname}#{path}", params)
+
+      # Send request
+      cache(path) { do_request(get, format) }
     end
+
     def v3_put(path, options = {})
       expire_matching "#{parent_path(path)}.*"
-      put = Net::HTTP::Put.new(path)
-      if options[:body]
-        put.body = options[:body]
-        put['Content-Type'] = content_type :xml if options[:body].is_xml?
-        put['Content-Type'] = content_type :json if options[:body].is_json?
-      else
-        put.set_form_data(options)
+
+      # if options[:body]
+      #   put.body = options[:body]
+      #   put['Content-Type'] = content_type :xml if options[:body].is_xml?
+      #   put['Content-Type'] = content_type :json if options[:body].is_json?
+      # else
+
+      body = []
+      data.each_pair do |key, value|
+        body << "#{CGI::escape(key.to_s)}=#{CGI::escape(value.to_s)}"
       end
-      v3_request put
+
+      put_params = { 
+        :method => "put",
+        :body => body
+      }
+      params = v3_defaults.merge(put_params)
+
+      put = Typhoeus::Request.new("https://#{v3_hostname}#{path}", params)
+
+      v3_do_request(put, hydra)
+
     end
+
     def v3_post(path, options = {})
+
       expire_matching "#{raw_path(path)}.*"
-      post = Net::HTTP::Post.new(path)
-      returnobj=options.delete(:returnobj) || false
-      post.set_form_data(options)
-      v3_request post,returnobj
-    end
-     def v3_delete(path, options = {})
-      expire_matching "#{parent_path(path)}.*"
-      delete = Net::HTTP::Delete.new(path)
-      v3_request delete
-    end
-    def v3_auth
-      # now the same as v2, i.e.
-      [@username,@password]
-    end
-    private
-    def v3_hostname
-      unless @server.starts_with?("platform-api-")
-        if @server.starts_with?("platform-")
-          @server.gsub("platform-", "platform-api-")
-        else
-          "platform-api-#{@server}"
-        end
-      else
-        @server
+
+      body = []
+      options.each_pair do |key, value|
+        body << "#{CGI::escape(key.to_s)}=#{CGI::escape(value.to_s)}"
       end
+
+      post_params = {
+        :headers => {
+        :Accept => 'application/xml',
+      },
+      :method => "post",
+      :body => body.join('&')
+      }
+
+      params = v3_defaults.merge(post_params)
+      post = Typhoeus::Request.new("https://#{v3_hostname}#{path}", params)
+
+      v3_do_request(post, hydra)
     end
-    def v3_request(req,returnobj=false)
-      # Open HTTP connection
-      v3_connection.start
-      # Set auth
-      req.basic_auth *v3_auth
-      # Do request
-      timethen=Time.now
-      response = send_request(v3_connection, req, :xml)
-      Logger.log.debug("Requested #{req.class} at #{req.path} with #{req.body}, taking #{(Time.now-timethen)*1000} miliseconds")
-      v3_response_ok? response, req
-      returnobj ? response : response.body
-    ensure
-      v3_connection.finish if v3_connection.started?
+
+    def v3_delete(path, options = {})
+      expire_matching "#{parent_path(path)}.*"
+      
+      delete_params = { :method => "delete" }
+      params = v3_defaults.merge(delete_params)
+
+      delete = Typhoeus::Request.new("https://#{v3_hostname}#{path}", params )
+      v3_do_request(delete, hydra)
     end
- 
-    def v3_response_ok?(response, request)
-      case response.code
+
+    private
+      def v3_hostname
+        unless @server.starts_with?("platform-api-")
+          if @server.starts_with?("platform-")
+            @server.gsub("platform-", "platform-api-")
+          else
+            "platform-api-#{@server}"
+          end
+        else
+          @server
+        end
+      end
+
+      def v3_response_ok?(response, request)
+
+        case response.code.to_s
         when '200', '201', '204'
           return true
         when '404'
-          raise AMEE::NotFound.new("The URL was not found on the server.\nRequest: #{request.method} #{request.path}")
+          raise AMEE::NotFound.new("The URL was not found on the server.\nRequest: #{request.method} #{request.url}")
         when '403'
-          raise AMEE::PermissionDenied.new("You do not have permission to perform the requested operation.\nRequest: #{request.method} #{request.path}\n#{request.body}\Response: #{response.body}")
+          raise AMEE::PermissionDenied.new("You do not have permission to perform the requested operation.\nRequest: #{request.method} #{request.url}\n#{request.body}\Response: #{response.body}")
         when '401'
           raise AMEE::AuthFailed.new("Authentication failed. Please check your username and password.")
         when '400'
-          raise AMEE::BadRequest.new("Bad request. This is probably due to malformed input data.\nRequest: #{request.method} #{request.path}\n#{request.body}\Response: #{response.body}")
+          raise AMEE::BadRequest.new("Bad request. This is probably due to malformed input data.\nRequest: #{request.method} #{request.url}\n#{request.body}\Response: #{response.body}")
+        end
+        raise AMEE::UnknownError.new("An error occurred while talking to AMEE: HTTP response code #{response.code}.\nRequest: #{request.method} #{request.url}\n#{request.body}\Response: #{response.body}")
       end
-      raise AMEE::UnknownError.new("An error occurred while talking to AMEE: HTTP response code #{response.code}.\nRequest: #{request.method} #{request.path}\n#{request.body}\Response: #{response.body}")
-    end
+      
+      def v3_do_request(request, hydra)
+
+        retries = [1] * @retries
+        begin 
+          d "Queuing the request for #{request.url}"
+          hydra.queue request
+          hydra.run
+
+          if v3_response_ok?(request.response, request)
+            return request.response
+          end
+
+        rescue AMEE::ConnectionFailed, AMEE::TimeOut => e
+          if delay = retries.shift
+            sleep delay
+            retry
+          else
+            raise
+          end
+        end
+      end
+      
   end
 end

@@ -1,0 +1,34 @@
+--- 
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: get
+    uri: http://stage.amee.com:80/parent/object
+    body: 
+    headers: 
+      accept: 
+      - application/json
+      cookie: 
+      - AuthToken=7xaj94uNzpKDnVswdfe+cvbyfFn3yqTA9TWYjLkP2okAGu96iA48Y+5uCBBTmsGaCmMFmQk5UY3TtpDSdWzCOsLS2qs1hzx6dNT4+rIr42I=
+      authtoken: 
+      - 7xaj94uNzpKDnVswdfe+cvbyfFn3yqTA9TWYjLkP2okAGu96iA48Y+5uCBBTmsGaCmMFmQk5UY3TtpDSdWzCOsLS2qs1hzx6dNT4+rIr42I=
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 404
+      message: Not Found
+    headers: 
+      content-type: 
+      - application/json; charset=UTF-8
+      via: 
+      - 1.1 stage.amee.com
+      server: 
+      - Noelios-Restlet-Engine/1.1.10
+      date: 
+      - Mon, 28 Nov 2011 00:59:52 GMT
+      content-length: 
+      - "190"
+      set-cookie: 
+      - authToken=/GtLagog4PlDX3b2A4Hn4o5danNq168DLVLJpYM3+i5d7pgYgO+FMIOtHJiR3kJAZODfgV4XYe6kpwVk34HOJvFUOW+fAFRaQXkosOd8a1g=; Path=/
+      authtoken: 
+      - /GtLagog4PlDX3b2A4Hn4o5danNq168DLVLJpYM3+i5d7pgYgO+FMIOtHJiR3kJAZODfgV4XYe6kpwVk34HOJvFUOW+fAFRaQXkosOd8a1g=
+    body: "{\"status\":{\"description\":\"The server has not found anything matching the request URI\",\"name\":\"Not Found\",\"code\":404,\"uri\":\"http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5\"}}"
+    http_version: "1.1"

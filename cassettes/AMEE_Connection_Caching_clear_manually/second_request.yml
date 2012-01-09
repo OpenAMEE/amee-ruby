@@ -1,0 +1,40 @@
+--- 
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: get
+    uri: http://stage.amee.com:80/data/home/energy/quantity?itemsPerPage=10
+    body: 
+    headers: 
+      accept: 
+      - application/json
+      cookie: 
+      - AuthToken=7xaj94uNzpKDnVswdfe+cvbyfFn3yqTA9TWYjLkP2okAGu96iA48Y+5uCBBTmsGaCmMFmQk5UY3TtpDSdWzCOsLS2qs1hzx6dNT4+rIr42I=
+      authtoken: 
+      - 7xaj94uNzpKDnVswdfe+cvbyfFn3yqTA9TWYjLkP2okAGu96iA48Y+5uCBBTmsGaCmMFmQk5UY3TtpDSdWzCOsLS2qs1hzx6dNT4+rIr42I=
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 200
+      message: OK
+    headers: 
+      expires: 
+      - Sun, 27 Nov 2011 00:46:43 GMT
+      last-modified: 
+      - Mon, 28 Nov 2011 00:46:43 GMT
+      content-type: 
+      - application/json; charset=UTF-8
+      via: 
+      - 1.1 stage.amee.com
+      server: 
+      - Noelios-Restlet-Engine/1.1.10
+      date: 
+      - Mon, 28 Nov 2011 00:46:43 GMT
+      content-length: 
+      - "4349"
+      set-cookie: 
+      - authToken=/GtLagog4PlDX3b2A4Hn4o5danNq168DLVLJpYM3+i7wwh3RRZM0P0nD3xeI5QrBlFhtGrqtDmSis1dGlBADtS2+JX8R7FO2nyu1M/DjFyM=; Path=/
+      authtoken: 
+      - /GtLagog4PlDX3b2A4Hn4o5danNq168DLVLJpYM3+i7wwh3RRZM0P0nD3xeI5QrBlFhtGrqtDmSis1dGlBADtS2+JX8R7FO2nyu1M/DjFyM=
+      vary: 
+      - Accept-Charset,Accept-Encoding,Accept-Language,Accept
+    body: "{\"apiVersion\":\"2.0\",\"dataCategory\":{\"uid\":\"A92693A99BAD\",\"dataCategory\":{\"uid\":\"30BA55A0C472\",\"deprecated\":false,\"name\":\"Energy\",\"path\":\"energy\"},\"deprecated\":false,\"environment\":{\"uid\":\"5F5887BCF726\",\"itemsPerFeed\":10,\"description\":\"\",\"name\":\"AMEE\",\"owner\":\"\",\"path\":\"\",\"itemsPerPage\":10},\"created\":\"2007-07-27 07:30:44.0\",\"name\":\"Quantity\",\"path\":\"quantity\",\"itemDefinition\":{\"uid\":\"212C818D8F16\",\"environment\":{\"uid\":\"5F5887BCF726\"},\"created\":\"2007-07-27 07:30:44.0\",\"name\":\"Energy Quantity\",\"drillDown\":\"type\",\"modified\":\"2011-02-16 08:00:50.0\"},\"modified\":\"2011-02-16 08:02:10.0\"},\"path\":\"/home/energy/quantity\",\"children\":{\"pager\":{\"to\":10,\"lastPage\":2,\"nextPage\":2,\"items\":12,\"start\":0,\"itemsFound\":10,\"requestedPage\":1,\"currentPage\":1,\"from\":1,\"itemsPerPage\":10,\"previousPage\":-1},\"dataItems\":{\"label\":\"DataItems\",\"rows\":[{\"uid\":\"878854C275BC\",\"startDate\":\"\",\"kgCO2PerKg\":\"\",\"kgCO2PerKWh\":\"\",\"source\":\"net CV RME-type Wells to wheels/European Commission/JRC 2006 http://ies.jrc.ec.europa.eu/our-activities/support-to-eu-policies/well-to-wheels-analysis/WTW.html\",\"created\":\"2007-07-27 09:49:32.0\",\"path\":\"878854C275BC\",\"endDate\":\"\",\"label\":\"biodiesel\",\"kgCO2PerLitre\":\"2.5\",\"type\":\"biodiesel\",\"modified\":\"2009-09-10 10:08:00.0\"},{\"uid\":\"CFA7F3896189\",\"startDate\":\"\",\"kgCO2PerKg\":\"0.1215\",\"kgCO2PerKWh\":\"0.0263\",\"source\":\"http://www.defra.gov.uk/environment/business/reporting/pdf/20090717-guidelines-ghg-conversion-factors.xls\",\"created\":\"2007-07-27 09:49:32.0\",\"path\":\"CFA7F3896189\",\"endDate\":\"\",\"label\":\"biomass\",\"kgCO2PerLitre\":\"\",\"type\":\"biomass\",\"modified\":\"2009-09-10 10:08:00.0\"},{\"uid\":\"A70149AF0F26\",\"startDate\":\"\",\"kgCO2PerKg\":\"2.5063\",\"kgCO2PerKWh\":\"0.3114\",\"source\":\"http://www.defra.gov.uk/environment/business/reporting/pdf/20090717-guidelines-ghg-conversion-factors.xls\",\"created\":\"2007-07-27 09:49:32.0\",\"path\":\"A70149AF0F26\",\"endDate\":\"\",\"label\":\"coal\",\"kgCO2PerLitre\":\"\",\"type\":\"coal\",\"modified\":\"2009-09-10 10:08:00.0\"},{\"uid\":\"0093104E595C\",\"startDate\":\"\",\"kgCO2PerKg\":\"2.81\",\"kgCO2PerKWh\":\"0.349\",\"source\":\"defra/amee 2008\",\"created\":\"2008-09-22 09:24:16.0\",\"path\":\"0093104E595C\",\"endDate\":\"\",\"label\":\"coking coal\",\"kgCO2PerLitre\":\"\",\"type\":\"coking coal\",\"modified\":\"2009-09-10 10:08:00.0\"},{\"uid\":\"D6C9BC81155D\",\"startDate\":\"\",\"kgCO2PerKg\":\"3.1643\",\"kgCO2PerKWh\":\"0.2748\",\"source\":\"http://www.defra.gov.uk/environment/business/reporting/pdf/20090717-guidelines-ghg-conversion-factors.xls\",\"created\":\"2007-07-27 09:49:32.0\",\"path\":\"D6C9BC81155D\",\"endDate\":\"\",\"label\":\"diesel\",\"kgCO2PerLitre\":\"2.6391\",\"type\":\"diesel\",\"modified\":\"2009-09-10 10:08:00.0\"},{\"uid\":\"CDC2A0BA8DF3\",\"startDate\":\"\",\"kgCO2PerKg\":\"\",\"kgCO2PerKWh\":\"\",\"source\":\"uses data in /home/energy/electricity\",\"created\":\"2008-10-22 06:24:32.0\",\"path\":\"CDC2A0BA8DF3\",\"endDate\":\"\",\"label\":\"electricity\",\"kgCO2PerLitre\":\"\",\"type\":\"electricity\",\"modified\":\"2009-09-10 10:08:00.0\"},{\"uid\":\"66056991EE23\",\"startDate\":\"\",\"kgCO2PerKg\":\"2.6935\",\"kgCO2PerKWh\":\"0.2037\",\"source\":\"http://www.defra.gov.uk/environment/business/reporting/pdf/20090717-guidelines-ghg-conversion-factors.xls\",\"created\":\"2007-07-27 09:49:32.0\",\"path\":\"66056991EE23\",\"endDate\":\"\",\"label\":\"gas\",\"kgCO2PerLitre\":\"0.0020091\",\"type\":\"gas\",\"modified\":\"2009-09-10 10:08:00.0\"},{\"uid\":\"67D147AF530B\",\"startDate\":\"\",\"kgCO2PerKg\":\"2.4269\",\"kgCO2PerKWh\":\"0.1836\",\"source\":\"http://www.defra.gov.uk/environment/business/reporting/pdf/20090717-guidelines-ghg-conversion-factors.xls\",\"created\":\"2009-07-09 14:53:18.0\",\"path\":\"67D147AF530B\",\"endDate\":\"\",\"label\":\"gas gross CV\",\"kgCO2PerLitre\":\"0.0018102\",\"type\":\"gas gross CV\",\"modified\":\"2009-09-10 10:08:00.0\"},{\"uid\":\"C024BCE859BB\",\"startDate\":\"\",\"kgCO2PerKg\":\"3.1496\",\"kgCO2PerKWh\":\"0.2584\",\"source\":\"http://www.defra.gov.uk/environment/business/reporting/pdf/20090717-guidelines-ghg-conversion-factors.xls\",\"created\":\"2007-07-27 09:49:32.0\",\"path\":\"C024BCE859BB\",\"endDate\":\"\",\"label\":\"kerosene\",\"kgCO2PerLitre\":\"2.5278\",\"type\":\"kerosene\",\"modified\":\"2009-09-10 10:08:00.0\"},{\"uid\":\"26709055568C\",\"startDate\":\"\",\"kgCO2PerKg\":\"2.9424\",\"kgCO2PerKWh\":\"0.2255\",\"source\":\"http://www.defra.gov.uk/environment/business/reporting/pdf/20090717-guidelines-ghg-conversion-factors.xls\",\"created\":\"2007-07-27 09:49:32.0\",\"path\":\"26709055568C\",\"endDate\":\"\",\"label\":\"lpg\",\"kgCO2PerLitre\":\"1.4951\",\"type\":\"lpg\",\"modified\":\"2009-09-10 10:08:00.0\"}]},\"dataCategories\":[]}}"
+    http_version: "1.1"
