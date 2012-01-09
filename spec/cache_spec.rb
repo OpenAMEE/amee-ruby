@@ -124,7 +124,7 @@ describe AMEE::Connection do
     
     it "removes special characters from cache keys, include slashes" do
       setup_connection
-      @connection.send(:cache_key, "/%cache/$4/%20test").should eql 'server.example.com_cache_4_20test'
+      @connection.send(:cache_key, "/%cache/$4/%20test").should eql 'stage.amee.com_cache_4_20test'
     end
     
     it "trims cache keys to correct length for filenames, allowing for lock extension" do
