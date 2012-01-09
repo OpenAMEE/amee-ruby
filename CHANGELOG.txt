@@ -1,5 +1,8 @@
 = Changelog
 
+== 4.3.2
+* Bugfix to cache key generation (introduced in 4.3.1)
+
 == 4.3.1
 * Bugfix to make caching Rails 3 compatible
 
