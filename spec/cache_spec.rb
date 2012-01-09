@@ -125,14 +125,12 @@ describe AMEE::Connection do
     describe 'and automatic invalidation' do
 
       def test_invalidation_sequence(interactions)
-        # flexmock(Net::HTTP).new_instances do |mock|
-        #   mock.should_receive(:start => nil)
-        #   interactions.each do |path, action, result|
-        #     mock.should_receive(:request).once.and_return(OpenStruct.new(:code => '200', :body => path)) if result
-        #   end
-        #   mock.should_receive(:finish => nil)
-        # end
         setup_connection
+        flexmock(@connection) do |mock|
+          interactions.each do |path, action, result|
+            mock.should_receive(:do_request).once.and_return(OpenStruct.new(:code => '200', :body => path)) if result
+          end
+        end
         interactions.each do |path, action, result|
           if action
             @connection.send(action, path).body.should == path
@@ -143,13 +141,16 @@ describe AMEE::Connection do
       it "handles PUT requests" do
         VCR.use_cassette("AMEE_Connection_Caching/automatic_invalidation_for_put") do
         test_invalidation_sequence([
+          # Fill the cache
           ["/parent/object", :get, true],
           ["/parent", :get, true],
           ["/parent/object/child", :get, true],
           ["/parent/sibling", :get, true],
           ["/uncle/cousin", :get, true],
           ["/uncle", :get, true],
+          # Do a PUT
           ["/parent/object", :put, true],
+          # Check that cache is cleared in the right places
           ["/parent/object", :get, true],
           ["/parent", :get, true],
           ["/parent/object/child", :get, true],
@@ -163,13 +164,16 @@ describe AMEE::Connection do
       it "handles POST requests" do
         VCR.use_cassette("AMEE_Connection_Caching/automatic_invalidation_for_post") do
         test_invalidation_sequence([
+          # Fill the cache
           ["/parent/object", :get, true],
           ["/parent", :get, true],
           ["/parent/object/child", :get, true],
           ["/parent/sibling", :get, true],
           ["/uncle/cousin", :get, true],
           ["/uncle", :get, true],
+          # Do a POST
           ["/parent/object", :post, true],
+          # Check that cache is cleared in the right places
           ["/parent/object", :get, true],
           ["/parent", :get, false],
           ["/parent/object/child", :get, true],
@@ -183,13 +187,16 @@ describe AMEE::Connection do
       it "handles DELETE requests" do
         VCR.use_cassette("AMEE_Connection_Caching/automatic_invalidation_for_delete") do
         test_invalidation_sequence([
+          # Fill the cache
           ["/parent/object", :get, true],
           ["/parent", :get, true],
           ["/parent/object/child", :get, true],
           ["/parent/sibling", :get, true],
           ["/uncle/cousin", :get, true],
           ["/uncle", :get, true],
+          # Do a DELETE
           ["/parent/object", :delete, true],
+          # Check that cache is cleared in the right places
           ["/parent/object", :get, true],
           ["/parent", :get, true],
           ["/parent/object/child", :get, true],
