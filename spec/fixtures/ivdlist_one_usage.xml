@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Representation>
+  <ItemValueDefinitions>
+    <ItemValueDefinition created="2009-04-14T12:32:50Z" modified="2011-01-26T12:28:47Z" status="ACTIVE" uid="FC478DA437A0">
+      <Name>Comment</Name>
+      <Path>comment</Path>
+      <Value/>
+      <WikiDoc/>
+      <ItemDefinition uid="B4DA9E4AD5F2">
+        <Name>Televisions Generic Ranges</Name>
+      </ItemDefinition>
+      <ValueDefinition uid="CCEB59CACE1B">
+        <Name>text</Name>
+        <ValueType>TEXT</ValueType>
+      </ValueDefinition>
+      <Usages>
+        <Usage active="true">
+          <Name>default</Name>
+          <Type>IGNORED</Type>
+        </Usage>
+      </Usages>
+      <Choices/>
+      <DrillDown>false</DrillDown>
+      <FromData>false</FromData>
+      <FromProfile>true</FromProfile>
+      <Versions>
+        <Version>
+          <Version>1.0</Version>
+        </Version>
+        <Version>
+          <Version>2.0</Version>
+        </Version>
+      </Versions>
+    </ItemValueDefinition>
+    <ItemValueDefinition created="2009-04-14T12:32:50Z" modified="2011-01-26T12:28:53Z" status="ACTIVE" uid="16C7EC3BE46F">
+      <Name>Hours Per Month</Name>
+      <Path>hoursPerMonth</Path>
+      <Value/>
+      <WikiDoc>Hours watched per month</WikiDoc>
+      <ItemDefinition uid="B4DA9E4AD5F2">
+        <Name>Televisions Generic Ranges</Name>
+      </ItemDefinition>
+      <ValueDefinition uid="45433E48B39F">
+        <Name>amount</Name>
+        <ValueType>DOUBLE</ValueType>
+      </ValueDefinition>
+      <Usages>
+        <Usage active="true">
+          <Name>default</Name>
+          <Type>COMPULSORY</Type>
+        </Usage>
+      </Usages>
+      <Choices/>
+      <PerUnit>month</PerUnit>
+      <DrillDown>false</DrillDown>
+      <FromData>false</FromData>
+      <FromProfile>true</FromProfile>
+      <Versions>
+        <Version>
+          <Version>1.0</Version>
+        </Version>
+      </Versions>
+    </ItemValueDefinition>
+    <ItemValueDefinition created="2009-04-14T12:32:51Z" modified="2011-01-26T12:28:49Z" status="ACTIVE" uid="B8329DD85312">
+      <Name>kW on</Name>
+      <Path>kWOn</Path>
+      <Value/>
+      <WikiDoc>Television "on" energy consumption rate  </WikiDoc>
+      <ItemDefinition uid="B4DA9E4AD5F2">
+        <Name>Televisions Generic Ranges</Name>
+      </ItemDefinition>
+      <ValueDefinition uid="45433E48B39F">
+        <Name>amount</Name>
+        <ValueType>DOUBLE</ValueType>
+      </ValueDefinition>
+      <Usages/>
+      <Choices/>
+      <Unit>kW</Unit>
+      <DrillDown>false</DrillDown>
+      <FromData>true</FromData>
+      <FromProfile>false</FromProfile>
+      <Versions>
+        <Version>
+          <Version>1.0</Version>
+        </Version>
+        <Version>
+          <Version>2.0</Version>
+        </Version>
+      </Versions>
+    </ItemValueDefinition>
+    <ItemValueDefinition created="2009-04-14T12:32:51Z" modified="2011-01-26T12:28:48Z" status="ACTIVE" uid="D204B91C6CC1">
+      <Name>kW standby</Name>
+      <Path>kWStandby</Path>
+      <Value/>
+      <WikiDoc>Television "standby" energy consumption rate</WikiDoc>
+      <ItemDefinition uid="B4DA9E4AD5F2">
+        <Name>Televisions Generic Ranges</Name>
+      </ItemDefinition>
+      <ValueDefinition uid="45433E48B39F">
+        <Name>amount</Name>
+        <ValueType>DOUBLE</ValueType>
+      </ValueDefinition>
+      <Usages/>
+      <Choices/>
+      <Unit>kW</Unit>
+      <DrillDown>false</DrillDown>
+      <FromData>true</FromData>
+      <FromProfile>false</FromProfile>
+      <Versions>
+        <Version>
+          <Version>1.0</Version>
+        </Version>
+        <Version>
+          <Version>2.0</Version>
+        </Version>
+      </Versions>
+    </ItemValueDefinition>
+    <ItemValueDefinition created="2009-04-14T12:32:51Z" modified="2011-01-26T12:28:48Z" status="ACTIVE" uid="E01E927ABCCC">
+      <Name>Size</Name>
+      <Path>size</Path>
+      <Value/>
+      <WikiDoc>Television screen size (inches)</WikiDoc>
+      <ItemDefinition uid="B4DA9E4AD5F2">
+        <Name>Televisions Generic Ranges</Name>
+      </ItemDefinition>
+      <ValueDefinition uid="CCEB59CACE1B">
+        <Name>text</Name>
+        <ValueType>TEXT</ValueType>
+      </ValueDefinition>
+      <Usages/>
+      <Choices/>
+      <Unit>in</Unit>
+      <DrillDown>true</DrillDown>
+      <FromData>true</FromData>
+      <FromProfile>false</FromProfile>
+      <Versions>
+        <Version>
+          <Version>1.0</Version>
+        </Version>
+        <Version>
+          <Version>2.0</Version>
+        </Version>
+      </Versions>
+    </ItemValueDefinition>
+    <ItemValueDefinition created="2009-04-14T12:32:51Z" modified="2011-01-26T12:28:53Z" status="ACTIVE" uid="8C94A664A457">
+      <Name>Source</Name>
+      <Path>source</Path>
+      <Value/>
+      <WikiDoc/>
+      <ItemDefinition uid="B4DA9E4AD5F2">
+        <Name>Televisions Generic Ranges</Name>
+      </ItemDefinition>
+      <ValueDefinition uid="CCEB59CACE1B">
+        <Name>text</Name>
+        <ValueType>TEXT</ValueType>
+      </ValueDefinition>
+      <Usages/>
+      <Choices/>
+      <DrillDown>false</DrillDown>
+      <FromData>true</FromData>
+      <FromProfile>false</FromProfile>
+      <Versions>
+        <Version>
+          <Version>1.0</Version>
+        </Version>
+        <Version>
+          <Version>2.0</Version>
+        </Version>
+      </Versions>
+    </ItemValueDefinition>
+    <ItemValueDefinition created="2009-04-14T12:32:51Z" modified="2011-01-26T12:28:54Z" status="ACTIVE" uid="E2C9E1F92A34">
+      <Name>standby always CO2</Name>
+      <Path>standbyAlwaysCO2</Path>
+      <Value>0</Value>
+      <WikiDoc>Do //not// set - the algorithm will set this value.</WikiDoc>
+      <ItemDefinition uid="B4DA9E4AD5F2">
+        <Name>Televisions Generic Ranges</Name>
+      </ItemDefinition>
+      <ValueDefinition uid="45433E48B39F">
+        <Name>amount</Name>
+        <ValueType>DOUBLE</ValueType>
+      </ValueDefinition>
+      <Usages>
+        <Usage active="true">
+          <Name>default</Name>
+          <Type>IGNORED</Type>
+        </Usage>
+      </Usages>
+      <Choices/>
+      <Unit>kg</Unit>
+      <PerUnit>year</PerUnit>
+      <DrillDown>false</DrillDown>
+      <FromData>false</FromData>
+      <FromProfile>true</FromProfile>
+      <Versions>
+        <Version>
+          <Version>1.0</Version>
+        </Version>
+        <Version>
+          <Version>2.0</Version>
+        </Version>
+      </Versions>
+    </ItemValueDefinition>
+    <ItemValueDefinition created="2009-04-14T12:32:51Z" modified="2011-01-26T12:28:50Z" status="ACTIVE" uid="95451BD17B40">
+      <Name>standby mostly CO2</Name>
+      <Path>standbyMostlyCO2</Path>
+      <Value>0</Value>
+      <WikiDoc>Do //not// set - the algorithm will set this value.</WikiDoc>
+      <ItemDefinition uid="B4DA9E4AD5F2">
+        <Name>Televisions Generic Ranges</Name>
+      </ItemDefinition>
+      <ValueDefinition uid="45433E48B39F">
+        <Name>amount</Name>
+        <ValueType>DOUBLE</ValueType>
+      </ValueDefinition>
+      <Usages>
+        <Usage active="true">
+          <Name>default</Name>
+          <Type>IGNORED</Type>
+        </Usage>
+      </Usages>
+      <Choices/>
+      <Unit>kg</Unit>
+      <PerUnit>year</PerUnit>
+      <DrillDown>false</DrillDown>
+      <FromData>false</FromData>
+      <FromProfile>true</FromProfile>
+      <Versions>
+        <Version>
+          <Version>1.0</Version>
+        </Version>
+        <Version>
+          <Version>2.0</Version>
+        </Version>
+      </Versions>
+    </ItemValueDefinition>
+    <ItemValueDefinition created="2009-04-14T12:32:51Z" modified="2011-01-26T12:28:51Z" status="ACTIVE" uid="8BEF2938D789">
+      <Name>standby sometimes CO2</Name>
+      <Path>standbySometimesCO2</Path>
+      <Value>0</Value>
+      <WikiDoc>Do //not// set - the algorithm will set this value.</WikiDoc>
+      <ItemDefinition uid="B4DA9E4AD5F2">
+        <Name>Televisions Generic Ranges</Name>
+      </ItemDefinition>
+      <ValueDefinition uid="45433E48B39F">
+        <Name>amount</Name>
+        <ValueType>DOUBLE</ValueType>
+      </ValueDefinition>
+      <Usages>
+        <Usage active="true">
+          <Name>default</Name>
+          <Type>IGNORED</Type>
+        </Usage>
+      </Usages>
+      <Choices/>
+      <Unit>kg</Unit>
+      <PerUnit>year</PerUnit>
+      <DrillDown>false</DrillDown>
+      <FromData>false</FromData>
+      <FromProfile>true</FromProfile>
+      <Versions>
+        <Version>
+          <Version>1.0</Version>
+        </Version>
+        <Version>
+          <Version>2.0</Version>
+        </Version>
+      </Versions>
+    </ItemValueDefinition>
+    <ItemValueDefinition created="2009-04-14T12:32:52Z" modified="2011-01-26T12:28:51Z" status="ACTIVE" uid="082094F36436">
+      <Name>Time On</Name>
+      <Path>hoursOn</Path>
+      <Value>0</Value>
+      <WikiDoc>Duration television switched on</WikiDoc>
+      <ItemDefinition uid="B4DA9E4AD5F2">
+        <Name>Televisions Generic Ranges</Name>
+      </ItemDefinition>
+      <ValueDefinition uid="45433E48B39F">
+        <Name>amount</Name>
+        <ValueType>DOUBLE</ValueType>
+      </ValueDefinition>
+      <Usages>
+        <Usage active="true">
+          <Name>default</Name>
+          <Type>COMPULSORY</Type>
+        </Usage>
+      </Usages>
+      <Choices/>
+      <PerUnit>year</PerUnit>
+      <DrillDown>false</DrillDown>
+      <FromData>false</FromData>
+      <FromProfile>true</FromProfile>
+      <Versions>
+        <Version>
+          <Version>2.0</Version>
+        </Version>
+      </Versions>
+    </ItemValueDefinition>
+    <ItemValueDefinition created="2009-04-14T12:32:50Z" modified="2011-01-26T12:28:52Z" status="ACTIVE" uid="50971460403A">
+      <Name>Type</Name>
+      <Path>type</Path>
+      <Value/>
+      <WikiDoc>Television type</WikiDoc>
+      <ItemDefinition uid="B4DA9E4AD5F2">
+        <Name>Televisions Generic Ranges</Name>
+      </ItemDefinition>
+      <ValueDefinition uid="CCEB59CACE1B">
+        <Name>text</Name>
+        <ValueType>TEXT</ValueType>
+      </ValueDefinition>
+      <Usages/>
+      <Choices/>
+      <DrillDown>true</DrillDown>
+      <FromData>true</FromData>
+      <FromProfile>false</FromProfile>
+      <Versions>
+        <Version>
+          <Version>1.0</Version>
+        </Version>
+        <Version>
+          <Version>2.0</Version>
+        </Version>
+      </Versions>
+    </ItemValueDefinition>
+  </ItemValueDefinitions>
+  <Status>OK</Status>
+  <Version>3.6.0</Version>
+</Representation>

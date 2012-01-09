@@ -74,7 +74,7 @@ require 'rcov/rcovtask'
 desc "Generate code coverage"
 RSpec::Core::RakeTask.new(:coverage) do |t|
   t.rcov = true
-  t.rcov_opts = ['--exclude', 'spec']
+  t.rcov_opts = ['--exclude', 'spec,/*ruby*,/*gems*']
 end
 
 require 'rdoc/task'

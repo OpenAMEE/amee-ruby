@@ -4,20 +4,21 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{amee}
-  s.version = "4.2.0"
+  s.name = "amee"
+  s.version = "4.3.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["James Smith", "James Hetherington", "Andrew Hill", "Andrew Berkeley"]
-  s.date = %q{2011-11-17}
-  s.default_executable = %q{ameesh}
-  s.email = %q{james@floppy.org.uk}
+  s.date = "2012-01-04"
+  s.email = "james@floppy.org.uk"
   s.executables = ["ameesh"]
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.txt"
   ]
   s.files = [
+    ".rvmrc",
+    "Appraisals",
     "CHANGELOG.txt",
     "Gemfile",
     "Gemfile.lock",
@@ -25,7 +26,6 @@ Gem::Specification.new do |s|
     "README.txt",
     "Rakefile",
     "VERSION",
-    "amee-ruby.gemspec",
     "amee.example.yml",
     "amee.gemspec",
     "bin/ameesh",
@@ -36,6 +36,13 @@ Gem::Specification.new do |s|
     "examples/view_data_category.rb",
     "examples/view_data_item.rb",
     "examples/view_profile_item.rb",
+    "gemfiles/rails2.3.gemfile",
+    "gemfiles/rails2.3.gemfile.lock",
+    "gemfiles/rails3.0.gemfile",
+    "gemfiles/rails3.0.gemfile.lock",
+    "gemfiles/rails3.1.gemfile",
+    "gemfiles/rails3.1.gemfile.lock",
+    "init.rb",
     "lib/amee.rb",
     "lib/amee/collection.rb",
     "lib/amee/config.rb",
@@ -70,6 +77,7 @@ Gem::Specification.new do |s|
     "lib/amee/v3/item_value_definition_list.rb",
     "lib/amee/v3/meta_helper.rb",
     "lib/amee/v3/return_value_definition.rb",
+    "rails/init.rb",
     "spec/amee_config_spec.rb",
     "spec/amee_spec.rb",
     "spec/cache_spec.rb",
@@ -83,6 +91,7 @@ Gem::Specification.new do |s|
     "spec/fixtures/AD63A83B4D41.json",
     "spec/fixtures/AD63A83B4D41.xml",
     "spec/fixtures/BD88D30D1214.xml",
+    "spec/fixtures/config/amee.yml",
     "spec/fixtures/create_item.json",
     "spec/fixtures/create_item.xml",
     "spec/fixtures/data.json",
@@ -95,10 +104,12 @@ Gem::Specification.new do |s|
     "spec/fixtures/empty_return_value_definition_list.xml",
     "spec/fixtures/itemdef.xml",
     "spec/fixtures/itemdef_441BF4BEA15B.xml",
+    "spec/fixtures/itemdef_B4DA9E4AD5F2.xml",
     "spec/fixtures/itemdef_no_usages.xml",
     "spec/fixtures/itemdef_one_usage.xml",
     "spec/fixtures/ivdlist.xml",
     "spec/fixtures/ivdlist_BD88D30D1214.xml",
+    "spec/fixtures/ivdlist_one_usage.xml",
     "spec/fixtures/parse_test.xml",
     "spec/fixtures/rails_config.yml",
     "spec/fixtures/return_value_definition.xml",
@@ -124,17 +135,18 @@ Gem::Specification.new do |s|
     "spec/v3/item_value_definition_spec.rb",
     "spec/v3/return_value_definition_spec.rb"
   ]
-  s.homepage = %q{http://github.com/AMEE/amee-ruby}
+  s.homepage = "http://github.com/AMEE/amee-ruby"
   s.licenses = ["BSD 3-Clause"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.6.2}
-  s.summary = %q{Ruby interface to the AMEE carbon calculator}
+  s.rubygems_version = "1.8.10"
+  s.summary = "Ruby interface to the AMEE carbon calculator"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<activesupport>, ["~> 3.0"])
+      s.add_runtime_dependency(%q<appraisal>, [">= 0"])
+      s.add_runtime_dependency(%q<activesupport>, [">= 2.3.11"])
       s.add_runtime_dependency(%q<json>, [">= 0"])
       s.add_runtime_dependency(%q<log4r>, [">= 0"])
       s.add_runtime_dependency(%q<nokogiri>, ["~> 1.4.4"])
@@ -145,9 +157,10 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<memcache-client>, [">= 0"])
       s.add_development_dependency(%q<rcov>, [">= 0"])
       s.add_development_dependency(%q<rdoc>, [">= 0"])
-      s.add_development_dependency(%q<activerecord>, ["~> 3.0"])
+      s.add_development_dependency(%q<activerecord>, [">= 2.3.11"])
     else
-      s.add_dependency(%q<activesupport>, ["~> 3.0"])
+      s.add_dependency(%q<appraisal>, [">= 0"])
+      s.add_dependency(%q<activesupport>, [">= 2.3.11"])
       s.add_dependency(%q<json>, [">= 0"])
       s.add_dependency(%q<log4r>, [">= 0"])
       s.add_dependency(%q<nokogiri>, ["~> 1.4.4"])
@@ -158,10 +171,11 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<memcache-client>, [">= 0"])
       s.add_dependency(%q<rcov>, [">= 0"])
       s.add_dependency(%q<rdoc>, [">= 0"])
-      s.add_dependency(%q<activerecord>, ["~> 3.0"])
+      s.add_dependency(%q<activerecord>, [">= 2.3.11"])
     end
   else
-    s.add_dependency(%q<activesupport>, ["~> 3.0"])
+    s.add_dependency(%q<appraisal>, [">= 0"])
+    s.add_dependency(%q<activesupport>, [">= 2.3.11"])
     s.add_dependency(%q<json>, [">= 0"])
     s.add_dependency(%q<log4r>, [">= 0"])
     s.add_dependency(%q<nokogiri>, ["~> 1.4.4"])
@@ -172,7 +186,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<memcache-client>, [">= 0"])
     s.add_dependency(%q<rcov>, [">= 0"])
     s.add_dependency(%q<rdoc>, [">= 0"])
-    s.add_dependency(%q<activerecord>, ["~> 3.0"])
+    s.add_dependency(%q<activerecord>, [">= 2.3.11"])
   end
 end
 

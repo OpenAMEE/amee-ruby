@@ -38,11 +38,11 @@ module AMEE
   <WikiDoc>#{meta.wikidoc}</WikiDoc>
   <Usages>
 EOF
-        @usages.each_pair do |name, type|
+        @usages.keys.sort.each do |key|
           str += <<EOF
     <Usage>
-      <Name>#{name}</Name>
-      <Type>#{type.to_s.upcase}</Type>
+      <Name>#{key}</Name>
+      <Type>#{@usages[key].to_s.upcase}</Type>
     </Usage>
 EOF
         end

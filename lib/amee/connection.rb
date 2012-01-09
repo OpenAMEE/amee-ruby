@@ -396,8 +396,8 @@ module AMEE
     def cache_key(path)
       # We have to make sure cache keys don't get too long for the filesystem,
       # so we cut them off if they're too long and add a digest for uniqueness.
-      newpath = (path.length < 255) ? path : path.first(192)+Digest::MD5.hexdigest(path)
-      (@server+newpath)
+      newpath = @server + path.gsub(/[^0-9a-z\/]/i, '').gsub(/\//i, '_')
+      newpath = (newpath.length < 255) ? newpath : newpath.first(218)+Digest::MD5.hexdigest(newpath)
     end
 
     public
