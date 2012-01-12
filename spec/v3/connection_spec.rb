@@ -24,7 +24,7 @@ describe AMEE::Connection do
   it "should be able to get from meta server" do
     VCR.use_cassette("AMEE_Connection/v3/should be able to get from meta server") do
       @get_request = @c.v3_get("/#{AMEE::Connection.api_version}/categories/Api_test")
-      JSON.parse(@get_request)['status'].should == "OK"
+      @get_request.include?("<Status>OK</Status>").should be_true
     end
   end
 
