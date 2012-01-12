@@ -6,3 +6,5 @@ pkg
 .DS_Store
 .redcar/
 amee_test_credentials.yml
+
+Gemfile.lock
