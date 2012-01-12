@@ -24,7 +24,7 @@ describe AMEE::Connection do
   it "should be able to get from meta server" do
     VCR.use_cassette("AMEE_Connection/v3/should be able to get from meta server") do
       @get_request = @c.v3_get("/#{AMEE::Connection.api_version}/categories/Api_test")
-      JSON.parse(@get_request.body)['status'].should == "OK"
+      JSON.parse(@get_request)['status'].should == "OK"
     end
   end
 
@@ -38,8 +38,8 @@ describe AMEE::Connection do
 
   it "should be able to post to meta server" do
     VCR.use_cassette("AMEE_Connection/v3/should be able to post to meta server") do
-      @post_request = @c.v3_post("/#{AMEE::Connection.api_version}/categories/039DCB9BA67D/items", {:'values.question' => Time.now.to_i})
-      @post_request.code.should == 201 || 200 
+      @post_request = @c.v3_post("/#{AMEE::Connection.api_version}/categories/039DCB9BA67D/items", {:'values.question' => Time.now.to_i, :returnobj => true})
+      @post_request.code.should == 201
     end
   end
 

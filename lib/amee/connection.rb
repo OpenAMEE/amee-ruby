@@ -292,7 +292,7 @@ module AMEE
       d {response.headers_hash}
       d {response.body}
 
-      case response.code
+      case response.code.to_i
 
       when 502, 503, 504
           raise AMEE::ConnectionFailed.new("A connection error occurred while talking to AMEE: HTTP response code #{response.code}.\nRequest: #{request.method.upcase} #{request.url.gsub(request.host, '')}")
@@ -329,9 +329,12 @@ module AMEE
     # initialising the class
     def do_request(request, format = @format)
 
+      # Is this a v3 request?
+      v3_request = request.url.include?("/#{v3_hostname}/")
+
       # make sure we have our auth token before we start
-      # any requests
-      if !@auth_token
+      # any v1 or v2 requests
+      if !@auth_token && !v3_request
         d "Authenticating first before we hit #{request.url}"
         authenticate 
       end
@@ -339,7 +342,7 @@ module AMEE
       request.headers['Accept'] = content_type(format)
       # Set AMEE source header if set
       request.headers['X-AMEE-Source'] = @amee_source if @amee_source
-      add_authentication_to(request) if @auth_token
+      add_authentication_to(request) if @auth_token && !v3_request
 
       retries = [1] * @retries
       begin 
