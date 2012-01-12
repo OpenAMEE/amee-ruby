@@ -6,7 +6,7 @@ require 'spec_helper.rb'
 describe AMEE::Connection do
 
   before :each do
-    @c = AMEE::Connection.new('stage.amee.com', AMEE_V3_API_KEY, AMEE_V3_PASSWORD, :ssl => false)
+    @c = AMEE::Connection.new('stage.amee.com', AMEE_V3_API_KEY, AMEE_V3_PASSWORD)
   end
 
   it "should have a connection to meta server" do
@@ -79,7 +79,7 @@ end
 describe AMEE::Connection, "with retry enabled" do
 
   before :each do
-    @c = AMEE::Connection.new('stage.amee.com', AMEE_V3_API_KEY, AMEE_V3_PASSWORD, :ssl => false, :retries => 2)
+    @c = AMEE::Connection.new('stage.amee.com', AMEE_V3_API_KEY, AMEE_V3_PASSWORD, :retries => 2)
 
     @timeout_response = {
       :status => 408,

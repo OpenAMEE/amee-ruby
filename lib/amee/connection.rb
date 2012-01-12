@@ -116,7 +116,7 @@ module AMEE
       }
       get_params[:params] = data unless data.empty?
       # Create GET request
-      get = Typhoeus::Request.new("#{@server}#{path}", get_params)
+      get = Typhoeus::Request.new("#{protocol}#{@server}#{path}", get_params)
       # Send request
       cache(path) { do_request(get, format) }
     end
@@ -128,7 +128,7 @@ module AMEE
       # Clear cache
       expire_matching "#{raw_path(path)}.*"
       # Create POST request
-      post = Typhoeus::Request.new("#{@server}#{path}", 
+      post = Typhoeus::Request.new("#{protocol}#{@server}#{path}", 
         :verbose => DEBUG,
         :method => "post",
         :body => form_encode(data)
@@ -145,7 +145,7 @@ module AMEE
       # Clear cache
       expire_matching "#{raw_path(path)}.*"
       # Create POST request
-      post = Typhoeus::Request.new("#{@server}#{path}", 
+      post = Typhoeus::Request.new("#{protocol}#{@server}#{path}", 
         :verbose => DEBUG,
         :method => "post",
         :body => body,
@@ -163,7 +163,7 @@ module AMEE
       # Clear cache
       expire_matching "#{parent_path(path)}.*"
       # Create PUT request
-      put = Typhoeus::Request.new("#{@server}#{path}", 
+      put = Typhoeus::Request.new("#{protocol}#{@server}#{path}", 
         :verbose => DEBUG,
         :method => "put",
         :body => form_encode(data)
@@ -179,7 +179,7 @@ module AMEE
       # Clear cache
       expire_matching "#{parent_path(path)}.*"
       # Create PUT request
-      put = Typhoeus::Request.new("#{@server}#{path}", 
+      put = Typhoeus::Request.new("#{protocol}#{@server}#{path}", 
         :verbose => DEBUG,
         :method => "put",
         :body => body,
@@ -193,7 +193,7 @@ module AMEE
       # Clear cache
       expire_matching "#{parent_path(path)}.*"
       # Create DELETE request
-      delete = Typhoeus::Request.new("#{@server}#{path}", 
+      delete = Typhoeus::Request.new("#{protocol}#{@server}#{path}", 
         :verbose => DEBUG,
         :method => "delete"
       )
@@ -205,7 +205,7 @@ module AMEE
     # requests are signed
     def authenticate
       # :x_amee_source = "X-AMEE-Source".to_sym
-      request = Typhoeus::Request.new("#{@server}/auth/signIn", 
+      request = Typhoeus::Request.new("#{protocol}#{@server}/auth/signIn", 
         :method => "post",
         :verbose => DEBUG,
         :headers => {
@@ -239,6 +239,10 @@ module AMEE
     end
 
     protected
+
+    def protocol
+      @ssl == true ? 'https://' : 'http://'
+    end
 
     # Encode a hash into a application/x-www-form-urlencoded format
     def form_encode(data)

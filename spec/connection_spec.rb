@@ -120,7 +120,7 @@ describe AMEE::Connection, "with authentication" do
       VCR.use_cassette("AMEE_Connection/v2/raising unhandled errors") do
         amee.authenticate
       end
-      stub_request(:any, "http://stage.amee.com/data").to_return(@error_response)
+      stub_request(:any, "https://stage.amee.com/data").to_return(@error_response)
 
       lambda {
         amee.get('/data')
@@ -154,7 +154,7 @@ describe AMEE::Connection, "with retry enabled" do
       }
       
 
-      stub_request(:any, "http://stage.amee.com/data").to_return(@error_response).times(2).
+      stub_request(:any, "https://stage.amee.com/data").to_return(@error_response).times(2).
       then.to_return(:status => 200, :body => {})
 
       lambda {
@@ -168,7 +168,7 @@ describe AMEE::Connection, "with retry enabled" do
         :status => 408,
         :body => ""
       }
-      stub_request(:any, "http://stage.amee.com/data").to_return(@error_response).times(3)
+      stub_request(:any, "https://stage.amee.com/data").to_return(@error_response).times(3)
 
       lambda {
         @amee.get('/data')
@@ -199,7 +199,7 @@ describe AMEE::Connection, "with retry enabled" do
 
     it "should retry after #{e} the correct number of times" do
 
-      stub_request(:any, "http://stage.amee.com/data").to_return(:status => e, :body => {}).times(2).
+      stub_request(:any, "https://stage.amee.com/data").to_return(:status => e, :body => {}).times(2).
       then.to_return(:status => 200, :body => {})
 
       lambda {
@@ -209,7 +209,7 @@ describe AMEE::Connection, "with retry enabled" do
 
     it "should retry #{e} the correct number of times and raise error on failure" do
 
-      stub_request(:any, "http://stage.amee.com/data").to_return(@error_response)
+      stub_request(:any, "https://stage.amee.com/data").to_return(@error_response)
       lambda {
         @amee.get('/data')
       }.should raise_error(AMEE::ConnectionFailed)
@@ -285,7 +285,7 @@ describe AMEE::Connection, "with authentication , doing write-requests" do
         # create a new item
         new_profile = amee.post("/profiles/#{profile}/test/apitests", :dataItemUid => new_item_uid)
         # update the new item
-        path = new_profile.headers_hash['location'].gsub('http://stage.amee.com', '')
+        path = new_profile.headers_hash['location'].gsub('https://stage.amee.com', '')
         amee.put(path, :dataItemUid => new_item_uid) do |response|
           response.should be_empty
         end
@@ -306,7 +306,7 @@ describe AMEE::Connection, "with authentication , doing write-requests" do
         # create a new item
         new_profile = amee.post("/profiles/#{profile}/test/apitests", :dataItemUid => new_item_uid)
         # delete the new item
-        path = new_profile.headers_hash['location'].gsub('http://stage.amee.com', '')
+        path = new_profile.headers_hash['location'].gsub('https://stage.amee.com', '')
         amee.delete(path) do |response|
           response.should be_empty
         end

@@ -2,7 +2,7 @@
 - !ruby/struct:VCR::HTTPInteraction 
   request: !ruby/struct:VCR::Request 
     method: get
-    uri: http://stage.amee.com:80/parent/object
+    uri: https://stage.amee.com:443/parent/object
     body: 
     headers: 
       accept: 

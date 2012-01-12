@@ -2,7 +2,7 @@
 - !ruby/struct:VCR::HTTPInteraction 
   request: !ruby/struct:VCR::Request 
     method: get
-    uri: http://stage.amee.com:80/data/test/apitests/drill
+    uri: https://stage.amee.com:443/data/test/apitests/drill
     body: 
     headers: 
       accept: 
@@ -41,7 +41,7 @@
 - !ruby/struct:VCR::HTTPInteraction 
   request: !ruby/struct:VCR::Request 
     method: post
-    uri: http://stage.amee.com:80/profiles/8YUXNC2S1KDB/test/apitests
+    uri: https://stage.amee.com:443/profiles/8YUXNC2S1KDB/test/apitests
     body: dataItemUid=0N5G8ZU3WS41
     headers: 
       accept: 
@@ -56,7 +56,7 @@
       message: Created
     headers: 
       location: 
-      - http://stage.amee.com/profiles/8YUXNC2S1KDB/test/apitests/KSYY092PCNA7
+      - https://stage.amee.com/profiles/8YUXNC2S1KDB/test/apitests/KSYY092PCNA7
       content-type: 
       - text/plain
       via: 
@@ -76,7 +76,7 @@
 - !ruby/struct:VCR::HTTPInteraction 
   request: !ruby/struct:VCR::Request 
     method: delete
-    uri: http://stage.amee.com:80/profiles/8YUXNC2S1KDB/test/apitests/KSYY092PCNA7
+    uri: https://stage.amee.com:443/profiles/8YUXNC2S1KDB/test/apitests/KSYY092PCNA7
     body: 
     headers: 
       accept: 

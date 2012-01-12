@@ -2,7 +2,7 @@
 - !ruby/struct:VCR::HTTPInteraction 
   request: !ruby/struct:VCR::Request 
     method: post
-    uri: http://stage.amee.com:80/auth/signIn
+    uri: https://stage.amee.com:443/auth/signIn
     body: username=<AMEE_V2_API_KEY>&password=<AMEE_V2_PASSWORD>
     headers: 
       accept: 
