@@ -14,12 +14,11 @@ module AMEE
     # Perform a GET request
     # options hash should contain query parameters
     def v3_get(path, options = {})
-      # Add parameters to URL query string
-      unless options.empty?
-        path += "?" + form_encode(options)
-      end
       # Create request parameters
-      get_params = {:method => "get"}
+      get_params = {
+        :method => "get"
+      }
+      get_params[:params] = options unless options.empty?
       # Send request (with caching)
       cache(path) { v3_do_request(get_params, path) }
     end
@@ -61,7 +60,9 @@ module AMEE
       # Expire cached objects from here on down
       expire_matching "#{parent_path(path)}.*"
       # Create request parameters
-      delete_params = { :method => "delete" }
+      delete_params = { 
+        :method => "delete" 
+      }
       # Request
       v3_do_request(delete_params, path)
     end

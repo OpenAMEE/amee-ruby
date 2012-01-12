@@ -110,14 +110,13 @@ module AMEE
       # Allow format override
       format = data.delete(:format) || @format
       # Add parameters to URL query string
-      unless data.empty?
-        path += "?" + form_encode(data)
-      end
-      # Create GET request
-      get = Typhoeus::Request.new("#{@server}#{path}", 
+      get_params = {
         :method => "get", 
         :verbose => DEBUG
-      )
+      }
+      get_params[:params] = data unless data.empty?
+      # Create GET request
+      get = Typhoeus::Request.new("#{@server}#{path}", get_params)
       # Send request
       cache(path) { do_request(get, format) }
     end
