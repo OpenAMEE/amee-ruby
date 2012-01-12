@@ -78,13 +78,6 @@ module AMEE
       }
     end
 
-    # Encode a hash into a application/x-www-form-urlencoded format
-    def form_encode(data)
-      data.map { |datum|
-        "#{CGI::escape(datum[0].to_s)}=#{CGI::escape(datum[1].to_s)}"
-      }.join('&')
-    end
-    
     # Wrap up parameters into a request and execute it
     def v3_do_request(params, path, return_obj = false)
       req = Typhoeus::Request.new("https://#{v3_hostname}#{path}", v3_defaults.merge(params))

@@ -109,15 +109,11 @@ module AMEE
     def get(path, data = {})
       # Allow format override
       format = data.delete(:format) || @format
-      # Create URL parameters
-      params = []
-      data.each_pair do |key, value|
-        params << "#{CGI::escape(key.to_s)}=#{CGI::escape(value.to_s)}"
+      # Add parameters to URL query string
+      unless data.empty?
+        path += "?" + form_encode(data)
       end
-      if params.size > 0
-        path += "?#{params.join('&')}"
-      end
-      
+      # Create GET request
       get = Typhoeus::Request.new("#{@server}#{path}", 
         :method => "get", 
         :verbose => DEBUG
@@ -132,16 +128,11 @@ module AMEE
       format = data.delete(:format) || @format
       # Clear cache
       expire_matching "#{raw_path(path)}.*"
-      body = []
-        data.each_pair do |key, value|
-        body << "#{CGI::escape(key.to_s)}=#{CGI::escape(value.to_s)}"
-      end
-
       # Create POST request
       post = Typhoeus::Request.new("#{@server}#{path}", 
         :verbose => DEBUG,
         :method => "post",
-        :body => body.join('&')
+        :body => form_encode(data)
       )
       # Send request
       do_request(post, format)
@@ -173,14 +164,10 @@ module AMEE
       # Clear cache
       expire_matching "#{parent_path(path)}.*"
       # Create PUT request
-      body = []
-        data.each_pair do |key, value|
-        body << "#{CGI::escape(key.to_s)}=#{CGI::escape(value.to_s)}"
-      end
       put = Typhoeus::Request.new("#{@server}#{path}", 
         :verbose => DEBUG,
         :method => "put",
-        :body => body.join('&')
+        :body => form_encode(data)
       )
        # Send request
       do_request(put, format)
@@ -199,16 +186,14 @@ module AMEE
         :body => body,
         :headers => { :'Content-type' => options[:content_type] || content_type(format)  }
       )
-
       # Send request
       do_request(put, format)
     end
 
     def delete(path)
+      # Clear cache
       expire_matching "#{parent_path(path)}.*"
       # Create DELETE request
-      # delete = Net::HTTP::Delete.new(path)
-
       delete = Typhoeus::Request.new("#{@server}#{path}", 
         :verbose => DEBUG,
         :method => "delete"
@@ -227,7 +212,7 @@ module AMEE
         :headers => {
           :Accept => content_type(:xml),
         },
-        :body => "username=#{@username}&password=#{@password}"
+        :body => form_encode(:username=>@username, :password=>@password)
       )
 
       hydra.queue(request)
@@ -256,6 +241,13 @@ module AMEE
 
     protected
 
+    # Encode a hash into a application/x-www-form-urlencoded format
+    def form_encode(data)
+      data.map { |datum|
+        "#{CGI::escape(datum[0].to_s)}=#{CGI::escape(datum[1].to_s)}"
+      }.join('&')
+    end
+    
     ## set up the hydra for running http requests. Increase concurrency as needed
     def hydra
       @hydra ||= Typhoeus::Hydra.new(:max_concurrency => 1)
