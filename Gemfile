@@ -5,7 +5,7 @@ gem "appraisal"
 gem "activesupport", ">= 2.3.11"
 gem "json"
 gem "log4r"
-gem "nokogiri", "~> 1.4.4"
+gem "nokogiri", "~> 1.4"
 gem 'typhoeus'
 gem 'log_buddy'
 
