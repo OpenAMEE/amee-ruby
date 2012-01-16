@@ -20,7 +20,7 @@ module AMEE
       }
       get_params[:params] = options unless options.empty?
       # Send request (with caching)
-      cache(path) { v3_do_request(get_params, path) }
+      v3_do_request(get_params, path, :cache => true)
     end
 
     # Perform a PUT request
@@ -52,7 +52,7 @@ module AMEE
         :body => form_encode(options)
       }
       # Request
-      v3_do_request(post_params, path, return_obj)
+      v3_do_request(post_params, path, :return_obj => return_obj)
     end
 
     # Perform a POST request
@@ -80,10 +80,17 @@ module AMEE
     end
 
     # Wrap up parameters into a request and execute it
-    def v3_do_request(params, path, return_obj = false)
+    def v3_do_request(params, path, options = {})
       req = Typhoeus::Request.new("https://#{v3_hostname}#{path}", v3_defaults.merge(params))
-      response = do_request(req, :xml)
-      return_obj ? response : response.body
+      if options[:cache]
+        # path+query string only (split with an int limits the number of splits)
+        path_and_query = '/' + req.url.split('/', 4)[3]
+        # Get response with caching
+        response = cache(path_and_query) { do_request(req, :xml) }
+      else
+        response = do_request(req, :xml)
+      end
+      options[:return_obj]==true ? response : response.body
     end
     
     # Work out v3 hostname corresponding to v2 hostname
