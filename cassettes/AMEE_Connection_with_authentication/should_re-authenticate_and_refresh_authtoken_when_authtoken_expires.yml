@@ -1,0 +1,65 @@
+--- 
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: get
+    uri: https://stage.amee.com:443/profiles
+    body: 
+    headers: 
+      accept: 
+      - application/json
+      cookie: 
+      - AuthToken=old_token
+      authtoken: 
+      - old_token
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 401
+      message: Unauthorized
+    headers: 
+      via: 
+      - 1.1 stage.amee.com
+      content-type: 
+      - application/json; charset=UTF-8
+      date: 
+      - Thu, 19 Jan 2012 00:13:32 GMT
+      server: 
+      - Noelios-Restlet-Engine/1.1.10
+      content-length: 
+      - "175"
+    body: "{\"status\":{\"description\":\"The request requires user authentication\",\"name\":\"Unauthorized\",\"code\":401,\"uri\":\"http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.2\"}}"
+    http_version: "1.1"
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: post
+    uri: https://stage.amee.com:443/auth/signIn
+    body: password=<AMEE_V2_PASSWORD>&username=<AMEE_V2_API_KEY>
+    headers: 
+      accept: 
+      - application/xml
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 200
+      message: OK
+    headers: 
+      expires: 
+      - Wed, 18 Jan 2012 00:14:32 GMT
+      last-modified: 
+      - Thu, 19 Jan 2012 00:14:32 GMT
+      content-type: 
+      - application/xml; charset=UTF-8
+      via: 
+      - 1.1 stage.amee.com
+      server: 
+      - Noelios-Restlet-Engine/1.1.10
+      date: 
+      - Thu, 19 Jan 2012 00:14:32 GMT
+      set-cookie: 
+      - authToken=w/xmLytL3UH/8D27bXZX2YBtyMrvCUgE7qSKsrYyEKB024HXSiBtun/4O5VmTB/PLFUn1AwDJ8WU+IR5slJxBVprcZMnM2wxxGWsnDkIkXA=; Path=/
+      authtoken: 
+      - w/xmLytL3UH/8D27bXZX2YBtyMrvCUgE7qSKsrYyEKB024HXSiBtun/4O5VmTB/PLFUn1AwDJ8WU+IR5slJxBVprcZMnM2wxxGWsnDkIkXA=
+      vary: 
+      - Accept-Charset,Accept-Encoding,Accept-Language,Accept
+      transfer-encoding: 
+      - chunked
+    body: <?xml version="1.0" encoding="UTF-8" standalone="no"?><Resources><SignInResource><Next>/auth</Next><User uid="58F26PHHLFEB"><Status>ACTIVE</Status><Type>STANDARD</Type><ApiVersion>2.0</ApiVersion><Locale>en_GB</Locale><TimeZone>UTC</TimeZone></User></SignInResource></Resources>
+    http_version: "1.1"

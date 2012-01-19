@@ -128,6 +128,15 @@ describe AMEE::Connection, "with authentication" do
     end
   end
 
+  it "should re-authenticate and refresh authtoken when authtoken expires" do
+    VCR.use_cassette('AMEE_Connection_with_authentication/should re-authenticate and refresh authtoken when authtoken expires') do
+      amee = AMEE::Connection.new('stage.amee.com', AMEE_V2_API_KEY, AMEE_V2_PASSWORD)
+      amee.auth_token = 'old_token'
+      amee.get('/profiles')
+      amee.auth_token.should eql "w/xmLytL3UH/8D27bXZX2YBtyMrvCUgE7qSKsrYyEKB024HXSiBtun/4O5VmTB/PLFUn1AwDJ8WU+IR5slJxBVprcZMnM2wxxGWsnDkIkXA="
+    end
+  end
+  
 end
 
 describe AMEE::Connection, "with retry enabled" do

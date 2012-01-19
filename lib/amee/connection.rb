@@ -82,6 +82,7 @@ module AMEE
     attr_reader :username
     attr_reader :password
     attr_reader :retries
+    attr_accessor :auth_token #Only used in tests really
 
     def timeout
       @params[:timeout]
@@ -304,7 +305,8 @@ module AMEE
       when 403
         raise AMEE::PermissionDenied.new("You do not have permission to perform the requested operation.\nRequest: #{request.method.upcase} #{request.url.gsub(request.host, '')}\n#{request.body}\Response: #{response.body}")
       when 401
-        raise AMEE::UnknownError.new("Requests are no longer authenticated.")          
+        authenticate
+        return false
       when 400
         if response.body.include? "would have resulted in a duplicate resource being created"
           raise AMEE::DuplicateResource.new("The specified resource already exists. This is most often caused by creating an item that overlaps another in time.\nRequest: #{request.method.upcase} #{request.url.gsub(request.host, '')}\n#{request.body}\Response: #{response.body}")
