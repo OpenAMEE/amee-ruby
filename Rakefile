@@ -20,6 +20,8 @@ task :default => [:spec]
 desc "Run specs"
 RSpec::Core::RakeTask.new do |t|
   # Put spec opts in a file named .rspec in root
+  t.rcov = true
+  t.rcov_opts = ['--exclude', 'spec,/*gems*,']
 end
 
 require 'jeweler'
