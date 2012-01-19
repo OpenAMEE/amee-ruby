@@ -128,15 +128,20 @@ module AMEE
       format = data.delete(:format) || @format
       # Clear cache
       expire_matching "#{raw_path(path)}.*"
+      # Extract return unit params
+      query_params = {}
+      query_params[:returnUnit] = data.delete(:returnUnit) if data[:returnUnit]
+      query_params[:returnPerUnit] = data.delete(:returnPerUnit) if data[:returnPerUnit]
       # Create POST request
-      post = Typhoeus::Request.new("#{protocol}#{@server}#{path}", 
+      post_params = {
         :verbose => DEBUG,
         :method => "post",
         :body => form_encode(data)
-      )
+      }
+      post_params[:params] = query_params unless query_params.empty?
+      post = Typhoeus::Request.new("#{protocol}#{@server}#{path}", post_params)
       # Send request
-      do_request(post, format)
-      
+      do_request(post, format)      
     end
 
     # POST to the AMEE API, passing in a string of data
@@ -163,12 +168,18 @@ module AMEE
       format = data.delete(:format) || @format
       # Clear cache
       expire_matching "#{parent_path(path)}.*"
+      # Extract return unit params
+      query_params = {}
+      query_params[:returnUnit] = data.delete(:returnUnit) if data[:returnUnit]
+      query_params[:returnPerUnit] = data.delete(:returnPerUnit) if data[:returnPerUnit]
       # Create PUT request
-      put = Typhoeus::Request.new("#{protocol}#{@server}#{path}", 
+      put_params = {
         :verbose => DEBUG,
         :method => "put",
         :body => form_encode(data)
-      )
+      }
+      put_params[:params] = query_params unless query_params.empty?
+      put = Typhoeus::Request.new("#{protocol}#{@server}#{path}", put_params)
        # Send request
       do_request(put, format)
     end
