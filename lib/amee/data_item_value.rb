@@ -175,7 +175,7 @@ module AMEE
         end
 
         response = data_item.connection.post(data_item.full_path, options)
-        location = response['Location'].match("https??://.*?(/.*)")[1]
+        location = response.headers_hash['Location'].match("https??://.*?(/.*)")[1]
         if get_item == true
           get_options = {}
           get_options[:format] = format if format

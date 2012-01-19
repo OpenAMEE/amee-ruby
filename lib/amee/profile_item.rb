@@ -314,8 +314,8 @@ module AMEE
         response = connection.post(path, options)
         # Parse response
         category = response.body.empty? ? nil : Category.parse(connection, response.body, options)
-        if response['Location']
-          location = response['Location'].match("https??://.*?(/.*)")[1]
+        if response.['Location']
+          location = response.headers_hash['Location'].match("https??://.*?(/.*)")[1]
         else
           location = category.full_path + "/" + category.items[0][:path]
         end

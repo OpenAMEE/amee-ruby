@@ -179,7 +179,7 @@ module AMEE
         
         options.merge!(:returnobj=>true)
         response = connection.v3_post("/#{AMEE::Connection.api_version}/definitions/#{itemdefuid}/returnvalues", options)
-        return ReturnValueDefinition.load(connection,itemdefuid , response['Location'].split('/')[7])
+        return ReturnValueDefinition.load(connection,itemdefuid , response.headers_hash['Location'].split('/')[7])
       rescue
         raise AMEE::BadData.new("Couldn't create ReturnValueDefinition. Check that your information is correct.\n#{response}")
       end
