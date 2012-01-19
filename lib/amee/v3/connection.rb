@@ -31,7 +31,7 @@ module AMEE
       # Create request parameters
       put_params = { 
         :method => "put",
-        :body => form_encode(options)
+        :body => options[:body] ? options[:body] : form_encode(options)
       }
       # Request
       v3_do_request(put_params, path)
