@@ -318,7 +318,7 @@ module AMEE
         else
           raise AMEE::BadRequest.new("Bad request. This is probably due to malformed input data.\nRequest: #{request.method.upcase} #{request.url.gsub(request.host, '')}\n#{request.body}\Response: #{response.body}")
         end
-      when 200, 201
+      when 200, 201, 204
         return response
       when 0
         connection_failed
