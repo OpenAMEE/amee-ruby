@@ -292,16 +292,10 @@ module AMEE
 
       when 502, 503, 504
           raise AMEE::ConnectionFailed.new("A connection error occurred while talking to AMEE: HTTP response code #{response.code}.\nRequest: #{request.method.upcase} #{request.url.gsub(request.host, '')}")
-      when 500
-        raise AMEE::UnknownError.new("An error occurred while talking to AMEE: HTTP response code #{response.code}.\nRequest: #{request.method.upcase} #{request.url}\n#{request.body}\Response: #{response.body}")
       when 408
         raise AMEE::TimeOut.new("Request timed out.")
-        # new, weird error
-      when 406
-        raise AMEE::UnknownError.new("An error occurred while talking to AMEE: HTTP response code #{response.code}.\nRequest: #{request.method.upcase} #{request.url}\n#{request.body}\Response: #{response.body}")
       when 404
-        raise AMEE::NotFound.new(
-        "The URL was not found on the server.\nRequest: #{request.method.upcase} #{request.url.gsub(request.host, '')}")
+        raise AMEE::NotFound.new("The URL was not found on the server.\nRequest: #{request.method.upcase} #{request.url.gsub(request.host, '')}")
       when 403
         raise AMEE::PermissionDenied.new("You do not have permission to perform the requested operation.\nRequest: #{request.method.upcase} #{request.url.gsub(request.host, '')}\n#{request.body}\Response: #{response.body}")
       when 401
@@ -318,6 +312,8 @@ module AMEE
       when 0
         connection_failed
       end
+      # If we get here, something unhandled has happened, so raise an unknown error.
+      raise AMEE::UnknownError.new("An error occurred while talking to AMEE: HTTP response code #{response.code}.\nRequest: #{request.method.upcase} #{request.url}\n#{request.body}\Response: #{response.body}")
     end
 
     # Wrapper for sending requests through to the API.
@@ -360,9 +356,6 @@ module AMEE
           raise
         end
       end
-
-      raise AMEE::UnknownError.new("An error occurred while talking to AMEE: HTTP response code #{response.code}.\nRequest: #{request.method.upcase} #{request.url}\n#{request.body}\Response: #{response.body}")
-  
     end
     
     # Take an existing request, and add authentication
