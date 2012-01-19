@@ -20,6 +20,7 @@ describe AMEE::Admin::ItemValueDefinition, "with an authenticated XML connection
 HERE
       ).once
     @connection.should_receive(:v3_put).with("/#{AMEE::Connection.api_version}/definitions/PQR/values/ABC;wikiDoc;usages",
+      :content_type => :xml,
       :body => <<EOF
 #{XMLPreamble}
 <ItemValueDefinition>

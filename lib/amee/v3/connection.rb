@@ -33,6 +33,11 @@ module AMEE
         :method => "put",
         :body => options[:body] ? options[:body] : form_encode(options)
       }
+      if options[:content_type]
+        put_params[:headers] = {
+          :'Content-Type' => content_type(options[:content_type])
+        }
+      end
       # Request
       v3_do_request(put_params, path)
     end
@@ -51,6 +56,11 @@ module AMEE
         :method => "post",
         :body => form_encode(options)
       }
+      if options[:content_type]
+        post_params[:headers] = {
+          :'Content-Type' => content_type(options[:content_type])
+        }
+      end
       # Request
       v3_do_request(post_params, path, :return_obj => return_obj)
     end

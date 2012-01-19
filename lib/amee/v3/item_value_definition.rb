@@ -50,7 +50,7 @@ EOF
   </Usages>
 </ItemValueDefinition>
 EOF
-        {:body => str}
+        {:body => str, :content_type => :xml}
       end
       def usages
         @usages.keys
