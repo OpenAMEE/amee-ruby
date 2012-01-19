@@ -346,7 +346,9 @@ module AMEE
         d "Queuing the request for #{request.url}"
         hydra.queue request
         hydra.run
-
+        # Store updated authToken
+        @auth_token = request.response.headers_hash['AuthToken'] if request.response.success?
+        # Return response if OK
         return response_ok?(request.response, request)
       rescue AMEE::ConnectionFailed, AMEE::TimeOut => e
         if delay = retries.shift

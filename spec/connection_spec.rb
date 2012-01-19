@@ -137,6 +137,19 @@ describe AMEE::Connection, "with authentication" do
     end
   end
   
+  it "should refresh authtoken when authtoken is changed" do
+    VCR.use_cassette('AMEE_Connection_with_authentication/should refresh authtoken when authtoken is changed') do
+      amee = AMEE::Connection.new('stage.amee.com', AMEE_V2_API_KEY, AMEE_V2_PASSWORD)
+      amee.get('/profiles')
+      old_token = amee.auth_token
+      amee.auth_token.should == "D86WJz0DmsPOuilmCAswHjVQe2lMzRhpAqFdBk5jSK0UolV0UgRQfTm8xm19lnWTN81vBJ2hW39kwLq8W2JX+sNwY1Fm8Aj8hO+mrkTPkOQ="
+      #sleep(65) # Wait 65 seconds so platform changes auth token. This is only required when generating the cassette.
+      amee.get('/profiles')
+      amee.auth_token.should_not eql old_token
+      amee.auth_token.should eql "/GtLagog4PlDX3b2A4Hn4i4up91Jry+eR4e7QhqswZYtHN7kyvTe/r/tWk6Y6lV8JXXzXeI0Q1Sm+C5BHvo4pcGFATkjS0yCqmt9dbIITIM="
+    end
+  end
+
 end
 
 describe AMEE::Connection, "with retry enabled" do
