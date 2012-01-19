@@ -335,6 +335,7 @@ module AMEE
               values << v.merge(:path => k.to_s)
             end
             item[:values] = values
+            item[:path] = category.path + '/' + item[:path]
             return AMEE::Profile::Item.new(item)
           else
             get_options = {}

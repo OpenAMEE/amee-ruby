@@ -40,6 +40,7 @@ describe AMEE::Profile::Item do
     item.value("kWhPerMonth").should eql "10"
     item.total_amount.should be_within(1.0e-09).of(2.06)
     item.total_amount_unit.should == "kg/month"
+    item.full_path.should == '/profiles/E54C5525AA3E/home/energy/quantity/62BCC8C84D0C'
   end
 
   it "should be able to create new profile items (JSON)" do
@@ -53,6 +54,7 @@ describe AMEE::Profile::Item do
     item.value("kWhPerMonth").should eql "10"
     item.total_amount.should be_within(1.0e-09).of(2.06)
     item.total_amount_unit.should == "kg/month"
+    item.full_path.should == '/profiles/E54C5525AA3E/home/energy/quantity/8C7BD1AB69D3'
   end
 
   it "should be able to create new profile items (V2 XML)" do
@@ -65,6 +67,7 @@ describe AMEE::Profile::Item do
     item.value("energyConsumption").should eql "10"
     item.total_amount.should be_within(1.0e-09).of(2.037)
     item.total_amount_unit.should == "kg/year"
+    item.full_path.should == '/profiles/7V1FQMSWX64O/home/energy/quantity/40OAI5AZMPTJ'
   end
 
   it "should be able to create new profile items (V2 JSON)" do
@@ -77,6 +80,7 @@ describe AMEE::Profile::Item do
     item.value("energyConsumption").should eql "10"
     item.total_amount.should be_within(1.0e-09).of(2.037)
     item.total_amount_unit.should == "kg/year"
+    item.full_path.should == '/profiles/7V1FQMSWX64O/home/energy/quantity/DWR15I7XMTZI'
   end
 
   it "should be able to create new profile items and just get location of new resource (XML)" do
