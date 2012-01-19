@@ -168,7 +168,7 @@ module AMEE
         # Send data to path
         options[:newObjectType] = "DC"
         response = connection.post(path, options)
-        if response.headers_hash['Location']
+        if response.headers_hash.has_key?('Location') && response.headers_hash['Location']
           location = response.headers_hash['Location'].match("https??://.*?(/.*)")[1]
         else
           category = Category.parse(connection, response.body)
