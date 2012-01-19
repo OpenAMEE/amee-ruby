@@ -339,17 +339,19 @@ module AMEE
       request.headers['Accept'] = content_type(format)
       # Set AMEE source header if set
       request.headers['X-AMEE-Source'] = @amee_source if @amee_source
-      add_authentication_to(request) if @auth_token && !v3_request
 
       retries = [1] * @retries
       begin 
-        d "Queuing the request for #{request.url}"
-        hydra.queue request
-        hydra.run
+        begin
+          d "Queuing the request for #{request.url}"
+          add_authentication_to(request) if @auth_token && !v3_request
+          hydra.queue request
+          hydra.run
+          # Return response if OK
+        end while !response_ok?(request.response, request)
         # Store updated authToken
-        @auth_token = request.response.headers_hash['AuthToken'] if request.response.success?
-        # Return response if OK
-        return response_ok?(request.response, request)
+        @auth_token = request.response.headers_hash['AuthToken']
+        return request.response
       rescue AMEE::ConnectionFailed, AMEE::TimeOut => e
         if delay = retries.shift
           sleep delay
