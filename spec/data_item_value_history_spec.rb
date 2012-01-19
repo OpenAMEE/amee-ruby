@@ -274,9 +274,9 @@ describe AMEE::Data::ItemValueHistory, "after loading" do
     @connection.should_receive(:put).with(MockDataItemPath+"/127612FA4922", :value => 6, :startDate => AMEE::Epoch+1).once.and_return(flexmock(:body => ''))
     @connection.should_receive(:delete).with(MockDataItemPath+"/127612FA4923").once.and_return(flexmock(:body => ''))
     @connection.should_receive(:post).with(MockDataItemPath,
-      :kgCO2PerPassengerJourney => 7, :startDate => AMEE::Epoch+5).once.and_return({'Location'=>'http://foo.com/'})
+      :kgCO2PerPassengerJourney => 7, :startDate => AMEE::Epoch+5).once.and_return(flexmock(:headers_hash => {'Location'=>'http://foo.com/'}))
     @connection.should_receive(:post).with(MockDataItemPath,
-      :kgCO2PerPassengerJourney => 11, :startDate => AMEE::Epoch+9).once.and_return({'Location'=>'http://foo.com/'})
+      :kgCO2PerPassengerJourney => 11, :startDate => AMEE::Epoch+9).once.and_return(flexmock(:headers_hash => {'Location'=>'http://foo.com/'}))
     lambda {
       @val.series = TestSeriesTwo
       @val.save!
@@ -289,9 +289,9 @@ describe AMEE::Data::ItemValueHistory, "after loading" do
     @connection.should_receive(:put).with(MockDataItemPath+"/127612FA4922", :value => 6, :startDate => AMEE::Epoch+1).once.and_return(flexmock(:body => ''))
     @connection.should_receive(:delete).with(MockDataItemPath+"/127612FA4923").once.and_return(flexmock(:body => ''))
     @connection.should_receive(:post).with(MockDataItemPath,
-      :kgCO2PerPassengerJourney => 7, :startDate => AMEE::Epoch+5).once.and_return({'Location'=>'https://foo.com/'})
+      :kgCO2PerPassengerJourney => 7, :startDate => AMEE::Epoch+5).once.and_return(flexmock(:headers_hash => {'Location'=>'https://foo.com/'}))
     @connection.should_receive(:post).with(MockDataItemPath,
-      :kgCO2PerPassengerJourney => 11, :startDate => AMEE::Epoch+9).once.and_return({'Location'=>'https://foo.com/'})
+      :kgCO2PerPassengerJourney => 11, :startDate => AMEE::Epoch+9).once.and_return(flexmock(:headers_hash => {'Location'=>'https://foo.com/'}))
     lambda {
       @val.series = TestSeriesTwo
       @val.save!

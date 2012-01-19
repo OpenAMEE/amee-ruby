@@ -206,7 +206,7 @@ describe AMEE::Data::ItemValue, "after loading" do
       with(MockResourceDataItemPath,
       :kgCO2PerPassengerJourney=>42,
       :startDate=>(AMEE::Epoch+3).xmlschema).
-      and_return({'Location'=>'http://foo.com/'})
+      and_return(flexmock(:headers_hash => {'Location'=>'http://foo.com/'}))
     @new=AMEE::Data::ItemValue.new(:value=>42,
       :start_date=>AMEE::Epoch+3,
       :connection=>@connection,
@@ -221,7 +221,7 @@ describe AMEE::Data::ItemValue, "after loading" do
       with(MockResourceDataItemPath,
       :kgCO2PerPassengerJourney=>42,
       :startDate=>(AMEE::Epoch+3).xmlschema).
-      and_return({'Location'=>'https://foo.com/'})
+      and_return(flexmock(:headers_hash => {'Location'=>'https://foo.com/'}))
     @new=AMEE::Data::ItemValue.new(:value=>42,
       :start_date=>AMEE::Epoch+3,
       :connection=>@connection,

@@ -55,7 +55,7 @@ describe AMEE::Admin::ReturnValueDefinition, "with an authenticated XML connecti
       with("/#{AMEE::Connection.api_version}/definitions/#{Testcativduid}/returnvalues",  
       {:type=>"CO2", :valueDefinition=>"45433E48B39F",
         :returnobj=>true, :unit=>"kg", :perUnit=>"month"}).
-      and_return({'Location'=>"///#{AMEE::Connection.api_version}/definitions/#{Testcativduid}/returnvalues/#{Testrvduid}"}).once
+      and_return(flexmock(:headers_hash => {'Location'=>"///#{AMEE::Connection.api_version}/definitions/#{Testcativduid}/returnvalues/#{Testrvduid}"})).once
     rvd=AMEE::Admin::ReturnValueDefinition.create(connection,Testcativduid,
       :type=>'CO2',:unit=>'kg',:perUnit=>'month')
     
