@@ -15,6 +15,7 @@ module AMEE
         @total_amount = data[:total_amount]
         @total_amount_unit = data[:total_amount_unit]
         @amounts = data[:amounts] || []
+        @notes = data[:notes] || []
         @start_date = data[:start_date]
         @category_uid = data[:category_uid]
         super
@@ -26,6 +27,7 @@ module AMEE
       attr_reader :total_amount
       attr_reader :total_amount_unit
       attr_reader :amounts
+      attr_reader :notes
       attr_reader :start_date
       attr_reader :category_uid
       attr_reader :item_definition_uid
