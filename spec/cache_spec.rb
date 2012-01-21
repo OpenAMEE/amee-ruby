@@ -148,7 +148,7 @@ describe AMEE::Connection do
         setup_connection
         flexmock(@connection) do |mock|
           interactions.each do |path, action, result|
-            mock.should_receive(:do_request).once.and_return(OpenStruct.new(:code => '200', :body => path)) if result
+            mock.should_receive(:run_request).once.and_return(OpenStruct.new(:code => '200', :body => path)) if result
           end
         end
         interactions.each do |path, action, result|

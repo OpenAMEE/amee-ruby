@@ -92,14 +92,7 @@ module AMEE
     # Wrap up parameters into a request and execute it
     def v3_do_request(params, path, options = {})
       req = Typhoeus::Request.new("https://#{v3_hostname}#{path}", v3_defaults.merge(params))
-      if options[:cache]
-        # path+query string only (split with an int limits the number of splits)
-        path_and_query = '/' + req.url.split('/', 4)[3]
-        # Get response with caching
-        response = cache(path_and_query) { do_request(req, :xml) }
-      else
-        response = do_request(req, :xml)
-      end
+      response = do_request(req, :xml, options)
       options[:return_obj]==true ? response : response.body
     end
     

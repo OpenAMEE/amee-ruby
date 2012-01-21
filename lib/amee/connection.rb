@@ -119,7 +119,7 @@ module AMEE
       # Create GET request
       get = Typhoeus::Request.new("#{protocol}#{@server}#{path}", get_params)
       # Send request
-      cache(path) { do_request(get, format) }
+      do_request(get, format, :cache => true)
     end
 
     # POST to the AMEE API, passing in a hash of values
@@ -331,7 +331,7 @@ module AMEE
     # Takes care of making sure requests authenticated, and 
     # if set, attempts to retry a number of times set when
     # initialising the class
-    def do_request(request, format = @format)
+    def do_request(request, format = @format, options = {})
 
       # Is this a v3 request?
       v3_request = request.url.include?("/#{v3_hostname}/")
@@ -347,6 +347,24 @@ module AMEE
       # Set AMEE source header if set
       request.headers['X-AMEE-Source'] = @amee_source if @amee_source
 
+      # path+query string only (split with an int limits the number of splits)
+      path_and_query = '/' + request.url.split('/', 4)[3]
+
+      if options[:cache]
+        # Get response with caching
+        response = cache(path_and_query) { run_request(request, :xml) }
+      else
+        response = run_request(request, :xml)
+      end
+      response
+    end
+
+    # run request. Extracted from do_request to make
+    # cache code simpler
+    def run_request(request, format)
+      # Is this a v3 request?
+      v3_request = request.url.include?("/#{v3_hostname}/")
+      # Execute with retries
       retries = [1] * @retries
       begin 
         begin
@@ -404,8 +422,8 @@ module AMEE
     def cache_key(path)
       # We have to make sure cache keys don't get too long for the filesystem,
       # so we cut them off if they're too long and add a digest for uniqueness.
-      newpath = @server + path.gsub(/[^0-9a-z\/]/i, '').gsub(/\//i, '_')
-      newpath = (newpath.length < 250) ? newpath : newpath.first(218)+Digest::MD5.hexdigest(newpath)
+      key = @server + path.gsub(/[^0-9a-z\/]/i, '').gsub(/\//i, '_')
+      key = (key.length < 250) ? key : key.first(218)+Digest::MD5.hexdigest(key)
     end
 
     public
