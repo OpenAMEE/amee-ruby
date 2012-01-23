@@ -30,7 +30,7 @@ class REXMLTestObject
     '/root/'
   end
   def initialize
-    @doc = REXML::Document.new(fixture('parse_test.xml'))
+    @doc = load_xml_doc(fixture('parse_test.xml'))
   end
 end
 

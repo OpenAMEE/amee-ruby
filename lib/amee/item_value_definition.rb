@@ -135,32 +135,26 @@ module AMEE
         raise AMEE::BadData.new("Couldn't load ItemValueDefinition from JSON. Check that your URL is correct.\n#{json}")
       end
 
-      def self.xmlpathpreamble
-        "/Resources//ItemValueDefinition/"
-      end
-
       def self.from_xml(xml, is_list = true)
         prefix = is_list ? "/Resources/ItemValueDefinitionsResource/" : "/Resources/ItemValueDefinitionResource/"
         # Parse data from response into hash
-        doc = REXML::Document.new(xml)
+        @doc = load_xml_doc(xml)
         data = {}
-        data[:uid] = REXML::XPath.first(doc, prefix + "ItemValueDefinition/@uid").to_s
-        data[:itemdefuid] = REXML::XPath.first(doc, prefix + "ItemValueDefinition/ItemDefinition/@uid").to_s
-        data[:created] = DateTime.parse(REXML::XPath.first(doc, prefix + "ItemValueDefinition/@created").to_s)
-        data[:modified] = DateTime.parse(REXML::XPath.first(doc, prefix + "ItemValueDefinition/@modified").to_s)
-        data[:name] = REXML::XPath.first(doc, prefix + "ItemValueDefinition/Name").text
-        data[:path] = REXML::XPath.first(doc, prefix + "ItemValueDefinition/Path").text
-        uxml=REXML::XPath.first(doc, prefix + "ItemValueDefinition/Unit")
-        data[:unit] = uxml ? uxml.text : nil
-        puxml=data[:perunit] = REXML::XPath.first(doc, prefix + "ItemValueDefinition/PerUnit")
-        data[:perunit] = puxml ? puxml.text : nil
-        data[:valuetype] = REXML::XPath.first(doc, prefix + "ItemValueDefinition/ValueDefinition/ValueType").text
-        data[:default] = REXML::XPath.first(doc, prefix + "ItemValueDefinition/Value").text
-        data[:choices] = REXML::XPath.first(doc, prefix + "ItemValueDefinition/Choices").text.split(',') rescue nil
-        data[:versions] = REXML::XPath.each(doc, prefix + "ItemValueDefinition/APIVersions/APIVersion").map{|v| v.text}
-        data[:drill]=(x('DrillDown',:doc => doc)=='true')
-        data[:from_profile]=(x('FromProfile',:doc => doc)=='true')
-        data[:from_data]=(x('FromData',:doc => doc)=='true')
+        data[:uid] = x(prefix + "ItemValueDefinition/@uid")
+        data[:itemdefuid] = x(prefix + "ItemValueDefinition/ItemDefinition/@uid")
+        data[:created] = DateTime.parse(x(prefix + "ItemValueDefinition/@created"))
+        data[:modified] = DateTime.parse(x(prefix + "ItemValueDefinition/@modified"))
+        data[:name] = x(prefix + "ItemValueDefinition/Name")
+        data[:path] = x(prefix + "ItemValueDefinition/Path")
+        data[:unit] = x(prefix + "ItemValueDefinition/Unit")
+        data[:perunit] = x(prefix + "ItemValueDefinition/PerUnit")
+        data[:valuetype] = x(prefix + "ItemValueDefinition/ValueDefinition/ValueType")
+        data[:default] = x(prefix + "ItemValueDefinition/Value")
+        data[:choices] = x(prefix + "ItemValueDefinition/Choices").split(',') rescue nil
+        data[:versions] = @doc.xpath(prefix + "ItemValueDefinition/APIVersions/APIVersion/text()").map{|x| x.to_s}
+        data[:drill]=(x(prefix + 'ItemValueDefinition/DrillDown')=='true')
+        data[:from_profile]=(x(prefix + 'ItemValueDefinition/FromProfile')=='true')
+        data[:from_data]=(x(prefix + 'ItemValueDefinition/FromData')=='true')
         # Create object
         ItemValueDefinition.new(data)
       rescue

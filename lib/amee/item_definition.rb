@@ -77,13 +77,13 @@ module AMEE
       def self.from_xml(xml, is_list = true)
         prefix = is_list ? "/Resources/ItemDefinitionsResource/" : "/Resources/ItemDefinitionResource/"
         # Parse data from response into hash
-        doc = REXML::Document.new(xml)
+        @doc = load_xml_doc(xml)
         data = {}
-        data[:uid] = REXML::XPath.first(doc, prefix + "ItemDefinition/@uid").to_s
-        data[:created] = DateTime.parse(REXML::XPath.first(doc, prefix + "ItemDefinition/@created").to_s)
-        data[:modified] = DateTime.parse(REXML::XPath.first(doc, prefix + "ItemDefinition/@modified").to_s)
-        data[:name] = REXML::XPath.first(doc, prefix + "ItemDefinition/Name").text
-        data[:drillDown] = REXML::XPath.first(doc, prefix + "ItemDefinition/DrillDown").text.split(",") rescue nil
+        data[:uid] = x(prefix + "ItemDefinition/@uid")
+        data[:created] = DateTime.parse(x(prefix + "ItemDefinition/@created"))
+        data[:modified] = DateTime.parse(x(prefix + "ItemDefinition/@modified"))
+        data[:name] = x(prefix + "ItemDefinition/Name")
+        data[:drillDown] = x(prefix + "ItemDefinition/DrillDown").split(",") rescue nil
         # Create object
         ItemDefinition.new(data)
       rescue

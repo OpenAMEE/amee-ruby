@@ -199,7 +199,7 @@ module AMEE
           value = element.text
           case key.downcase
             when 'dataitemlabel', 'dataitemuid', 'name', 'path'
-              item_data[key.to_sym] = value
+              item_data[key.to_sym] = (value.blank? ? nil : value)
             when 'dataitem'
               item_data[:dataItemUid] = element.attributes['uid']
             when 'validfrom'
@@ -237,60 +237,52 @@ module AMEE
       
       def self.parse_xml_profile_category(category)
         category_data = {}
-        category_data[:name] = category.elements['DataCategory'].elements['Name'].text
-        category_data[:path] = category.elements['DataCategory'].elements['Path'].text
-        category_data[:uid] = category.elements['DataCategory'].attributes['uid'].to_s
-        category_data[:totalAmountPerMonth] = category.elements['TotalAmountPerMonth'].text.to_f rescue nil
+        category_data[:name] = x('DataCategory/Name', :doc => category)
+        category_data[:path] = x('DataCategory/Path', :doc => category)
+        category_data[:uid] = x('DataCategory/@uid', :doc => category)
+        category_data[:totalAmountPerMonth] = x('TotalAmountPerMonth', :doc => category).to_f rescue nil
         category_data[:children] = []
         category_data[:items] = []
-        if category.elements['Children']
-          category.elements['Children'].each do |child|
-            if child.name == 'ProfileCategories'
-              child.each do |child_cat|
-                category_data[:children] << parse_xml_profile_category(child_cat)
-              end
-            end
-            if child.name == 'ProfileItems'
-              child.each do |child_item|
-                category_data[:items] << parse_xml_profile_item(child_item)
-              end
-            end
-          end
+        category.xpath('Children/ProfileCategories/ProfileCategory').each do |child|
+          category_data[:children] << parse_xml_profile_category(child)
+        end
+        category.xpath('Children/ProfileItems/ProfileItem').each do |child|
+          category_data[:items] << parse_xml_profile_item(child)
         end
         return category_data
       end
 
       def self.from_xml(xml, options)
         # Parse XML
-        doc = REXML::Document.new(xml)
+        @doc = load_xml_doc(xml)
         data = {}
-        data[:profile_uid] = REXML::XPath.first(doc, "/Resources/ProfileCategoryResource/Profile/@uid").to_s
-        data[:profile_date] = DateTime.strptime(REXML::XPath.first(doc, "/Resources/ProfileCategoryResource/ProfileDate").text, "%Y%m")
-        data[:name] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/DataCategory/?ame').text
-        data[:path] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/Path | /Resources/ProfileCategoryResource/DataCategory/path').text || ""
+        data[:profile_uid] = x("/Resources/ProfileCategoryResource/Profile/@uid")
+        data[:profile_date] = DateTime.strptime(x("/Resources/ProfileCategoryResource/ProfileDate"), "%Y%m")
+        data[:name] = x('/Resources/ProfileCategoryResource/DataCategory/Name | /Resources/ProfileCategoryResource/DataCategory/name')
+        data[:path] = x('/Resources/ProfileCategoryResource/Path | /Resources/ProfileCategoryResource/DataCategory/path') || ""
         data[:path] = "/#{data[:path]}" if data[:path].slice(0,1) != '/'
-        data[:total_amount] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/TotalAmountPerMonth').text.to_f rescue nil
+        data[:total_amount] = x('/Resources/ProfileCategoryResource/TotalAmountPerMonth').to_f rescue nil
         data[:total_amount_unit] = "kg/month"
-        data[:pager] = AMEE::Pager.from_xml(REXML::XPath.first(doc, '//Pager'))
+        data[:pager] = AMEE::Pager.from_xml(@doc.xpath('//Pager').first)
         data[:children] = []
-        REXML::XPath.each(doc, '/Resources/ProfileCategoryResource/Children/ProfileCategories/DataCategory | /Resources/ProfileCategoryResource/Children/DataCategories/DataCategory') do |child|
+        @doc.xpath('/Resources/ProfileCategoryResource/Children/ProfileCategories/DataCategory | /Resources/ProfileCategoryResource/Children/DataCategories/DataCategory').each do |child|
           category_data = {}
-          category_data[:name] = (child.elements['Name'] || child.elements['name']).text
-          category_data[:path] = (child.elements['Path'] || child.elements['path']).text
-          category_data[:uid] = child.attributes['uid'].to_s
+          category_data[:name] = x('Name | name', :doc => child)
+          category_data[:path] = x('Path | path', :doc => child)
+          category_data[:uid] = x('@uid', :doc => child)
           data[:children] << category_data
         end
-        REXML::XPath.each(doc, '/Resources/ProfileCategoryResource/Children/ProfileCategories/ProfileCategory') do |child|
+        @doc.xpath('/Resources/ProfileCategoryResource/Children/ProfileCategories/ProfileCategory').each do |child|
           data[:children] << parse_xml_profile_category(child)
         end
         data[:items] = []
-        REXML::XPath.each(doc, '/Resources/ProfileCategoryResource/Children/ProfileItems/ProfileItem') do |item|
+        @doc.xpath('/Resources/ProfileCategoryResource/Children/ProfileItems/ProfileItem').each do |item|
           data[:items] << parse_xml_profile_item(item)
         end
-        REXML::XPath.each(doc, '/Resources/ProfileCategoryResource/ProfileItem') do |item|
+        @doc.xpath('/Resources/ProfileCategoryResource/ProfileItem').each do |item|
           data[:items] << parse_xml_profile_item(item)
         end
-        REXML::XPath.each(doc, '/Resources/ProfileCategoryResource/ProfileItems/ProfileItem') do |item|
+        @doc.xpath('/Resources/ProfileCategoryResource/ProfileItems/ProfileItem').each do |item|
           data[:items] << parse_xml_profile_item(item)
         end
         # Create object
@@ -308,14 +300,14 @@ module AMEE
             when 'name', 'path'
               item_data[key.downcase.to_sym] = element.text
             when 'dataitem'
-              item_data[:dataItemLabel] = element.elements['Label'].text
+              item_data[:dataItemLabel] = x('Label', :doc => element)
               item_data[:dataItemUid] = element.attributes['uid'].to_s
             when 'validfrom'
               item_data[:validFrom] = DateTime.strptime(element.text, "%Y%m%d")
             when 'startdate'
               item_data[:startDate] = DateTime.parse(element.text)
             when 'enddate'
-              item_data[:endDate] = DateTime.parse(element.text) if element.text
+              item_data[:endDate] = DateTime.parse(element.text) if element.text.present?
             when 'end'
               item_data[:end] = (element.text == "true")
             when 'amount'
@@ -331,7 +323,7 @@ module AMEE
                   d[:value] = x.text.to_f
                   d[:unit] = x.attributes['unit'].to_s
                   d[:per_unit] = x.attributes['perUnit'].to_s if x.attributes['perUnit']
-                  d[:default] = x.attributes['default'] == 'true'
+                  d[:default] = x.attributes['default'].to_s == 'true'
                   item_data[:amounts] << d
                 when 'Note'
                   item_data[:notes] ||= []
@@ -343,12 +335,12 @@ module AMEE
               end
             when 'itemvalues'
               element.elements.each do |itemvalue|
-                path = itemvalue.elements['Path'].text
+                path = x('Path', :doc => itemvalue)
                 item_data[:values][path.to_sym] = {}
-                item_data[:values][path.to_sym][:name] = itemvalue.elements['Name'].text
-                item_data[:values][path.to_sym][:value] = itemvalue.elements['Value'].text || "0"
-                item_data[:values][path.to_sym][:unit] = itemvalue.elements['Unit'].text
-                item_data[:values][path.to_sym][:per_unit] = itemvalue.elements['PerUnit'].text
+                item_data[:values][path.to_sym][:name] = x('Name', :doc => itemvalue)
+                item_data[:values][path.to_sym][:value] = x('Value', :doc => itemvalue) || "0"
+                item_data[:values][path.to_sym][:unit] = x('Unit', :doc => itemvalue)
+                item_data[:values][path.to_sym][:per_unit] = x('PerUnit', :doc => itemvalue)
               end
             else
               item_data[:values][key.to_sym] = element.text
@@ -363,32 +355,33 @@ module AMEE
 
       def self.from_v2_xml(xml, options)
         # Parse XML
-        doc = REXML::Document.new(xml)
+        @doc = load_xml_doc(xml)
         data = {}
-        data[:profile_uid] = REXML::XPath.first(doc, "/Resources/ProfileCategoryResource/Profile/@uid").to_s
+        data[:profile_uid] = x("/Resources/ProfileCategoryResource/Profile/@uid")
+        raise if data[:profile_uid].nil? # Check that the XML is remotely valid
         data[:start_date] = options[:start_date]
         data[:end_date] = options[:end_date]
-        data[:name] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/DataCategory/Name').text
-        data[:path] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/Path').text || ""
-        data[:total_amount] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/TotalAmount').text.to_f rescue nil
-        data[:total_amount_unit] = REXML::XPath.first(doc, '/Resources/ProfileCategoryResource/TotalAmount/@unit').to_s rescue nil
-        data[:pager] = AMEE::Pager.from_xml(REXML::XPath.first(doc, '//Pager'))
+        data[:name] = x('/Resources/ProfileCategoryResource/DataCategory/Name')
+        data[:path] = x('/Resources/ProfileCategoryResource/Path') || ""
+        data[:total_amount] = x('/Resources/ProfileCategoryResource/TotalAmount').to_f rescue nil
+        data[:total_amount_unit] = x('/Resources/ProfileCategoryResource/TotalAmount/@unit').to_s rescue nil
+        data[:pager] = AMEE::Pager.from_xml(@doc.xpath('//Pager').first)
         data[:children] = []
-        REXML::XPath.each(doc, '/Resources/ProfileCategoryResource/ProfileCategories/DataCategory') do |child|
+        @doc.xpath('/Resources/ProfileCategoryResource/ProfileCategories/DataCategory').each do |child|
           category_data = {}
-          category_data[:name] = child.elements['Name'].text
-          category_data[:path] = child.elements['Path'].text
-          category_data[:uid] = child.attributes['uid'].to_s
+          category_data[:name] = x('Name', :doc => child)
+          category_data[:path] = x('Path', :doc => child)
+          category_data[:uid] = x('@uid', :doc => child)
           data[:children] << category_data
         end
-        REXML::XPath.each(doc, '/Resources/ProfileCategoryResource/Children/ProfileCategories/ProfileCategory') do |child|
+        @doc.xpath('/Resources/ProfileCategoryResource/Children/ProfileCategories/ProfileCategory').each do |child|
           data[:children] << parse_xml_profile_category(child)
         end
         data[:items] = []
-        REXML::XPath.each(doc, '/Resources/ProfileCategoryResource/ProfileItems/ProfileItem') do |item|
+        @doc.xpath('/Resources/ProfileCategoryResource/ProfileItems/ProfileItem').each do |item|
           data[:items] << parse_v2_xml_profile_item(item)
         end
-        REXML::XPath.each(doc, '/Resources/ProfileCategoryResource/ProfileItem') do |item|
+        @doc.xpath('/Resources/ProfileCategoryResource/ProfileItem').each do |item|
           data[:items] << parse_v2_xml_profile_item(item)
         end
         # Create object
@@ -399,13 +392,13 @@ module AMEE
 
       def self.from_v2_batch_xml(xml)
         # Parse XML
-        doc = REXML::Document.new(xml)
+        @doc = load_xml_doc(xml)
         data = {}
         data[:profileItems] = []
-        REXML::XPath.each(doc, '/Resources/ProfileItems/ProfileItem') do |child|
+        @doc.xpath('/Resources/ProfileItems/ProfileItem').each do |child|
           profile_item = {}
-          profile_item[:uri] = child.attributes['uri'].to_s
-          profile_item[:uid] = child.attributes['uid'].to_s
+          profile_item[:uri] = x('uri', :doc => child)
+          profile_item[:uid] = x('uid', :doc => child)
           data[:profileItems] << profile_item
         end
         return data
@@ -415,50 +408,51 @@ module AMEE
       
       def self.from_v2_atom(response, options)
         # Parse XML
-        doc = REXML::Document.new(response)
+        @doc = load_xml_doc(response)
         data = {}
-        data[:profile_uid] = REXML::XPath.first(doc, "/feed/@xml:base").to_s.match("/profiles/(.*?)/")[1]
+        data[:profile_uid] = x("/feed/@base").match("/profiles/(.*?)/")[1]
         data[:start_date] = options[:start_date]
         data[:end_date] = options[:end_date]
-        data[:name] = REXML::XPath.first(doc, '/feed/amee:name').text
-        data[:path] = REXML::XPath.first(doc, "/feed/@xml:base").to_s.match("/profiles/.*?(/.*)")[1]
-        data[:total_amount] = REXML::XPath.first(doc, '/feed/amee:totalAmount').text.to_f rescue nil
-        data[:total_amount_unit] = REXML::XPath.first(doc, '/feed/amee:totalAmount/@unit').to_s rescue nil
+        data[:name] = x('/feed/name')
+        data[:path] = x("/feed/@base").match("/profiles/.*?(/.*)")[1]
+        data[:total_amount] = x('/feed/totalAmount').to_f rescue nil
+        data[:total_amount_unit] = x('/feed/totalAmount/@unit') rescue nil
         data[:children] = []
-        REXML::XPath.each(doc, '/feed/amee:categories/amee:category') do |child|
+        @doc.xpath('/feed/categories/category').each do |child|
           category_data = {}
 #          category_data[:path] = child.text
           category_data[:path] = child.text
 #          category_data[:uid] = child.attributes['uid'].to_s
           data[:children] << category_data
         end
-#        REXML::XPath.each(doc, '/Resources/ProfileCategoryResource/Children/ProfileCategories/ProfileCategory') do |child|
+#        @doc.xpath('/Resources/ProfileCategoryResource/Children/ProfileCategories/ProfileCategory').each do |child|
 #          data[:children] << parse_xml_profile_category(child)
 #        end
         data[:items] = []
-        REXML::XPath.each(doc, '/feed/entry') do |entry|
+        @doc.xpath('/feed/entry').each do |entry|
           item = {}
-          item[:uid] = entry.elements['id'].text.match("urn:item:(.*)")[1]
-          item[:name] = entry.elements['title'].text
+          item[:uid] = x('id', :doc => entry).match("urn:item:(.*)")[1]
+          item[:name] = x('title', :doc => entry)
           item[:path] = item[:uid]
 #          data[:dataItemLabel].should == "gas"
 #          data[:dataItemUid].should == "66056991EE23"
-          item[:amount] = entry.elements['amee:amount'].text.to_f rescue nil
-          item[:amount_unit] = entry.elements['amee:amount'].attributes['unit'].to_s rescue nil
-          item[:startDate] = DateTime.parse(entry.elements['amee:startDate'].text)
-          item[:endDate] = DateTime.parse(entry.elements['amee:endDate'].text) rescue nil
+          item[:amount] = x('amount', :doc => entry).to_f rescue nil
+          item[:amount_unit] = x('amount/@unit', :doc => entry)
+          item[:startDate] = DateTime.parse(x('startDate', :doc => entry))
+          item[:endDate] = DateTime.parse(x('endDate', :doc => entry)) rescue nil
           item[:values] = {}
           entry.elements.each do |itemvalue|
             if itemvalue.name == 'itemValue'
-              path = itemvalue.elements['link'].attributes['href'].to_s.match(".*/(.*)")[1]
-              x = {}
-              x[:path] = path
-              x[:name] = itemvalue.elements['amee:name'].text
-              x[:value] = itemvalue.elements['amee:value'].text unless itemvalue.elements['amee:value'].text == "N/A"
-              x[:value] ||= "0"
-              x[:unit] = itemvalue.elements['amee:unit'].text rescue nil
-              x[:per_unit] = itemvalue.elements['amee:perUnit'].text rescue nil
-              item[:values][path.to_sym] = x
+              path = x('link/@href', :doc => itemvalue).match(".*/(.*)")[1]
+              i = {}
+              i[:path] = path
+              i[:name] = x('name', :doc => itemvalue)
+              i[:value] = x('value', :doc => itemvalue) 
+              i.delete(:value) if i[:value] == "N/A"
+              i[:value] ||= "0"
+              i[:unit] = x('unit', :doc => itemvalue) 
+              i[:per_unit] = x('perUnit', :doc => itemvalue) 
+              item[:values][path.to_sym] = i
             end
           end
           data[:items] << item

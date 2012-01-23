@@ -140,7 +140,7 @@ describe AMEE::Data::Category, "with an authenticated XML connection" do
     connection.should_receive(:retries).and_return(0)
     connection.should_receive(:get).with("/data", {:itemsPerPage => 10}).and_return(flexmock(:body => fixture('data.xml')[0,12]))
     connection.should_receive(:expire).with("/data").once
-    lambda{AMEE::Data::Category.get(connection, "/data")}.should raise_error(REXML::ParseException)
+    lambda{AMEE::Data::Category.get(connection, "/data")}.should raise_error(Nokogiri::XML::SyntaxError)
   end
 
   it "should retry if bad XML is received first time" do

@@ -41,7 +41,7 @@ module AMEE
         else
           from_xml(response)
         end
-      rescue JSON::ParserError, Nokogiri::XML::SyntaxError, REXML::ParseException => e
+      rescue JSON::ParserError, Nokogiri::XML::SyntaxError => e
         # Invalid JSON or XML received, try the GET again in case it got cut off mid-stream
         connection.expire(path)
         if delay = retries.shift

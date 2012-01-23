@@ -63,34 +63,31 @@ module AMEE
         end
       end
 
-      def self.xmlpathpreamble
-        "/Resources/DataCategoryResource/DataCategory/"
-      end
       def self.from_xml(xml)
         # Parse XML
-        @doc = doc= REXML::Document.new(xml)
+        @doc = load_xml_doc(xml)
         begin
           data = {}
-          data[:uid] = x '@uid'
-          data[:created] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataCategoryResource/DataCategory/@created").to_s)
-          data[:modified] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataCategoryResource/DataCategory/@modified").to_s)
-          data[:name] = (REXML::XPath.first(doc, '/Resources/DataCategoryResource/DataCategory/Name') || REXML::XPath.first(doc, '/Resources/DataCategoryResource/DataCategory/name')).text
-          data[:path] = (REXML::XPath.first(doc, '/Resources/DataCategoryResource/Path') || REXML::XPath.first(doc, '/Resources/DataCategoryResource/DataCategory/path')).text || ""
-          data[:pager] = AMEE::Pager.from_xml(REXML::XPath.first(doc, '//Pager'))
-          itemdefattrib=REXML::XPath.first(doc, '/Resources/DataCategoryResource//ItemDefinition/@uid')
+          data[:uid] = x '/Resources/DataCategoryResource/DataCategory/@uid'
+          data[:created] = DateTime.parse(x("/Resources/DataCategoryResource/DataCategory/@created"))
+          data[:modified] = DateTime.parse(x("/Resources/DataCategoryResource/DataCategory/@modified"))
+          data[:name] = x('/Resources/DataCategoryResource/DataCategory/Name') || x('/Resources/DataCategoryResource/DataCategory/name')
+          data[:path] = x('/Resources/DataCategoryResource/Path') || x('/Resources/DataCategoryResource/DataCategory/path') || ""
+          data[:pager] = AMEE::Pager.from_xml(@doc.xpath('//Pager').first)
+          itemdefattrib=x('/Resources/DataCategoryResource//ItemDefinition/@uid')
           data[:itemdef] = itemdefattrib ? itemdefattrib.to_s : nil
           data[:children] = []
-          REXML::XPath.each(doc, '/Resources/DataCategoryResource//Children/DataCategories/DataCategory') do |child|
+          @doc.xpath('/Resources/DataCategoryResource//Children/DataCategories/DataCategory').each do |child|
             category_data = {}
-            category_data[:name] = (child.elements['Name'] || child.elements['name']).text
-            category_data[:path] = (child.elements['Path'] || child.elements['path']).text
-            category_data[:uid] = child.attributes['uid'].to_s
+            category_data[:name] = x('Name', :doc => child) || x('name', :doc => child)
+            category_data[:path] = x('Path', :doc => child) || x('path', :doc => child)
+            category_data[:uid] = x('@uid', :doc => child)
             data[:children] << category_data
           end
           data[:items] = []
-          REXML::XPath.each(doc, '/Resources/DataCategoryResource//Children/DataItems/DataItem') do |item|
+          @doc.xpath('/Resources/DataCategoryResource//Children/DataItems/DataItem').each do |item|
             item_data = {}
-            item_data[:uid] = item.attributes['uid'].to_s
+            item_data[:uid] = x('@uid', :doc => item)
             item.elements.each do |element|
               item_data[element.name.to_sym] = element.text
             end
@@ -101,7 +98,7 @@ module AMEE
           end
           # Create object
           Category.new(data)
-        rescue AMEE::XMLParseError
+        rescue AMEE::XMLParseError, TypeError
           raise AMEE::BadData.new("Couldn't load DataCategory from XML data. Check that your URL is correct.\n#{xml}")
         end
       end

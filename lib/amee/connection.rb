@@ -15,6 +15,8 @@ DEBUG = false
 module AMEE
   class Connection
 
+    include ParseHelper
+
     RootCA = File.dirname(__FILE__) + '/../../cacert.pem'
 
     def initialize(server, username, password, options = {})
@@ -244,7 +246,8 @@ module AMEE
       if response.body.is_json?
         @version = JSON.parse(response.body)["user"]["apiVersion"].to_f
       elsif response.body.is_xml?
-        @version = REXML::Document.new(response.body).elements['Resources'].elements['SignInResource'].elements['User'].elements['ApiVersion'].text.to_f
+        doc = load_xml_doc(response.body)
+        @version = x('/Resources/SignInResource/User/ApiVersion/text()', :doc => doc).to_f
       else
         @version = 1.0
       end

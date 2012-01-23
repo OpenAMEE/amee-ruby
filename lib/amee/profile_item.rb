@@ -126,19 +126,19 @@ module AMEE
 
       def self.from_xml(xml)
         # Parse XML
-        doc = REXML::Document.new(xml)
+        @doc = load_xml_doc(xml)
         data = {}
-        data[:profile_uid] = REXML::XPath.first(doc, "/Resources/ProfileItemResource/Profile/@uid").to_s
-        data[:data_item_uid] = REXML::XPath.first(doc, "/Resources/ProfileItemResource/DataItem/@uid").to_s
-        data[:uid] = REXML::XPath.first(doc, "/Resources/ProfileItemResource/ProfileItem/@uid").to_s
-        data[:name] = REXML::XPath.first(doc, '/Resources/ProfileItemResource/ProfileItem/Name').text
-        data[:path] = REXML::XPath.first(doc, '/Resources/ProfileItemResource/Path').text || ""
-        data[:total_amount] = REXML::XPath.first(doc, '/Resources/ProfileItemResource/ProfileItem/AmountPerMonth').text.to_f rescue nil
+        data[:profile_uid] = x("/Resources/ProfileItemResource/Profile/@uid")
+        data[:data_item_uid] = x("/Resources/ProfileItemResource/DataItem/@uid")
+        data[:uid] = x("/Resources/ProfileItemResource/ProfileItem/@uid")
+        data[:name] = x('/Resources/ProfileItemResource/ProfileItem/Name')
+        data[:path] = x('/Resources/ProfileItemResource/Path') || ""
+        data[:total_amount] = x('/Resources/ProfileItemResource/ProfileItem/AmountPerMonth').to_f rescue nil
         data[:total_amount_unit] = "kg/month"
-        data[:valid_from] = DateTime.strptime(REXML::XPath.first(doc, "/Resources/ProfileItemResource/ProfileItem/ValidFrom").text, "%Y%m%d")
-        data[:end] = REXML::XPath.first(doc, '/Resources/ProfileItemResource/ProfileItem/End').text == "false" ? false : true
+        data[:valid_from] = DateTime.strptime(x("/Resources/ProfileItemResource/ProfileItem/ValidFrom"), "%Y%m%d")
+        data[:end] = x('/Resources/ProfileItemResource/ProfileItem/End') == "false" ? false : true
         data[:values] = []
-        REXML::XPath.each(doc, '/Resources/ProfileItemResource/ProfileItem/ItemValues/ItemValue') do |item|
+        @doc.xpath('/Resources/ProfileItemResource/ProfileItem/ItemValues/ItemValue').each do |item|
           value_data = {}
           item.elements.each do |element|
             key = element.name
@@ -157,25 +157,21 @@ module AMEE
         raise AMEE::BadData.new("Couldn't load ProfileItem from XML data. Check that your URL is correct.\n#{xml}")
       end
 
-      def self.xmlpathpreamble
-        "/Resources/ProfileItemResource/"
-      end
-
       def self.from_v2_xml(xml)
         # Parse XML
         @doc = load_xml_doc(xml)
         data = {}
-        data[:profile_uid] = x 'Profile/@uid'
-        data[:data_item_uid] = x 'DataItem/@uid'
-        data[:uid] = x 'ProfileItem/@uid'
-        data[:name] = x 'ProfileItem/Name'
-        data[:path] = x('Path') || ""
-        data[:total_amount] = x('ProfileItem/Amount').to_f rescue nil
-        data[:total_amount_unit] = x 'ProfileItem/Amount/@unit' rescue nil
-        data[:start_date] = DateTime.parse(x 'ProfileItem/StartDate')
-        data[:end_date] = DateTime.parse(x 'ProfileItem/EndDate') rescue nil
+        data[:profile_uid] = x '/Resources/ProfileItemResource/Profile/@uid'
+        data[:data_item_uid] = x '/Resources/ProfileItemResource/DataItem/@uid'
+        data[:uid] = x '/Resources/ProfileItemResource/ProfileItem/@uid'
+        data[:name] = x '/Resources/ProfileItemResource/ProfileItem/Name'
+        data[:path] = x('/Resources/ProfileItemResource/Path') || ""
+        data[:total_amount] = x('/Resources/ProfileItemResource/ProfileItem/Amount').to_f rescue nil
+        data[:total_amount_unit] = x '/Resources/ProfileItemResource/ProfileItem/Amount/@unit' rescue nil
+        data[:start_date] = DateTime.parse(x '/Resources/ProfileItemResource/ProfileItem/StartDate')
+        data[:end_date] = DateTime.parse(x '/Resources/ProfileItemResource/ProfileItem/EndDate') rescue nil
         data[:values] = []
-        @doc.xpath("#{xmlpathpreamble}ProfileItem/ItemValues/ItemValue").each do |item|
+        @doc.xpath("/Resources/ProfileItemResource/ProfileItem/ItemValues/ItemValue").each do |item|
           value_data = {}
           item.elements.each do |element|
             key = element.name
@@ -214,25 +210,26 @@ module AMEE
 
       def self.from_v2_atom(response)
         # Parse XML
-        doc = REXML::Document.new(response)
+        @doc = load_xml_doc(response)
         data = {}
-        data[:profile_uid] = REXML::XPath.first(doc, "/entry/@xml:base").to_s.match("/profiles/(.*?)/")[1]
-        #data[:data_item_uid] = REXML::XPath.first(doc, "/Resources/ProfileItemResource/DataItem/@uid").to_s
-        data[:uid] = REXML::XPath.first(doc, "/entry/id").text.match("urn:item:(.*)")[1]
-        data[:name] = REXML::XPath.first(doc, '/entry/title').text
-        data[:path] = REXML::XPath.first(doc, "/entry/@xml:base").to_s.match("/profiles/.*?(/.*)")[1]
-        data[:total_amount] = REXML::XPath.first(doc, '/entry/amee:amount').text.to_f rescue nil
-        data[:total_amount_unit] = REXML::XPath.first(doc, '/entry/amee:amount/@unit').to_s rescue nil
-        data[:start_date] = DateTime.parse(REXML::XPath.first(doc, "/entry/amee:startDate").text)
-        data[:end_date] = DateTime.parse(REXML::XPath.first(doc, "/entry/amee:endDate").text) rescue nil
+        data[:profile_uid] = x("/entry/@base").match("/profiles/(.*?)/")[1]
+        #data[:data_item_uid] = x("/Resources/ProfileItemResource/DataItem/@uid").to_s
+        data[:uid] = x("/entry/id").match("urn:item:(.*)")[1]
+        data[:name] = x('/entry/title')
+        data[:path] = x("/entry/@base").match("/profiles/.*?(/.*)")[1]
+        data[:total_amount] = x('/entry/amount').to_f rescue nil
+        data[:total_amount_unit] = x('/entry/amount/@unit') rescue nil
+        data[:start_date] = DateTime.parse(x("/entry/startDate"))
+        data[:end_date] = DateTime.parse(x("/entry/endDate")) rescue nil
         data[:values] = []
-        REXML::XPath.each(doc, '/entry/amee:itemValue') do |item|
+        @doc.xpath('/entry/itemValue').each do |item|
           value_data = {}
-          value_data[:name] = item.elements['amee:name'].text
-          value_data[:value] = item.elements['amee:value'].text unless item.elements['amee:value'].text == "N/A"
-          value_data[:path] = item.elements['link'].attributes['href'].to_s
-          value_data[:unit] = item.elements['amee:unit'].text rescue nil
-          value_data[:per_unit] = item.elements['amee:perUnit'].text rescue nil
+          value_data[:name] = x('name', :doc => item)
+          value_data[:value] = x('value', :doc => item)
+          value_data.delete(:value) if value_data[:value] == "N/A"
+          value_data[:path] = x('link/@href', :doc => item)
+          value_data[:unit] = x('unit', :doc => item)
+          value_data[:per_unit] = x('perUnit', :doc => item)
           data[:values] << value_data
         end
         # Create object

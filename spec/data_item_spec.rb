@@ -141,7 +141,7 @@ describe AMEE::Data::Item, "with an authenticated connection" do
     connection.should_receive(:retries).and_return(0)
     connection.should_receive(:get).with("/data/transport/plane/generic/AD63A83B4D41", {}).and_return(flexmock(:body => fixture('AD63A83B4D41.xml')[0,12]))
     connection.should_receive(:expire).with("/data/transport/plane/generic/AD63A83B4D41").once
-    lambda{AMEE::Data::Item.get(connection, "/data/transport/plane/generic/AD63A83B4D41")}.should raise_error(REXML::ParseException)
+    lambda{AMEE::Data::Item.get(connection, "/data/transport/plane/generic/AD63A83B4D41")}.should raise_error(Nokogiri::XML::SyntaxError)
   end
 
   it "should retry if bad XML is received first time" do

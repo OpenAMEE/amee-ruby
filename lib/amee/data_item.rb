@@ -110,27 +110,27 @@ module AMEE
 
       def self.from_xml(xml)
         # Parse data from response into hash
-        doc = REXML::Document.new(xml)
+        @doc = load_xml_doc(xml)
         begin
           data = {}
-          data[:uid] = REXML::XPath.first(doc, "/Resources/DataItemResource/DataItem/@uid").to_s
-          data[:created] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataItemResource/DataItem/@created").to_s)
-          data[:modified] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataItemResource/DataItem/@modified").to_s)
-          data[:name] = (REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/Name') || REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/name')).text
-          data[:path] = (REXML::XPath.first(doc, '/Resources/DataItemResource/Path') || REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/path')).text
-          data[:label] = (REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/Label') || REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/label')).text
-          data[:item_definition] = REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/ItemDefinition/@uid').to_s
-          data[:category_uid] = REXML::XPath.first(doc, '/Resources/DataItemResource/DataItem/DataCategory/@uid').to_s
+          data[:uid] = x "/Resources/DataItemResource/DataItem/@uid"
+          data[:created] = DateTime.parse(x "/Resources/DataItemResource/DataItem/@created")
+          data[:modified] = DateTime.parse(x "/Resources/DataItemResource/DataItem/@modified")
+          data[:name] = x('/Resources/DataItemResource/DataItem/Name') || x('/Resources/DataItemResource/DataItem/name')
+          data[:path] = x('/Resources/DataItemResource/Path') || x('/Resources/DataItemResource/DataItem/path')
+          data[:label] = x('/Resources/DataItemResource/DataItem/Label') || x('/Resources/DataItemResource/DataItem/label')
+          data[:item_definition] = x('/Resources/DataItemResource/DataItem/ItemDefinition/@uid')
+          data[:category_uid] = x('/Resources/DataItemResource/DataItem/DataCategory/@uid')
           # Read v2 total
-          data[:total_amount] = REXML::XPath.first(doc, '/Resources/DataItemResource/Amount').text.to_f rescue nil
-          data[:total_amount_unit] = REXML::XPath.first(doc, '/Resources/DataItemResource/Amount/@unit').to_s rescue nil
+          data[:total_amount] = x('/Resources/DataItemResource/Amount/text()').to_f rescue nil
+          data[:total_amount_unit] = x('/Resources/DataItemResource/Amount/@unit') rescue nil
           # Read v1 total
           if data[:total_amount].nil?
-            data[:total_amount] = REXML::XPath.first(doc, '/Resources/DataItemResource/AmountPerMonth').text.to_f rescue nil
+            data[:total_amount] = x('/Resources/DataItemResource/AmountPerMonth/text()').to_f rescue nil
             data[:total_amount_unit] = "kg/month"
           end
           data[:amounts] = []
-          REXML::XPath.each(doc,'/Resources/DataItemResource/Amounts/Amount') do |amount|
+          @doc.xpath('/Resources/DataItemResource/Amounts/Amount').each do |amount|
             amount_data = {}
             amount_data[:type] = amount.attribute('type').value
             amount_data[:value] = amount.text.to_f
@@ -140,7 +140,7 @@ module AMEE
             data[:amounts] << amount_data
           end
           data[:notes] = []
-          REXML::XPath.each(doc,'/Resources/DataItemResource/Amounts/Note') do |note|
+          @doc.xpath('/Resources/DataItemResource/Amounts/Note').each do |note|
             note_data = {}
             note_data[:type] = note.attribute('type').value
             note_data[:value] = note.text
@@ -148,24 +148,24 @@ module AMEE
           end
           # Get values
           data[:values] = []
-          REXML::XPath.each(doc, '/Resources/DataItemResource/DataItem/ItemValues/ItemValue') do |value|
+          @doc.xpath('/Resources/DataItemResource/DataItem/ItemValues/ItemValue').each do |value|
             value_data = {}
-            value_data[:name] = (value.elements['Name'] || value.elements['name']).text
-            value_data[:path] = (value.elements['Path'] || value.elements['path']).text
-            value_data[:value] = (value.elements['Value'] || value.elements['value']).text
-            value_data[:drill] = value.elements['ItemValueDefinition'].elements['DrillDown'].text == "false" ? false : true rescue nil
-            value_data[:uid] = value.attributes['uid'].to_s
+            value_data[:name] = x('Name', :doc => value) || x('name', :doc => value)
+            value_data[:path] = x('Path', :doc => value) || x('path', :doc => value)
+            value_data[:value] = x('Value', :doc => value) || x('value', :doc => value)
+            value_data[:drill] = x('ItemValueDefinition/DrillDown', :doc => value) == "false" ? false : true rescue nil
+            value_data[:uid] = x('@uid', :doc => value)
             data[:values] << value_data
           end
           # Get choices
           data[:choices] = []
-          REXML::XPath.each(doc, '/Resources/DataItemResource/Choices/Choices/Choice') do |choice|
+          @doc.xpath('/Resources/DataItemResource/Choices/Choices/Choice').each do |choice|
             choice_data = {}
-            choice_data[:name] = (choice.elements['Name']).text
-            choice_data[:value] = (choice.elements['Value']).text || ""
+            choice_data[:name] = x('Name', :doc => choice)
+            choice_data[:value] = x('Value', :doc => choice) || ""
             data[:choices] << choice_data
           end
-          data[:start_date] = DateTime.parse(REXML::XPath.first(doc, "/Resources/DataItemResource/DataItem/StartDate").text) rescue nil
+          data[:start_date] = DateTime.parse(x("/Resources/DataItemResource/DataItem/StartDate").text) rescue nil
           # Create object
           Item.new(data)
         rescue

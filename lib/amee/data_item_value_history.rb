@@ -88,8 +88,8 @@ module AMEE
         # Read XML
         data = {}
         data[:path] = path.gsub(/^\/data/, '')
-        doc = load_xml_doc(xml)
-        valuedocs=doc.xpath('//ItemValue')
+        @doc = load_xml_doc(xml)
+        valuedocs=@doc.xpath('//ItemValue')
         raise  if valuedocs.length==0
         data[:values] = valuedocs.map do |xml_item_value|
           ItemValue.from_xml(xml_item_value,path)

@@ -61,19 +61,19 @@ module AMEE
       
       def self.from_xml(xml, path)
         # Read XML
-        doc = REXML::Document.new(xml)
+        @doc = load_xml_doc(xml)
         data = {}
-        data[:uid] = REXML::XPath.first(doc, "/Resources/ProfileItemValueResource/ItemValue/@uid").to_s
-        data[:created] = DateTime.parse(REXML::XPath.first(doc, "/Resources/ProfileItemValueResource/ItemValue/@Created").to_s)
-        data[:modified] = DateTime.parse(REXML::XPath.first(doc, "/Resources/ProfileItemValueResource/ItemValue/@Modified").to_s)
-        data[:name] = REXML::XPath.first(doc, '/Resources/ProfileItemValueResource/ItemValue/Name').text
+        data[:uid] = x("/Resources/ProfileItemValueResource/ItemValue/@uid")
+        data[:created] = DateTime.parse(x("/Resources/ProfileItemValueResource/ItemValue/@Created"))
+        data[:modified] = DateTime.parse(x("/Resources/ProfileItemValueResource/ItemValue/@Modified"))
+        data[:name] = x('/Resources/ProfileItemValueResource/ItemValue/Name')
         data[:path] = path.gsub(/^\/profiles/, '')
-        data[:value] = REXML::XPath.first(doc, '/Resources/ProfileItemValueResource/ItemValue/Value').text
-        data[:unit] = REXML::XPath.first(doc, '/Resources/ProfileItemValueResource/ItemValue/Unit').text rescue nil
-        data[:per_unit] = REXML::XPath.first(doc, '/Resources/ProfileItemValueResource/ItemValue/PerUnit').text rescue nil
-        data[:type] = REXML::XPath.first(doc, '/Resources/ProfileItemValueResource/ItemValue/ItemValueDefinition/ValueDefinition/ValueType').text
-        data[:from_profile] = REXML::XPath.first(doc, '/Resources/ProfileItemValueResource/ItemValue/ItemValueDefinition/FromProfile').text == "true" ? true : false
-        data[:from_data] = REXML::XPath.first(doc, '/Resources/ProfileItemValueResource/ItemValue/ItemValueDefinition/FromData').text == "true" ? true : false
+        data[:value] = x('/Resources/ProfileItemValueResource/ItemValue/Value')
+        data[:unit] = x('/Resources/ProfileItemValueResource/ItemValue/Unit')
+        data[:per_unit] = x('/Resources/ProfileItemValueResource/ItemValue/PerUnit')
+        data[:type] = x('/Resources/ProfileItemValueResource/ItemValue/ItemValueDefinition/ValueDefinition/ValueType')
+        data[:from_profile] = x('/Resources/ProfileItemValueResource/ItemValue/ItemValueDefinition/FromProfile') == "true" ? true : false
+        data[:from_data] = x('/Resources/ProfileItemValueResource/ItemValue/ItemValueDefinition/FromData') == "true" ? true : false
         # Create object
         ItemValue.new(data)
       rescue

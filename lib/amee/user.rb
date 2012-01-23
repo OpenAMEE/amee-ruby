@@ -52,18 +52,22 @@ module AMEE
         raise AMEE::BadData.new("Couldn't load User from JSON. Check that your URL is correct.\n#{json}")
       end
 
+      def self.xmlpathpreamble
+        "//User/"
+      end
+
       def self.from_xml(xml)
         # Parse data from response into hash
-        doc = REXML::Document.new(xml)
+        @doc = load_xml_doc(xml)
         data = {}
-        data[:uid] = REXML::XPath.first(doc, "//User/@uid").to_s
-        data[:created] = DateTime.parse(REXML::XPath.first(doc, "//User/@created").to_s)
-        data[:modified] = DateTime.parse(REXML::XPath.first(doc, "//User/@modified").to_s)
-        data[:username] = REXML::XPath.first(doc, "//User/Username").text
-        data[:name] = REXML::XPath.first(doc, "//User/Name").text
-        data[:email] = REXML::XPath.first(doc, "//User/Email").text
-        data[:api_version] = REXML::XPath.first(doc, "//User/ApiVersion").text
-        data[:status] = REXML::XPath.first(doc, "//User/Status").text
+        data[:uid] = x("@uid")
+        data[:created] = DateTime.parse(x("@created"))
+        data[:modified] = DateTime.parse(x("@modified"))
+        data[:username] = x("Username")
+        data[:name] = x("Name")
+        data[:email] = x("Email")
+        data[:api_version] = x("ApiVersion")
+        data[:status] = x("Status")
         # Create object
         User.new(data)
       rescue
