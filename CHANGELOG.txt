@@ -1,5 +1,11 @@
 = Changelog
 
+== 4.4.0
+* Support Data Item calculations without needing a Profile
+* Change to use Typheous instead of Net::HTTP internally
+* Support Nokogiri 1.5
+* Made authentication more efficient
+
 == 4.3.2
 * Bugfix to cache key generation (introduced in 4.3.1)
 
