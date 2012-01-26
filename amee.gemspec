@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "amee"
-  s.version = "4.3.2"
+  s.version = "4.4.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["James Smith", "James Hetherington", "Andrew Hill", "Andrew Berkeley"]
-  s.date = "2012-01-13"
+  s.date = "2012-01-26"
   s.email = "james@floppy.org.uk"
   s.executables = ["ameesh"]
   s.extra_rdoc_files = [
@@ -27,8 +27,42 @@ Gem::Specification.new do |s|
     "VERSION",
     "amee.example.yml",
     "amee.gemspec",
+    "amee_test_credentials.example.yml",
     "bin/ameesh",
     "cacert.pem",
+    "cassettes/AMEE_Connection/v2/raising_unhandled_errors.yml",
+    "cassettes/AMEE_Connection/v3/retries/502.yml",
+    "cassettes/AMEE_Connection/v3/retries/503.yml",
+    "cassettes/AMEE_Connection/v3/retries/504.yml",
+    "cassettes/AMEE_Connection/v3/retries/AMEE_TimeOut.yml",
+    "cassettes/AMEE_Connection/v3/should_be_able_to_get_from_meta_server.yml",
+    "cassettes/AMEE_Connection/v3/should_be_able_to_handle_failed_gets_from_meta_server.yml",
+    "cassettes/AMEE_Connection/v3/should_be_able_to_post_to_meta_server.yml",
+    "cassettes/AMEE_Connection/v3/should_have_a_connection_to_meta_server.yml",
+    "cassettes/AMEE_Connection/v3/should_login_and_know_the_path_to_the_server.yml",
+    "cassettes/AMEE_Connection_Caching_Off/authenticating.yml",
+    "cassettes/AMEE_Connection_Caching_Off/first_request.yml",
+    "cassettes/AMEE_Connection_Caching_Off/second_request.yml",
+    "cassettes/AMEE_Connection_Caching_On/authenticating.yml",
+    "cassettes/AMEE_Connection_Caching_On/first_request.yml",
+    "cassettes/AMEE_Connection_Caching_clear_all/second_request.yml",
+    "cassettes/AMEE_Connection_Caching_clear_manually/second_request.yml",
+    "cassettes/AMEE_Connection_Caching_further_down_tree/second_request.yml",
+    "cassettes/AMEE_Connection_with_authentication/handling_404s.yml",
+    "cassettes/AMEE_Connection_with_authentication/hitting_private_urls.yml",
+    "cassettes/AMEE_Connection_with_authentication/raising_errors_if_permission_denied.yml",
+    "cassettes/AMEE_Connection_with_authentication/should_re-authenticate_and_refresh_authtoken_when_authtoken_expires.yml",
+    "cassettes/AMEE_Connection_with_authentication/should_refresh_authtoken_when_authtoken_is_changed.yml",
+    "cassettes/AMEE_Connection_with_authentication/using_a_v1_key.yml",
+    "cassettes/AMEE_Connection_with_authentication/using_a_v2_key/detects_the_API_version_for_JSON.yml",
+    "cassettes/AMEE_Connection_with_authentication/using_a_v2_key/detects_the_API_version_for_XML.yml",
+    "cassettes/AMEE_Connection_with_authentication_doing_write-requests.yml",
+    "cassettes/AMEE_Connection_with_authentication_doing_write-requests/working_with_an_existing_profile/deleting_existing_items.yml",
+    "cassettes/AMEE_Connection_with_authentication_doing_write-requests/working_with_an_existing_profile/sending_updates_to_existing_items.yml",
+    "cassettes/AMEE_Connection_with_bad_authentication_information/hitting_a_private_url.yml",
+    "cassettes/AMEE_Connection_with_bad_authentication_information/hitting_a_public_url.yml",
+    "cassettes/AMEE_Connection_with_incorrect_server_name.yml",
+    "cassettes/AMEE_Connection_with_retry_enabled.yml",
     "examples/create_profile.rb",
     "examples/create_profile_item.rb",
     "examples/list_profiles.rb",
