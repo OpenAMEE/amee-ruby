@@ -207,18 +207,18 @@ module AMEE
       end
 
       def self.create(connection,itemdefuid, options = {})
-        raise AMEE::NotSupported
-        #        unless options.is_a?(Hash)
-        #          raise AMEE::ArgumentError.new("Second argument must be a hash of options!")
-        #        end
-        #        # Send data
-        #        response = connection.post("/definitions/itemDefinitions/#{itemdefuid}/itemValueDefintions", options).body
-        #        # Parse response
-        #        item_value_definition = ItemValueDefinition.parse(connection, response)
-        #        # Get the ItemValueDefinition again
-        #        return ItemValueDefinition.load(connection,itemdefuid , item_value_definition.uid)
-        #      rescue
-        #        raise AMEE::BadData.new("Couldn't create ItemValueDefinition. Check that your information is correct.\n#{response}")
+        #raise AMEE::NotSupported
+         unless options.is_a?(Hash)
+           raise AMEE::ArgumentError.new("Second argument must be a hash of options!")
+         end
+         # Send data
+         response = connection.post("/definitions/itemDefinitions/#{itemdefuid}/itemValueDefinitions", options).body
+         # Parse response
+         item_value_definition = ItemValueDefinition.parse(connection, response)
+         # Get the ItemValueDefinition again
+         return ItemValueDefinition.load(connection,itemdefuid , item_value_definition.uid)
+       rescue
+         raise AMEE::BadData.new("Couldn't create ItemValueDefinition. Check that your information is correct.\n#{response}")
       end
 
       def self.delete(connection, itemdefuid,item_value_definition)

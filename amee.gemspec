@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "amee"
-  s.version = "4.4.0"
+  s.version = "4.4.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["James Smith", "James Hetherington", "Andrew Hill", "Andrew Berkeley"]
-  s.date = "2012-01-26"
+  s.date = "2012-02-02"
   s.email = "james@floppy.org.uk"
   s.executables = ["ameesh"]
   s.extra_rdoc_files = [
@@ -77,6 +77,7 @@ Gem::Specification.new do |s|
     "gemfiles/rails3.1.gemfile.lock",
     "init.rb",
     "lib/amee.rb",
+    "lib/amee/algorithm.rb",
     "lib/amee/collection.rb",
     "lib/amee/config.rb",
     "lib/amee/connection.rb",
@@ -171,7 +172,7 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/AMEE/amee-ruby"
   s.licenses = ["BSD 3-Clause"]
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.10"
+  s.rubygems_version = "1.8.15"
   s.summary = "Ruby interface to the AMEE carbon calculator"
 
   if s.respond_to? :specification_version then
