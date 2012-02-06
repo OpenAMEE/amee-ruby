@@ -81,7 +81,7 @@ module AMEE
         # Read JSON
         doc = JSON.parse(json)
         data = {}
-        p=doc['algorithmResource']['algorithm']
+        p=doc['algorithm']
         data[:uid] = p['uid']
         data[:itemdefuid] = p['itemDefinition']['uid']
         data[:created] = DateTime.parse(p['created'])
