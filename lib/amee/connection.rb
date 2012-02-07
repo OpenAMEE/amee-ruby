@@ -420,10 +420,16 @@ module AMEE
     end
 
     def cache_key(path)
-      # We have to make sure cache keys don't get too long for the filesystem,
-      # so we cut them off if they're too long and add a digest for uniqueness.
+      # Remote special characters from key names
       key = @server + path.gsub(/[^0-9a-z\/]/i, '').gsub(/\//i, '_')
-      key = (key.length < 250) ? key : key.first(218)+Digest::MD5.hexdigest(key)
+      # Work around Rails bug #4907 https://github.com/rails/rails/issues/4907
+      # Rails chunks the key into 230-char sections, but has a bug if
+      # eventual filename length are 229 or 230, so we check and add
+      # a pad if this would be the case.
+      if (key.length % 230 == 229 || key.length % 230 == 0)
+        key += 'xx'
+      end
+      key
     end
 
     public

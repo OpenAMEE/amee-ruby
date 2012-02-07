@@ -22,3 +22,6 @@ gem 'vcr',                        :group => :development
 gem 'webmock',                    :group => :development
 gem 'pry',                        :group => :development
 gem 'pry-doc',                    :group => :development
+
+
+gem 'rack', :group => :test

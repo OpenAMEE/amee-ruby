@@ -127,17 +127,16 @@ describe AMEE::Connection do
       @connection.send(:cache_key, "/%cache/$4/%20test").should eql 'stage.amee.com_cache_4_20test'
     end
     
-    it "trims cache keys to correct length for filenames, allowing for lock extension" do
+    it "works around rails 3 file store cache key bug by disallowing cache keys with length 229/230" do
       setup_connection
-      step = '/123456789'
-      test_str = step
-      # test lots of string lengths
-      while (test_str.length < 300)
+      cache = ActiveSupport::Cache.lookup_store(:file_store, '/tmp/amee-ruby-cache-test')
+      # test caching of lots of key lengths
+      (200..500).each do |i|
+        # Generate cache key
+        test_str = 'a' * i
         key = @connection.send(:cache_key, test_str)
-        key.starts_with?(@connection.server).should be_true
-        key.length.should <= 250
-        # next
-        test_str += step
+        lambda { cache.write(key, {}) }.should_not raise_error
+        cache.delete(key)
       end
     end
 
