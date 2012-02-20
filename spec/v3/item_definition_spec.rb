@@ -76,6 +76,16 @@ describe AMEE::Admin::ItemDefinition, "with an authenticated v3 connection" do
     @list.last.uid.should=='2B0A0E540D4C'
   end
   
+
+  it "should be able to load a return value definition list" do
+    connection = flexmock "connection"
+    connection.should_receive(:v3_get).with("/#{AMEE::Connection.api_version}/definitions/3E550E1F99CE;full", {}).and_return(fixture('itemdef_3E550E1F99CE.xml')).once
+    connection.should_receive(:retries).and_return(0).once
+    connection.should_receive(:v3_get).with("/#{AMEE::Connection.api_version}/definitions/3E550E1F99CE/returnvalues;full", {:resultStart => 0, :resultLimit => 10}).and_return(fixture('rvdlist.xml')).once
+    @data = AMEE::Admin::ItemDefinition.load(connection,"3E550E1F99CE")
+    @list=@data.return_value_definition_list
+    @list.length.should > 0
+  end
   
   it "should be able to load an item value definition list with only one usage" do
     connection = flexmock "connection"

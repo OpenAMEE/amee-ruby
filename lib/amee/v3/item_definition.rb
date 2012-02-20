@@ -35,6 +35,10 @@ module AMEE
         raise AMEE::BadData.new("Couldn't load ItemDefinition. Check that your URL is correct.\n#{$!}\n#{response}")
       end
 
+      def return_value_definition_list
+        @return_value_definitions ||= AMEE::Admin::ReturnValueDefinitionList.new(connection,uid)
+      end
+
       class << self
         alias_method :from_xml_without_v3, :from_xml
       end
