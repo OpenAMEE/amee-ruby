@@ -18,7 +18,7 @@ gem 'memcache-client',            :group => :development
 gem 'rcov',                       :group => :development
 gem 'rdoc',                       :group => :development
 gem 'activerecord', ">= 2.3.11",  :group => :development
-gem 'vcr',                        :group => :development
+gem 'vcr', "~> 1",                :group => :development
 gem 'webmock',                    :group => :development
 gem 'pry',                        :group => :development
 gem 'pry-doc',                    :group => :development
