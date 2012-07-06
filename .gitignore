@@ -8,3 +8,5 @@ pkg
 amee_test_credentials.yml
 
 Gemfile.lock
+.idea/
+*.iml
