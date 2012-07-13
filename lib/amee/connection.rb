@@ -113,8 +113,7 @@ module AMEE
       # Add parameters to URL query string
       get_params = {
         :method => "get", 
-        :verbose => DEBUG,
-        :follow_location => true
+        :verbose => DEBUG
       }
       get_params[:params] = data unless data.empty?
       # Create GET request
