@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "amee"
-  s.version = "4.4.0"
+  s.version = "4.5.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["James Smith", "James Hetherington", "Andrew Hill", "Andrew Berkeley"]
-  s.date = "2012-01-26"
+  s.date = "2013-01-22"
   s.email = "james@floppy.org.uk"
   s.executables = ["ameesh"]
   s.extra_rdoc_files = [
@@ -136,6 +136,7 @@ Gem::Specification.new do |s|
     "spec/fixtures/empty.xml",
     "spec/fixtures/empty_return_value_definition_list.xml",
     "spec/fixtures/itemdef.xml",
+    "spec/fixtures/itemdef_3E550E1F99CE.xml",
     "spec/fixtures/itemdef_441BF4BEA15B.xml",
     "spec/fixtures/itemdef_B4DA9E4AD5F2.xml",
     "spec/fixtures/itemdef_no_usages.xml",
@@ -147,6 +148,7 @@ Gem::Specification.new do |s|
     "spec/fixtures/rails_config.yml",
     "spec/fixtures/return_value_definition.xml",
     "spec/fixtures/return_value_definition_list.xml",
+    "spec/fixtures/rvdlist.xml",
     "spec/fixtures/v0_data_transport_transport_drill_transportType_Car1.xml",
     "spec/item_definition_spec.rb",
     "spec/item_value_definition_spec.rb",
@@ -171,7 +173,7 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/AMEE/amee-ruby"
   s.licenses = ["BSD 3-Clause"]
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.10"
+  s.rubygems_version = "1.8.24"
   s.summary = "Ruby interface to the AMEE carbon calculator"
 
   if s.respond_to? :specification_version then
@@ -185,7 +187,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<nokogiri>, ["~> 1.4"])
       s.add_runtime_dependency(%q<typhoeus>, [">= 0"])
       s.add_runtime_dependency(%q<log_buddy>, [">= 0"])
-      s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
+      s.add_development_dependency(%q<bundler>, [">= 1.1.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.6.4"])
       s.add_development_dependency(%q<rspec>, ["= 2.6.0"])
       s.add_development_dependency(%q<flexmock>, ["> 0.8.6"])
@@ -193,8 +195,8 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<rcov>, [">= 0"])
       s.add_development_dependency(%q<rdoc>, [">= 0"])
       s.add_development_dependency(%q<activerecord>, [">= 2.3.11"])
-      s.add_development_dependency(%q<vcr>, [">= 0"])
-      s.add_development_dependency(%q<webmock>, [">= 0"])
+      s.add_development_dependency(%q<vcr>, ["~> 1"])
+      s.add_development_dependency(%q<webmock>, ["< 1.8", ">= 1.7.0"])
       s.add_development_dependency(%q<pry>, [">= 0"])
       s.add_development_dependency(%q<pry-doc>, [">= 0"])
     else
@@ -205,7 +207,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<nokogiri>, ["~> 1.4"])
       s.add_dependency(%q<typhoeus>, [">= 0"])
       s.add_dependency(%q<log_buddy>, [">= 0"])
-      s.add_dependency(%q<bundler>, ["~> 1.0.0"])
+      s.add_dependency(%q<bundler>, [">= 1.1.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
       s.add_dependency(%q<rspec>, ["= 2.6.0"])
       s.add_dependency(%q<flexmock>, ["> 0.8.6"])
@@ -213,8 +215,8 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<rcov>, [">= 0"])
       s.add_dependency(%q<rdoc>, [">= 0"])
       s.add_dependency(%q<activerecord>, [">= 2.3.11"])
-      s.add_dependency(%q<vcr>, [">= 0"])
-      s.add_dependency(%q<webmock>, [">= 0"])
+      s.add_dependency(%q<vcr>, ["~> 1"])
+      s.add_dependency(%q<webmock>, ["< 1.8", ">= 1.7.0"])
       s.add_dependency(%q<pry>, [">= 0"])
       s.add_dependency(%q<pry-doc>, [">= 0"])
     end
@@ -226,7 +228,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<nokogiri>, ["~> 1.4"])
     s.add_dependency(%q<typhoeus>, [">= 0"])
     s.add_dependency(%q<log_buddy>, [">= 0"])
-    s.add_dependency(%q<bundler>, ["~> 1.0.0"])
+    s.add_dependency(%q<bundler>, [">= 1.1.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
     s.add_dependency(%q<rspec>, ["= 2.6.0"])
     s.add_dependency(%q<flexmock>, ["> 0.8.6"])
@@ -234,8 +236,8 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<rcov>, [">= 0"])
     s.add_dependency(%q<rdoc>, [">= 0"])
     s.add_dependency(%q<activerecord>, [">= 2.3.11"])
-    s.add_dependency(%q<vcr>, [">= 0"])
-    s.add_dependency(%q<webmock>, [">= 0"])
+    s.add_dependency(%q<vcr>, ["~> 1"])
+    s.add_dependency(%q<webmock>, ["< 1.8", ">= 1.7.0"])
     s.add_dependency(%q<pry>, [">= 0"])
     s.add_dependency(%q<pry-doc>, [">= 0"])
   end
