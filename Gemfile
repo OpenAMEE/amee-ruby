@@ -10,7 +10,7 @@ gem 'typhoeus'
 gem 'log_buddy'
 
 # Appraisal doesn't like group blocks, so we add individually for now.
-gem "bundler", "~> 1.1.0",          :group => :development
+gem "bundler", ">= 1.1.0",          :group => :development
 gem "jeweler", "~> 1.6.4",          :group => :development
 gem 'rspec', '2.6.0',               :group => :development
 gem 'flexmock', '> 0.8.6',          :group => :development
