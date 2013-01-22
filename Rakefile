@@ -83,6 +83,6 @@ require 'rdoc/task'
 RDoc::Task.new do |rd|
   rd.title = "AMEE Ruby"
   rd.rdoc_dir = 'doc'
-  rd.main = "README"
-  rd.rdoc_files.include("README", "lib/**/*.rb")
+  rd.main = "README.txt"
+  rd.rdoc_files.include("README.txt", "lib/**/*.rb")
 end
