@@ -6,7 +6,7 @@ Licensed under the BSD 3-Clause license (See LICENSE.txt for details)
 
 Author: James Smith, James Hetherington, Andrew Hill, Andrew Berkeley
 
-Copyright: Copyright (c) 2008-2011 AMEE UK Ltd
+Copyright: Copyright (c) 2008-2013 AMEE UK Ltd
 
 Homepage: http://github.com/AMEE/amee-ruby
 
