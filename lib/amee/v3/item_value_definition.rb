@@ -87,12 +87,6 @@ EOF
           @default
         end
       end
-
-      alias_method :expire_cache_without_v3, :expire_cache
-      def expire_cache
-        @connection.expire_matching("/#{AMEE::Connection.api_version}/definitions/#{itemdefuid}/values/#{uid}.*")
-        expire_cache_without_v3
-      end
     end
   end
 end

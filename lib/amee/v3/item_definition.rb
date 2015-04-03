@@ -71,12 +71,6 @@ module AMEE
         }
         @connection.v3_put("/#{AMEE::Connection.api_version}/definitions/#{@uid}",save_options)
       end
-
-      alias_method :expire_cache_without_v3, :expire_cache
-      def expire_cache
-        @connection.expire_matching("/#{AMEE::Connection.api_version}/definitions/#{@uid}.*")
-        expire_cache_without_v3
-      end
     end
   end
 end

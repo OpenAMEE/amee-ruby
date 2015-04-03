@@ -21,10 +21,6 @@ module AMEE
     attr_reader :path
     attr_reader :name
 
-    def expire_cache
-      @connection.expire_matching(full_path+'.*')
-    end
-    
     # A nice shared get/parse handler that handles retry on parse errors
     def self.get_and_parse(connection, path, options)
       # Note that we don't check the number of times retry has been done lower down
@@ -43,16 +39,12 @@ module AMEE
         end
       rescue JSON::ParserError, Nokogiri::XML::SyntaxError, REXML::ParseException => e
         # Invalid JSON or XML received, try the GET again in case it got cut off mid-stream
-        connection.expire(path)
         if delay = retries.shift
           sleep delay
           retry
         else
           raise
         end
-      rescue AMEE::BadData
-        connection.expire(path)
-        raise
       end
     end
     

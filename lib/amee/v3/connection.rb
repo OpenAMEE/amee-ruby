@@ -19,15 +19,13 @@ module AMEE
         :method => "get"
       }
       get_params[:params] = options unless options.empty?
-      # Send request (with caching)
-      v3_do_request(get_params, path, :cache => true)
+      # Send request
+      v3_do_request(get_params, path)
     end
 
     # Perform a PUT request
     # options hash should contain request body parameters
     def v3_put(path, options = {})
-      # Expire cached objects from parent on down
-      expire_matching "#{parent_path(path)}.*"
       # Create request parameters
       put_params = { 
         :method => "put",
@@ -47,8 +45,6 @@ module AMEE
     # It can also contain a :returnobj parameter which will cause
     # a full reponse object to be returned instead of just the body
     def v3_post(path, options = {})
-      # Expire cached objects from here on down
-      expire_matching "#{raw_path(path)}.*"
       # Get 'return full response object' flag
       return_obj = options.delete(:returnobj) || false
       # Create request parameters
@@ -67,8 +63,6 @@ module AMEE
 
     # Perform a POST request
     def v3_delete(path)
-      # Expire cached objects from here on down
-      expire_matching "#{parent_path(path)}.*"
       # Create request parameters
       delete_params = { 
         :method => "delete" 

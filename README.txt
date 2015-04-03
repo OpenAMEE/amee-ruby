@@ -90,23 +90,6 @@ database, an AMEE profile will be automatically created and destroyed with your
 model. By overriding the function amee_save in your model, you can store data in
 AMEE when your model is saved.
 
-== CACHING
-
-The AMEE::Connection object implements an optional cache for GET requests.
-
-This uses ActiveSupport::Cache, and supports any ActiveSupport::Cache::Store
-caching method except for MemCacheStore (which doesn't provide required features).
-
-All GET requests are cached. POST, PUT, or DELETEs will clear the cache for any
-path that matches the affected URL. #expire, #expire_matching, and #expire_all
-functions are available for manual cache management. Also, all AMEE objects have
-and #expire-cache function to clear them and their descendants from the cache.
-
-To enable caching, pass ':cache => :memory_store' to AMEE::Connection.new, or add
-'cache: memory_store' to your amee.yml if using Rails. If you want to use the
-same caching configuration as your Rails app, you can add 'cache: rails' to 
-amee.yml instead. Caching is disabled by default.
-
 == RETRY / TIMEOUT SUPPORT
 
 The AMEE::Connection object can now automatically retry if a request fails due to 
