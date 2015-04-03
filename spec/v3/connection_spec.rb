@@ -10,9 +10,9 @@ describe AMEE::Connection do
   end
 
   it "should have a connection to meta server" do
-      VCR.use_cassette("AMEE_Connection/v3/should have a connection to meta server") do
+    VCR.use_cassette("AMEE_Connection/v3/should have a connection to meta server") do
       @c.authenticate.should_not be_nil
-      end
+    end
   end
 
   it "should login and know the path to the server" do

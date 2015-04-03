@@ -49,33 +49,31 @@ describe AMEE::Connection, "with authentication" do
   end
 
   describe "using a version 2 api key" do
-    
-  it "should start out unauthenticated" do
-    amee = AMEE::Connection.new('stage.amee.com', AMEE_V2_API_KEY, AMEE_V2_PASSWORD)
-    amee.authenticated?.should be_false
-  end
-
-  it "detects the API version (2 - XML) normally" do
-    VCR.use_cassette('AMEE_Connection_with_authentication/using_a_v2_key/detects the API version for XML') do
+    it "should start out unauthenticated" do
       amee = AMEE::Connection.new('stage.amee.com', AMEE_V2_API_KEY, AMEE_V2_PASSWORD)
-      amee.authenticate
-      amee.authenticated?.should be_true
-      amee.version.should == 2.0
+      amee.authenticated?.should be_false
+    end
+
+    it "detects the API version (2 - XML) normally" do
+      VCR.use_cassette('AMEE_Connection_with_authentication/using_a_v2_key/detects the API version for XML') do
+        amee = AMEE::Connection.new('stage.amee.com', AMEE_V2_API_KEY, AMEE_V2_PASSWORD)
+        amee.authenticate
+        amee.authenticated?.should be_true
+        amee.version.should == 2.0
+      end
+    end
+
+    it "detects the API version (2 - JSON)" do
+      VCR.use_cassette('AMEE_Connection_with_authentication/using_a_v2_key/detects the API version for JSON') do
+        amee = AMEE::Connection.new('stage.amee.com', AMEE_V2_API_KEY, AMEE_V2_PASSWORD)
+        amee.authenticate
+        amee.authenticated?.should be_true
+        amee.version.should == 2.0
+      end
     end
   end
 
-  it "detects the API version (2 - JSON)" do
-    VCR.use_cassette('AMEE_Connection_with_authentication/using_a_v2_key/detects the API version for JSON') do
-      amee = AMEE::Connection.new('stage.amee.com', AMEE_V2_API_KEY, AMEE_V2_PASSWORD)
-      amee.authenticate
-      amee.authenticated?.should be_true
-      amee.version.should == 2.0
-    end
-  end
-
-  end
-
-  describe "hitting_private_urls", :vcr => true do
+  describe "hitting_private_urls", :vcr => {:cassette_name => 'AMEE_Connection_with_authentication/hitting_private_urls'} do
     it "should be able to get private URLs" do
       amee = AMEE::Connection.new('stage.amee.com', AMEE_V2_API_KEY, AMEE_V2_PASSWORD)
       amee.get('/data') do |response|

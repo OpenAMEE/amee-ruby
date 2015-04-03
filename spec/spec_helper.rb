@@ -11,6 +11,9 @@ require 'webmock/rspec'
 $:.unshift(File.dirname(__FILE__) + '/../lib')
 require 'amee'
 
+WebMock.enable!
+WebMock.disable_net_connect!
+
 def test_credentials(filename)
   test_creds = File.read File.dirname(__FILE__)+'/../'+filename
   YAML.load(test_creds)
