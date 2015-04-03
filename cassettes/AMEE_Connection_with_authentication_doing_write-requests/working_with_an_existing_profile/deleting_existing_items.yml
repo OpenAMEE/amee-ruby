@@ -1,108 +1,128 @@
---- 
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+---
+http_interactions:
+- request:
     method: get
-    uri: https://stage.amee.com:443/data/test/apitests/drill
-    body: 
-    headers: 
-      accept: 
+    uri: https://stage.amee.com/data/test/apitests/drill
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
       - application/json
-      cookie: 
+      Cookie:
       - AuthToken=JbPhZh2bbduzF3r9cGb3YKW3gF4ZHTetT2YmsHksnPbvrzQFhmBfyin7yAJi53zp+N2jWuEK1m9gtIuNcz2u3QZakEjT/SezOAp/DOzn5I4=
-      authtoken: 
+      Authtoken:
       - JbPhZh2bbduzF3r9cGb3YKW3gF4ZHTetT2YmsHksnPbvrzQFhmBfyin7yAJi53zp+N2jWuEK1m9gtIuNcz2u3QZakEjT/SezOAp/DOzn5I4=
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+  response:
+    status:
       code: 200
       message: OK
-    headers: 
-      expires: 
+    headers:
+      Expires:
       - Sun, 27 Nov 2011 01:19:25 GMT
-      last-modified: 
+      Last-Modified:
       - Mon, 28 Nov 2011 01:19:25 GMT
-      content-type: 
+      Content-Type:
       - application/json; charset=UTF-8
-      via: 
+      Via:
       - 1.1 stage.amee.com
-      server: 
+      Server:
       - Noelios-Restlet-Engine/1.1.10
-      date: 
+      Date:
       - Mon, 28 Nov 2011 01:19:25 GMT
-      content-length: 
-      - "2867"
-      set-cookie: 
-      - authToken=/GtLagog4PlDX3b2A4Hn4msb+XB9vhnjNR1dRJXCFyGSM1BOfQ5QkjhaCP1Uw07WEpBSF/CZvkgeLyXTOAWvpbUAVHpdb+xhvrRz6mSM91U=; Path=/
-      authtoken: 
+      Content-Length:
+      - '2867'
+      Set-Cookie:
+      - authToken=/GtLagog4PlDX3b2A4Hn4msb+XB9vhnjNR1dRJXCFyGSM1BOfQ5QkjhaCP1Uw07WEpBSF/CZvkgeLyXTOAWvpbUAVHpdb+xhvrRz6mSM91U=;
+        Path=/
+      Authtoken:
       - /GtLagog4PlDX3b2A4Hn4msb+XB9vhnjNR1dRJXCFyGSM1BOfQ5QkjhaCP1Uw07WEpBSF/CZvkgeLyXTOAWvpbUAVHpdb+xhvrRz6mSM91U=
-      vary: 
+      Vary:
       - Accept-Charset,Accept-Encoding,Accept-Language,Accept
-    body: "{\"apiVersion\":\"2.0\",\"dataCategory\":{\"uid\":\"039DCB9BA67D\",\"dataCategory\":{\"uid\":\"6153F468BE05\",\"deprecated\":false,\"name\":\"Test\",\"path\":\"test\"},\"deprecated\":false,\"environment\":{\"uid\":\"5F5887BCF726\",\"itemsPerFeed\":10,\"description\":\"\",\"name\":\"AMEE\",\"owner\":\"\",\"path\":\"\",\"itemsPerPage\":10},\"created\":\"2009-08-12 05:19:33.0\",\"name\":\"api tests\",\"path\":\"apitests\",\"itemDefinition\":{\"uid\":\"CF344E20E9AC\",\"environment\":{\"uid\":\"5F5887BCF726\"},\"created\":\"2008-10-28 17:06:33.0\",\"name\":\"AAATipTest\",\"drillDown\":\"question\",\"modified\":\"2008-10-28 17:06:33.0\"},\"modified\":\"2011-05-16 09:37:01.0\"},\"choices\":{\"choices\":[{\"name\":\"0N5G8ZU3WS41\",\"value\":\"0N5G8ZU3WS41\"},{\"name\":\"183FFBE17C25\",\"value\":\"183FFBE17C25\"},{\"name\":\"1CFCEC1A472A\",\"value\":\"1CFCEC1A472A\"},{\"name\":\"2C8F8227A042\",\"value\":\"2C8F8227A042\"},{\"name\":\"37C208E87756\",\"value\":\"37C208E87756\"},{\"name\":\"3D33112A65C0\",\"value\":\"3D33112A65C0\"},{\"name\":\"407ED18C3817\",\"value\":\"407ED18C3817\"},{\"name\":\"41AED8E0EC9E\",\"value\":\"41AED8E0EC9E\"},{\"name\":\"4C2F3C271904\",\"value\":\"4C2F3C271904\"},{\"name\":\"4O7USJN9J2J3\",\"value\":\"4O7USJN9J2J3\"},{\"name\":\"5831AD8B9E7E\",\"value\":\"5831AD8B9E7E\"},{\"name\":\"5832C2374DCD\",\"value\":\"5832C2374DCD\"},{\"name\":\"59948BD49A71\",\"value\":\"59948BD49A71\"},{\"name\":\"5E9B831A406E\",\"value\":\"5E9B831A406E\"},{\"name\":\"5ED64E179495\",\"value\":\"5ED64E179495\"},{\"name\":\"65BFAF323FD5\",\"value\":\"65BFAF323FD5\"},{\"name\":\"73GGRY0D11AJ\",\"value\":\"73GGRY0D11AJ\"},{\"name\":\"8A3B5340BF7A\",\"value\":\"8A3B5340BF7A\"},{\"name\":\"8AC4A5B32373\",\"value\":\"8AC4A5B32373\"},{\"name\":\"9GFREPAVG6HZ\",\"value\":\"9GFREPAVG6HZ\"},{\"name\":\"A54520F7A30B\",\"value\":\"A54520F7A30B\"},{\"name\":\"A604B970190F\",\"value\":\"A604B970190F\"},{\"name\":\"AQ297KQMVM8U\",\"value\":\"AQ297KQMVM8U\"},{\"name\":\"B29847A544D9\",\"value\":\"B29847A544D9\"},{\"name\":\"BA4AA96D1F7F\",\"value\":\"BA4AA96D1F7F\"},{\"name\":\"BC99D35DDB12\",\"value\":\"BC99D35DDB12\"},{\"name\":\"BDD984570CEF\",\"value\":\"BDD984570CEF\"},{\"name\":\"DDCE5C51D3E1\",\"value\":\"DDCE5C51D3E1\"},{\"name\":\"E24G1S1A5U15\",\"value\":\"E24G1S1A5U15\"},{\"name\":\"EFE327521EE1\",\"value\":\"EFE327521EE1\"},{\"name\":\"EYO5KARRH4VI\",\"value\":\"EYO5KARRH4VI\"},{\"name\":\"FB2089863267\",\"value\":\"FB2089863267\"},{\"name\":\"FCEAD07C89F0\",\"value\":\"FCEAD07C89F0\"},{\"name\":\"GPIV5M3F6TWZ\",\"value\":\"GPIV5M3F6TWZ\"},{\"name\":\"KPEZCYPHISO8\",\"value\":\"KPEZCYPHISO8\"},{\"name\":\"L9J8316ZOW3P\",\"value\":\"L9J8316ZOW3P\"},{\"name\":\"LETSBYHU5T3R\",\"value\":\"LETSBYHU5T3R\"},{\"name\":\"N4F33P0U2R27\",\"value\":\"N4F33P0U2R27\"},{\"name\":\"NKYS4OCPGRXN\",\"value\":\"NKYS4OCPGRXN\"},{\"name\":\"RD6GN6RGO7JF\",\"value\":\"RD6GN6RGO7JF\"},{\"name\":\"SNNYQYS1O093\",\"value\":\"SNNYQYS1O093\"},{\"name\":\"STZKIU2EZMWS\",\"value\":\"STZKIU2EZMWS\"},{\"name\":\"T6YG5A92DKJW\",\"value\":\"T6YG5A92DKJW\"},{\"name\":\"U5OS0F2ZXC31\",\"value\":\"U5OS0F2ZXC31\"},{\"name\":\"UU0T33XGU9UZ\",\"value\":\"UU0T33XGU9UZ\"},{\"name\":\"UUKSVHNQJKBW\",\"value\":\"UUKSVHNQJKBW\"}],\"name\":\"uid\"},\"selections\":[{\"name\":\"question\",\"value\":\"\"}],\"itemDefinition\":{\"uid\":\"CF344E20E9AC\"}}"
-    http_version: "1.1"
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+    body:
+      encoding: UTF-8
+      string: ! '{"apiVersion":"2.0","dataCategory":{"uid":"039DCB9BA67D","dataCategory":{"uid":"6153F468BE05","deprecated":false,"name":"Test","path":"test"},"deprecated":false,"environment":{"uid":"5F5887BCF726","itemsPerFeed":10,"description":"","name":"AMEE","owner":"","path":"","itemsPerPage":10},"created":"2009-08-12
+        05:19:33.0","name":"api tests","path":"apitests","itemDefinition":{"uid":"CF344E20E9AC","environment":{"uid":"5F5887BCF726"},"created":"2008-10-28
+        17:06:33.0","name":"AAATipTest","drillDown":"question","modified":"2008-10-28
+        17:06:33.0"},"modified":"2011-05-16 09:37:01.0"},"choices":{"choices":[{"name":"0N5G8ZU3WS41","value":"0N5G8ZU3WS41"},{"name":"183FFBE17C25","value":"183FFBE17C25"},{"name":"1CFCEC1A472A","value":"1CFCEC1A472A"},{"name":"2C8F8227A042","value":"2C8F8227A042"},{"name":"37C208E87756","value":"37C208E87756"},{"name":"3D33112A65C0","value":"3D33112A65C0"},{"name":"407ED18C3817","value":"407ED18C3817"},{"name":"41AED8E0EC9E","value":"41AED8E0EC9E"},{"name":"4C2F3C271904","value":"4C2F3C271904"},{"name":"4O7USJN9J2J3","value":"4O7USJN9J2J3"},{"name":"5831AD8B9E7E","value":"5831AD8B9E7E"},{"name":"5832C2374DCD","value":"5832C2374DCD"},{"name":"59948BD49A71","value":"59948BD49A71"},{"name":"5E9B831A406E","value":"5E9B831A406E"},{"name":"5ED64E179495","value":"5ED64E179495"},{"name":"65BFAF323FD5","value":"65BFAF323FD5"},{"name":"73GGRY0D11AJ","value":"73GGRY0D11AJ"},{"name":"8A3B5340BF7A","value":"8A3B5340BF7A"},{"name":"8AC4A5B32373","value":"8AC4A5B32373"},{"name":"9GFREPAVG6HZ","value":"9GFREPAVG6HZ"},{"name":"A54520F7A30B","value":"A54520F7A30B"},{"name":"A604B970190F","value":"A604B970190F"},{"name":"AQ297KQMVM8U","value":"AQ297KQMVM8U"},{"name":"B29847A544D9","value":"B29847A544D9"},{"name":"BA4AA96D1F7F","value":"BA4AA96D1F7F"},{"name":"BC99D35DDB12","value":"BC99D35DDB12"},{"name":"BDD984570CEF","value":"BDD984570CEF"},{"name":"DDCE5C51D3E1","value":"DDCE5C51D3E1"},{"name":"E24G1S1A5U15","value":"E24G1S1A5U15"},{"name":"EFE327521EE1","value":"EFE327521EE1"},{"name":"EYO5KARRH4VI","value":"EYO5KARRH4VI"},{"name":"FB2089863267","value":"FB2089863267"},{"name":"FCEAD07C89F0","value":"FCEAD07C89F0"},{"name":"GPIV5M3F6TWZ","value":"GPIV5M3F6TWZ"},{"name":"KPEZCYPHISO8","value":"KPEZCYPHISO8"},{"name":"L9J8316ZOW3P","value":"L9J8316ZOW3P"},{"name":"LETSBYHU5T3R","value":"LETSBYHU5T3R"},{"name":"N4F33P0U2R27","value":"N4F33P0U2R27"},{"name":"NKYS4OCPGRXN","value":"NKYS4OCPGRXN"},{"name":"RD6GN6RGO7JF","value":"RD6GN6RGO7JF"},{"name":"SNNYQYS1O093","value":"SNNYQYS1O093"},{"name":"STZKIU2EZMWS","value":"STZKIU2EZMWS"},{"name":"T6YG5A92DKJW","value":"T6YG5A92DKJW"},{"name":"U5OS0F2ZXC31","value":"U5OS0F2ZXC31"},{"name":"UU0T33XGU9UZ","value":"UU0T33XGU9UZ"},{"name":"UUKSVHNQJKBW","value":"UUKSVHNQJKBW"}],"name":"uid"},"selections":[{"name":"question","value":""}],"itemDefinition":{"uid":"CF344E20E9AC"}}'
+    http_version: '1.1'
+  recorded_at: Fri, 03 Apr 2015 12:11:33 GMT
+- request:
     method: post
-    uri: https://stage.amee.com:443/profiles/8YUXNC2S1KDB/test/apitests
-    body: dataItemUid=0N5G8ZU3WS41
-    headers: 
-      accept: 
+    uri: https://stage.amee.com/profiles/8YUXNC2S1KDB/test/apitests
+    body:
+      encoding: UTF-8
+      string: dataItemUid=0N5G8ZU3WS41
+    headers:
+      Accept:
       - application/json
-      cookie: 
+      Cookie:
       - AuthToken=JbPhZh2bbduzF3r9cGb3YKW3gF4ZHTetT2YmsHksnPbvrzQFhmBfyin7yAJi53zp+N2jWuEK1m9gtIuNcz2u3QZakEjT/SezOAp/DOzn5I4=
-      authtoken: 
+      Authtoken:
       - JbPhZh2bbduzF3r9cGb3YKW3gF4ZHTetT2YmsHksnPbvrzQFhmBfyin7yAJi53zp+N2jWuEK1m9gtIuNcz2u3QZakEjT/SezOAp/DOzn5I4=
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+  response:
+    status:
       code: 201
       message: Created
-    headers: 
-      location: 
+    headers:
+      Location:
       - https://stage.amee.com/profiles/8YUXNC2S1KDB/test/apitests/KSYY092PCNA7
-      content-type: 
+      Content-Type:
       - text/plain
-      via: 
+      Via:
       - 1.1 stage.amee.com
-      server: 
+      Server:
       - Noelios-Restlet-Engine/1.1.10
-      date: 
+      Date:
       - Mon, 28 Nov 2011 01:19:25 GMT
-      content-length: 
-      - "0"
-      set-cookie: 
-      - authToken=/GtLagog4PlDX3b2A4Hn4msb+XB9vhnjNR1dRJXCFyE8JgdGr+4RnkooGQFGURmeckBjVffwJZl5ltq3UKMAwO3oXNMiLNUeNANCEbXFKhU=; Path=/
-      authtoken: 
+      Content-Length:
+      - '0'
+      Set-Cookie:
+      - authToken=/GtLagog4PlDX3b2A4Hn4msb+XB9vhnjNR1dRJXCFyE8JgdGr+4RnkooGQFGURmeckBjVffwJZl5ltq3UKMAwO3oXNMiLNUeNANCEbXFKhU=;
+        Path=/
+      Authtoken:
       - /GtLagog4PlDX3b2A4Hn4msb+XB9vhnjNR1dRJXCFyE8JgdGr+4RnkooGQFGURmeckBjVffwJZl5ltq3UKMAwO3oXNMiLNUeNANCEbXFKhU=
-    body: 
-    http_version: "1.1"
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+    body:
+      encoding: US-ASCII
+      string: ''
+    http_version: '1.1'
+  recorded_at: Fri, 03 Apr 2015 12:11:33 GMT
+- request:
     method: delete
-    uri: https://stage.amee.com:443/profiles/8YUXNC2S1KDB/test/apitests/KSYY092PCNA7
-    body: 
-    headers: 
-      accept: 
+    uri: https://stage.amee.com/profiles/8YUXNC2S1KDB/test/apitests/KSYY092PCNA7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
       - application/json
-      cookie: 
+      Cookie:
       - AuthToken=JbPhZh2bbduzF3r9cGb3YKW3gF4ZHTetT2YmsHksnPbvrzQFhmBfyin7yAJi53zp+N2jWuEK1m9gtIuNcz2u3QZakEjT/SezOAp/DOzn5I4=
-      authtoken: 
+      Authtoken:
       - JbPhZh2bbduzF3r9cGb3YKW3gF4ZHTetT2YmsHksnPbvrzQFhmBfyin7yAJi53zp+N2jWuEK1m9gtIuNcz2u3QZakEjT/SezOAp/DOzn5I4=
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+  response:
+    status:
       code: 200
       message: OK
-    headers: 
-      content-type: 
+    headers:
+      Content-Type:
       - text/plain
-      via: 
+      Via:
       - 1.1 stage.amee.com
-      server: 
+      Server:
       - Noelios-Restlet-Engine/1.1.10
-      date: 
+      Date:
       - Mon, 28 Nov 2011 01:19:25 GMT
-      content-length: 
-      - "0"
-      set-cookie: 
-      - authToken=/GtLagog4PlDX3b2A4Hn4msb+XB9vhnjNR1dRJXCFyGTEesjk+1uc2VIP7CvFJTMtutyWBcZ1tIdeKIXgCB5c3m9xPVWVBYA+Synm6cMSDU=; Path=/
-      authtoken: 
+      Content-Length:
+      - '0'
+      Set-Cookie:
+      - authToken=/GtLagog4PlDX3b2A4Hn4msb+XB9vhnjNR1dRJXCFyGTEesjk+1uc2VIP7CvFJTMtutyWBcZ1tIdeKIXgCB5c3m9xPVWVBYA+Synm6cMSDU=;
+        Path=/
+      Authtoken:
       - /GtLagog4PlDX3b2A4Hn4msb+XB9vhnjNR1dRJXCFyGTEesjk+1uc2VIP7CvFJTMtutyWBcZ1tIdeKIXgCB5c3m9xPVWVBYA+Synm6cMSDU=
-    body: 
-    http_version: "1.1"
+    body:
+      encoding: US-ASCII
+      string: ''
+    http_version: '1.1'
+  recorded_at: Fri, 03 Apr 2015 12:11:33 GMT
+recorded_with: VCR 2.9.3

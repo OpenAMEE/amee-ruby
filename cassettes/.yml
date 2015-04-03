@@ -1,0 +1,24 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://stage.amee.com/auth/signIn
+    body:
+      encoding: US-ASCII
+      string: username=<AMEE_V2_API_KEY>&password=<AMEE_V1_PASSWORD>
+    headers:
+      User-Agent:
+      - Typhoeus - https://github.com/typhoeus/typhoeus
+      Accept:
+      - application/xml
+  response:
+    status:
+      code: 0
+      message: 
+    headers: {}
+    body:
+      encoding: US-ASCII
+      string: ''
+    http_version: 
+  recorded_at: Fri, 03 Apr 2015 12:29:47 GMT
+recorded_with: VCR 2.9.3

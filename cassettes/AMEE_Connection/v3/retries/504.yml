@@ -1,36 +1,44 @@
---- 
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+---
+http_interactions:
+- request:
     method: post
-    uri: https://stage.amee.com:443/auth/signIn
-    body: username=<AMEE_V3_API_KEY>&password=<AMEE_V3_PASSWORD>
-    headers: 
-      accept: 
+    uri: https://stage.amee.com/auth/signIn
+    body:
+      encoding: UTF-8
+      string: username=<AMEE_V3_API_KEY>&password=<AMEE_V3_PASSWORD>
+    headers:
+      Accept:
       - application/xml
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+  response:
+    status:
       code: 200
       message: OK
-    headers: 
-      expires: 
+    headers:
+      Expires:
       - Sun, 27 Nov 2011 23:36:20 GMT
-      last-modified: 
+      Last-Modified:
       - Mon, 28 Nov 2011 23:36:20 GMT
-      content-type: 
+      Content-Type:
       - application/xml; charset=UTF-8
-      via: 
+      Via:
       - 1.1 stage.amee.com
-      server: 
+      Server:
       - Noelios-Restlet-Engine/1.1.10
-      date: 
+      Date:
       - Mon, 28 Nov 2011 23:36:20 GMT
-      set-cookie: 
-      - authToken=Q+Ai7HxLVb86a5p1VbY4zMFJM5ML6Zc/iyu0gIHc1/HWeJQgVOPNTOTvAIrnN1WH3RKD0ktGN92ro+fDpltQKplp4bk2QjZIwpOvmx2GXbo=; Path=/
-      authtoken: 
+      Set-Cookie:
+      - authToken=Q+Ai7HxLVb86a5p1VbY4zMFJM5ML6Zc/iyu0gIHc1/HWeJQgVOPNTOTvAIrnN1WH3RKD0ktGN92ro+fDpltQKplp4bk2QjZIwpOvmx2GXbo=;
+        Path=/
+      Authtoken:
       - Q+Ai7HxLVb86a5p1VbY4zMFJM5ML6Zc/iyu0gIHc1/HWeJQgVOPNTOTvAIrnN1WH3RKD0ktGN92ro+fDpltQKplp4bk2QjZIwpOvmx2GXbo=
-      vary: 
+      Vary:
       - Accept-Charset,Accept-Encoding,Accept-Language,Accept
-      transfer-encoding: 
+      Transfer-Encoding:
       - chunked
-    body: <?xml version="1.0" encoding="UTF-8" standalone="no"?><Resources><SignInResource><Next>/auth</Next><User uid="9D376C97D76F"><Status>ACTIVE</Status><Type>STANDARD</Type><ApiVersion>2.0</ApiVersion><Locale>en_GB</Locale><TimeZone>Europe/London</TimeZone></User></SignInResource></Resources>
-    http_version: "1.1"
+    body:
+      encoding: UTF-8
+      string: <?xml version="1.0" encoding="UTF-8" standalone="no"?><Resources><SignInResource><Next>/auth</Next><User
+        uid="9D376C97D76F"><Status>ACTIVE</Status><Type>STANDARD</Type><ApiVersion>2.0</ApiVersion><Locale>en_GB</Locale><TimeZone>Europe/London</TimeZone></User></SignInResource></Resources>
+    http_version: '1.1'
+  recorded_at: Fri, 03 Apr 2015 12:11:33 GMT
+recorded_with: VCR 2.9.3

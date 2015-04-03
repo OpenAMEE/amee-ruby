@@ -15,8 +15,8 @@ gem 'rspec', '2.6.0',               :group => :development
 gem 'flexmock', '> 0.8.6',          :group => :development
 gem 'memcache-client',              :group => :development
 gem 'activerecord', '>= 2.3.11',    :group => :development
-gem 'vcr', '~> 1',                  :group => :development
-gem 'webmock', '>= 1.7.0', '< 1.8', :group => :development
+gem 'vcr',                          :group => :development
+gem 'webmock',                      :group => :development
 gem 'pry',                          :group => :development
 gem 'pry-doc',                      :group => :development
 

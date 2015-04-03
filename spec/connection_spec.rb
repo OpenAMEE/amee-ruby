@@ -39,8 +39,7 @@ end
 
 describe AMEE::Connection, "with authentication" do
 
-  describe "using a version 1 api key" do
-    use_vcr_cassette "AMEE_Connection_with_authentication/using a v1 key", :record => :new_episodes
+  describe "using a version 1 api key", {:vcr => {:cassette_name => "AMEE_Connection_with_authentication/using a v1 key"}} do
     it "detects the API version (1)" do
       amee = AMEE::Connection.new('stage.amee.com', AMEE_V1_API_KEY, AMEE_V1_PASSWORD)
       amee.authenticate
@@ -76,9 +75,7 @@ describe AMEE::Connection, "with authentication" do
 
   end
 
-  describe "hitting_private_urls" do
-    use_vcr_cassette
-
+  describe "hitting_private_urls", :vcr => true do
     it "should be able to get private URLs" do
       amee = AMEE::Connection.new('stage.amee.com', AMEE_V2_API_KEY, AMEE_V2_PASSWORD)
       amee.get('/data') do |response|
@@ -88,17 +85,14 @@ describe AMEE::Connection, "with authentication" do
     end
   end
 
-  describe "handling 404s" do
-    use_vcr_cassette
+  describe "handling 404s", :vcr => true do
     it "should handle 404s gracefully" do
       amee = AMEE::Connection.new('stage.amee.com', AMEE_V2_API_KEY, AMEE_V2_PASSWORD)
       lambda{amee.get('/missing_url')}.should raise_error(AMEE::NotFound, "The URL was not found on the server.\nRequest: GET /missing_url")
     end
   end
 
-  describe "raising errors if permission denied" do
-    use_vcr_cassette
-
+  describe "raising errors if permission denied", :vcr => true do
     it "should raise error if permission for operation is denied" do
       amee = AMEE::Connection.new('stage.amee.com', AMEE_V2_API_KEY, AMEE_V2_PASSWORD)
       lambda {
@@ -150,8 +144,7 @@ describe AMEE::Connection, "with authentication" do
 
 end
 
-describe AMEE::Connection, "with retry enabled" do
-  use_vcr_cassette
+describe AMEE::Connection, "with retry enabled", :vcr => true do
   [
     AMEE::TimeOut,
   ].each do |e|
@@ -238,9 +231,7 @@ describe AMEE::Connection, "with retry enabled" do
 
 end
 
-describe AMEE::Connection, "with incorrect server name" do
-
-  use_vcr_cassette
+describe AMEE::Connection, "with incorrect server name", :vcr => true do
   it "should raise a useful error" do
     amee = AMEE::Connection.new('badservername.example.com', AMEE_V2_API_KEY, AMEE_V2_PASSWORD)
     lambda{
@@ -252,8 +243,7 @@ end
 
 describe AMEE::Connection, "with bad authentication information" do
 
-  describe "hitting a private url" do
-    use_vcr_cassette
+  describe "hitting a private url", :vcr => true do
     it "should get an authentication failure" do
       amee = AMEE::Connection.new('stage.amee.com', 'wrong', 'details')
       lambda{
@@ -265,8 +255,7 @@ describe AMEE::Connection, "with bad authentication information" do
   # according to the docs, public urls should not be accessible without
   # an api key either
   # http://www.amee.com/developer/docs/apc.php#auth-reference
-  describe "hitting a public url" do
-    use_vcr_cassette
+  describe "hitting a public url", :vcr => true do
     it "should not be capable of making requests for public URLs" do
       amee = AMEE::Connection.new('stage.amee.com', 'wrong', 'details')
       lambda{
@@ -279,8 +268,7 @@ describe AMEE::Connection, "with bad authentication information" do
 
 end
 
-describe AMEE::Connection, "with authentication , doing write-requests" do
-  use_vcr_cassette
+describe AMEE::Connection, "with authentication , doing write-requests", :vcr => true do
   it "should be able to send post requests" do
     amee = AMEE::Connection.new('stage.amee.com', AMEE_V2_API_KEY, AMEE_V2_PASSWORD)
     amee.post('/profiles', {:profile => true}) do |response|
@@ -290,8 +278,7 @@ describe AMEE::Connection, "with authentication , doing write-requests" do
 
   describe "working with an existing profile" do
 
-    describe "sending updates to existing items" do
-      use_vcr_cassette
+    describe "sending updates to existing items", :vcr => true do
       it "should be possible" do
 
         amee = AMEE::Connection.new('stage.amee.com', AMEE_V2_API_KEY, AMEE_V2_PASSWORD)
@@ -312,8 +299,7 @@ describe AMEE::Connection, "with authentication , doing write-requests" do
       end
     end
 
-    describe "deleting existing items" do
-      use_vcr_cassette
+    describe "deleting existing items", :vcr => true do
       it "should also be possible" do
 
         amee = AMEE::Connection.new('stage.amee.com', AMEE_V2_API_KEY, AMEE_V2_PASSWORD)

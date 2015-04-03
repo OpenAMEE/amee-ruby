@@ -1,75 +1,89 @@
---- 
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+---
+http_interactions:
+- request:
     method: post
-    uri: https://stage.amee.com:443/auth/signIn
-    body: username=<AMEE_V2_API_KEY>&password=<AMEE_V2_PASSWORD>
-    headers: 
-      accept: 
+    uri: https://stage.amee.com/auth/signIn
+    body:
+      encoding: UTF-8
+      string: username=<AMEE_V2_API_KEY>&password=<AMEE_V2_PASSWORD>
+    headers:
+      Accept:
       - application/xml
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+  response:
+    status:
       code: 200
       message: OK
-    headers: 
-      expires: 
+    headers:
+      Expires:
       - Sun, 27 Nov 2011 01:14:29 GMT
-      last-modified: 
+      Last-Modified:
       - Mon, 28 Nov 2011 01:14:29 GMT
-      content-type: 
+      Content-Type:
       - application/xml; charset=UTF-8
-      via: 
+      Via:
       - 1.1 stage.amee.com
-      server: 
+      Server:
       - Noelios-Restlet-Engine/1.1.10
-      date: 
+      Date:
       - Mon, 28 Nov 2011 01:14:29 GMT
-      set-cookie: 
-      - authToken=m9EfzlSsx+o9gnGiWrXmGSOTaiL3GZ9Wz/1/16s8yPximcInyKmBfnNK3v+E7VYvqq1lcePG7xf91awEbH+QcPEmpEYhG+cLl1vyBT+BwXs=; Path=/
-      authtoken: 
+      Set-Cookie:
+      - authToken=m9EfzlSsx+o9gnGiWrXmGSOTaiL3GZ9Wz/1/16s8yPximcInyKmBfnNK3v+E7VYvqq1lcePG7xf91awEbH+QcPEmpEYhG+cLl1vyBT+BwXs=;
+        Path=/
+      Authtoken:
       - m9EfzlSsx+o9gnGiWrXmGSOTaiL3GZ9Wz/1/16s8yPximcInyKmBfnNK3v+E7VYvqq1lcePG7xf91awEbH+QcPEmpEYhG+cLl1vyBT+BwXs=
-      vary: 
+      Vary:
       - Accept-Charset,Accept-Encoding,Accept-Language,Accept
-      transfer-encoding: 
+      Transfer-Encoding:
       - chunked
-    body: <?xml version="1.0" encoding="UTF-8" standalone="no"?><Resources><SignInResource><Next>/auth</Next><User uid="58F26PHHLFEB"><Status>ACTIVE</Status><Type>STANDARD</Type><ApiVersion>2.0</ApiVersion><Locale>en_GB</Locale><TimeZone>UTC</TimeZone></User></SignInResource></Resources>
-    http_version: "1.1"
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+    body:
+      encoding: UTF-8
+      string: <?xml version="1.0" encoding="UTF-8" standalone="no"?><Resources><SignInResource><Next>/auth</Next><User
+        uid="58F26PHHLFEB"><Status>ACTIVE</Status><Type>STANDARD</Type><ApiVersion>2.0</ApiVersion><Locale>en_GB</Locale><TimeZone>UTC</TimeZone></User></SignInResource></Resources>
+    http_version: '1.1'
+  recorded_at: Fri, 03 Apr 2015 12:11:33 GMT
+- request:
     method: get
-    uri: https://stage.amee.com:443/data
-    body: 
-    headers: 
-      accept: 
+    uri: https://stage.amee.com/data
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
       - application/json
-      cookie: 
+      Cookie:
       - AuthToken=m9EfzlSsx+o9gnGiWrXmGSOTaiL3GZ9Wz/1/16s8yPximcInyKmBfnNK3v+E7VYvqq1lcePG7xf91awEbH+QcPEmpEYhG+cLl1vyBT+BwXs=
-      authtoken: 
+      Authtoken:
       - m9EfzlSsx+o9gnGiWrXmGSOTaiL3GZ9Wz/1/16s8yPximcInyKmBfnNK3v+E7VYvqq1lcePG7xf91awEbH+QcPEmpEYhG+cLl1vyBT+BwXs=
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+  response:
+    status:
       code: 200
       message: OK
-    headers: 
-      expires: 
+    headers:
+      Expires:
       - Sun, 27 Nov 2011 01:14:29 GMT
-      last-modified: 
+      Last-Modified:
       - Mon, 28 Nov 2011 01:14:29 GMT
-      content-type: 
+      Content-Type:
       - application/json; charset=UTF-8
-      via: 
+      Via:
       - 1.1 stage.amee.com
-      server: 
+      Server:
       - Noelios-Restlet-Engine/1.1.10
-      date: 
+      Date:
       - Mon, 28 Nov 2011 01:14:29 GMT
-      content-length: 
-      - "1041"
-      set-cookie: 
-      - authToken=m9EfzlSsx+o9gnGiWrXmGSOTaiL3GZ9Wz/1/16s8yPximcInyKmBfnNK3v+E7VYvqq1lcePG7xf91awEbH+QcPEmpEYhG+cLl1vyBT+BwXs=; Path=/
-      authtoken: 
+      Content-Length:
+      - '1041'
+      Set-Cookie:
+      - authToken=m9EfzlSsx+o9gnGiWrXmGSOTaiL3GZ9Wz/1/16s8yPximcInyKmBfnNK3v+E7VYvqq1lcePG7xf91awEbH+QcPEmpEYhG+cLl1vyBT+BwXs=;
+        Path=/
+      Authtoken:
       - m9EfzlSsx+o9gnGiWrXmGSOTaiL3GZ9Wz/1/16s8yPximcInyKmBfnNK3v+E7VYvqq1lcePG7xf91awEbH+QcPEmpEYhG+cLl1vyBT+BwXs=
-      vary: 
+      Vary:
       - Accept-Charset,Accept-Encoding,Accept-Language,Accept
-    body: "{\"apiVersion\":\"2.0\",\"dataCategory\":{\"uid\":\"CD310BEBAC52\",\"deprecated\":false,\"environment\":{\"uid\":\"5F5887BCF726\",\"itemsPerFeed\":10,\"description\":\"\",\"name\":\"AMEE\",\"owner\":\"\",\"path\":\"\",\"itemsPerPage\":10},\"created\":\"2007-07-27 07:30:44.0\",\"name\":\"Root\",\"path\":\"\",\"modified\":\"2007-07-27 07:30:44.0\"},\"path\":\"\",\"children\":{\"pager\":{},\"dataItems\":{},\"dataCategories\":[{\"uid\":\"99B121BB416C\",\"name\":\"Business\",\"path\":\"business\"},{\"uid\":\"Q9G5P7ZIZXYX\",\"name\":\"Documentation\",\"path\":\"documentation\"},{\"uid\":\"15AC6CF74915\",\"name\":\"Embodied\",\"path\":\"embodied\"},{\"uid\":\"BBA3AC3E795E\",\"name\":\"Home\",\"path\":\"home\"},{\"uid\":\"85A9172C31AF\",\"name\":\"Import\",\"path\":\"import\"},{\"uid\":\"U1X3EBU9QQ2K\",\"name\":\"LCA\",\"path\":\"lca\"},{\"uid\":\"9E5362EAB0E7\",\"name\":\"Metadata\",\"path\":\"metadata\"},{\"uid\":\"A0CF90F6C0B9\",\"name\":\"Personal\",\"path\":\"personal\"},{\"uid\":\"6FF29F7DACDA\",\"name\":\"Planet\",\"path\":\"planet\"},{\"uid\":\"6153F468BE05\",\"name\":\"Test\",\"path\":\"test\"},{\"uid\":\"263FC0186834\",\"name\":\"Transport\",\"path\":\"transport\"},{\"uid\":\"2957AE9B6E6B\",\"name\":\"User\",\"path\":\"user\"}]}}"
-    http_version: "1.1"
+    body:
+      encoding: UTF-8
+      string: ! '{"apiVersion":"2.0","dataCategory":{"uid":"CD310BEBAC52","deprecated":false,"environment":{"uid":"5F5887BCF726","itemsPerFeed":10,"description":"","name":"AMEE","owner":"","path":"","itemsPerPage":10},"created":"2007-07-27
+        07:30:44.0","name":"Root","path":"","modified":"2007-07-27 07:30:44.0"},"path":"","children":{"pager":{},"dataItems":{},"dataCategories":[{"uid":"99B121BB416C","name":"Business","path":"business"},{"uid":"Q9G5P7ZIZXYX","name":"Documentation","path":"documentation"},{"uid":"15AC6CF74915","name":"Embodied","path":"embodied"},{"uid":"BBA3AC3E795E","name":"Home","path":"home"},{"uid":"85A9172C31AF","name":"Import","path":"import"},{"uid":"U1X3EBU9QQ2K","name":"LCA","path":"lca"},{"uid":"9E5362EAB0E7","name":"Metadata","path":"metadata"},{"uid":"A0CF90F6C0B9","name":"Personal","path":"personal"},{"uid":"6FF29F7DACDA","name":"Planet","path":"planet"},{"uid":"6153F468BE05","name":"Test","path":"test"},{"uid":"263FC0186834","name":"Transport","path":"transport"},{"uid":"2957AE9B6E6B","name":"User","path":"user"}]}}'
+    http_version: '1.1'
+  recorded_at: Fri, 03 Apr 2015 12:11:33 GMT
+recorded_with: VCR 2.9.3

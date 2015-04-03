@@ -1,32 +1,41 @@
---- 
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
-    method: :get
-    uri: https://stage.amee.com:443/
-    body: 
-    headers: 
-      accept: 
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://stage.amee.com/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
       - application/json
-      cookie: 
+      Cookie:
       - authToken=
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+  response:
+    status:
       code: 406
       message: Not Acceptable
-    headers: 
-      via: 
+    headers:
+      Via:
       - 1.1 stage.amee.com
-      content-type: 
+      Content-Type:
       - application/json; charset=UTF-8
-      server: 
+      Server:
       - Noelios-Restlet-Engine/1.1.10
-      date: 
+      Date:
       - Wed, 23 Nov 2011 10:29:09 GMT
-      content-length: 
-      - "325"
-      set-cookie: 
+      Content-Length:
+      - '325'
+      Set-Cookie:
       - authToken=; Path=/; Expires=Wednesday, 23-Nov-11 10:29:09 GMT
-      vary: 
+      Vary:
       - Accept-Charset,Accept-Encoding,Accept-Language,Accept
-    body: "{\"status\":{\"description\":\"The resource identified by the request is only capable of generating response entities which have content characteristics not acceptable according to the accept headers sent in the request\",\"name\":\"Not Acceptable\",\"code\":406,\"uri\":\"http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.7\"}}"
-    http_version: "1.1"
+    body:
+      encoding: UTF-8
+      string: ! '{"status":{"description":"The resource identified by the request
+        is only capable of generating response entities which have content characteristics
+        not acceptable according to the accept headers sent in the request","name":"Not
+        Acceptable","code":406,"uri":"http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.7"}}'
+    http_version: '1.1'
+  recorded_at: Fri, 03 Apr 2015 12:11:33 GMT
+recorded_with: VCR 2.9.3

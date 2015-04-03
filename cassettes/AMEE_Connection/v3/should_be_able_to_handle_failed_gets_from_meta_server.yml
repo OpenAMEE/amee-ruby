@@ -1,30 +1,38 @@
---- 
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+---
+http_interactions:
+- request:
     method: get
     uri: https://<AMEE_V2_API_KEY>:<AMEE_V2_PASSWORD>@platform-api-stage.amee.com:443/3/categories/SomeCategory
-    body: 
-    headers: 
-      accept: 
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
       - application/xml
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+  response:
+    status:
       code: 404
       message: Not Found
-    headers: 
-      content-type: 
+    headers:
+      Content-Type:
       - application/xml
-      via: 
+      Via:
       - 1.1 platform-api-stage.amee.com
-      server: 
+      Server:
       - Noelios-Restlet-Engine/1.1.10
-      date: 
+      Date:
       - Thu, 12 Jan 2012 22:58:15 GMT
-      accept-ranges: 
+      Accept-Ranges:
       - bytes
-      vary: 
+      Vary:
       - Accept-Charset,Accept-Encoding,Accept-Language,Accept
-      transfer-encoding: 
+      Transfer-Encoding:
       - chunked
-    body: <?xml version="1.0" encoding="UTF-8" standalone="no"?><Resources><Status><Code>404</Code><Name>Not Found</Name><Description>The server has not found anything matching the request URI</Description><URI>http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5</URI></Status></Resources>
-    http_version: "1.1"
+    body:
+      encoding: UTF-8
+      string: <?xml version="1.0" encoding="UTF-8" standalone="no"?><Resources><Status><Code>404</Code><Name>Not
+        Found</Name><Description>The server has not found anything matching the request
+        URI</Description><URI>http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5</URI></Status></Resources>
+    http_version: '1.1'
+  recorded_at: Fri, 03 Apr 2015 12:11:33 GMT
+recorded_with: VCR 2.9.3

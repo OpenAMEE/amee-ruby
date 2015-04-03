@@ -24,8 +24,9 @@ AMEE_V3_API_KEY  = test_credentials('amee_test_credentials.yml')['v3']['api_key'
 AMEE_V3_PASSWORD = test_credentials('amee_test_credentials.yml')['v3']['password']
 
 
-VCR.config do |c|
-  c.stub_with :webmock
+VCR.configure do |c|
+  c.configure_rspec_metadata!
+  c.hook_into :webmock
   c.default_cassette_options = { :record => :once }
   c.cassette_library_dir = 'cassettes'
   c.filter_sensitive_data('<AMEE_V1_API_KEY>') { AMEE_V1_API_KEY}
@@ -38,7 +39,6 @@ end
 
 RSpec.configure do |config|
   config.mock_with :flexmock
-  config.extend VCR::RSpec::Macros
 end
 
 # Stub activerecord for rails tests

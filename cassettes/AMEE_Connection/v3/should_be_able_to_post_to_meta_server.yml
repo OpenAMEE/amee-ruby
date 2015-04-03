@@ -1,59 +1,70 @@
---- 
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+---
+http_interactions:
+- request:
     method: post
-    uri: https://platform-api-stage.amee.com:443/3/categories/039DCB9BA67D/items
-    body: values.question=1322523903
-    headers: 
-      accept: 
+    uri: https://platform-api-stage.amee.com/3/categories/039DCB9BA67D/items
+    body:
+      encoding: UTF-8
+      string: values.question=1322523903
+    headers:
+      Accept:
       - application/xml
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+  response:
+    status:
       code: 401
       message: Unauthorized
-    headers: 
-      via: 
+    headers:
+      Via:
       - 1.1 platform-api-stage.amee.com
-      content-type: 
+      Content-Type:
       - application/xml
-      www-authenticate: 
+      Www-Authenticate:
       - Basic realm="AMEE Platform API"
-      date: 
+      Date:
       - Mon, 28 Nov 2011 23:45:04 GMT
-      server: 
+      Server:
       - Noelios-Restlet-Engine/1.1.10
-      accept-ranges: 
+      Accept-Ranges:
       - bytes
-      transfer-encoding: 
+      Transfer-Encoding:
       - chunked
-    body: <?xml version="1.0" encoding="UTF-8" standalone="no"?><Resources><Status><Code>401</Code><Name>Unauthorized</Name><Description>The request requires user authentication</Description><URI>http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.2</URI></Status></Resources>
-    http_version: "1.1"
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+    body:
+      encoding: UTF-8
+      string: <?xml version="1.0" encoding="UTF-8" standalone="no"?><Resources><Status><Code>401</Code><Name>Unauthorized</Name><Description>The
+        request requires user authentication</Description><URI>http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.2</URI></Status></Resources>
+    http_version: '1.1'
+  recorded_at: Fri, 03 Apr 2015 12:11:33 GMT
+- request:
     method: post
     uri: https://<AMEE_V3_API_KEY>:<AMEE_V3_PASSWORD>@platform-api-stage.amee.com:443/3/categories/039DCB9BA67D/items
-    body: values.question=1322524956
-    headers: 
-      accept: 
+    body:
+      encoding: UTF-8
+      string: values.question=1322524956
+    headers:
+      Accept:
       - application/xml
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+  response:
+    status:
       code: 201
       message: Created
-    headers: 
-      location: 
+    headers:
+      Location:
       - https://platform-api-stage.amee.com/3.6.0/categories/039DCB9BA67D/items/XZPAW1QW5NLK
-      content-type: 
+      Content-Type:
       - text/plain
-      via: 
+      Via:
       - 1.1 platform-api-stage.amee.com
-      server: 
+      Server:
       - Noelios-Restlet-Engine/1.1.10
-      date: 
+      Date:
       - Tue, 29 Nov 2011 00:02:40 GMT
-      content-length: 
-      - "0"
-      accept-ranges: 
+      Content-Length:
+      - '0'
+      Accept-Ranges:
       - bytes
-    body: 
-    http_version: "1.1"
+    body:
+      encoding: US-ASCII
+      string: ''
+    http_version: '1.1'
+  recorded_at: Fri, 03 Apr 2015 12:11:33 GMT
+recorded_with: VCR 2.9.3

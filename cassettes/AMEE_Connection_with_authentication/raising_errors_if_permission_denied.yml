@@ -1,69 +1,82 @@
---- 
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+---
+http_interactions:
+- request:
     method: post
-    uri: https://stage.amee.com:443/auth/signIn
-    body: username=<AMEE_V2_API_KEY>&password=<AMEE_V2_PASSWORD>
-    headers: 
-      accept: 
+    uri: https://stage.amee.com/auth/signIn
+    body:
+      encoding: UTF-8
+      string: username=<AMEE_V2_API_KEY>&password=<AMEE_V2_PASSWORD>
+    headers:
+      Accept:
       - application/xml
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+  response:
+    status:
       code: 200
       message: OK
-    headers: 
-      expires: 
+    headers:
+      Expires:
       - Sun, 27 Nov 2011 01:15:19 GMT
-      last-modified: 
+      Last-Modified:
       - Mon, 28 Nov 2011 01:15:19 GMT
-      content-type: 
+      Content-Type:
       - application/xml; charset=UTF-8
-      via: 
+      Via:
       - 1.1 stage.amee.com
-      server: 
+      Server:
       - Noelios-Restlet-Engine/1.1.10
-      date: 
+      Date:
       - Mon, 28 Nov 2011 01:15:19 GMT
-      set-cookie: 
-      - authToken=uJ4jlTadT9uSoe3F1+B0vBsTSvLG43P2Wv1UX0FfuvMFQRoMOl2HT0a8P5/pYy7ND6vwyabOh7kU8gNDRabztPL9wWXv7WNWlv9vtk8UTxo=; Path=/
-      authtoken: 
+      Set-Cookie:
+      - authToken=uJ4jlTadT9uSoe3F1+B0vBsTSvLG43P2Wv1UX0FfuvMFQRoMOl2HT0a8P5/pYy7ND6vwyabOh7kU8gNDRabztPL9wWXv7WNWlv9vtk8UTxo=;
+        Path=/
+      Authtoken:
       - uJ4jlTadT9uSoe3F1+B0vBsTSvLG43P2Wv1UX0FfuvMFQRoMOl2HT0a8P5/pYy7ND6vwyabOh7kU8gNDRabztPL9wWXv7WNWlv9vtk8UTxo=
-      vary: 
+      Vary:
       - Accept-Charset,Accept-Encoding,Accept-Language,Accept
-      transfer-encoding: 
+      Transfer-Encoding:
       - chunked
-    body: <?xml version="1.0" encoding="UTF-8" standalone="no"?><Resources><SignInResource><Next>/auth</Next><User uid="58F26PHHLFEB"><Status>ACTIVE</Status><Type>STANDARD</Type><ApiVersion>2.0</ApiVersion><Locale>en_GB</Locale><TimeZone>UTC</TimeZone></User></SignInResource></Resources>
-    http_version: "1.1"
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+    body:
+      encoding: UTF-8
+      string: <?xml version="1.0" encoding="UTF-8" standalone="no"?><Resources><SignInResource><Next>/auth</Next><User
+        uid="58F26PHHLFEB"><Status>ACTIVE</Status><Type>STANDARD</Type><ApiVersion>2.0</ApiVersion><Locale>en_GB</Locale><TimeZone>UTC</TimeZone></User></SignInResource></Resources>
+    http_version: '1.1'
+  recorded_at: Fri, 03 Apr 2015 12:11:33 GMT
+- request:
     method: get
-    uri: https://stage.amee.com:443/data/lca/ecoinvent
-    body: 
-    headers: 
-      accept: 
+    uri: https://stage.amee.com/data/lca/ecoinvent
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
       - application/json
-      cookie: 
+      Cookie:
       - AuthToken=uJ4jlTadT9uSoe3F1+B0vBsTSvLG43P2Wv1UX0FfuvMFQRoMOl2HT0a8P5/pYy7ND6vwyabOh7kU8gNDRabztPL9wWXv7WNWlv9vtk8UTxo=
-      authtoken: 
+      Authtoken:
       - uJ4jlTadT9uSoe3F1+B0vBsTSvLG43P2Wv1UX0FfuvMFQRoMOl2HT0a8P5/pYy7ND6vwyabOh7kU8gNDRabztPL9wWXv7WNWlv9vtk8UTxo=
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+  response:
+    status:
       code: 403
       message: Forbidden
-    headers: 
-      content-type: 
+    headers:
+      Content-Type:
       - application/json; charset=UTF-8
-      via: 
+      Via:
       - 1.1 stage.amee.com
-      server: 
+      Server:
       - Noelios-Restlet-Engine/1.1.10
-      date: 
+      Date:
       - Mon, 28 Nov 2011 01:15:20 GMT
-      content-length: 
-      - "132"
-      set-cookie: 
-      - authToken=uJ4jlTadT9uSoe3F1+B0vBsTSvLG43P2Wv1UX0FfuvMFQRoMOl2HT0a8P5/pYy7ND6vwyabOh7kU8gNDRabztPL9wWXv7WNWlv9vtk8UTxo=; Path=/
-      authtoken: 
+      Content-Length:
+      - '132'
+      Set-Cookie:
+      - authToken=uJ4jlTadT9uSoe3F1+B0vBsTSvLG43P2Wv1UX0FfuvMFQRoMOl2HT0a8P5/pYy7ND6vwyabOh7kU8gNDRabztPL9wWXv7WNWlv9vtk8UTxo=;
+        Path=/
+      Authtoken:
       - uJ4jlTadT9uSoe3F1+B0vBsTSvLG43P2Wv1UX0FfuvMFQRoMOl2HT0a8P5/pYy7ND6vwyabOh7kU8gNDRabztPL9wWXv7WNWlv9vtk8UTxo=
-    body: "{\"status\":{\"description\":\"\",\"name\":\"Forbidden\",\"code\":403,\"uri\":\"http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.4\"}}"
-    http_version: "1.1"
+    body:
+      encoding: UTF-8
+      string: ! '{"status":{"description":"","name":"Forbidden","code":403,"uri":"http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.4"}}'
+    http_version: '1.1'
+  recorded_at: Fri, 03 Apr 2015 12:11:33 GMT
+recorded_with: VCR 2.9.3

@@ -1,71 +1,85 @@
---- 
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+---
+http_interactions:
+- request:
     method: post
-    uri: https://stage.amee.com:443/auth/signIn
-    body: username=<AMEE_V1_API_KEY>&password=<AMEE_V1_PASSWORD>
-    headers: 
-      accept: 
+    uri: https://stage.amee.com/auth/signIn
+    body:
+      encoding: UTF-8
+      string: username=<AMEE_V1_API_KEY>&password=<AMEE_V1_PASSWORD>
+    headers:
+      Accept:
       - application/xml
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+  response:
+    status:
       code: 200
       message: OK
-    headers: 
-      last-modified: 
+    headers:
+      Last-Modified:
       - Mon, 28 Nov 2011 01:09:43 GMT
-      expires: 
+      Expires:
       - Sun, 27 Nov 2011 01:09:43 GMT
-      via: 
+      Via:
       - 1.1 stage.amee.com
-      content-type: 
+      Content-Type:
       - application/xml; charset=UTF-8
-      date: 
+      Date:
       - Mon, 28 Nov 2011 01:09:43 GMT
-      server: 
+      Server:
       - Noelios-Restlet-Engine/1.1.10
-      authtoken: 
+      Authtoken:
       - P64d2f4ShBeIqRrN7uVptSD7jHB2qUPVWxJv4DEuc8oKeYSO3MklQepEbB1TZYE38hHM5XhWOyOsP7ogMsz1z2DyJeIXAUJdLXYcar4Cdbc=
-      set-cookie: 
-      - authToken=P64d2f4ShBeIqRrN7uVptSD7jHB2qUPVWxJv4DEuc8oKeYSO3MklQepEbB1TZYE38hHM5XhWOyOsP7ogMsz1z2DyJeIXAUJdLXYcar4Cdbc=; Path=/
-      vary: 
+      Set-Cookie:
+      - authToken=P64d2f4ShBeIqRrN7uVptSD7jHB2qUPVWxJv4DEuc8oKeYSO3MklQepEbB1TZYE38hHM5XhWOyOsP7ogMsz1z2DyJeIXAUJdLXYcar4Cdbc=;
+        Path=/
+      Vary:
       - Accept-Charset,Accept-Encoding,Accept-Language,Accept
-      transfer-encoding: 
+      Transfer-Encoding:
       - chunked
-    body: <?xml version="1.0" encoding="UTF-8" standalone="no"?><Resources><SignInResource><Next>/auth</Next><User uid="ZMNP71Y06QFH"><Status>ACTIVE</Status><Type>STANDARD</Type><ApiVersion>1.0</ApiVersion><Locale>en_GB</Locale><TimeZone>UTC</TimeZone></User></SignInResource></Resources>
-    http_version: "1.1"
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+    body:
+      encoding: UTF-8
+      string: <?xml version="1.0" encoding="UTF-8" standalone="no"?><Resources><SignInResource><Next>/auth</Next><User
+        uid="ZMNP71Y06QFH"><Status>ACTIVE</Status><Type>STANDARD</Type><ApiVersion>1.0</ApiVersion><Locale>en_GB</Locale><TimeZone>UTC</TimeZone></User></SignInResource></Resources>
+    http_version: '1.1'
+  recorded_at: Fri, 03 Apr 2015 12:11:33 GMT
+- request:
     method: post
-    uri: https://stage.amee.com:443/auth/signIn
-    body: username=<AMEE_V1_API_KEY>&password=<AMEE_V1_PASSWORD>
-    headers: 
-      accept: 
+    uri: https://stage.amee.com/auth/signIn
+    body:
+      encoding: UTF-8
+      string: username=<AMEE_V1_API_KEY>&password=<AMEE_V1_PASSWORD>
+    headers:
+      Accept:
       - application/xml
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+  response:
+    status:
       code: 200
       message: OK
-    headers: 
-      expires: 
+    headers:
+      Expires:
       - Wed, 11 Jan 2012 22:40:34 GMT
-      last-modified: 
+      Last-Modified:
       - Thu, 12 Jan 2012 22:40:34 GMT
-      content-type: 
+      Content-Type:
       - application/xml; charset=UTF-8
-      via: 
+      Via:
       - 1.1 stage.amee.com
-      server: 
+      Server:
       - Noelios-Restlet-Engine/1.1.10
-      date: 
+      Date:
       - Thu, 12 Jan 2012 22:40:34 GMT
-      set-cookie: 
-      - authToken=FKcQNc0p0zYLGePVkhCv7t2FIt8hhTf7ofv8EEvIESAP7KGDCsMOtLYvxcR5qHv3qvgaYTiTuXG/1W8t6CrfigoGsD6SUk5KTQn6ocULcno=; Path=/
-      authtoken: 
+      Set-Cookie:
+      - authToken=FKcQNc0p0zYLGePVkhCv7t2FIt8hhTf7ofv8EEvIESAP7KGDCsMOtLYvxcR5qHv3qvgaYTiTuXG/1W8t6CrfigoGsD6SUk5KTQn6ocULcno=;
+        Path=/
+      Authtoken:
       - FKcQNc0p0zYLGePVkhCv7t2FIt8hhTf7ofv8EEvIESAP7KGDCsMOtLYvxcR5qHv3qvgaYTiTuXG/1W8t6CrfigoGsD6SUk5KTQn6ocULcno=
-      vary: 
+      Vary:
       - Accept-Charset,Accept-Encoding,Accept-Language,Accept
-      transfer-encoding: 
+      Transfer-Encoding:
       - chunked
-    body: <?xml version="1.0" encoding="UTF-8" standalone="no"?><Resources><SignInResource><Next>/auth</Next><User uid="ZMNP71Y06QFH"><Status>ACTIVE</Status><Type>STANDARD</Type><ApiVersion>1.0</ApiVersion><Locale>en_GB</Locale><TimeZone>UTC</TimeZone></User></SignInResource></Resources>
-    http_version: "1.1"
+    body:
+      encoding: UTF-8
+      string: <?xml version="1.0" encoding="UTF-8" standalone="no"?><Resources><SignInResource><Next>/auth</Next><User
+        uid="ZMNP71Y06QFH"><Status>ACTIVE</Status><Type>STANDARD</Type><ApiVersion>1.0</ApiVersion><Locale>en_GB</Locale><TimeZone>UTC</TimeZone></User></SignInResource></Resources>
+    http_version: '1.1'
+  recorded_at: Fri, 03 Apr 2015 12:11:33 GMT
+recorded_with: VCR 2.9.3
