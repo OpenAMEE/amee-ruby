@@ -78,8 +78,7 @@ module AMEE
       {
         :verbose => DEBUG,
         :followlocation => true,
-        :username => @username,
-        :password => @password
+        :userpwd => "#{@username}:#{@password}"
       }
     end
 
