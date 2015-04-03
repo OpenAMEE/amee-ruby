@@ -36,7 +36,7 @@ http_interactions:
   recorded_at: Fri, 03 Apr 2015 12:11:33 GMT
 - request:
     method: post
-    uri: https://<AMEE_V3_API_KEY>:<AMEE_V3_PASSWORD>@platform-api-stage.amee.com:443/3/categories/039DCB9BA67D/items
+    uri: https://<AMEE_V3_API_KEY>:<AMEE_V3_PASSWORD>@platform-api-stage.amee.com/3/categories/039DCB9BA67D/items
     body:
       encoding: UTF-8
       string: values.question=1322524956

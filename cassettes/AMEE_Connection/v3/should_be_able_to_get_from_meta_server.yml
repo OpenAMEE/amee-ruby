@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://<AMEE_V2_API_KEY>:<AMEE_V2_PASSWORD>@platform-api-stage.amee.com:443/3/categories/Api_test
+    uri: https://<AMEE_V2_API_KEY>:<AMEE_V2_PASSWORD>@platform-api-stage.amee.com/3/categories/Api_test
     body:
       encoding: US-ASCII
       string: ''
