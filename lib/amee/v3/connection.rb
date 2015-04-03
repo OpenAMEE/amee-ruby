@@ -83,7 +83,7 @@ module AMEE
     def v3_defaults
       {
         :verbose => DEBUG,
-        :follow_location => true,
+        :followlocation => true,
         :username => @username,
         :password => @password
       }

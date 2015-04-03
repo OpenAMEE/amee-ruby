@@ -341,9 +341,9 @@ module AMEE
         authenticate 
       end
 
-      request.headers['Accept'] = content_type(format)
+      request.options[:headers]['Accept'] = content_type(format)
       # Set AMEE source header if set
-      request.headers['X-AMEE-Source'] = @amee_source if @amee_source
+      request.options[:headers]['X-AMEE-Source'] = @amee_source if @amee_source
 
       # path+query string only (split with an int limits the number of splits)
       path_and_query = '/' + request.url.split('/', 4)[3]
@@ -390,8 +390,8 @@ module AMEE
     # making a request anyway
     def add_authentication_to(request=nil)
       if @auth_token
-        request.headers['Cookie'] = "AuthToken=#{@auth_token}"
-        request.headers['AuthToken'] = @auth_token
+        request.options[:headers]['Cookie'] = "AuthToken=#{@auth_token}"
+        request.options[:headers]['AuthToken'] = @auth_token
       else
         raise "The connection can't authenticate. Check if the auth_token is being set by the server"
       end
