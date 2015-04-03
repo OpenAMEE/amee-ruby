@@ -67,7 +67,6 @@ module AMEE
     end
 
     def version
-      authenticate if @version.nil?
       @version
     end
 
@@ -274,7 +273,6 @@ module AMEE
       when 403
         raise AMEE::PermissionDenied.new("You do not have permission to perform the requested operation.\nRequest: #{request.method.upcase} #{request.url.gsub(request.host, '')}\n#{request.body}\Response: #{response.body}")
       when 401
-        authenticate
         return false
       when 400
         if response.body.include? "would have resulted in a duplicate resource being created"
