@@ -296,17 +296,6 @@ module AMEE
     # if set, attempts to retry a number of times set when
     # initialising the class
     def do_request(request, format = @format, options = {})
-
-      # Is this a v3 request?
-      v3_request = request.url.include?("/#{v3_hostname}/")
-
-      # make sure we have our auth token before we start
-      # any v1 or v2 requests
-      if !@auth_token && !v3_request
-        d "Authenticating first before we hit #{request.url}"
-        authenticate 
-      end
-
       request.options[:headers]['Accept'] = content_type(format)
       # Set AMEE source header if set
       request.options[:headers]['X-AMEE-Source'] = @amee_source if @amee_source
@@ -321,7 +310,7 @@ module AMEE
     # cache code simpler
     def run_request(request, format)
       # Is this a v3 request?
-      v3_request = request.url.include?("/#{v3_hostname}/")
+      v3_request = true
       # Execute with retries
       retries = [1] * @retries
       begin 
