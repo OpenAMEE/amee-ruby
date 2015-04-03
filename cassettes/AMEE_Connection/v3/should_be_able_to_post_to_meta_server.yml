@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: https://platform-api-stage.amee.com/3/categories/039DCB9BA67D/items
+    uri: https://stage.amee.com/3/categories/039DCB9BA67D/items
     body:
       encoding: UTF-8
       string: values.question=1322523903
@@ -15,7 +15,7 @@ http_interactions:
       message: Unauthorized
     headers:
       Via:
-      - 1.1 platform-api-stage.amee.com
+      - 1.1 stage.amee.com
       Content-Type:
       - application/xml
       Www-Authenticate:
@@ -36,7 +36,7 @@ http_interactions:
   recorded_at: Fri, 03 Apr 2015 12:11:33 GMT
 - request:
     method: post
-    uri: https://<AMEE_V3_API_KEY>:<AMEE_V3_PASSWORD>@platform-api-stage.amee.com/3/categories/039DCB9BA67D/items
+    uri: https://<AMEE_V3_API_KEY>:<AMEE_V3_PASSWORD>@stage.amee.com/3/categories/039DCB9BA67D/items
     body:
       encoding: UTF-8
       string: values.question=1322524956
@@ -49,11 +49,11 @@ http_interactions:
       message: Created
     headers:
       Location:
-      - https://platform-api-stage.amee.com/3.6.0/categories/039DCB9BA67D/items/XZPAW1QW5NLK
+      - https://stage.amee.com/3.6.0/categories/039DCB9BA67D/items/XZPAW1QW5NLK
       Content-Type:
       - text/plain
       Via:
-      - 1.1 platform-api-stage.amee.com
+      - 1.1 stage.amee.com
       Server:
       - Noelios-Restlet-Engine/1.1.10
       Date:

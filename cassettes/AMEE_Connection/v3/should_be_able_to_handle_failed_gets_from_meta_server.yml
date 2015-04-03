@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://<AMEE_V2_API_KEY>:<AMEE_V2_PASSWORD>@platform-api-stage.amee.com/3/categories/SomeCategory
+    uri: https://<AMEE_V2_API_KEY>:<AMEE_V2_PASSWORD>@stage.amee.com/3/categories/SomeCategory
     body:
       encoding: US-ASCII
       string: ''
@@ -17,7 +17,7 @@ http_interactions:
       Content-Type:
       - application/xml
       Via:
-      - 1.1 platform-api-stage.amee.com
+      - 1.1 stage.amee.com
       Server:
       - Noelios-Restlet-Engine/1.1.10
       Date:

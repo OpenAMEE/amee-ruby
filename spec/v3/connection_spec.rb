@@ -49,31 +49,10 @@ describe AMEE::Connection do
     }.should raise_error
   end
 
-  it "should generate correct hostname for platform-dev.amee.com" do
-    c = AMEE::Connection.new('platform-dev.amee.com', 'username', 'password')
-    c.send(:v3_hostname).should eql 'platform-api-dev.amee.com'
-  end
-
-  it "should generate correct hostname for platform-science.amee.com" do
-    c = AMEE::Connection.new('platform-science.amee.com', 'username', 'password')
-    c.send(:v3_hostname).should eql 'platform-api-science.amee.com'
-  end
-
-  it "should generate correct hostname for stage.amee.com" do
-    c = AMEE::Connection.new('stage.amee.com', 'username', 'password')
-    c.send(:v3_hostname).should eql 'platform-api-stage.amee.com'
-  end
-
-  it "should generate correct hostname for live.amee.com" do
-    c = AMEE::Connection.new('live.amee.com', 'username', 'password')
-    c.send(:v3_hostname).should eql 'platform-api-live.amee.com'
-  end
-
   it "should not change modern hostnames" do
     c = AMEE::Connection.new('platform-api-test.amee.com', 'username', 'password')
     c.send(:v3_hostname).should eql 'platform-api-test.amee.com'
   end
-
 end
 
 describe AMEE::Connection, "with retry enabled" do

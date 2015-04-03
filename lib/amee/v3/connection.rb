@@ -91,15 +91,7 @@ module AMEE
     
     # Work out v3 hostname corresponding to v2 hostname
     def v3_hostname
-      unless @server.starts_with?("platform-api-")
-        if @server.starts_with?("platform-")
-          @server.gsub("platform-", "platform-api-")
-        else
-          "platform-api-#{@server}"
-        end
-      else
-        @server
-      end
+      @server
     end
       
   end
