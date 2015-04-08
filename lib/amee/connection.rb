@@ -265,20 +265,20 @@ module AMEE
       case response.code.to_i
 
       when 502, 503, 504
-          raise AMEE::ConnectionFailed.new("A connection error occurred while talking to AMEE: HTTP response code #{response.code}.\nRequest: #{request.url}")
+          raise AMEE::ConnectionFailed.new("A connection error occurred while talking to AMEE: HTTP response code #{response.code}.\nRequest: #{request.options[:method].upcase} #{request.url}")
       when 408
         raise AMEE::TimeOut.new("Request timed out.")
       when 404
-        raise AMEE::NotFound.new("The URL was not found on the server.\nRequest: #{request.url}")
+        raise AMEE::NotFound.new("The URL was not found on the server.\nRequest: #{request.options[:method].upcase} #{request.url}")
       when 403
-        raise AMEE::PermissionDenied.new("You do not have permission to perform the requested operation.\nRequest: #{request.url}\n#{request.body}\Response: #{response.body}")
+        raise AMEE::PermissionDenied.new("You do not have permission to perform the requested operation.\nRequest: #{request.options[:method].upcase} #{request.url}\n#{request.options[:body]}\Response: #{response.body}")
       when 401
-        raise AMEE::PermissionDenied.new("Not authenticated.\nRequest: #{request.options[:method]} #{request.url}\n#{request.body}\Response: #{response.body}")
+        raise AMEE::PermissionDenied.new("Not authenticated.\nRequest: #{request.options[:method].upcase} #{request.url}\n#{request.options[:body]}\Response: #{response.body}")
       when 400
         if response.body.include? "would have resulted in a duplicate resource being created"
-          raise AMEE::DuplicateResource.new("The specified resource already exists. This is most often caused by creating an item that overlaps another in time.\nRequest: #{request.url}\n#{request.body}\Response: #{response.body}")
+          raise AMEE::DuplicateResource.new("The specified resource already exists. This is most often caused by creating an item that overlaps another in time.\nRequest: #{request.options[:method].upcase} #{request.url}\n#{request.options[:body]}\Response: #{response.body}")
         else
-          raise AMEE::BadRequest.new("Bad request. This is probably due to malformed input data.\nRequest: #{request.url}\n#{request.body}\Response: #{response.body}")
+          raise AMEE::BadRequest.new("Bad request. This is probably due to malformed input data.\nRequest: #{request.options[:method].upcase} #{request.url}\n#{request.options[:body]}\Response: #{response.body}")
         end
       when 200, 201, 204
         return response
@@ -286,7 +286,7 @@ module AMEE
         connection_failed
       end
       # If we get here, something unhandled has happened, so raise an unknown error.
-      raise AMEE::UnknownError.new("An error occurred while talking to AMEE: HTTP response code #{response.code}.\nRequest: #{request.url}\n#{request.body}\Response: #{response.body}")
+      raise AMEE::UnknownError.new("An error occurred while talking to AMEE: HTTP response code #{response.code}.\nRequest: #{request.options[:method].upcase} #{request.url}\n#{request.options[:body]}\Response: #{response.body}")
     end
 
     # Wrapper for sending requests through to the API.
