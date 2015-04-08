@@ -37,75 +37,12 @@ module AMEE
         @item_definition ||= AMEE::Admin::ItemDefinition.load(connection,item_definition_uid)
       end
 
-
-      def self.from_json(json)
-        # Read JSON
-        doc = JSON.parse(json)
-        begin
-          data = {}
-          data[:uid] = doc['dataItem']['uid']
-          data[:created] = DateTime.parse(doc['dataItem']['created'])
-          data[:modified] = DateTime.parse(doc['dataItem']['modified'])
-          data[:name] = doc['dataItem']['name']
-          data[:path] = doc['path']
-          data[:label] = doc['dataItem']['label']
-          data[:item_definition] = doc['dataItem']['itemDefinition']['uid']
-          data[:category_uid] = doc['dataItem']['dataCategory']['uid']
-          # Read v2 total
-          data[:total_amount] = doc['amount']['value'] rescue nil
-          data[:total_amount_unit] = doc['amount']['unit'] rescue nil
-          # Read v1 total
-          if data[:total_amount].nil?
-            data[:total_amount] = doc['amountPerMonth'] rescue nil
-            data[:total_amount_unit] = "kg/month"
-          end
-          # Read amounts
-          if doc['amounts']
-            if doc['amounts']['amount']
-              data[:amounts] = doc['amounts']['amount'].map do |item|
-                {
-                  :type => item['type'],
-                  :value => item['value'].to_f,
-                  :unit => item['unit'],
-                  :per_unit => item['perUnit'],
-                  :default => (item['default'] == 'true'),
-                }
-              end
-            end
-            if doc['amounts']['note']
-              data[:notes] = doc['amounts']['note'].map do |item|
-                {
-                  :type => item['type'],
-                  :value => item['value'],
-                }
-              end
-            end
-          end
-          # Get values
-          data[:values] = []
-          doc['dataItem']['itemValues'].each do |value|
-            value_data = {}
-            value_data[:name] = value['name']
-            value_data[:path] = value['path']
-            value_data[:value] = value['value']
-            value_data[:drill] = value['itemValueDefinition']['drillDown'] rescue nil
-            value_data[:uid] = value['uid']
-            data[:values] << value_data
-          end
-          # Get choices
-          data[:choices] = []
-          doc['userValueChoices']['choices'].each do |choice|
-            choice_data = {}
-            choice_data[:name] = choice['name']
-            choice_data[:value] = choice['value']
-            data[:choices] << choice_data
-          end
-          data[:start_date] = DateTime.parse(doc['dataItem']['startDate']) rescue nil
-          # Create object
-          Item.new(data)
-        rescue
-          raise AMEE::BadData.new("Couldn't load DataItem from JSON. Check that your URL is correct.\n#{json}")
-        end
+      def self.from_json(body)
+        json = JSON.parse(body, :symbolize_names => true)
+        new({
+          amounts: json[:output][:amounts],
+          notes: json[:output][:notes]
+        })
       end
 
       def self.from_xml(xml)
