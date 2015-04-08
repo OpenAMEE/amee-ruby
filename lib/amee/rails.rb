@@ -36,11 +36,11 @@ module AMEE
         end
         @connection
       end
+
       protected
+
       def self.connect(server, username, password, options)
-        connection = AMEE::Connection.new(server, username, password, options)
-        connection.authenticate unless options[:authenticate] == false
-        return connection
+        AMEE::Connection.new(server, username, password, options)
       end
     end
 
