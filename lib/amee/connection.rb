@@ -86,7 +86,8 @@ module AMEE
       # Add parameters to URL query string
       get_params = {
         :method => "get", 
-        :verbose => DEBUG
+        :verbose => DEBUG,
+        :userpwd => "#{username}:#{password}"
       }
       get_params[:params] = data unless data.empty?
       # Create GET request

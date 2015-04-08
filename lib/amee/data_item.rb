@@ -176,7 +176,7 @@ module AMEE
 
       def self.get(connection, path, options = {})
         # Load data from path
-        item= get_and_parse(connection, path, options)
+        item = get_and_parse(connection, path, options)
         # Store connection in object for future use
         item.connection = connection
         # Done
